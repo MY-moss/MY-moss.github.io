@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a}from"./chunks/framework.CP8pidWN.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"txt/menu.md","filePath":"txt/menu.md"}'),n={name:"txt/menu.md"};function r(o,s,c,m,p,_){return a(),e("div")}const f=t(n,[["render",r]]);export{i as __pageData,f as default};

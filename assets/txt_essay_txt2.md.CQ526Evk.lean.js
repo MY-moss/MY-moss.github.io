@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a}from"./chunks/framework.CP8pidWN.js";const x=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"txt/essay/txt2.md","filePath":"txt/essay/txt2.md"}'),s={name:"txt/essay/txt2.md"};function r(o,c,n,p,_,d){return a(),e("div")}const m=t(s,[["render",r]]);export{x as __pageData,m as default};
