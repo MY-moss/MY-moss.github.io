@@ -338,6 +338,287 @@ textarea:focus-visible,
   white-space: nowrap;
 }
 
+/* ====== 静态版体验收束：本地游戏只保留可用功能，移动端优先 ====== */
+body.static-build {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.static-build .m-drawer-setup {
+  display: none !important;
+}
+
+body.static-build .btn,
+body.static-build .option,
+body.static-build .m-tab,
+body.static-build .desktop-nav-item,
+body.static-build .desktop-current-card,
+body.static-build .icon-btn {
+  touch-action: manipulation;
+}
+
+body.static-build .menu-command-panel {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0;
+}
+
+body.static-build .menu-command-panel .menu-header,
+body.static-build .menu-command-panel .menu-command-scroll,
+body.static-build .menu-command-panel .menu-command-foot {
+  width: 100%;
+  grid-column: auto;
+}
+
+body.static-build .menu-command-scroll {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 7px;
+  scrollbar-width: thin;
+}
+
+body.static-build .menu-command-group-title {
+  flex: 0 0 auto;
+  margin: 12px 2px 1px;
+}
+
+body.static-build .menu-command-group-title:first-child {
+  margin-top: 2px;
+}
+
+body.static-build .menu-command-panel > .btn {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 48px;
+  justify-content: flex-start;
+  padding: 11px 13px;
+  text-align: left;
+}
+
+body.static-build .menu-command-foot {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding-bottom: max(2px, env(safe-area-inset-bottom));
+}
+
+body.static-build .menu-command-foot .btn,
+body.static-build .menu-command-foot .btn + .btn {
+  min-height: 48px;
+  margin: 0;
+}
+
+body.static-build .support-card,
+body.static-build .support-note {
+  min-width: 0;
+  margin-bottom: 12px;
+}
+
+body.static-build .support-card {
+  text-align: center;
+}
+
+body.static-build .support-kicker {
+  margin-bottom: 7px;
+  color: var(--ui-red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+body.static-build .support-card .event-text,
+body.static-build .support-note .event-text {
+  overflow-wrap: anywhere;
+}
+
+body.static-build .support-qr-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+body.static-build .support-qr {
+  display: block;
+  width: min(190px, 68vw);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-gold);
+}
+
+body.static-build .support-qr-hint,
+body.static-build .support-local-note {
+  color: var(--ui-text-faint);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+body.static-build .support-qr-wrap .btn {
+  min-width: min(100%, 190px);
+}
+
+@media (min-width: 801px) {
+  body.static-build .desktop-nav-inner {
+    gap: 10px;
+  }
+
+  body.static-build .desktop-current-card {
+    min-height: 76px;
+  }
+
+  body.static-build .desktop-nav-group h2 {
+    margin-top: 5px;
+    margin-bottom: 4px;
+  }
+
+  body.static-build .desktop-nav-item {
+    min-height: 48px;
+  }
+
+  body.static-build .desktop-main-panel .content {
+    padding-left: clamp(16px, 3vw, 32px);
+    padding-right: clamp(16px, 3vw, 32px);
+  }
+}
+
+@media (max-width: 800px) {
+  body.static-build .game-container.desktop-workspace {
+    min-height: 100dvh;
+  }
+
+  body.static-build .desktop-nav,
+  body.static-build .desktop-nav-scrim,
+  body.static-build .side-panel {
+    display: none !important;
+  }
+
+  body.static-build .desktop-main-panel,
+  body.static-build .phone-shell.desktop-main-panel {
+    min-height: 100dvh;
+  }
+
+  body.static-build .desktop-main-panel .topbar {
+    min-height: 60px;
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+
+  body.static-build .desktop-main-panel .status {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  body.static-build .desktop-main-panel .status > div {
+    min-height: 48px;
+    padding: 6px 4px;
+  }
+
+  body.static-build .content {
+    padding: 14px 12px calc(36px + env(safe-area-inset-bottom));
+  }
+
+  body.static-build .stage {
+    width: 100%;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  body.static-build .lead {
+    margin-bottom: 12px;
+    padding: 12px 13px;
+  }
+
+  body.static-build .m-drawer:not(.m-drawer-setup) {
+    margin: 8px 0 10px;
+    border-top: 1px solid var(--ui-line);
+    border-bottom: 1px solid var(--ui-line);
+    background: var(--ui-surface);
+  }
+
+  body.static-build .m-drawer-tabs {
+    padding: 2px 6px 0;
+  }
+
+  body.static-build .m-tab {
+    min-height: 44px;
+    padding: 8px 3px;
+    font-size: 10px;
+  }
+
+  body.static-build .m-drawer-body {
+    padding: 8px 10px 10px;
+  }
+
+  body.static-build .m-overview-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  body.static-build .m-overview-metric {
+    min-height: 48px;
+    padding: 7px 3px;
+  }
+
+  body.static-build .btn,
+  body.static-build .option,
+  body.static-build .diff-option,
+  body.static-build .unit-card,
+  body.static-build .talent-card,
+  body.static-build .history-card,
+  body.static-build .save-load {
+    min-height: 48px;
+  }
+
+  body.static-build input,
+  body.static-build select,
+  body.static-build textarea {
+    font-size: 16px;
+  }
+
+  body.static-build .menu-overlay {
+    align-items: flex-start;
+    padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+  }
+
+  body.static-build .menu-modal {
+    width: 100%;
+    max-width: 520px;
+    max-height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    margin: 0 auto;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  body.static-build .menu-command-scroll {
+    padding: 2px 1px;
+  }
+
+  body.static-build .menu-command-foot {
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  body.static-build .desktop-main-panel .status {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.static-build .desktop-main-panel .status > div {
+    min-height: 44px;
+  }
+
+  body.static-build .m-overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.static-build .menu-command-foot {
+    grid-template-columns: 1fr;
+  }
+}
+
 .content,
 .desktop-main-panel .content {
   background: var(--ui-bg) !important;

@@ -27,8 +27,8 @@
 // 2.1.3：CACHE 名与 index.html 版本号同步；install 时预缓存条目统一追加 ?v= 版本串，
 // fetch 匹配用 ignoreSearch —— 修复预缓存与运行时请求（带 query）不匹配、预缓存形同虚设的问题
 // UI 刷新后切换缓存名，确保已经打开过旧版本的用户能拿到最新样式与交互逻辑。
-const CACHE = 'shangan-pages-1';
-const V = '?v=pages-1';
+const CACHE = 'shangan-pages-2';
+const V = '?v=pages-2';
 const UI_REV3 = new Set([
   './js/app/app-core.js',
   './js/app/app-history.js',
@@ -91,8 +91,6 @@ const CORE = [
   './js/app.js',
   './js/app/app-core.js',
   './js/app/app-storage.js',
-  './js/app/app-account.js',
-  './js/app/app-feedback.js',
   './js/app/app-history.js',
   './js/app/app-character.js',
   './js/app/app-exam.js',
@@ -106,12 +104,11 @@ const CORE = [
   './js/app/app-daily-challenge.js',
   './js/app/app-desktop.js',
   './js/app/app-share.js',
-  './js/monitor-client.js'
 ];
 
 self.addEventListener('install', e => {
   const cacheUrl = u => u === './css/ui-upgrade.css'
-    ? u + V + '&rev=ui6'
+    ? u + V + '&rev=ui7'
     : UI_REV4.has(u) ? u + V + '&rev=ui4'
     : UI_REV3.has(u) ? u + V + '&rev=ui3' : u + V;
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE.map(cacheUrl))).then(() => self.skipWaiting()));

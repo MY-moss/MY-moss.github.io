@@ -1,7 +1,7 @@
 // app-challenges.js —— 跨周目挑战长廊（M5.3）
 // 与成就（纯收集、即时判定）区分：挑战是明确的"多周目执行性目标"，带进度与连击语义，
 // 在每局结算时推进（saveRecord 之后），无点数奖励（延续成就零奖励原则，不破坏 NG+ 平衡）。
-// 存储：localStorage['gameChallenges']，随账号云同步（app-account.js global 块）。
+// 存储：localStorage['gameChallenges']，静态版随当前设备存档。
 Object.assign(App, {
   CHALLENGES: [
     { id: 'ch_clean_times', icon: '🕊️', title: '清风自有归处', desc: '累计 3 局达成清廉系结局（一代清官 / 清廉丰碑 / 清流砥柱）', kind: 'count', goal: 3, matchEndings: ['honest_official', 'clean', 'era_rectify'] },

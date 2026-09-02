@@ -163,27 +163,25 @@ Object.assign(App, {
   showDailyChallenge() {
     if (typeof this.setDesktopRoute === 'function') this.setDesktopRoute('stats', { sync: false });
     if (typeof this.setTopBarTitle === 'function') this.setTopBarTitle('今日挑战');
+    const staticBuild = this.isStaticBuild && this.isStaticBuild();
     const render = (info) => {
       this.renderContent(`
         <div class="stage fade-in">
           <div class="lead"><span>🎯</span><p>今日挑战 — 相同种子，各路玩法</p></div>
           <div class="stats-card">
             <div class="stat-item"><span>📋 日期</span><span>${this.escapeHtml(info.date)}</span></div>
-            <div class="stat-item"><span>📝 随机种子</span><span>${info.seed}（本日全球玩家共用）</span></div>
+            <div class="stat-item"><span>📝 随机种子</span><span>${info.seed}${staticBuild ? '（本机固定）' : '（本日玩家共用）'}</span></div>
             <div class="stat-item"><span>📊 难度</span><span>${this.escapeHtml(info.difficulty || 'standard')}</span></div>
-            <p style="font-size:11px;color:var(--ink-lighter);margin-top:8px">开局后天赋、报考单位与全部随机走势与同日出战者完全一致——比的是同一命运下的经营水平。挑战局结算自动上报分数，榜单公开。</p>
-            ${this.isChallengeRun() ? '<p style="font-size:12px;color:var(--vermilion);margin-top:6px">🔁 今日挑战已在进行中（结算时自动上报）。</p>' : ''}
+            <p style="font-size:11px;color:var(--ink-lighter);margin-top:8px">${staticBuild ? '开局后天赋、报考单位与随机走势固定不变，适合反复挑战同一份命运——比的是经营水平。成绩只保存在当前设备。' : '开局后天赋、报考单位与全部随机走势与同日出战者完全一致——比的是同一命运下的经营水平。挑战局结算自动上报分数，榜单公开。'}</p>
+            ${this.isChallengeRun() ? `<p style="font-size:12px;color:var(--vermilion);margin-top:6px">🔁 今日挑战已在进行中${staticBuild ? '' : '（结算时自动上报）'}。</p>` : ''}
           </div>
-          <div id="challenge-leaderboard" class="stats-card" style="margin-top:12px"><div class="empty-state">榜单加载中…</div></div>
+          ${staticBuild ? '' : '<div id="challenge-leaderboard" class="stats-card" style="margin-top:12px"><div class="empty-state">榜单加载中…</div></div>'}
           <div class="sticky-action">
             <button class="btn btn-primary" onclick="App.startDailyChallenge(${info.seed}, '${this.escapeHtml(info.date)}')">🚀 开始今日挑战</button>
             <button class="btn btn-secondary" onclick="App.returnToCurrentFlow()" style="margin-top:8px">返回当前流程</button>
           </div>
         </div>`);
-      if (this.isStaticBuild && this.isStaticBuild()) {
-        const box = document.getElementById('challenge-leaderboard');
-        if (box) box.innerHTML = '<p class="empty-state">静态版可进行本地挑战，公开榜单需要服务器版。</p>';
-      } else this.loadChallengeLeaderboard(info.date);
+      if (!staticBuild) this.loadChallengeLeaderboard(info.date);
     };
     const today = new Date().toISOString().slice(0, 10);
     if (this.isStaticBuild && this.isStaticBuild()) {

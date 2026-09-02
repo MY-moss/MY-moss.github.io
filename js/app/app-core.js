@@ -27,6 +27,9 @@ Object.assign(App, {
     if (this._initialized) return;
     this._initialized = true;
     try {
+      const staticBuild = typeof this.isStaticBuild === 'function' && this.isStaticBuild();
+      document.documentElement.classList.toggle('static-build', staticBuild);
+      document.body.classList.toggle('static-build', staticBuild);
       this.render();
       this.bindEvents();
       this.applyFontPreference();
@@ -43,11 +46,6 @@ Object.assign(App, {
     if (!this.isStaticBuild || !this.isStaticBuild()) {
       try { this.checkBroadcast(); } catch (error) { this.showToast('公告暂时无法加载，本地游戏不受影响', 'warning'); }
     }
-    try {
-      if (typeof this.initAccount === 'function') this.initAccount();
-    } catch (error) {
-      this.showToast('账号服务暂不可用，本地存档仍可使用', 'warning');
-    }
     // 音效激活：首次用户手势后解锁 AudioContext（移动端要求）
     const unlock = () => {
       try { this.ensureAudio(); } catch (error) {}
@@ -62,10 +60,6 @@ Object.assign(App, {
         if (!localStorage.getItem('shangan_tut_done') && this.stats.plays === 0) this.showTutorial();
       } catch(e) {}
     }, 600);
-    // v2.1.79 首次注册引导：玩过一局的游客温和提醒一次（内部自带防重复与延迟）
-    setTimeout(() => {
-      try { if (typeof this.maybePromptAccountSetup === 'function') this.maybePromptAccountSetup(); } catch(e) {}
-    }, 1800);
   },
   renderFatalError(error) {
     this._bootError = error || null;
@@ -94,8 +88,7 @@ Object.assign(App, {
       { icon: '💼', title: '职业生涯', desc: '晋升靠工作能力、声誉和职务权重；压力过高会燃尽，风险过高会落马。每年可以休整减压；也可在生涯页承接有门槛的政策项目。' },
       { icon: '⚖️', title: '年度筹划', desc: '每年有一池精力（AP），在人脉经营、财务规划、子女培养之间自由取舍——用完即止。低权重事件会以"机会"形式浮现，花精力可主动追查。' },
       { icon: '🏆', title: '结局多样', desc: '安稳退休、巅峰人生、中央殿堂、清廉丰碑……图鉴里藏着全部' + endingCount + '种结局和' + eventCount + '个事件，多周目收集吧！' },
-      { icon: '🎯', title: '挑战与回顾', desc: '"今日挑战"每天发同一个随机种子，和所有玩家比同一份命运；"人生回顾"能看职业路径图。每局结算页可一键生成分享卡。' },
-      { icon: '💖', title: '支持与反馈', desc: '菜单里有赞赏码和支持渠道；有建议可直接留言，制作组会在管理后台回复你。' }
+      { icon: '🎯', title: '回顾与分享', desc: '菜单可以查看人生记录、事件图鉴和本地挑战；每局结算页都能保存长海报或精简分享卡，图片会自带游戏二维码与赞赏码。' }
     ];
     const overlay = document.createElement('div');
     overlay.className = 'menu-overlay';
@@ -149,8 +142,6 @@ Object.assign(App, {
     try { localStorage.setItem('shangan_tut_done', '1'); } catch(e) {}
     if (btn && btn.closest('.menu-overlay')) this.closeMenu();
     this.showToast('祝仕途顺遂！', 'success');
-    // v2.1.79 指引结束后紧接一次注册提示（未注册时；内部防重复）
-    try { if (typeof this.maybePromptAccountSetup === 'function') this.maybePromptAccountSetup({ afterTutorial: true }); } catch(e) {}
   },
   // 📖 玩法说明（v2.1.59 帮助中心：随时可看的全系统说明，菜单入口）
   HELP_TOPICS: [
@@ -162,8 +153,8 @@ Object.assign(App, {
     { icon: '🏘️', title: '政策项目与舆情', desc: '生涯页可承接政策项目（5 项目，每项目多个子案与 6-7 个决策点）；承接有职级/单位层级/工作年限门槛，未达标项目锁定并显示缺项。项目期间热度 ≥40 会触发舆情危机——公开回应、稳妥处置或压制扩散，各有代价；完成写入结局分支。' },
     { icon: '💰', title: '财务双表', desc: '现金与负债分账管理：借贷/网贷/博彩各有限额与利率，强制还本防利滚利。投资有正期望也有波动，财富影响结局与家庭压力。' },
     { icon: '👨‍👩‍👧', title: '家庭与子女', desc: '恋爱、结婚、生子走各自事件链；子女可教育投入/陪伴/放养，影响成才结局。家庭压力过高会拖垮事业。' },
-    { icon: '🔁', title: '挑战长廊', desc: '九项跨周目执行性目标（清廉系/基层系结局累计、中央殿堂、硬核上岸、清官连胜等），每局结算自动推进；连胜中断即归零，进度随云存档同步。' },
-    { icon: '🎯', title: '今日挑战', desc: '每天一个固定随机种子，所有玩家同一命运开局：同样的天赋候选、同样的单位、同样的事件序列——比的是经营水平。结算自动上报公开榜单。' },
+    { icon: '🔁', title: '挑战长廊', desc: '九项跨周目执行性目标（清廉系/基层系结局累计、中央殿堂、硬核上岸、清官连胜等），每局结算自动推进；连胜中断即归零，进度保存在当前设备。' },
+    { icon: '🎯', title: '今日挑战', desc: '每天一个固定随机种子，在同一设备上也能反复挑战同一份命运：相同的天赋候选、单位和事件序列，比的是经营水平。' },
     { icon: '🏆', title: '排行榜', desc: '本机历史局按总分排行（前三有奖牌标识）；每日种子挑战另有公开榜单，在"今日挑战"页查看。' },
     { icon: '📖', title: '图鉴与概率', desc: '图鉴记录见过的全部事件/flag/结局，完成度换天赋点与属性点奖励（多周目继承）；"结局概率"展示本机真实结局分布。' },
     { icon: '📜', title: '人生经历与状态总览', desc: '"人生经历"把全部留痕按仕途/处分/家庭/财务/人脉/项目/健康/考试分类归档，可筛选回看；右侧总览以绿/金/红三色标注声誉、口碑、现金、能力、廉洁、热度、压力、风险八项核心指标，悬停可见含义，超限项一目了然。' },
@@ -177,6 +168,9 @@ Object.assign(App, {
     const overlay = document.createElement('div');
     overlay.className = 'menu-overlay';
     const eventCount = (typeof GameData !== 'undefined' && GameData.events && GameData.events.length) || 0;
+    const topics = this.isStaticBuild && this.isStaticBuild()
+      ? this.HELP_TOPICS.filter(topic => topic.title !== '排行榜')
+      : this.HELP_TOPICS;
     // v2.1.79 帮助中心折叠：16 个主题改手风琴，默认首条展开；顶部提供"全部展开/收起"
     overlay.innerHTML = __h(`
       <div class="menu-modal" role="dialog" aria-modal="true" aria-labelledby="help-title" style="max-width:460px;padding:22px">
@@ -191,12 +185,12 @@ Object.assign(App, {
           <button type="button" class="btn btn-secondary" style="flex:1;padding:6px 8px;font-size:11px" onclick="App.toggleAllHelpTopics(false)">⊟ 全部收起</button>
         </div>
         <div style="margin:0 0 10px;max-height:56vh;overflow-y:auto" data-help-accordion>
-          ${this.HELP_TOPICS.map((s, i) => `
+          ${topics.map((s, i) => `
             <details class="help-topic"${i === 0 ? ' open' : ''}>
               <summary>${s.icon} ${s.title}</summary>
               <p>${s.desc}</p>
             </details>`).join('')}
-          <p style="font-size:11px;color:var(--ink-lighter);margin-top:10px">数据规模：${eventCount} 个事件 · ${(this.ALL_ENDINGS || []).length} 种结局，持续扩充中。</p>
+          <p style="font-size:11px;color:var(--ink-lighter);margin-top:10px">内容规模：${eventCount} 个事件 · ${(this.ALL_ENDINGS || []).length} 种结局。进度只保存在当前设备。</p>
         </div>
         <button class="btn btn-primary" style="width:100%" onclick="App.closeMenu()">我知道了</button>
       </div>
@@ -305,8 +299,7 @@ Object.assign(App, {
       codex: '事件图鉴',
       experience: '人生经历',
       history: '人生记录',
-      support: '支持与反馈',
-      account: '账号与存档',
+      support: '支持作者',
       network: '人脉网络',
       menu: '菜单',
     };
@@ -353,7 +346,7 @@ Object.assign(App, {
     const h = engine.getHidden();
     const p = engine.getPlayer();
     const lyH = p.lastYearHidden || {};
-    const isActive = engine.getPhase() === 'career' || engine.getPhase() === 'event';
+    const isActive = ['career', 'event', 'ending'].includes(engine.getPhase()) || !!p.ending;
     const validTabs = ['overview', 'attrs', 'hidden', 'career', 'contact'];
     const activeTab = validTabs.includes(this._mobileActiveTab) ? this._mobileActiveTab : 'overview';
 
@@ -420,7 +413,7 @@ Object.assign(App, {
       </div>`;
 
     return `
-      <div class="m-drawer" id="mobile-drawer">
+      <div class="m-drawer${isActive ? '' : ' m-drawer-setup'}" id="mobile-drawer">
         <div class="m-drawer-tabs" role="tablist" aria-label="移动数据面板">
           <button type="button" role="tab" id="mobile-tab-overview" class="m-tab${activeTab === 'overview' ? ' active' : ''}" data-tab="overview" aria-controls="mobile-panel-overview" aria-selected="${activeTab === 'overview'}" tabindex="${activeTab === 'overview' ? '0' : '-1'}" onclick="App.switchMobileTab('overview')" onkeydown="App.handleMobileTabKeydown(event)">📊 总览</button>
           <button type="button" role="tab" id="mobile-tab-attrs" class="m-tab${activeTab === 'attrs' ? ' active' : ''}" data-tab="attrs" aria-controls="mobile-panel-attrs" aria-selected="${activeTab === 'attrs'}" tabindex="${activeTab === 'attrs' ? '0' : '-1'}" onclick="App.switchMobileTab('attrs')" onkeydown="App.handleMobileTabKeydown(event)">📊 属性</button>
@@ -919,7 +912,7 @@ Object.assign(App, {
     const overlay = document.createElement('div');
     overlay.className = 'menu-overlay';
     const isPlaying = engine.getPhase() !== 'intro' && engine.getPhase() !== 'menu';
-    // v2.1.79 菜单分组：把 18 项按钮按"身份/进度/内容/设置"归档，组标题+留白降噪，命令台不滚动堆叠
+    // 静态版菜单只保留本地可用入口：当前进度、回顾收集、分享支持和外观设置。
     const groupTitle = t => `<p class="menu-command-group-title" aria-hidden="true">${t}</p>`;
     overlay.innerHTML = __h(`
       <div class="menu-modal menu-command-panel" role="dialog" aria-modal="true" aria-labelledby="menu-title" tabindex="-1" style="max-height:min(86vh,760px);display:flex;flex-direction:column">
@@ -930,31 +923,24 @@ Object.assign(App, {
           </button>
         </div>
         <div class="menu-command-scroll" style="overflow-y:auto;flex:1;min-height:0;padding:2px 4px">
-          ${isPlaying ? groupTitle('进度 — 先存档再说') + '<button class="btn btn-primary" onclick="App.closeMenu(); App.saveAndContinue()">💾 保存游戏</button>' : ''}
-          ${groupTitle('身份 — 存档安全')}
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showAccountPanel()">☁️ ${this.getAccountLabel ? this.getAccountLabel() : '账号与云存档'}${this.hasAccount ? (this.hasAccount() ? '' : ' <span class="acc-badge">建议注册</span>') : ''}</button>
-          ${groupTitle('进度 — 回看一局')}
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showHistory()">📊 历史记录</button>
-          ${isPlaying ? '<button class="btn btn-primary" onclick="App.closeMenu(); App.showYearbook()">📖 人生年鉴</button>' : ''}
-          ${isPlaying ? '<button class="btn btn-primary" onclick="App.closeMenu(); App.showLifeReview()">🧭 人生回顾</button>' : ''}
-          ${isPlaying ? '<button class="btn btn-primary" onclick="App.closeMenu(); App.showExperience()">📜 人生经历</button>' : ''}
-          ${groupTitle('内容 — 收集与榜单')}
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showAchievements()">🏆 成就</button>
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showLeaderboard()">🥇 排行榜</button>
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showDailyChallenge()">🎯 今日挑战</button>
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showStats()">📈 统计</button>
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showCodex()">📖 图鉴</button>
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showChallenges()">🎯 挑战长廊</button>
-          ${groupTitle('学习与支持')}
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showHelp()">📖 玩法说明</button>
-          <button class="btn btn-primary" onclick="App.closeMenu(); App.showSupport()">💖 支持与反馈</button>
-          ${groupTitle('设置 — 数据与外观')}
-          <button class="btn btn-secondary" onclick="App.closeMenu(); App.exportAll()">📦 备份数据（下载文件）</button>
-          <button class="btn btn-secondary" onclick="App.closeMenu(); App.importAll()">🔄 恢复数据（选择备份文件）</button>
-          <button class="btn btn-secondary" onclick="App.closeMenu(); App.showChangelog()">📦 版本更新日志</button>
-          <button class="btn btn-secondary" onclick="App.closeMenu(); App.toggleSound()">${App.soundOn() ? '🔊 音效：开' : '🔇 音效：关'}</button>
-          <button class="btn btn-secondary" onclick="App.closeMenu(); App.toggleFontLarge()">${App.fontLargeOn() ? '🔍 大字号：开' : '🔍 大字号：关'}</button>
-          <button class="btn btn-secondary" onclick="App.closeMenu(); App.cycleTheme()">🎨 主题：${App.THEME_LABELS[App.themePref()] || App.THEME_LABELS.system}</button>
+          ${isPlaying ? groupTitle('当前进度') + '<button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.saveAndContinue()">💾 保存本局</button>' : ''}
+          ${groupTitle('回顾与收集')}
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showHistory()">📊 人生记录</button>
+          ${isPlaying ? '<button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showLifeReview()">🧭 人生回顾</button>' : ''}
+          ${isPlaying ? '<button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showExperience()">📜 人生经历</button>' : ''}
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showAchievements()">🏆 成就墙</button>
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showCodex()">📖 事件图鉴</button>
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showChallenges()">🎯 挑战长廊</button>
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showDailyChallenge()">✨ 每日挑战</button>
+          ${groupTitle('分享与支持')}
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showHelp()">📖 快速玩法</button>
+          <button type="button" class="btn btn-primary" onclick="App.closeMenu(); App.showSupport()">💖 赞赏支持</button>
+          ${groupTitle('数据与外观')}
+          <button type="button" class="btn btn-secondary" onclick="App.closeMenu(); App.exportAll()">📦 备份数据（下载文件）</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeMenu(); App.importAll()">🔄 恢复数据（选择备份文件）</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeMenu(); App.toggleSound()">${App.soundOn() ? '🔊 音效：开' : '🔇 音效：关'}</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeMenu(); App.toggleFontLarge()">${App.fontLargeOn() ? '🔍 大字号：开' : '🔍 大字号：关'}</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeMenu(); App.cycleTheme()">🎨 主题：${App.THEME_LABELS[App.themePref()] || App.THEME_LABELS.system}</button>
         </div>
         <div class="menu-command-foot" style="border-top:1px solid var(--ui-line);padding-top:10px;margin-top:8px">
           <button class="btn btn-primary" onclick="App.closeMenu()">继续游戏</button>
@@ -977,7 +963,7 @@ Object.assign(App, {
     const overlayReturnFocus = overlay && overlay.__returnFocus;
     if (overlay) overlay.remove();
     if (!document.querySelector('.menu-overlay') && document.body && document.body.classList) document.body.classList.remove('modal-open');
-    if ((this._desktopActiveRoute === 'menu' || this._desktopActiveRoute === 'account') && typeof this.setDesktopRoute === 'function') {
+    if (this._desktopActiveRoute === 'menu' && typeof this.setDesktopRoute === 'function') {
       const returnRoute = this._desktopOverlayReturnRoute || 'current';
       this._desktopOverlayReturnRoute = null;
       this.setDesktopRoute(returnRoute, { sync: false });
@@ -989,49 +975,34 @@ Object.assign(App, {
     if (returnFocus && typeof returnFocus.focus === 'function' && returnFocus.isConnected !== false) returnFocus.focus();
     else if (toggle && typeof toggle.focus === 'function') toggle.focus();
   },
-  // 💖 支持与反馈：赞赏码 + 意见反馈（可与制作组来回留言）
+  // 💖 支持作者：静态版只保留赞赏码和分享说明，不显示无效的在线反馈表单。
   showSupport() {
     if (typeof this.setDesktopRoute === 'function') this.setDesktopRoute('support', { sync: false });
     this.renderContent(`
       <div class="stage fade-in">
-        <div class="lead"><span>💖</span><p>支持与反馈</p></div>
+        <div class="lead"><span>💖</span><p>支持作者</p></div>
 
-        <div class="event-card" style="margin-bottom:14px">
-          <p class="event-text">觉得游戏好玩？欢迎打赏支持开发！你的每一份心意都是我们继续打磨的动力。</p>
-          <div style="text-align:center;margin:14px 0 6px">
-            <img src="reward-qrcode.png" alt="赞赏码" style="width:170px;height:170px;border-radius:12px;border:2px solid var(--gold);box-shadow:0 4px 20px var(--shadow-gold)" onerror="this.style.display='none'">
-            <p style="font-size:10px;color:var(--ink-lighter);margin-top:6px">长按识别二维码 · 随心赞赏</p>
-            <button type="button" class="btn btn-secondary" onclick="App.saveRewardQr()" style="margin-top:8px">保存赞赏码</button>
+        <div class="event-card support-card">
+          <p class="support-kicker">如果这段人生模拟让你会心一笑</p>
+          <p class="event-text">欢迎用一份随心的赞赏支持继续打磨。赞赏码只用于展示和扫码，不会读取或保存支付信息。</p>
+          <div class="support-qr-wrap">
+            <img class="support-qr" src="reward-qrcode.png" alt="赞赏码" width="190" height="190" onerror="this.style.display='none'">
+            <p class="support-qr-hint">长按识别二维码 · 随心赞赏</p>
+            <button type="button" class="btn btn-secondary" onclick="App.saveRewardQr()">保存赞赏码</button>
           </div>
         </div>
 
-        <div class="event-card" style="margin-bottom:14px">
-          <p class="event-text">有意见或建议？遇到问题想反馈？留言告诉我们，制作组会在后台查看并回复你，也可以继续追问交流。</p>
-          <div class="field" style="margin-top:10px">
-            <select id="fb-type" class="fb-input" aria-label="反馈类型" style="width:100%;padding:10px;border:1px solid var(--parchment-dark);border-radius:8px;font-size:13px;margin-bottom:8px;background:var(--parchment-light)">
-              <option value="suggestion">💡 玩法建议</option>
-              <option value="bug">🐛 问题反馈</option>
-              <option value="praise">👍 赞美鼓励</option>
-              <option value="other">📝 其他</option>
-            </select>
-            <textarea id="fb-content" aria-label="留言内容" maxlength="2000" placeholder="写下你的想法…（支持多次留言，制作组会逐一回复）" style="width:100%;min-height:90px;padding:10px;border:1px solid var(--parchment-dark);border-radius:8px;font-size:13px;resize:vertical;background:var(--parchment-light);font-family:var(--font-body)"></textarea>
-          </div>
-          <div class="sticky-action" style="position:static;padding:10px 0 0">
-            <button type="button" class="btn btn-primary feedback-submit" data-feedback-submit="1" onclick="App.submitFeedback()">📨 提交留言</button>
-          </div>
-        </div>
-
-        <div class="event-card">
-          <p class="event-text" style="font-weight:600">💬 我的留言记录</p>
-          <div id="fb-history" style="margin-top:8px"><p style="text-align:center;color:var(--ink-lighter);padding:16px;font-size:12px">加载中…</p></div>
+        <div class="event-card support-note">
+          <p class="support-kicker">分享你的这一局</p>
+          <p class="event-text">完成结算后，使用“下载长海报”或“下载精简卡片”。图片会把结局、成就、人生经历、游戏二维码和赞赏码合成在一起。</p>
+          <p class="support-local-note">静态版无需注册 · 进度只保存在当前设备 · 断网也能继续游玩</p>
         </div>
 
         <div class="sticky-action">
-          <button class="btn btn-primary" onclick="App.returnToCurrentFlow()">返回当前流程</button>
+          <button type="button" class="btn btn-primary" onclick="App.returnToCurrentFlow()">返回当前流程</button>
         </div>
       </div>
     `);
-    this.loadMyFeedback();
   },
   escapeHtml(str) {
     return String(str == null ? '' : str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');

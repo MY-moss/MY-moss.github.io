@@ -34,10 +34,9 @@
       { id: 'experience', label: '人生经历', description: '按类别回看全部留痕', icon: 'scroll-text' },
       { id: 'history', label: '人生记录', description: '查看历局与年度轨迹', icon: 'history' }
     ] },
-    { title: '存档与帮助', items: [
-      { id: 'account', label: '账号与存档', description: '管理本地、云端与备份', icon: 'cloud' },
-      { id: 'support', label: '支持与反馈', description: '留言、建议与版本信息', icon: 'message-circle' },
-      { id: 'menu', label: '更多设置', description: '音效、导入导出和重开', icon: 'sliders-horizontal' }
+    { title: '帮助与设置', items: [
+      { id: 'support', label: '赞赏支持', description: '赞赏码与分享说明', icon: 'heart' },
+      { id: 'menu', label: '更多设置', description: '玩法、备份、外观和重开', icon: 'sliders-horizontal' }
     ] }
   ];
   const NAV_ACTIONS = NAV_GROUPS.reduce((all, group) => all.concat(group.items), []);
@@ -350,13 +349,12 @@
         codex: () => this.showCodex && this.showCodex(),
         experience: () => this.showExperience && this.showExperience(),
         history: () => this.showHistory && this.showHistory(),
-        account: () => this.showAccountPanel && this.showAccountPanel(),
         support: () => this.showSupport && this.showSupport(),
         menu: () => this.showMenu && this.showMenu()
       };
       if (!handlers[action]) return;
       if (action !== 'current' && typeof this.captureViewContext === 'function') this.captureViewContext('desktop-nav');
-      if (action === 'account' || action === 'menu') this._desktopOverlayReturnRoute = this._desktopActiveRoute || 'current';
+      if (action === 'menu') this._desktopOverlayReturnRoute = this._desktopActiveRoute || 'current';
       this.setDesktopRoute(action, { sync: false });
       handlers[action]();
       this.syncDesktopWorkspace({ navOnly: true });
