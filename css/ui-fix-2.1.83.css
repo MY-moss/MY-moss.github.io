@@ -1,0 +1,47 @@
+/* v2.1.83 字体与基线修复：独立静态版专用。 */
+html {
+  font-family: var(--font-body);
+}
+
+.lead > span {
+  display: flex;
+  align-items: center;
+  line-height: 1.25;
+}
+
+.lead > p {
+  min-width: 0;
+  margin: 0;
+}
+
+@media (min-width: 801px) {
+  .desktop-current-card {
+    grid-template-columns: 30px minmax(0, 1fr) 18px;
+  }
+
+  .desktop-current-card-copy span {
+    display: -webkit-box;
+    overflow: hidden;
+    line-height: 1.45;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .desktop-current-card-arrow,
+  .desktop-nav-item-arrow,
+  .desktop-journey-toggle > span {
+    display: grid;
+    width: 18px;
+    min-width: 18px;
+    place-items: center;
+    line-height: 1;
+    overflow: visible;
+  }
+
+  .desktop-inspector-age strong {
+    display: block;
+    line-height: 1;
+  }
+}
+
