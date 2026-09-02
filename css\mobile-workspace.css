@@ -1,0 +1,427 @@
+/*
+ * 玩家端移动工作区
+ *
+ * 手机端不再把桌面三栏简单压缩，而是恢复单列阅读流：
+ * - 顶部阶段栏保持可见
+ * - 状态信息压缩为两行三列
+ * - 数据卷宗保留四个可触摸标签
+ * - 长列表交给页面滚动，避免嵌套滚动陷阱
+ * - 弹层锁住背景滚动并适配刘海/底部手势区
+ */
+
+body.modal-open { overflow: hidden; }
+
+@media (max-width: 800px) {
+  html,
+  body {
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .game-container.desktop-workspace {
+    width: 100%;
+    min-height: 100svh;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  .phone-shell.desktop-main-panel {
+    width: 100%;
+    max-width: none;
+    min-height: 100svh;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .phone-shell.desktop-main-panel::before,
+  .phone-shell.desktop-main-panel::after {
+    display: none;
+  }
+
+  .desktop-main-panel .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    min-height: 64px;
+    padding: 10px 14px 9px;
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+
+  .desktop-main-panel .topbar .brand {
+    overflow: hidden;
+    max-width: calc(100vw - 80px);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .desktop-main-panel .topbar h1 {
+    max-width: calc(100vw - 80px);
+    overflow: hidden;
+    font-size: 17px;
+    letter-spacing: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .desktop-main-panel .topbar .icon-btn,
+  .desktop-main-panel .topbar #desktop-nav-toggle {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .desktop-main-panel .status {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    padding: 4px 8px;
+  }
+
+  .desktop-main-panel .status > div {
+    min-width: 0;
+    padding: 6px 4px;
+    overflow: hidden;
+  }
+
+  .desktop-main-panel .status > div strong,
+  .desktop-main-panel .status > div span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .desktop-main-panel .status > div strong {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .desktop-main-panel .status > div span {
+    font-size: 9px;
+    line-height: 1.35;
+  }
+
+  .m-drawer {
+    z-index: 4;
+    min-width: 0;
+  }
+
+  .m-drawer-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    padding: 4px 8px 0;
+  }
+
+  .m-tab {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 5px;
+    overflow: hidden;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .m-tab.active::after {
+    left: 8px;
+    right: 8px;
+  }
+
+  .m-drawer-body {
+    min-width: 0;
+    padding: 8px 12px 10px;
+  }
+
+  .m-drawer .attr-grid,
+  .m-drawer .hidden-grid {
+    gap: 5px 10px;
+  }
+
+  .m-drawer .attr-item {
+    grid-template-columns: 42px minmax(0, 1fr) 28px;
+    min-width: 0;
+    gap: 5px;
+  }
+
+  .m-drawer .attr-label,
+  .m-drawer .attr-value {
+    width: auto;
+    min-width: 0;
+  }
+
+  .m-drawer .bar-track {
+    min-width: 0;
+  }
+
+  .m-drawer .attr-label,
+  .m-drawer .attr-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .content {
+    min-width: 0;
+    padding: 18px 16px calc(68px + env(safe-area-inset-bottom));
+    overflow: visible;
+    overscroll-behavior: auto;
+    scrollbar-gutter: auto;
+  }
+
+  #game-content,
+  #game-content > .stage,
+  #game-content > .codex-stage {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .stage,
+  .stage > *,
+  .event-card,
+  .question-card,
+  .result-details,
+  .ending-summary,
+  .stats-card,
+  .network-stage,
+  .account-workbench {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .stage,
+  .event-text,
+  .q-text,
+  .option-text,
+  .career-event,
+  .history-details,
+  .account-helper,
+  .account-local-note {
+    overflow-wrap: anywhere;
+  }
+
+  .field,
+  .input-row,
+  .input-row input,
+  .input-row button,
+  .segmented,
+  .difficulty-selector,
+  .card-grid,
+  .talent-grid,
+  .unit-list,
+  .career-timeline {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .input-row input,
+  .input-row button,
+  .account-field input,
+  .account-password-toggle,
+  .btn,
+  .option,
+    .diff-option,
+    .unit-card,
+    .talent-card,
+    .history-card,
+    .save-load {
+    min-height: 44px;
+  }
+
+  .save-slot .save-delete {
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .sticky-action {
+    z-index: 5;
+    padding: 14px 0 calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .sticky-action .btn + .btn {
+    margin-top: 8px;
+  }
+
+  .menu-overlay {
+    align-items: flex-start;
+    justify-content: center;
+    padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .menu-modal {
+    width: 100%;
+    max-width: 520px;
+    max-height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    margin: auto 0;
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .menu-modal .btn {
+    min-height: 46px;
+  }
+
+  .menu-header {
+    position: sticky;
+    top: -16px;
+    z-index: 2;
+    padding: 0 0 8px;
+    background: linear-gradient(160deg, var(--ui-paper-0), var(--ui-paper-1));
+  }
+
+  .account-workbench,
+  .account-recovery-card {
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 16px;
+  }
+
+  .account-mode-tabs button,
+  .account-password-toggle,
+  .account-workbench .icon-btn {
+    min-height: 44px;
+  }
+
+  .account-action-row,
+  .account-conflict-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-sync-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .card-grid,
+  .talent-grid,
+  .unit-list,
+  .career-timeline {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  /* 图鉴长列表回归页面滚动，避免在手机上出现“滚动里面还有滚动”的陷阱。 */
+  .codex-explorer-results,
+  .codex-flag-list,
+  #ency-body {
+    max-height: none !important;
+    overflow: visible !important;
+    overscroll-behavior: auto;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .desktop-main-panel .topbar {
+    min-height: 60px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .desktop-main-panel .topbar h1 {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .desktop-main-panel .status {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .desktop-main-panel .status > div {
+    padding: 5px 3px;
+  }
+
+  .desktop-main-panel .status > div strong {
+    font-size: 12px;
+  }
+
+  .desktop-main-panel .status > div span {
+    font-size: 9px;
+  }
+
+  .content {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .m-drawer-body {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .m-drawer .attr-item {
+    grid-template-columns: 38px minmax(0, 1fr) 26px;
+    gap: 4px;
+  }
+
+  .m-tab {
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 10px;
+  }
+
+  .option {
+    gap: 9px;
+    padding: 11px 12px;
+  }
+
+  .option-text {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .q-text,
+  .event-text {
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  .menu-modal,
+  .account-workbench,
+  .account-recovery-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .account-mode-tabs {
+    margin-top: 14px;
+  }
+
+  .account-mode-tabs button {
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-main-panel .topbar,
+  .m-drawer-panel,
+  .menu-overlay,
+  .menu-modal,
+  .stage.fade-in {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,4 @@
+.qrcode-pack/
+.qa-run/
+*.log
+monitor_data/
