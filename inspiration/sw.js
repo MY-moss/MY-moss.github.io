@@ -20,5 +20,5 @@ self.addEventListener("fetch",event=>{
  event.respondWith(caches.match(req).then(hit=>hit||fetch(req).then(res=>{
   if(res.ok){const copy=res.clone();caches.open(CACHE).then(c=>c.put(req,copy));}
   return res;
- }).catch(()=>req.mode==="navigate"?caches.match("./index.html"):new Response("",{status:503})));
+ }).catch(()=>req.mode==="navigate"?caches.match("./index.html"):new Response("",{status:503}))));
 });
