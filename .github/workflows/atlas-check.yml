@@ -1,0 +1,35 @@
+name: ATLAS quality gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "atlas/**"
+      - ".github/workflows/atlas-check.yml"
+  pull_request:
+    paths:
+      - "atlas/**"
+      - ".github/workflows/atlas-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate ATLAS frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check atlas/config.js
+          node --check atlas/app.js
+          node --check atlas/scripts/validate.mjs
+      - name: Validate private-data boundary and feed contract
+        run: node atlas/scripts/validate.mjs
