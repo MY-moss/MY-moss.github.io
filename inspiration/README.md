@@ -18,9 +18,9 @@
 - 每期包含 `date`、`title`、`summary`、`theme`、`items[]`。
 - 每个条目包含 `id`、`title`、`creator`、`category`、`url`、`source`、`why`、`method`、`uses`、`tags`、`age`。
 
-## 每日自动发布
+## 内容频道\n- `inspiration`：每日灵感采集。\n- `opensource`：每周开源项目雷达。\n- `knowledge`：每周知识回顾。\n- 同一天可以存在多个频道报告，唯一键为 `channel + date`。\n\n## 每日自动发布
 1. 先生成并核验当天 3–5 个精选条目。
-2. 读取当前 `data/index.json`，按日期 upsert，禁止重复日期。
+2. 读取当前 `data/index.json`，按 `channel + date` upsert，禁止同一频道同一天重复；不同频道允许同日发布。
 3. 写入完整的结构化内容，并更新 `updatedAt`。
 4. 通过 GitHub Contents API 更新文件，提交到 `main`。
 5. 父仓库 Pages workflow 自动部署。必须以提交成功为发布依据；不能仅凭创建文件就声称网站已更新。

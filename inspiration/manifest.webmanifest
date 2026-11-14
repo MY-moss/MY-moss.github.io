@@ -1,7 +1,7 @@
 {
-  "name": "灵感研究所 · Inspiration Hub",
+  "name": "灵感研究所 · Creative Intelligence Hub",
   "short_name": "灵感研究所",
-  "description": "个人设计灵感与创作研究档案",
+  "description": "个人灵感、开源项目与知识回顾中心",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

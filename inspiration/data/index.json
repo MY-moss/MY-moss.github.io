@@ -80,7 +80,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-13",
@@ -173,7 +174,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-12",
@@ -266,7 +268,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-11",
@@ -359,7 +362,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-10",
@@ -435,7 +439,8 @@
           ],
           "age": "经典参考"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-09",
@@ -509,7 +514,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-08",
@@ -582,7 +588,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-07",
@@ -656,7 +663,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-06",
@@ -730,7 +738,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-05",
@@ -804,7 +813,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-04",
@@ -893,7 +903,8 @@
           ],
           "age": "近期报道"
         }
-      ]
+      ],
+      "channel": "inspiration"
     },
     {
       "date": "2026-11-03",
@@ -950,7 +961,28 @@
           ],
           "age": "近期收录"
         }
-      ]
+      ],
+      "channel": "inspiration"
+    }
+  ],
+  "channels": [
+    {
+      "id": "inspiration",
+      "label": "灵感采集",
+      "kicker": "DAILY INSPIRATION",
+      "description": "设计、网站、交互、品牌视觉、字体、游戏 UI、数字艺术与可迁移的创作方法。"
+    },
+    {
+      "id": "opensource",
+      "label": "开源项目雷达",
+      "kicker": "OPEN SOURCE RADAR",
+      "description": "筛选真正值得尝试的开源项目，关注技术栈、成熟度、许可证、风险与项目复用价值。"
+    },
+    {
+      "id": "knowledge",
+      "label": "每周知识回顾",
+      "kicker": "WEEKLY KNOWLEDGE",
+      "description": "把一周的信息沉淀为重要事实、趋势判断、长期观点、待观察问题和下一步行动。"
     }
   ]
 }

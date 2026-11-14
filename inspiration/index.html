@@ -9,20 +9,22 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css?v=1">
-  <title>灵感研究所 · Inspiration Hub</title>
+  <title>灵感研究所 · Creative Intelligence Hub</title>
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="./" aria-label="灵感研究所首页">
       <span class="brand-mark">✳</span>
-      <span class="brand-name">灵感研究所<small>INSPIRATION HUB</small></span>
+      <span class="brand-name">灵感研究所<small>CREATIVE INTELLIGENCE HUB</small></span>
     </a>
-    <nav class="main-nav" aria-label="主导航">
-      <a href="./" data-view="home">今日</a>
-      <a href="?view=archive" data-view="archive">日报档案</a>
-      <a href="?view=topics" data-view="topics">主题索引</a>
-      <a href="?view=saved" data-view="saved">我的收藏 <span id="savedCount">0</span></a>
+    <nav class="main-nav" aria-label="内容频道">
+      <a href="?channel=inspiration" data-channel="inspiration">灵感采集</a>
+      <a href="?channel=opensource&view=archive" data-channel="opensource">开源雷达</a>
+      <a href="?channel=knowledge&view=archive" data-channel="knowledge">知识回顾</a>
+      <a href="?channel=all&view=archive" data-view="archive">全部档案</a>
+      <a href="?channel=inspiration&view=topics" data-view="topics">主题索引</a>
+      <a href="?view=saved" data-view="saved">收藏 <span id="savedCount">0</span></a>
     </nav>
     <div class="top-actions">
       <label class="searchbox" aria-label="搜索灵感">
