@@ -1,0 +1,13 @@
+window.ATLAS_CONFIG = Object.freeze({
+  owner: "MY-moss",
+  dataRepo: "atlas-data",
+  branch: "main",
+  apiBase: "https://api.github.com",
+  streams: [
+    { id: "world", title: "每日世界新闻", en: "WORLD BRIEF", cadence: "每日 · 09:00", description: "全球重要事件、多源核验与影响判断", icon: "◉" },
+    { id: "reading", title: "每日精选阅读", en: "CURATED READING", cadence: "每日 · 19:00", description: "跨领域高质量文章、随笔与深度报道", icon: "▤" },
+    { id: "opensource", title: "每周开源项目雷达", en: "OPEN SOURCE RADAR", cadence: "每周六 · 14:00", description: "值得尝试、复用或持续观察的开源项目", icon: "⌘" },
+    { id: "inspiration", title: "每日灵感采集", en: "INSPIRATION FIELDNOTES", cadence: "每日 · 12:30", description: "设计、交互、视觉实验与创意作品", icon: "✳" },
+    { id: "knowledge", title: "每周知识回顾", en: "WEEKLY KNOWLEDGE REVIEW", cadence: "每周日 · 19:00", description: "沉淀本周事实、观点、趋势与长期记忆", icon: "⌁" }
+  ]
+});
