@@ -121,6 +121,8 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const requestUrl = new URL(e.request.url);
+  // 子站有各自的缓存策略；不要让上岸模拟器的全站 cache-first 逻辑缓存 ATLAS 的动态索引。
+  if (requestUrl.pathname.startsWith("/atlas/") || requestUrl.pathname.startsWith("/inspiration/")) return;
   // 仅缓存同源 GET；API 请求和跨源资源直连
   if (e.request.method !== 'GET' || requestUrl.origin !== self.location.origin || requestUrl.pathname.startsWith('/api/')) return;
   e.respondWith(
