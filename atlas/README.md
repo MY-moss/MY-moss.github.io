@@ -70,12 +70,7 @@ Stream-specific item fields are allowed. For example, world news may add `confid
 
 1. Create a new GitHub repository named `atlas-data` under `MY-moss`.
 2. Set repository visibility to **Private**. Do not add collaborators.
-3. Add these paths with a `.gitkeep` file in each folder:
-   - `data/feeds/world/.gitkeep`
-   - `data/feeds/reading/.gitkeep`
-   - `data/feeds/opensource/.gitkeep`
-   - `data/feeds/inspiration/.gitkeep`
-   - `data/feeds/knowledge/.gitkeep`
+3. Empty folders do not need to be seeded manually. The first successful report commit will create its channel folder automatically. Optional `.gitkeep` files may be added if you want empty channels to exist before their first report.
 4. Create a fine-grained personal access token restricted to only `MY-moss/atlas-data`, with **Contents: Read-only** and Metadata read access. Do not grant write access to the browser token.
 5. Paste the token into the ATLAS login screen. The token is held in sessionStorage for the current tab only.
 6. The ChatGPT GitHub connection will be used by the scheduled feed tasks to write JSON files to the private repository. The site reads the private repository dynamically when the user opens or refreshes ATLAS, so feed updates do not require rebuilding the public frontend. Those tasks still need their prompts updated and the repository to exist before they can publish.
@@ -86,6 +81,9 @@ The existing `.github/workflows/pages.yml` workflow uploads the repository root 
 
 ## Current implementation boundary
 
-- Implemented: responsive dashboard shell, five stream sections, archive, search, local bookmarks/read markers, theme toggle, private-repository token gate, private GitHub Contents API reader.
-- Pending: create the private `atlas-data` repository; seed its five feed folders; update the five existing ChatGPT automations to publish JSON files; re-enable the two paused tasks; run end-to-end tests against real private feed data.
-- Not implemented: native GitHub Pages HTTP-level private publishing. This cannot be enabled on the current personal-account repository under standard GitHub Pages.
+- Implemented: responsive dashboard shell, five stream sections, archive, search, local bookmarks/read markers, theme toggle, private-repository token gate, GitHub account identity check, private GitHub Contents API reader, five-minute in-page refresh, knowledge-review multi-section parsing, malformed-report warnings.
+- Implemented: report JSON Schema at `report.schema.json`, publishing contract at `automation-spec.md`, and a GitHub Actions quality gate at `.github/workflows/atlas-check.yml`.
+- Implemented: all five ChatGPT automations now carry the ATLAS publishing instructions; the two previously paused tasks (world news and curated reading) have been re-enabled. Their existing schedules were preserved.
+- Pending user setup: create the private `MY-moss/atlas-data` repository and grant the connected GitHub integration access to it if it is not already available. Then create the read-only fine-grained browser token described above.
+- Pending verification: first successful report write to the private repository and end-to-end login/read test using real feed files.
+- Not implemented: native GitHub Pages HTTP-level private publishing. This cannot be enabled on the current personal-account repository under standard GitHub Pages. The public shell contains no private report data; all five report streams remain in the separate private repository.
