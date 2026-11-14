@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   var CONFIG = window.ATLAS_CONFIG;
-  var state = { token: "", view: "overview", query: "", docs: {}, entries: [], bookmarks: loadStore("atlas_bookmarks", []), read: loadStore("atlas_read", []), lastSync: null, loading: false };
+  var state = { token: "", view: "overview", query: "", docs: {}, entries: [], errors: [], refreshTimer: null, bookmarks: loadStore("atlas_bookmarks", []), read: loadStore("atlas_read", []), lastSync: null, loading: false };
   var labels = { overview: "总览", world: "世界新闻", reading: "精选阅读", opensource: "开源雷达", inspiration: "灵感采集", knowledge: "知识回顾", archive: "历史档案", bookmarks: "我的书架", settings: "设置与连接" };
   function $(id) { return document.getElementById(id); }
   function loadStore(key, fallback) { try { var v = JSON.parse(localStorage.getItem(key)); return Array.isArray(v) ? v : fallback; } catch (_) { return fallback; } }
@@ -43,11 +43,27 @@
       stream === "inspiration" ? ["items","works","projects","entries"] :
       ["items","highlights","trends","people_projects","saved_sources","next_week","sections"];
     var list = [];
-    for (var i=0;i<arrays.length;i++) if (Array.isArray(doc[arrays[i]])) { list = doc[arrays[i]]; break; }
+    if (stream === "knowledge") {
+      arrays.forEach(function(key) {
+        if (!Array.isArray(doc[key])) return;
+        doc[key].forEach(function(item) {
+          var normalized = typeof item === "string" ? { title: item } : Object.assign({}, item || {});
+          normalized._atlas_category = key;
+          list.push(normalized);
+        });
+      });
+    } else {
+      for (var i=0;i<arrays.length;i++) {
+        if (Array.isArray(doc[arrays[i]]) && doc[arrays[i]].length) { list = doc[arrays[i]]; break; }
+      }
+    }
     if (!list.length && (doc.title || doc.name)) list = [doc];
     return list.map(function(item, index) {
-      var title = item.title || item.name || item.project || item.headline || item.topic || "未命名条目";
+      item = typeof item === "string" ? { title: item } : (item || {});
+      var title = item.title || item.name || item.project || item.headline || item.topic || item.heading || "未命名条目";
       var url = safeUrl(item.url || item.article_url || item.repo_url || item.website_url || item.link);
+      var tags = Array.isArray(item.tags) ? item.tags.slice() : (item.category ? [item.category] : []);
+      if (item._atlas_category && tags.indexOf(item._atlas_category) < 0) tags.push(item._atlas_category);
       return {
         id: stream + ":" + date + ":" + index + ":" + title,
         stream: stream,
@@ -56,11 +72,11 @@
         author: item.author || item.creator || item.team || item.maintainer || "",
         source: item.source || item.publisher || item.media || item.repository || "",
         date: item.published_at || item.publishedAt || item.date || date,
-        summary: item.summary || item.description || item.what_happened || item.what_it_is || item.one_line || "",
-        why: item.why_read || item.why_worth_reading || item.why_important || item.takeaway || item.why || "",
+        summary: item.summary || item.description || item.what_happened || item.what_it_is || item.one_line || item.body || item.analysis || "",
+        why: item.why_read || item.why_worth_reading || item.why_important || item.takeaway || item.why || item.implication || "",
         priority: item.priority || item.recommendation || "",
         minutes: item.reading_minutes || item.readingMinutes || item.minutes || null,
-        tags: Array.isArray(item.tags) ? item.tags : (item.category ? [item.category] : []),
+        tags: tags,
         confidence: item.confidence || item.certainty || "",
         language: item.language || "",
         maturity: item.maturity || "",
@@ -78,8 +94,13 @@
       try {
         var data = await api(dir + "/" + file.name);
         var parsed = JSON.parse(decodeContent(data.content));
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("报告根节点必须是 JSON 对象");
+        if (parsed.stream && parsed.stream !== stream.id) throw new Error("报告 stream 与目录不一致");
         return { stream: stream.id, file: file.name, date: parsed.date || parsed.week || file.name.replace(/\.json$/,""), title: parsed.title || stream.title, summary: parsed.summary || parsed.intro || "", items: flattenDoc(parsed, stream.id, file.name), raw: parsed };
-      } catch (e) { return null; }
+      } catch (e) {
+        state.errors.push(stream.id + "/" + file.name + "：" + e.message);
+        return null;
+      }
     }));
     return docs.filter(Boolean);
   }
@@ -87,15 +108,17 @@
     if (state.loading) return;
     state.loading = true; setStatus(true, "正在同步", "读取五条私人信息流");
     try {
+      state.errors = [];
       var results = await Promise.all(CONFIG.streams.map(loadStream));
       state.docs = {};
       state.entries = [];
       results.forEach(function(docs, i) { var id = CONFIG.streams[i].id; state.docs[id] = docs; docs.forEach(function(doc){ state.entries = state.entries.concat(doc.items); }); });
       state.entries.sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); });
       state.lastSync = new Date();
-      setStatus(true, "私人档案已连接", "同步于 " + state.lastSync.toLocaleTimeString("zh-CN", {hour:"2-digit",minute:"2-digit"}));
+      setStatus(true, state.errors.length ? "已同步（有文件异常）" : "私人档案已连接", "同步于 " + state.lastSync.toLocaleTimeString("zh-CN", {hour:"2-digit",minute:"2-digit"}) + (state.errors.length ? " · " + state.errors.length + " 份文件异常" : " · 五条信息流"));
       $("workspace").setAttribute("aria-hidden","false");
       render();
+      if (state.errors.length) toast(state.errors.length + " 份报告读取失败，请检查 JSON 格式。");
     } catch (e) {
       setStatus(false, "同步失败", e.message);
       toast(e.message);
@@ -178,9 +201,11 @@
       document.body.classList.remove("is-locked");
       $("workspace").setAttribute("aria-hidden","false");
       await loadAll();
+      if (!state.refreshTimer) state.refreshTimer = window.setInterval(function() { if (state.token && !state.loading) loadAll(); }, CONFIG.refreshIntervalMs || 300000);
       toast("私人档案已连接");
     } catch (e) {
       state.token = "";
+      try { sessionStorage.removeItem("atlas_token"); } catch (_) {}
       $("login-status").textContent = e.message;
       $("login-status").className = "form-status is-error";
       $("access-token").focus();
