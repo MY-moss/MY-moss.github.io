@@ -18,7 +18,12 @@
     return response.json();
   }
   async function validateToken(token) {
-    var response = await fetch(CONFIG.apiBase + "/repos/" + CONFIG.owner + "/" + CONFIG.dataRepo, { headers: { "Accept":"application/vnd.github+json", "Authorization":"Bearer " + token, "X-GitHub-Api-Version":"2022-11-28" }, cache:"no-store" });
+    var headers = { "Accept":"application/vnd.github+json", "Authorization":"Bearer " + token, "X-GitHub-Api-Version":"2022-11-28" };
+    var identityResponse = await fetch(CONFIG.apiBase + "/user", { headers: headers, cache:"no-store" });
+    if (!identityResponse.ok) throw new Error("无法确认 GitHub 登录身份。请检查令牌是否有效。");
+    var identity = await identityResponse.json();
+    if (!identity.login || identity.login.toLowerCase() !== CONFIG.owner.toLowerCase()) throw new Error("此私人站点只允许 GitHub 账号 " + CONFIG.owner + " 登录。");
+    var response = await fetch(CONFIG.apiBase + "/repos/" + CONFIG.owner + "/" + CONFIG.dataRepo, { headers: headers, cache:"no-store" });
     if (!response.ok) throw new Error(response.status === 404 ? "无法访问私人仓库。请确认仓库已创建为 Private，并且令牌拥有该仓库的读取权限。" : "GitHub 验证失败（" + response.status + "）。请检查令牌权限或有效期。");
     var repo = await response.json();
     if (repo.full_name.toLowerCase() !== (CONFIG.owner + "/" + CONFIG.dataRepo).toLowerCase() || repo.private !== true) throw new Error("安全检查未通过：数据仓库必须是指定的私人仓库。");
