@@ -1,0 +1,19 @@
+{
+  "name": "灵感研究所 · Inspiration Hub",
+  "short_name": "灵感研究所",
+  "description": "个人设计灵感与创作研究档案",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111310",
+  "theme_color": "#111310",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,956 @@
+{
+  "schemaVersion": 1,
+  "site": "Inspiration Hub",
+  "updatedAt": "2026-11-15",
+  "reports": [
+    {
+      "date": "2026-11-14",
+      "title": "让声音成为界面，让真实物体成为动画画布",
+      "summary": "声音驱动的网站、实体投影映射、流体交互菜单与国际海报设计。重点研究统一时间轴、真实数据驱动的视觉反馈，以及可迁移的交互规则。",
+      "theme": "声音与空间交互",
+      "items": [
+        {
+          "id": "they-are-coming",
+          "title": "They Are Coming",
+          "creator": "Patrick Heintzmann × 音乐人 573",
+          "category": "动态与影像",
+          "url": "https://tympanus.net/codrops/2026/11/13/they-are-coming/",
+          "source": "Codrops",
+          "why": "把浏览器实时渲染投射到实体立方体上，音乐节拍、空间坐标与 GLSL 视觉效果共享同一套时间轴。",
+          "method": "建立统一时钟，让文字、Shader、镜头和物体运动按同一时间线工作；避免每种动画各自计时。",
+          "uses": "音乐 PV、Three.js 视觉实验、游戏剧情演出、展览投影",
+          "tags": [
+            "Three.js",
+            "GLSL",
+            "投影映射",
+            "时间轴"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "dkton",
+          "title": "DKTON",
+          "creator": "Barry Baris Dogan × Dominik Kostolnik",
+          "category": "声音与音乐",
+          "url": "https://tympanus.net/codrops/2026/11/12/dkton/",
+          "source": "Codrops",
+          "why": "将录音设备、混音台和电平表变成网页语言；用户可试听素材、拖动推子混音，声音与可视化来自共享 Web Audio 引擎。",
+          "method": "让可视化反映真实音频数据；提供全局静音、状态记忆和键盘操作。",
+          "uses": "音乐制作软件、AI 语音助手、音效素材库、互动音乐网站",
+          "tags": [
+            "Web Audio",
+            "GSAP",
+            "音频可视化"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "gooey-sticky-menu",
+          "title": "Gooey Sticky Menu",
+          "creator": "Manoela Ilic",
+          "category": "交互与网站",
+          "url": "https://tympanus.net/codrops/hub/",
+          "source": "Codrops Creative Hub",
+          "why": "以流体融合、拉伸和分离的感觉表现导航元素之间的连续过渡。",
+          "method": "将流体效果限制在选中指示器和局部过渡；真实按钮与点击区域保持稳定。",
+          "uses": "游戏主菜单、创意网站、音乐播放器、桌面软件侧边栏",
+          "tags": [
+            "GLSL",
+            "GSAP",
+            "WebGL",
+            "菜单"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "international-poster-exhibition",
+          "title": "International Poster Exhibition 2026",
+          "creator": "International Assembly / INTL",
+          "category": "展览与研究",
+          "url": "https://www.creativeboom.com/news/international-assembly-2026-glasgows-design-festival-turns-with-a-secret-stage-and-a-night-in-a-medieval-castle/",
+          "source": "Creative Boom",
+          "why": "展览汇集不同文化背景下的海报作品，适合横向比较字体、构图、图像处理和视觉叙事。",
+          "method": "将海报拆解为标题比例、留白、网格、色彩数量、图文关系和阅读顺序等变量，比较方法而不是照搬图形。",
+          "uses": "音乐海报、游戏宣传、品牌系统、编辑出版",
+          "tags": [
+            "海报",
+            "字体",
+            "构图",
+            "展览"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "title": "让品牌拥有动作性格，让不完美成为创作语言",
+      "summary": "从动态品牌规范、实验平面、手绘材料到超现实摄影与 AI 产品设计，研究视觉个性如何成为长期可维护的系统。",
+      "theme": "动态品牌与创作方法",
+      "items": [
+        {
+          "id": "vucko-etsy",
+          "title": "Vucko × Etsy",
+          "creator": "Vucko / Andrew Vucko",
+          "category": "动态与影像",
+          "url": "https://www.itsnicethat.com/articles/vucko-etsy-motion-graphic-design-sponsored-content-121126",
+          "source": "It's Nice That",
+          "why": "为品牌建立 Joy、Simplicity、Craft 三条动作原则，让动画风格能被不同团队持续复用。",
+          "method": "将品牌性格转化为 Motion Tokens：时长、缓动、方向、反馈强度和减少动态模式。",
+          "uses": "Clover、AI Agent 工作台、桌面应用、动态品牌",
+          "tags": [
+            "Motion Design",
+            "品牌规范",
+            "动效"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "dum-dum-studio",
+          "title": "Dum Dum Studio",
+          "creator": "Mario Julián Gutiérrez、Sergio Martínez",
+          "category": "品牌视觉",
+          "url": "https://www.itsnicethat.com/articles/dum-dum-studio-graphic-design-discover-121126",
+          "source": "It's Nice That",
+          "why": "在品牌秩序与即兴实验之间寻找平衡，作品融合地方视觉历史、拼贴和趣味字体。",
+          "method": "固定 Logo 安全区、信息层级和基础配色，为插画、纹理、文字组合留下实验空间。",
+          "uses": "独立品牌、游戏内商店、创意网站、原创 IP",
+          "tags": [
+            "拼贴",
+            "字体",
+            "品牌"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "georgie-mcausland",
+          "title": "Georgie McAusland",
+          "creator": "Georgie McAusland",
+          "category": "插画与出版",
+          "url": "https://www.itsnicethat.com/articles/georgie-mcausland-illustration-discover-121126",
+          "source": "It's Nice That",
+          "why": "使用铅笔、水粉与粉彩保留晕染、覆盖、擦除和手部操作痕迹，并从真实场所观察绘画。",
+          "method": "模拟真实材料之间的作用，而不只是叠加纸张噪声；比较数字、扫描手绘和混合媒介。",
+          "uses": "游戏背景、绘本、角色设定、自然主题 UI",
+          "tags": [
+            "手绘",
+            "水粉",
+            "材质"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "tanmay-saxena",
+          "title": "Tanmay Saxena",
+          "creator": "Tanmay Saxena",
+          "category": "摄影与叙事",
+          "url": "https://www.creativeboom.com/inspiration/tanmay-saxena-on-leaving-a-banking-job-to-make-surreal-photographs-about-lifes-stranger-moments/",
+          "source": "Creative Boom",
+          "why": "从日常生活的奇怪念头出发，用一个反常画面表达疲惫、身份与家庭记忆。",
+          "method": "先把抽象情绪翻译成具体画面，再通过姿态、道具、色彩和环境完成叙事。",
+          "uses": "剧情游戏 CG、音乐封面、概念海报、短片分镜",
+          "tags": [
+            "超现实摄影",
+            "情绪",
+            "叙事"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "stefano-de-rosa",
+          "title": "Stefano De Rosa / Synthesia",
+          "creator": "Stefano De Rosa",
+          "category": "产品设计",
+          "url": "https://tympanus.net/codrops/2026/11/11/stefano-de-rosa-day-after/",
+          "source": "Codrops",
+          "why": "强调复杂 AI 产品必须在真实使用之后验证，关注信息层级、组件状态、长文本和错误恢复。",
+          "method": "建立第二天验收机制：用长任务、多 Agent、失败恢复和不同设备检验 UI。",
+          "uses": "Clover、BlockForge Studio、AI Agent 控制台、桌面应用",
+          "tags": [
+            "AI 产品",
+            "UX",
+            "压力测试"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "title": "让 Logo 成为导航，让游戏文化重塑品牌",
+      "summary": "从功能性品牌符号、游戏文化产品设计、音乐符号系统、地方文化插画与心理空间叙事中提取可迁移的方法。",
+      "theme": "符号与文化叙事",
+      "items": [
+        {
+          "id": "giffgaff-koto",
+          "title": "Giffgaff × Koto",
+          "creator": "Koto × Giffgaff",
+          "category": "品牌视觉",
+          "url": "https://www.creativeboom.com/news/koto-points-giffgaff-towards-its-next-chapter-with-an-arrow-led-rebrand/",
+          "source": "Creative Boom",
+          "why": "将字母末端转化为箭头，并贯穿 Logo、价格指引、网页、App 与包装；品牌符号同时承担识别和导航功能。",
+          "method": "寻找兼具品牌含义与操作意义的基础图形，让符号跨越 Logo、进度、工作流和按钮状态。",
+          "uses": "AI 软件、任务管理 App、Agent 流程界面",
+          "tags": [
+            "Logo",
+            "品牌系统",
+            "导航"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "nymzo",
+          "title": "Nymzo",
+          "creator": "Elliott Walker、Tim Hucklesby / Otherward",
+          "category": "游戏与像素",
+          "url": "https://www.itsnicethat.com/articles/nymzo-product-design-project-101126",
+          "source": "It's Nice That",
+          "why": "以现代运动装备思路重新设计国际象棋产品，保留规则，重新研究棋子重量、手感、配色和社交文化。",
+          "method": "先保留玩家熟悉的操作逻辑，再更新材质、配色、造型与社交呈现。",
+          "uses": "棋类游戏 UI、桌游 App、像素游戏道具、游戏品牌",
+          "tags": [
+            "游戏文化",
+            "产品设计",
+            "棋具"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "22-a-million",
+          "title": "22, A Million",
+          "creator": "Eric Timothy Carlson × Bon Iver",
+          "category": "动态与影像",
+          "url": "https://www.itsnicethat.com/articles/eric-timothy-carlson-bon-iver-22-a-million-graphic-design-101126",
+          "source": "It's Nice That",
+          "why": "通过约百个符号草图、实体拼贴和印刷实验，形成可被解读的音乐视觉宇宙。",
+          "method": "先建立符号词典，让每个符号对应故事概念、人物关系或情绪，再延伸到封面和动画。",
+          "uses": "音乐 PV、剧情游戏、神秘学 UI、原创 IP",
+          "tags": [
+            "符号系统",
+            "音乐视觉",
+            "拼贴"
+          ],
+          "age": "经典参考"
+        },
+        {
+          "id": "biabum",
+          "title": "Biabum",
+          "creator": "Beatriz Tati Nóbrega",
+          "category": "品牌视觉",
+          "url": "https://www.itsnicethat.com/articles/biabum-graphic-design-illustration-discover-111126",
+          "source": "It's Nice That",
+          "why": "将巴西地方招牌、复古印刷、手绘字体和包装叙事转化为品牌基因。",
+          "method": "从真实招牌、建筑、包装和日常文化提炼字体、图案与颜色，而非直接套用流行风格。",
+          "uses": "像素游戏商店、虚构城镇品牌、独立出版、角色周边",
+          "tags": [
+            "地方文化",
+            "插画",
+            "包装"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "hawazin",
+          "title": "Hawazin",
+          "creator": "Hawazin",
+          "category": "数字艺术",
+          "url": "https://www.creativeboom.com/inspiration/blurry-faces-pink-skies-and-video-game-worlds-step-inside-hawazins-candy-coloured-paintings/",
+          "source": "Creative Boom",
+          "why": "用模糊人脸、粉色天空和鲜艳花卉表达熟悉却不安的心理空间，并受到恐怖游戏环境叙事启发。",
+          "method": "把心理状态转化为场景规则：清晰度、饱和度、光线与物品位置都可承载情绪。",
+          "uses": "心理叙事游戏、视觉小说、角色记忆场景、超现实短片",
+          "tags": [
+            "游戏叙事",
+            "绘画",
+            "心理空间"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-11",
+      "title": "让文字拥有节奏，让现实场景成为可探索的记忆",
+      "summary": "动态字体、Gaussian Splatting、实验平面、超现实短动画和物理声音可视化。",
+      "theme": "动态与物理实验",
+      "items": [
+        {
+          "id": "kinetic-typography-gsap",
+          "title": "Choreographing Kinetic Typography",
+          "creator": "Antoine Wodniack",
+          "category": "字体与排版",
+          "url": "https://tympanus.net/codrops/2026/11/10/kinetic-typography-gsap/",
+          "source": "Codrops",
+          "why": "文字沿滚动节奏进入、停留和离场，字符运动、整体节奏与物理效果共享一套动画逻辑。",
+          "method": "把动态排版拆成阅读、强调、离场三个阶段，让语义决定运动方式。",
+          "uses": "Remotion 动态歌词、音乐 PV、游戏章节标题、交互叙事",
+          "tags": [
+            "GSAP",
+            "动态字体",
+            "滚动"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "splat-walk",
+          "title": "Splat Walk",
+          "creator": "Will Eastcott",
+          "category": "数字艺术",
+          "url": "https://willeastcott.github.io/splat-walk/",
+          "source": "项目演示 / GitHub",
+          "why": "将伦敦街景的 Gaussian Splat 扫描场景与模拟手持摄像机结合，形成可实时漫游的空间体验。",
+          "method": "场景扫描负责空间内容，虚拟摄像机负责叙事，后期效果负责情绪；三者独立控制。",
+          "uses": "剧情游戏回忆场景、虚拟城市漫游、互动纪录片",
+          "tags": [
+            "Gaussian Splatting",
+            "WebGPU",
+            "三维重建"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "julien-gobled",
+          "title": "Julien Gobled",
+          "creator": "Julien Gobled",
+          "category": "品牌视觉",
+          "url": "https://www.creativeboom.com/inspiration/with-freaky-faces-warped-type-and-happy-accidents-julien-gobled-is-tearing-up-the-graphic-design-rulebook/",
+          "source": "Creative Boom",
+          "why": "将扭曲面孔、模糊喷枪质感、变形文字与图像错误发展成有辨识度的实验平面语言。",
+          "method": "保留人物关键识别特征，只对非关键区域进行局部拉伸、复印退化和色彩偏移。",
+          "uses": "双色海报、动漫角色再设计、音乐封面、实验字体",
+          "tags": [
+            "失真",
+            "实验平面",
+            "字体"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "maria-zilli",
+          "title": "Maria Zilli",
+          "creator": "Maria Zilli",
+          "category": "动态与影像",
+          "url": "https://www.creativeboom.com/inspiration/maria-zillis-wonderfully-absurd-animations-find-romance-in-the-most-unlikely-places/",
+          "source": "Creative Boom",
+          "why": "通过日常物体拟人化与旁观者反应，在极短时间里建立荒诞但完整的戏剧情境。",
+          "method": "一个普通物品、一种人类情绪、一个意外反应，就能形成微型故事。",
+          "uses": "MG 动画、短片、游戏道具彩蛋、AI 桌面宠物",
+          "tags": [
+            "2D 动画",
+            "拟人化",
+            "短故事"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "record-player",
+          "title": "Record Player",
+          "creator": "Guillermo Rauch",
+          "category": "声音与音乐",
+          "url": "https://vinyl-gl.vercel.app/",
+          "source": "在线实验 / GitHub",
+          "why": "将黑胶唱片沟槽、唱针运动和声音生成机制变成可交互的浏览器物理模拟。",
+          "method": "让可视化对应真实物理因果，而非只播放随机跳动的频谱柱。",
+          "uses": "互动音乐软件、物理科普、游戏音效实验室",
+          "tags": [
+            "WebGL2",
+            "Web Audio",
+            "物理模拟"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-10",
+      "title": "从模块化网站到电影式插画",
+      "summary": "研究网格如何组织内容、分镜如何控制叙事，以及生成图形和开源布局如何扩展视觉系统。",
+      "theme": "模块化与视觉叙事",
+      "items": [
+        {
+          "id": "au-rel",
+          "title": "Au-rel.io",
+          "creator": "Andrea Aurelio Napoli",
+          "category": "交互与网站",
+          "url": "https://au-rel.io/",
+          "source": "作品集 / Codrops",
+          "why": "以 12 列网格组合图片、视频和文字模块，点击项目时通过位置与形变建立连续转场。",
+          "method": "固定结构，允许内容自由组合；切换布局时保留组件身份和交互状态。",
+          "uses": "AI 工作台、Agent 任务中心、个人作品集、游戏图鉴",
+          "tags": [
+            "CSS Grid",
+            "GSAP",
+            "模块化"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "balbusso-twins",
+          "title": "The Balbusso Twins / Folio Society",
+          "creator": "Anna & Elena Balbusso",
+          "category": "插画与出版",
+          "url": "https://www.creativeboom.com/insight/the-balbusso-twins-on-the-handmaids-tale-and-why-illustrating-a-book-is-like-making-a-movie/",
+          "source": "Creative Boom",
+          "why": "将文学插画视为电影分镜，用关键场景、视角变化和留白控制读者的心理节奏。",
+          "method": "先寻找人物出场、关系转折、情绪顶点和悬念时刻，再决定插画数量与构图。",
+          "uses": "视觉小说 CG、剧情游戏、互动绘本、角色设定集",
+          "tags": [
+            "插画",
+            "分镜",
+            "出版"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "biotic",
+          "title": "Biotic",
+          "creator": "Mucho",
+          "category": "品牌视觉",
+          "url": "https://www.itsnicethat.com/articles/mucho-biotic-spudcells-graphic-design-project-081026",
+          "source": "It's Nice That",
+          "why": "从细胞研究提取点状核心符号，再通过反应扩散生成图形和动态身份。",
+          "method": "从产品核心机制中提取视觉规则，让 Logo、加载动画和知识图谱共享一套语言。",
+          "uses": "AI 记忆中枢、科技品牌、数据可视化、生成艺术",
+          "tags": [
+            "生成图形",
+            "动态 Logo",
+            "科学传播"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "wide-template",
+          "title": "Wide",
+          "creator": "BL/S® · Serhii Polyvanyi、Anna Flud",
+          "category": "创意工具",
+          "url": "https://tympanus.net/codrops/2026/09/28/wide-template/",
+          "source": "Codrops",
+          "why": "十张基础卡片通过五种布局与镜像组合形成多种视觉状态，支持 WebGL 增强效果。",
+          "method": "数据、布局和特效分层；组件重排时保留状态，GPU 特效作为可关闭增强层。",
+          "uses": "AI 工作台、动态作品集、游戏物品展示、照片墙",
+          "tags": [
+            "CSS",
+            "WebGL",
+            "布局复用"
+          ],
+          "age": "经典参考"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "title": "让文字成为交互，让故事拥有自己的界面",
+      "summary": "从字符动画、物理模拟、动作品牌识别和游戏化文学网站中提取交互规则。",
+      "theme": "交互与叙事",
+      "items": [
+        {
+          "id": "text-character-animations",
+          "title": "Text Character Animations with GSAP",
+          "creator": "Manoela Ilic",
+          "category": "字体与排版",
+          "url": "https://tympanus.net/codrops/hub/",
+          "source": "Codrops Creative Hub",
+          "why": "将文字拆成可独立控制的运动单元，通过方向、节奏、延迟和强调关系建立阅读体验。",
+          "method": "将字符运动、整行节奏和交互触发分层控制，避免随机添加特效。",
+          "uses": "音乐 PV、游戏章节标题、AI 助手状态反馈",
+          "tags": [
+            "GSAP",
+            "字符动画"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "shatter",
+          "title": "Shatter",
+          "creator": "Yuri Artiukh",
+          "category": "数字艺术",
+          "url": "https://tympanus.net/codrops/hub/",
+          "source": "Codrops Creative Hub",
+          "why": "将物理破碎作为实时视觉反馈，涉及 Blender、Three.js、TSL 和 WebGPU。",
+          "method": "把视觉碎裂与真实数据分离；需要撤销的 UI 只改变视觉层，不销毁数据。",
+          "uses": "游戏道具破坏、网页交互、MG 动画",
+          "tags": [
+            "物理模拟",
+            "Three.js",
+            "WebGPU"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "deafcity",
+          "title": "DeafCity Hub",
+          "creator": "Templo",
+          "category": "品牌视觉",
+          "url": "https://www.itsnicethat.com/articles/templo-deafcity-hub-identity-graphic-design-project-220926",
+          "source": "It's Nice That",
+          "why": "从英国手语动作捕捉中发展视觉识别，让动作轨迹成为品牌图形语言。",
+          "method": "从真实动作数据提取轨迹、速度和停顿，再映射为线条、曲率、颜色和动画节奏。",
+          "uses": "动态 Logo、手势控制界面、互动展览、无障碍产品",
+          "tags": [
+            "动作捕捉",
+            "无障碍",
+            "动态品牌"
+          ],
+          "age": "经典参考"
+        },
+        {
+          "id": "quest-magazine",
+          "title": "Quest",
+          "creator": "Ross Gendels、Zane Miller",
+          "category": "交互与网站",
+          "url": "https://read.quest/",
+          "source": "Quest 官方网站",
+          "why": "将科幻与奇幻文学做成游戏化数字杂志，统一平台框架，同时允许每篇故事拥有独立视觉世界。",
+          "method": "稳定系统层与自由内容层分离；导航和进度一致，章节视觉按故事变化。",
+          "uses": "视觉小说、互动文学、游戏档案、数字杂志",
+          "tags": [
+            "游戏化阅读",
+            "数字出版"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "title": "让设计规则生成新的作品",
+      "summary": "从生成式品牌、角色身份摄影、社会观察绘画和兼容性字体系统中研究可持续创作方法。",
+      "theme": "生成式视觉与身份",
+      "items": [
+        {
+          "id": "tatiana-egoshina",
+          "title": "Tatiana Egoshina / Fortune Cookie",
+          "creator": "Tatiana Egoshina",
+          "category": "品牌视觉",
+          "url": "https://www.creativeboom.com/inspiration/tatiana-egoshina-finds-beauty-in-bad-typography-italian-folklore-and-happy-accidents/",
+          "source": "Creative Boom",
+          "why": "以折叠彩带承载短句，并通过在线生成工具让团队在规则内持续产生新品牌图形。",
+          "method": "把视觉规范变成生成器，固定颜色、字体与结构，让内容输入驱动变化。",
+          "uses": "AI 设计系统、游戏海报、原创 IP 品牌",
+          "tags": [
+            "生成式设计",
+            "字体",
+            "品牌"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "hang-yu",
+          "title": "The Show Goes On",
+          "creator": "Hang Yu",
+          "category": "摄影与叙事",
+          "url": "https://www.creativeboom.com/inspiration/step-inside-hang-yus-wonderfully-strange-world-of-clowns-costumes-and-constructed-identities/",
+          "source": "Creative Boom",
+          "why": "记录小丑选择红鼻子、服装、排练与互相交流的过程，用道具呈现身份形成。",
+          "method": "通过面具、徽章和随身物品的选择表达人物身份，而非只从脸型和数值开始。",
+          "uses": "游戏角色创建、视觉小说、角色档案、AI 虚拟形象",
+          "tags": [
+            "身份叙事",
+            "摄影"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "peter-davis",
+          "title": "Gig Pose",
+          "creator": "Peter Davis",
+          "category": "插画与出版",
+          "url": "https://www.creativeboom.com/inspiration/peter-daviss-gig-pose/",
+          "source": "Creative Boom",
+          "why": "以观众举手机记录演出的姿态，呈现数字生活与现场体验之间的矛盾。",
+          "method": "从真实行为中的矛盾提炼主题，用人物姿态与物件引发思考。",
+          "uses": "音乐 PV、社会主题短动画、独立游戏叙事",
+          "tags": [
+            "社会观察",
+            "绘画"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "swiss-post-sans",
+          "title": "Swiss Post Sans",
+          "creator": "Swiss Typefaces × Swiss Post",
+          "category": "字体与排版",
+          "url": "https://www.creativeboom.com/work/swiss-typefaces-crafts-a-warmer-friendlier-custom-font-for-swiss-post/",
+          "source": "Creative Boom",
+          "why": "升级字体时控制字面占用空间，兼顾多语言、等宽数字与旧版布局兼容。",
+          "method": "替换字体前测试按钮宽度、导航折行、表格数字和多语言混排。",
+          "uses": "软件 UI、AI 控制台、数据仪表盘",
+          "tags": [
+            "字体系统",
+            "兼容性"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "title": "让界面拥有物理生命，让像素动画进入创作流程",
+      "summary": "关注 WebGPU 空间交互、像素动画编辑、开放式设计系统和微型屏幕字体。",
+      "theme": "游戏与产品界面",
+      "items": [
+        {
+          "id": "mathias-adolfsson",
+          "title": "Mathias Adolfsson ’26",
+          "creator": "Mathias Adolfsson",
+          "category": "交互与网站",
+          "url": "https://tympanus.net/codrops/2026/11/05/mathias-adolfsson-portfolio/",
+          "source": "Codrops",
+          "why": "弧形卡片画廊通过展开、旋转和形变保持空间连续，使用 Three.js WebGPU、TSL 与 GSAP。",
+          "method": "多个界面状态共享同一个空间对象；提供减少动画和低性能回退。",
+          "uses": "AI Agent 任务中心、互动作品集、游戏图鉴",
+          "tags": [
+            "WebGPU",
+            "Three.js",
+            "GSAP"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "pixelorama",
+          "title": "Pixelorama",
+          "creator": "Orama Interactive",
+          "category": "游戏与像素",
+          "url": "https://www.pixelorama.org/",
+          "source": "官方项目 / GitHub",
+          "why": "开源像素艺术编辑器，支持时间轴、逐帧编辑、洋葱皮、图块地图、调色板与多种导出。",
+          "method": "将角色动作结构化为动画标签，由软件状态触发，而不是随机播放 GIF。",
+          "uses": "像素游戏、AI 助手角色、游戏 HUD、道具动画",
+          "tags": [
+            "像素画",
+            "逐帧动画",
+            "Godot"
+          ],
+          "age": "经典参考"
+        },
+        {
+          "id": "penpot",
+          "title": "Penpot",
+          "creator": "Kaleidos / Penpot 团队",
+          "category": "创意工具",
+          "url": "https://penpot.app/",
+          "source": "官方项目 / GitHub",
+          "why": "开源设计平台，支持组件、变体、Design Tokens、CSS Grid、Flex Layout 与开发协作。",
+          "method": "将颜色、间距、圆角、文字层级和状态沉淀为可读取、可验证的数据。",
+          "uses": "AI 软件设计系统、游戏编辑器、桌面应用",
+          "tags": [
+            "开源设计",
+            "Design Tokens"
+          ],
+          "age": "经典参考"
+        },
+        {
+          "id": "orchid",
+          "title": "Orchid / Telepathic Instruments",
+          "creator": "Love And Money × Telepathic Instruments",
+          "category": "字体与排版",
+          "url": "https://www.itsnicethat.com/articles/love-and-money-telepathic-instruments-orchid-graphic-design-project-061026",
+          "source": "It's Nice That",
+          "why": "围绕 128×128 像素设备屏幕设计专用字体 Chunky Roll，让极小尺寸下的字符仍清晰。",
+          "method": "从最小显示尺寸反向设计字形，针对不同尺度准备复杂度不同的视觉版本。",
+          "uses": "像素游戏 HUD、音乐软件、AI 桌面宠物",
+          "tags": [
+            "像素字体",
+            "硬件 UI"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-06",
+      "title": "让探索成为叙事，让不完美成为风格",
+      "summary": "从城市展览视觉、偶然拼贴、灵活品牌系统和真实场景验证中研究设计规则。",
+      "theme": "城市视觉与品牌系统",
+      "items": [
+        {
+          "id": "museum-night",
+          "title": "Amsterdam Museum Night 2026",
+          "creator": "From Form",
+          "category": "动态与影像",
+          "url": "https://www.itsnicethat.com/articles/from-form-amsterdam-museum-night-graphic-design-project-051126",
+          "source": "It's Nice That",
+          "why": "以钥匙、时钟和火炬等象征物构建夜间城市迷宫，并通过照片拼贴动画营造探索感。",
+          "method": "用具有共同叙事意义的物品代替说明文字，让它们遵循统一运动规则。",
+          "uses": "剧情游戏开场、互动档案馆、音乐 PV",
+          "tags": [
+            "拼贴动画",
+            "展览视觉"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "accidental-collage",
+          "title": "Accidental Collage",
+          "creator": "Dr.Me × Waiting Room Press",
+          "category": "插画与出版",
+          "url": "https://www.itsnicethat.com/articles/dr-me-waiting-room-press-accidental-collage-advertising-publication-project-051126",
+          "source": "It's Nice That",
+          "why": "研究街头广告反复覆盖、撕裂和风化后形成的意外拼贴，实体封面也保留撕裂差异。",
+          "method": "把时间视为图像创作者，模拟图层覆盖、局部损坏与下层信息重新显露。",
+          "uses": "赛博朋克环境、复古游戏菜单、旧档案、音乐海报",
+          "tags": [
+            "拼贴",
+            "出版",
+            "纹理"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "pac-bakery",
+          "title": "P.A.C. Bakery Identity",
+          "creator": "Polar Studio",
+          "category": "品牌视觉",
+          "url": "https://www.itsnicethat.com/articles/polar-pac-graphic-design-project-041126",
+          "source": "It's Nice That",
+          "why": "以字母与标点形成识别核心，搭配字体、蓝白配色、手绘插画和日常印刷材料。",
+          "method": "区分固定核心与自由变化部分，让品牌既一致又能持续更新。",
+          "uses": "独立游戏品牌、虚构商店、AI 软件视觉规范",
+          "tags": [
+            "Logo",
+            "字体",
+            "品牌系统"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "figur",
+          "title": "Figur",
+          "creator": "Lukas Nässil / Figur",
+          "category": "产品设计",
+          "url": "https://www.itsnicethat.com/articles/figur-graphic-design-discover-041126",
+          "source": "It's Nice That",
+          "why": "设计师参与真实运动场景，强调产品设计必须在实际物件和使用环境中验证。",
+          "method": "在真实数据、错误状态、长时间使用和不同屏幕下评审 UI，而不只看效果图。",
+          "uses": "Clover、AI Agent 控制台、游戏 HUD",
+          "tags": [
+            "产品设计",
+            "真实场景"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-05",
+      "title": "让网站随时间呼吸，让梦境成为故事",
+      "summary": "研究时间响应式网站、超短篇 3D 动画、梦境数字艺术和文化叙事品牌。",
+      "theme": "时间与梦境",
+      "items": [
+        {
+          "id": "brandon-yasin",
+          "title": "Brandon Yasin Portfolio",
+          "creator": "Brandon Yasin × Aslan GM",
+          "category": "交互与网站",
+          "url": "https://tympanus.net/codrops/2026/11/04/brandon-yasin-portfolio/",
+          "source": "Codrops",
+          "why": "网站像杂志一样通过缩放和裁切展开内容，并可根据时间与用户操作连续改变主题色彩。",
+          "method": "将主题从简单深浅模式扩展为时间、场景和用户操作驱动的视觉状态。",
+          "uses": "Clover、AI 助手昼夜状态、数字杂志",
+          "tags": [
+            "Nuxt",
+            "GSAP",
+            "主题系统"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "daniel-jurman",
+          "title": "Daniel Jurman Digital Clay",
+          "creator": "Daniel Jurman",
+          "category": "动态与影像",
+          "url": "https://www.creativeboom.com/inspiration/burger-trees-spying-fruit-and-flying-taxis-discover-the-digital-clay-world-of-daniel-jurman/",
+          "source": "Creative Boom",
+          "why": "用数字黏土质感表现日常物体的荒诞动作，短动画用一个镜头表达完整概念。",
+          "method": "一个物体、一种不符合常理的行为和一个短促结尾，构建微型故事。",
+          "uses": "B站短动画、游戏道具动画、音乐 PV",
+          "tags": [
+            "3D 动画",
+            "黏土风"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "moho",
+          "title": "Moho Dream Worlds",
+          "creator": "Moho",
+          "category": "数字艺术",
+          "url": "https://www.creativeboom.com/inspiration/inspired-by-strangers-dreams-moho-builds-glittering-slightly-unsettling-worlds/",
+          "source": "Creative Boom",
+          "why": "收集陌生人的梦境，并用珍珠、亮片、天鹅绒、玻璃和薄纱表达梦境情绪。",
+          "method": "先确定故事情绪，再选择对应材质，让材质承担叙事意义。",
+          "uses": "剧情游戏、角色记忆片段、音乐 PV",
+          "tags": [
+            "梦境",
+            "材质",
+            "数字艺术"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "yinka-ilori",
+          "title": "Yinka Ilori × Tottenham Hotspur",
+          "creator": "Yinka Ilori",
+          "category": "品牌视觉",
+          "url": "https://www.creativeboom.com/news/yinka-ilori-brings-his-joyful-love-of-colour-to-reimagine-the-tottenham-hotspur-away-shirt/",
+          "source": "Creative Boom",
+          "why": "从北伦敦社区、球迷文化和共同归属感中提取球衣图形与色彩。",
+          "method": "从群体共同经历、仪式和历史提炼图形符号，而非只从名称出发。",
+          "uses": "游戏阵营徽章、角色服装、虚拟社群品牌",
+          "tags": [
+            "文化叙事",
+            "服装图形"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "title": "让数字作品拥有真实质感，让品牌变成可以探索的世界",
+      "summary": "从 Shader 矿物标本、沉浸式品牌世界、研究型出版、实体摄影和装饰 Logo 中提取方法。",
+      "theme": "材料与视觉系统",
+      "items": [
+        {
+          "id": "mineral-collection",
+          "title": "Mineral Collection",
+          "creator": "Stephanie Bruce",
+          "category": "数字艺术",
+          "url": "https://tympanus.net/codrops/2026/11/03/mineral-collection/",
+          "source": "Codrops",
+          "why": "将矿物照片、网点、抖动纹理和档案排版结合，使用参数化 Shader 控制材料质感。",
+          "method": "固定排版网格、字体与颜色，再调整网点密度、色阶和纹理强度。",
+          "uses": "音乐 PV、游戏道具图鉴、AI 知识档案",
+          "tags": [
+            "Shader",
+            "Halftone",
+            "Dithering"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "herve-studio",
+          "title": "Hervé Studio",
+          "creator": "Hervé Studio / Romain Briaux、Vincent",
+          "category": "品牌视觉",
+          "url": "https://tympanus.net/codrops/2026/11/02/herve-studio/",
+          "source": "Codrops",
+          "why": "将品牌概念扩展成完整世界观，让角色、动画、网站与文字共同表达产品性格。",
+          "method": "先定义世界观隐喻，再让头像、启动画面、任务动画共享同一视觉逻辑。",
+          "uses": "Clover AI 助手、游戏世界观网站、角色 IP",
+          "tags": [
+            "品牌世界观",
+            "叙事设计"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "eating-whole-fish",
+          "title": "Eating the Whole Fish",
+          "creator": "Beam Studio",
+          "category": "插画与出版",
+          "url": "https://www.itsnicethat.com/articles/beam-eating-the-whole-fish-graphic-design-project-031126",
+          "source": "It's Nice That",
+          "why": "把饮食、渔业与可持续性研究组织成多声音参与的杂志，而非单一研究报告。",
+          "method": "建立多层阅读结构：视觉开篇、简短解释、完整访谈和来源。",
+          "uses": "知识库、数字杂志、游戏世界观设定集",
+          "tags": [
+            "编辑设计",
+            "信息层级"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "alex-rorison",
+          "title": "Alex Rorison Photography",
+          "creator": "Alex Rorison",
+          "category": "摄影与叙事",
+          "url": "https://www.itsnicethat.com/articles/alex-rorison-photography-discover-021126",
+          "source": "It's Nice That",
+          "why": "通过打印、材料处理和重新拍摄，让数字照片获得真实的触觉与表面特征。",
+          "method": "让真实物理步骤参与图像制作，利用折叠、覆盖、反射和重新拍摄形成材料感。",
+          "uses": "音乐封面、游戏旧照片、实验海报",
+          "tags": [
+            "实体摄影",
+            "材料实验"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "daryn",
+          "title": "Ornamental Logo Practice",
+          "creator": "Daryn Roongrawewan",
+          "category": "品牌视觉",
+          "url": "https://nicertuesdays.itsnicethat.com/events/3-november-2026-london",
+          "source": "Nicer Tuesdays",
+          "why": "将装饰性插画与 Logo 结合，让标识承载更多文化和故事信息。",
+          "method": "同时准备精细版与小尺寸简化版，确保缩小后仍然可识别。",
+          "uses": "游戏公会徽章、幻想商店、家族纹章",
+          "tags": [
+            "Logo",
+            "装饰图形"
+          ],
+          "age": "近期报道"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "title": "让字体成为系统，让交互规则成为作品",
+      "summary": "从可变字体、参与式互动装置和水体视觉实验中研究可迁移的方法。",
+      "theme": "字体与互动实验",
+      "items": [
+        {
+          "id": "neue-gstaad",
+          "title": "Neue Gstaad",
+          "creator": "Pangram Pangram Foundry",
+          "category": "字体与排版",
+          "url": "https://pangrampangram.com/products/neue-gstaad",
+          "source": "字体厂商官网",
+          "why": "字体家族以宽度和字重变化覆盖展示标题、正文与紧凑界面，建立统一的排版语言。",
+          "method": "用字重表达信息优先级、字宽适配空间，让不同密度界面共享字体系统。",
+          "uses": "AI 仪表盘、桌面软件、游戏标题",
+          "tags": [
+            "可变字体",
+            "排版"
+          ],
+          "age": "经典参考"
+        },
+        {
+          "id": "shifting-center",
+          "title": "Shifting Center",
+          "creator": "Won Ji Lim",
+          "category": "数字艺术",
+          "url": "https://www.designboom.com/art/metal-pipe-grid-personal-rituals-control-participatory-playground-won-ji-lim-shifting-center/",
+          "source": "designboom",
+          "why": "把计数、检查、排列和平衡等抽象行为转化为可参与的实体互动空间。",
+          "method": "先定义行为规则，再设计物件与反馈；少量物件和明确约束即可形成玩法。",
+          "uses": "剧情解谜、互动展览、游戏化任务管理",
+          "tags": [
+            "参与式装置",
+            "互动规则"
+          ],
+          "age": "近期报道"
+        },
+        {
+          "id": "ultra-water",
+          "title": "Ultra Water",
+          "creator": "Ian Cadle",
+          "category": "数字艺术",
+          "url": "https://tympanus.net/codrops/hub/",
+          "source": "Codrops Creative Hub",
+          "why": "以 Three.js、GLSL 和 WebGL 探索水体表现，适合研究波形、法线与反射的参数化控制。",
+          "method": "将水体拆成波幅、频率、反射强度、颜色和速度等独立参数。",
+          "uses": "Three.js 场景、游戏河流池塘、音乐可视化",
+          "tags": [
+            "Three.js",
+            "GLSL",
+            "水体"
+          ],
+          "age": "近期收录"
+        }
+      ]
+    }
+  ]
+}

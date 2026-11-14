@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111310">
+  <meta name="description" content="每天发现值得借鉴的设计、网站、交互、品牌视觉、字体、游戏 UI、数字艺术与叙事方法。">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css?v=1">
+  <title>灵感研究所 · Inspiration Hub</title>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="灵感研究所首页">
+      <span class="brand-mark">✳</span>
+      <span class="brand-name">灵感研究所<small>INSPIRATION HUB</small></span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a href="./" data-view="home">今日</a>
+      <a href="?view=archive" data-view="archive">日报档案</a>
+      <a href="?view=topics" data-view="topics">主题索引</a>
+      <a href="?view=saved" data-view="saved">我的收藏 <span id="savedCount">0</span></a>
+    </nav>
+    <div class="top-actions">
+      <label class="searchbox" aria-label="搜索灵感">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search" placeholder="搜索作品、作者、方法…" autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <button class="icon-button" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◐</button>
+    </div>
+  </header>
+
+  <main id="main" class="page-shell" tabindex="-1">
+    <div class="loading"><span class="loader"></span> 正在整理灵感档案…</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><span class="brand-mark">✳</span><span>灵感研究所</span></div>
+    <p>COLLECT IDEAS · STUDY METHODS · MAKE SOMETHING</p>
+    <span id="footerMeta">A personal design research archive.</span>
+  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js?v=1" defer></script>
+</body>
+</html>
