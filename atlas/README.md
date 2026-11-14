@@ -14,7 +14,7 @@ To preserve the requested GitHub Pages deployment while keeping the actual readi
 
 1. The public Pages repository contains only the static frontend shell and no personal feed content.
 2. `MY-moss/atlas-data` must be a **private** repository. It stores all five information streams.
-3. The browser requires a fine-grained GitHub token with access to that one private repository and Contents: Read-only. The token is kept in the current tab's sessionStorage and is sent only to api.github.com.
+3. The browser requires a fine-grained GitHub token restricted to that one private repository. It verifies that the authenticated GitHub account is exactly `MY-moss`, verifies that the data repository is private, and reads its contents. The token is kept in the current tab's sessionStorage and is sent only to api.github.com. GitHub documents that `GET /user` supports fine-grained tokens without extra permissions; repository metadata requires Metadata: read, and content reads require Contents: read.
 4. Do not add collaborators to the private data repository if access must remain exclusive to the owner.
 5. Never commit tokens, credentials, personal notes, or unencrypted private data to this public repository.
 
@@ -78,7 +78,7 @@ Stream-specific item fields are allowed. For example, world news may add `confid
    - `data/feeds/knowledge/.gitkeep`
 4. Create a fine-grained personal access token restricted to only `MY-moss/atlas-data`, with **Contents: Read-only** and Metadata read access. Do not grant write access to the browser token.
 5. Paste the token into the ATLAS login screen. The token is held in sessionStorage for the current tab only.
-6. The ChatGPT GitHub connection will be used by the scheduled feed tasks to write JSON files to the private repository. Those tasks still need their prompts updated and the repository to exist before they can publish.
+6. The ChatGPT GitHub connection will be used by the scheduled feed tasks to write JSON files to the private repository. The site reads the private repository dynamically when the user opens or refreshes ATLAS, so feed updates do not require rebuilding the public frontend. Those tasks still need their prompts updated and the repository to exist before they can publish.
 
 ## Publishing
 
