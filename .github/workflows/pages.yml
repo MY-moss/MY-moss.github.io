@@ -23,6 +23,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Validate ATLAS frontend
+        run: |
+          test -s atlas/index.html
+          node --check atlas/config.js
+          node --check atlas/app.js
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload static files
