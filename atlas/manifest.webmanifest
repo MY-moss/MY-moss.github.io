@@ -1,0 +1,11 @@
+{
+  "name": "ATLAS — Personal Intelligence Library",
+  "short_name": "ATLAS",
+  "description": "A private, carefully curated personal knowledge library.",
+  "start_url": "/atlas/",
+  "scope": "/atlas/",
+  "display": "standalone",
+  "background_color": "#f4f1e9",
+  "theme_color": "#f4f1e9",
+  "icons": []
+}
