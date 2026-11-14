@@ -15,7 +15,7 @@
 - `schemaVersion`
 - `updatedAt`
 - `reports[]`: 每日一期，按日期倒序。
-- 每期包含 `date`、`title`、`summary`、`theme`、`items[]`。
+- 每期包含 `channel`、`date`、`title`、`summary`、`theme`、`items[]`，可选 `sections[]` 用于趋势、噪音/信号和后续观察。
 - 每个条目包含 `id`、`title`、`creator`、`category`、`url`、`source`、`why`、`method`、`uses`、`tags`、`age`。
 
 ## 内容频道\n- `inspiration`：每日灵感采集。\n- `opensource`：每周开源项目雷达。\n- `knowledge`：每周知识回顾。\n- 同一天可以存在多个频道报告，唯一键为 `channel + date`。\n\n## 每日自动发布
