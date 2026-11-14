@@ -6,7 +6,7 @@
   "required": ["schema_version", "stream", "date", "title", "summary", "items"],
   "properties": {
     "schema_version": { "const": 1 },
-    "stream": { "enum": ["world", "reading", "opensource", "inspiration", "knowledge"] },
+    "stream": { "enum": ["world", "reading", "opensource", "inspiration"] },
     "date": { "type": "string", "format": "date" },
     "week": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
     "title": { "type": "string", "minLength": 1 },

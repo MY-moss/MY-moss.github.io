@@ -2,7 +2,7 @@
 
 唯一内容源：`MY-moss/MY-moss.github.io` 的 `main` 分支，文件 `inspiration/data/index.json`。网站：https://my-moss.github.io/atlas/ 。旧的 `MY-moss/atlas-data` 私人仓库流程已停用。
 
-五条频道 ID：`world`、`reading`、`inspiration`、`opensource`、`knowledge`。
+公开频道仅允许：`world`、`reading`、`inspiration`、`opensource`。严禁将个人每周知识回顾 `knowledge` 写入公开索引。该任务已经暂停。
 
 ## 原子发布
 
@@ -14,3 +14,7 @@
 6. 拿到 commit SHA 才能说“已提交”；网页部署成功或线上实际读取成功才能说“已上线”。失败则完整保留报告并注明原因。
 
 GitHub Pages 前端公开无登录。严禁向公开数据或代码提交个人隐私、GitHub PAT、API 密钥、私人邮件、账号信息和受限材料。每条事实应有可靠可追溯的 HTTPS 来源。
+
+## 私人信息保护
+
+任何源自私人聊天、用户个人信息、未公开项目或个人知识回顾的内容均不得通过公开频道转发或改写发布。提交前确认频道为上述四类，且不含任何私人材料。

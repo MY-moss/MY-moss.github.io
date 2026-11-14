@@ -3,7 +3,7 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
 const main=$("#main"),searchInput=$("#searchInput");
 let db={reports:[],channels:[]},query="",activeCategory="全部",saved=new Set();
 try{saved=new Set(JSON.parse(localStorage.getItem("ih-saved")||"[]"));}catch{}
-const channelNames={inspiration:"灵感采集",opensource:"开源项目雷达",knowledge:"每周知识回顾",all:"全部内容"};
+const channelNames={inspiration:"灵感采集",opensource:"开源项目雷达",all:"全部内容"};
 const glyphs={"交互与网站":"↗","品牌视觉":"✳","字体与排版":"Aa","游戏与像素":"▦","动态与影像":"▶","数字艺术":"◌","插画与出版":"▤","摄影与叙事":"◉","创意工具":"⌘","声音与音乐":"♫","展览与研究":"✷","产品设计":"◇","AI / Agent":"⌘","开发工具":"⌁","知识与趋势":"◈"};
 const artClass=c=>({"交互与网站":"art-motion","品牌视觉":"art-brand","字体与排版":"art-type","游戏与像素":"art-game","动态与影像":"art-motion","数字艺术":"art-art","插画与出版":"art-photo","摄影与叙事":"art-photo","创意工具":"art-tool","声音与音乐":"art-sound","展览与研究":"art-type","产品设计":"art-game","AI / Agent":"art-tool","开发工具":"art-motion","知识与趋势":"art-art"}[c]||"art-art");
 const channelOf=r=>r.channel||"inspiration";
@@ -125,7 +125,7 @@ $("#themeToggle").addEventListener("click",()=>{const next=document.documentElem
 window.addEventListener("popstate",render);
 (async()=>{
  const theme=localStorage.getItem("ih-theme");if(theme)document.documentElement.dataset.theme=theme;
- try{const res=await fetch(DATA_URL,{cache:"no-store"});if(!res.ok)throw new Error("内容加载失败");db=await res.json();db.reports.sort((a,b)=>b.date.localeCompare(a.date));$("#footerMeta").textContent="更新于 "+db.updatedAt+" · "+db.reports.length+" 期内容 · "+allItems().length+" 个条目";render();}
+ try{const res=await fetch(DATA_URL,{cache:"no-store"});if(!res.ok)throw new Error("内容加载失败");db=await res.json();db.reports=(db.reports||[]).filter(r=>r.channel!=="knowledge");db.channels=(db.channels||[]).filter(c=>c.id!=="knowledge");db.reports.sort((a,b)=>b.date.localeCompare(a.date));$("#footerMeta").textContent="更新于 "+db.updatedAt+" · "+db.reports.length+" 期内容 · "+allItems().length+" 个条目";render();}
  catch(err){main.innerHTML='<div class="empty-state"><strong>内容暂时无法加载</strong>请检查网络连接后刷新页面。<br><small>'+esc(err.message)+'</small></div>';}
  if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});}
 })();
