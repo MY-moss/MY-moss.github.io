@@ -83,6 +83,7 @@ The existing `.github/workflows/pages.yml` workflow uploads the repository root 
 
 - Implemented: responsive dashboard shell, five stream sections, archive, search, local bookmarks/read markers, theme toggle, private-repository token gate, GitHub account identity check, private GitHub Contents API reader, five-minute in-page refresh, knowledge-review multi-section parsing, malformed-report warnings.
 - Implemented: report JSON Schema at `report.schema.json`, publishing contract at `automation-spec.md`, and a GitHub Actions quality gate at `.github/workflows/atlas-check.yml`.
+- Current archive window: each sync reads up to the 16 newest JSON reports per stream (up to 80 reports total) to keep GitHub API usage bounded. Full historical pagination or a private catalog index remains a next-stage enhancement.
 - Implemented: all five ChatGPT automations now carry the ATLAS publishing instructions; the two previously paused tasks (world news and curated reading) have been re-enabled. Their existing schedules were preserved.
 - Pending user setup: create the private `MY-moss/atlas-data` repository and grant the connected GitHub integration access to it if it is not already available. Then create the read-only fine-grained browser token described above.
 - Pending verification: first successful report write to the private repository and end-to-end login/read test using real feed files.
