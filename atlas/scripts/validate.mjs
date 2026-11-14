@@ -1,43 +1,37 @@
-import { readFileSync, existsSync } from "node:fs";
+import {readFileSync,existsSync} from "node:fs";
 import vm from "node:vm";
 import assert from "node:assert/strict";
-
-const html = readFileSync("atlas/index.html", "utf8");
-const app = readFileSync("atlas/app.js", "utf8");
-const css = readFileSync("atlas/styles.css", "utf8");
-const configSource = readFileSync("atlas/config.js", "utf8");
-const manifest = JSON.parse(readFileSync("atlas/manifest.webmanifest", "utf8"));
-const schema = JSON.parse(readFileSync("atlas/report.schema.json", "utf8"));
-
-const sandbox = { window: {} };
-vm.runInNewContext(configSource, sandbox, { timeout: 1000 });
-const config = sandbox.window.ATLAS_CONFIG;
-
-assert.ok(config, "ATLAS_CONFIG must be defined");
-assert.equal(config.owner, "MY-moss");
-assert.equal(config.dataRepo, "atlas-data");
-assert.equal(config.branch, "main");
-assert.deepEqual(Array.from(config.streams, (s) => s.id), [
-  "world", "reading", "opensource", "inspiration", "knowledge"
-]);
-assert.equal(new Set(config.streams.map((s) => s.id)).size, 5, "stream IDs must be unique");
-
-for (const asset of ["styles.css", "config.js", "app.js", "manifest.webmanifest"]) {
-  assert.ok(existsSync("atlas/" + asset), "Missing ATLAS asset: " + asset);
-  assert.ok(html.includes("./" + asset), "index.html does not reference " + asset);
+const html=readFileSync("atlas/index.html","utf8");
+const app=readFileSync("atlas/app.js","utf8");
+const css=readFileSync("atlas/styles.css","utf8");
+const source=readFileSync("atlas/config.js","utf8");
+const manifest=JSON.parse(readFileSync("atlas/manifest.webmanifest","utf8"));
+const feed=JSON.parse(readFileSync("inspiration/data/index.json","utf8"));
+const box={window:{}}; vm.runInNewContext(source,box,{timeout:1000});
+const cfg=box.window.ATLAS_CONFIG;
+assert.equal(cfg.feedUrl,"../inspiration/data/index.json");
+assert.deepEqual(Array.from(cfg.streams,s=>s.id),["world","reading","opensource","inspiration","knowledge"]);
+for(const file of ["styles.css","config.js","app.js","manifest.webmanifest"]){
+ assert.ok(existsSync("atlas/"+file));
+ assert.ok(html.includes("./"+file));
 }
-assert.ok(html.includes("noindex,nofollow,noarchive"), "Private shell should discourage indexing");
-assert.ok(html.includes("https://api.github.com"), "CSP must allow the GitHub API");
-assert.ok(app.includes("sessionStorage"), "Token must be session-scoped");
-assert.ok(app.includes("repo.private !== true"), "App must reject a public data repository");
-assert.ok(app.includes("identity.login.toLowerCase()"), "App must validate the GitHub owner identity");
-assert.ok(app.includes("data/feeds/"), "App must read the five private feed directories");
-assert.ok(css.includes("@media"), "Responsive breakpoints are required");
-assert.equal(manifest.scope, "/atlas/");
-assert.equal(schema.properties.stream.enum.length, 5);
-assert.ok(schema.required.includes("schema_version") && schema.required.includes("items"));
-
-// The public Pages repository must never contain private feed payloads.
-assert.equal(existsSync("atlas/data/feeds"), false, "Private feed data must not be committed to the public Pages repository");
-
-console.log("ATLAS validation passed: five streams, private-repository gate, assets, manifest, schema, and public-data boundary.");
+assert.ok(html.includes('content="index,follow"'));
+assert.ok(!html.includes('id="login-form"')&&!html.includes('is-locked'));
+assert.ok(!app.includes("Bearer ")&&!app.includes("atlas_token"));
+assert.ok(app.includes("fetch(new URL(CONFIG.feedUrl"));
+assert.ok(css.includes("@media"));
+assert.equal(manifest.scope,"/atlas/");
+assert.equal(feed.schemaVersion,1);
+assert.ok(Array.isArray(feed.reports)&&Array.isArray(feed.channels));
+const ids=new Set(cfg.streams.map(s=>s.id));
+const seen=new Set();
+for(const report of feed.reports){
+ assert.ok(ids.has(report.channel),"Unknown channel "+report.channel);
+ assert.ok(typeof report.date==="string" && report.date.length===10);
+ assert.ok(Array.isArray(report.items));
+ const key=report.channel+":"+report.date;
+ assert.ok(!seen.has(key),"Duplicate "+key);seen.add(key);
+ for(const item of report.items)assert.ok(typeof item.title==="string"&&item.title.trim());
+}
+assert.ok(!/github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}/.test(JSON.stringify(feed)));
+console.log("ATLAS public edition validated: five streams, "+feed.reports.length+" reports, no login.");

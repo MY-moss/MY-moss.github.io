@@ -1,8 +1,5 @@
 window.ATLAS_CONFIG = Object.freeze({
-  owner: "MY-moss",
-  dataRepo: "atlas-data",
-  branch: "main",
-  apiBase: "https://api.github.com",
+  feedUrl: "../inspiration/data/index.json",
   refreshIntervalMs: 300000,
   streams: [
     { id: "world", title: "每日世界新闻", en: "WORLD BRIEF", cadence: "每日 · 09:00", description: "全球重要事件、多源核验与影响判断", icon: "◉" },

@@ -1,4 +1,4 @@
-name: Deploy static game to GitHub Pages
+name: Deploy Pages (game, inspiration, ATLAS)
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
           test -s atlas/index.html
           node --check atlas/config.js
           node --check atlas/app.js
-          if find atlas -type f -path '*/data/feeds/*.json' | grep -q .; then echo 'Private feed data must stay in atlas-data, never in this public Pages repository.'; exit 1; fi
+          node atlas/scripts/validate.mjs
           if grep -R -E 'github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}' atlas --exclude='README.md'; then echo 'Possible GitHub credential found in public ATLAS files.'; exit 1; fi
       - name: Configure Pages
         uses: actions/configure-pages@v5

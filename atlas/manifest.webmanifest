@@ -1,7 +1,7 @@
 {
   "name": "ATLAS — Personal Intelligence Library",
   "short_name": "ATLAS",
-  "description": "A private, carefully curated personal knowledge library.",
+  "description": "A public, curated library of world news, reading, open source, design and knowledge.",
   "start_url": "/atlas/",
   "scope": "/atlas/",
   "display": "standalone",
