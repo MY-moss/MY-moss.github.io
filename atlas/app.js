@@ -190,6 +190,7 @@
     $("page-content").innerHTML = html;
     $("global-search").value = state.query;
     updateBookmarkCount();
+    var banner=$("network-banner"); if(banner){banner.hidden=!!navigator.onLine;banner.textContent=navigator.onLine?"":"当前离线：正在使用最近一次成功缓存的内容。";}
   }
   function updateBookmarkCount() { $("bookmark-count").textContent = state.bookmarks.length; }
   document.addEventListener("click",function(event){
