@@ -8,7 +8,7 @@ const glyphs={"交互与网站":"↗","品牌视觉":"✳","字体与排版":"Aa
 const artClass=c=>({"交互与网站":"art-motion","品牌视觉":"art-brand","字体与排版":"art-type","游戏与像素":"art-game","动态与影像":"art-motion","数字艺术":"art-art","插画与出版":"art-photo","摄影与叙事":"art-photo","创意工具":"art-tool","声音与音乐":"art-sound","展览与研究":"art-type","产品设计":"art-game","AI / Agent":"art-tool","开发工具":"art-motion","知识与趋势":"art-art"}[c]||"art-art");
 const channelOf=r=>r.channel||"inspiration";
 const reportsFor=ch=>db.reports.filter(r=>ch==="all"||channelOf(r)===ch).sort((a,b)=>b.date.localeCompare(a.date));
-const itemsFor=ch=>reportsFor(ch).flatMap(r=>r.items.map((i,n)=>({...i,channel:channelOf(r),reportDate:r.date,reportTitle:r.title,number:n+1})));
+const itemsFor=ch=>reportsFor(ch).flatMap(r=>r.items.map((i,n)=>({...i,channel:channelOf(r),reportDate:r.date,reportTitle:r.title,bookmarkId:channelOf(r)+":"+r.date+":"+i.id,number:n+1})));
 const allItems=()=>itemsFor("all");
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeHref=v=>{try{const u=new URL(v);return u.protocol==="https:"?u.href:"";}catch{return "";}};
@@ -22,10 +22,10 @@ function updateHeader(view,ch){
 }
 function art(item,n=0){return '<div class="card-art '+artClass(item.category)+'"><span class="art-code">'+String(n+1).padStart(2,"0")+' / FIELD NOTE</span><span class="art-glyph">'+(glyphs[item.category]||"✳")+'</span></div>';}
 function card(item,n=0){
- const isSaved=saved.has(item.id),ch=item.channel||"inspiration",category=item.category||channelLabel(ch);
+ const bookmarkId=item.bookmarkId||item.id,isSaved=saved.has(bookmarkId),ch=item.channel||"inspiration",category=item.category||channelLabel(ch);
  const creator=item.creator||item.author||item.team||"",source=item.source||item.publisher||item.repository||"";
  const attribution=[creator,source].filter(Boolean).join(" · "),summary=item.why||item.summary||item.description||"";
- return '<article class="item-card">'+art({...item,category},n)+'<div class="card-body"><div class="card-top"><span class="category-label">'+esc(category)+'</span><span class="age-label">'+esc(item.age||item.published_at||item.reportDate||channelLabel(ch))+'</span></div><h3>'+esc(item.title)+'</h3><div class="creator">'+esc(attribution)+'</div><p class="card-summary">'+esc(summary)+'</p><div class="card-foot"><a href="?channel='+encodeURIComponent(ch)+'&date='+encodeURIComponent(item.reportDate)+'#item-'+encodeURIComponent(item.id)+'">查看详情 ↗</a><button class="bookmark '+(isSaved?"saved":"")+'" data-action="bookmark" data-id="'+esc(item.id)+'" aria-label="'+(isSaved?"取消收藏":"收藏")+'">'+(isSaved?"★":"☆")+'</button></div></div></article>';
+ return '<article class="item-card">'+art({...item,category},n)+'<div class="card-body"><div class="card-top"><span class="category-label">'+esc(category)+'</span><span class="age-label">'+esc(item.age||item.published_at||item.reportDate||channelLabel(ch))+'</span></div><h3>'+esc(item.title)+'</h3><div class="creator">'+esc(attribution)+'</div><p class="card-summary">'+esc(summary)+'</p><div class="card-foot"><a href="?channel='+encodeURIComponent(ch)+'&date='+encodeURIComponent(item.reportDate)+'#item-'+encodeURIComponent(item.id)+'">查看详情 ↗</a><button class="bookmark '+(isSaved?"saved":"")+'" data-action="bookmark" data-id="'+esc(bookmarkId)+'" aria-label="'+(isSaved?"取消收藏":"收藏")+'">'+(isSaved?"★":"☆")+'</button></div></div></article>';
 }
 function reportRow(r){
  const ch=channelOf(r);
@@ -78,7 +78,7 @@ function detailItem(i,n){
  const ch=i.channel||"inspiration",isProject=ch==="opensource",isReading=ch==="reading",isWorld=ch==="world";
  const creator=i.creator||i.author||i.team||"未提供 / 未核实",source=i.source||i.publisher||i.repository||"未提供 / 未核实";
  const access=i.access==="free"?"免费全文":i.access==="paid"?"付费 / 订阅":i.access==="unknown"?"访问状态待核实":"未提供 / 未核实";
- const sourceUrl=safeHref(i.url||i.repo_url||i.website_url);
+ const sourceUrl=safeHref(i.url||i.repo_url||i.website_url),bookmarkId=i.bookmarkId||ch+":"+(i.reportDate||"unknown")+":"+i.id;
  const fields=isProject?[["技术栈",i.stack],["成熟度",i.maturity],["上手难度",i.difficulty],["许可证",i.license],["风险与限制",i.risks],["推荐等级",i.recommendation],["适合复用到通用场景",i.project_fit||i.suitability],["版本",i.version],["Star 数",i.stars],["平台支持",i.platforms]]:
  isReading?[["作者",creator],["来源",source],["发表日期",i.published_at],["预计阅读时间",i.reading_minutes?i.reading_minutes+" 分钟":""],["访问状态",access]]:
  isWorld?[["来源",source],["可信度",i.confidence],["事件时间",i.event_time||i.occurred_at],["状态",i.status||i.certainty]]:
@@ -87,7 +87,7 @@ function detailItem(i,n){
  isReading?[["01 / ARTICLE SUMMARY",i.summary||i.description],["02 / WHY READ",i.why],["03 / KEY TAKEAWAY",i.takeaway||i.method||i.uses]]:
  isWorld?[["01 / WHAT HAPPENED",i.summary||i.description],["02 / WHY IT MATTERS",i.why],["03 / CONFIDENCE",i.confidence]]:
  [["01 / WHY IT MATTERS",i.why],["02 / TAKEAWAY",i.method],["03 / WHERE TO USE",i.uses]];
- return '<article class="detail-card" id="item-'+esc(i.id)+'"><div class="detail-head"><div><span class="category-label">'+esc(i.category||channelLabel(ch))+' · '+esc(i.age||i.published_at||"研究条目")+'</span><h2>'+esc(i.title)+'</h2><p>'+esc(creator)+' · '+esc(source)+'</p></div><span class="detail-number">'+String(n+1).padStart(2,"0")+' / '+String(itemsFor(ch).length).padStart(2,"0")+'</span></div><div class="detail-grid">'+mainFields.map(x=>'<section class="detail-cell"><span class="eyebrow">'+esc(x[0])+'</span><p>'+esc(x[1]||"未提供 / 未核实")+'</p></section>').join("")+'</div>'+(fields.length?'<div class="extra-grid">'+fields.map(x=>'<div><small>'+esc(x[0])+'</small><p>'+esc(Array.isArray(x[1])?x[1].join("、"):x[1]||"未提供 / 未核实")+'</p></div>').join("")+'</div>':"")+'<div class="detail-footer"><div class="tag-list">'+(i.tags||[]).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div><div style="display:flex;gap:15px;align-items:center"><button class="bookmark '+(saved.has(i.id)?"saved":"")+'" data-action="bookmark" data-id="'+esc(i.id)+'">'+(saved.has(i.id)?"★ 已收藏":"☆ 收藏")+'</button>'+(sourceUrl?'<a class="source-link" href="'+esc(sourceUrl)+'" target="_blank" rel="noopener noreferrer">打开原始来源 ↗</a>':"")+'</div></div></article>';
+ return '<article class="detail-card" id="item-'+esc(i.id)+'"><div class="detail-head"><div><span class="category-label">'+esc(i.category||channelLabel(ch))+' · '+esc(i.age||i.published_at||"研究条目")+'</span><h2>'+esc(i.title)+'</h2><p>'+esc(creator)+' · '+esc(source)+'</p></div><span class="detail-number">'+String(n+1).padStart(2,"0")+' / '+String(itemsFor(ch).length).padStart(2,"0")+'</span></div><div class="detail-grid">'+mainFields.map(x=>'<section class="detail-cell"><span class="eyebrow">'+esc(x[0])+'</span><p>'+esc(x[1]||"未提供 / 未核实")+'</p></section>').join("")+'</div>'+(fields.length?'<div class="extra-grid">'+fields.map(x=>'<div><small>'+esc(x[0])+'</small><p>'+esc(Array.isArray(x[1])?x[1].join("、"):x[1]||"未提供 / 未核实")+'</p></div>').join("")+'</div>':"")+'<div class="detail-footer"><div class="tag-list">'+(i.tags||[]).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div><div style="display:flex;gap:15px;align-items:center"><button class="bookmark '+(saved.has(bookmarkId)?"saved":"")+'" data-action="bookmark" data-id="'+esc(bookmarkId)+'">'+(saved.has(bookmarkId)?"★ 已收藏":"☆ 收藏")+'</button>'+(sourceUrl?'<a class="source-link" href="'+esc(sourceUrl)+'" target="_blank" rel="noopener noreferrer">打开原始来源 ↗</a>':"")+'</div></div></article>';
 }
 function getReport(date,ch){return db.reports.find(r=>r.date===date&&channelOf(r)===ch)||null;}
 function renderSections(sections){
@@ -98,11 +98,11 @@ function renderReport(date,ch){
  const r=getReport(date,ch);
  if(!r){main.innerHTML='<div class="empty-state"><strong>没有找到这期内容</strong><a class="back-link" href="?channel='+encodeURIComponent(ch)+'&view=archive">返回频道档案 →</a></div>';return;}
  const channel=channelOf(r);
- main.innerHTML='<section class="report-hero"><a class="back-link" href="?channel='+encodeURIComponent(channel)+'&view=archive">← 返回'+esc(channelLabel(channel))+'</a><div class="report-meta" style="margin-top:24px"><span>'+fmt(r.date)+'</span><span>'+esc(channelLabel(channel))+'</span><span>'+r.items.length+' PICKS</span><span>'+esc(r.theme||"")+'</span></div><h1>'+esc(r.title)+'</h1><p>'+esc(r.summary)+'</p><div class="hero-actions"><button class="button-quiet" data-action="copy-page">复制本期链接 ↗</button><a class="button-quiet" href="?channel=all&view=archive">浏览全部内容</a></div></section>'+renderSections(r.sections)+'<div class="detail-items">'+r.items.map(detailItem).join("")+'</div>';
+ main.innerHTML='<section class="report-hero"><a class="back-link" href="?channel='+encodeURIComponent(channel)+'&view=archive">← 返回'+esc(channelLabel(channel))+'</a><div class="report-meta" style="margin-top:24px"><span>'+fmt(r.date)+'</span><span>'+esc(channelLabel(channel))+'</span><span>'+r.items.length+' PICKS</span><span>'+esc(r.theme||"")+'</span></div><h1>'+esc(r.title)+'</h1><p>'+esc(r.summary)+'</p><div class="hero-actions"><button class="button-quiet" data-action="copy-page">复制本期链接 ↗</button><a class="button-quiet" href="?channel=all&view=archive">浏览全部内容</a></div></section>'+renderSections(r.sections)+'<div class="detail-items">'+r.items.map((item,n)=>detailItem({...item,channel,reportDate:r.date,bookmarkId:channel+":"+r.date+":"+item.id},n)).join("")+'</div>';
  if(location.hash){requestAnimationFrame(()=>{const el=document.querySelector(location.hash);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});});}
 }
 function renderSaved(){
- const items=allItems().filter(i=>saved.has(i.id));
+ const items=allItems().filter(i=>saved.has(i.bookmarkId||i.id));
  main.innerHTML='<section class="page-intro"><span class="eyebrow">YOUR LIBRARY / BOOKMARKS</span><h1>我的收藏</h1><p>收藏值得反复研究的作品与方法。收藏仅保存在当前浏览器，不需要账号，也不会上传数据。</p></section>'+(items.length?'<div class="card-grid">'+items.map(card).join("")+'</div>':'<div class="empty-state"><strong>收藏夹还是空的</strong>在作品卡片或日报详情中点击 ☆，把值得留下的灵感收进来。</div>');
 }
 function renderSearch(){

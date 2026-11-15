@@ -79,6 +79,20 @@ test("inspiration sub-site archive cards show article authors and channel labels
  await expect(page.locator(".item-card")).toContainText("Visible Author");await expect(page.locator(".item-card")).toContainText("每日精选阅读");
 });
 
+
+test("inspiration bookmarks are namespaced by channel and report date",async({page})=>{
+ const response=await page.request.get("/inspiration/data/index.json"),feed=await response.json();
+ feed.reports.unshift(
+  {channel:"reading",date:"2026-11-16",title:"同 ID 阅读测试",summary:"测试",items:[{id:"shared-id",title:"Reading Shared ID",author:"A",source:"A",url:"https://example.com/a",why:"A",published_at:"2026-11-15",reading_minutes:10,access:"free",tags:["A"]}]},
+  {channel:"opensource",date:"2026-11-16",title:"同 ID 项目测试",summary:"测试",items:[{id:"shared-id",title:"Project Shared ID",source:"GitHub",url:"https://github.com/example/b",why:"B",stack:"Rust",maturity:"稳定",difficulty:"低",license:"MIT",risks:"无",recommendation:"值得关注",uses:"测试",project_fit:"工具",version:"1.0",stars:10,platforms:"跨平台",tags:["B"]}]}
+ );
+ await page.route("**/inspiration/data/index.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(feed)}));
+ await page.goto("/inspiration/?channel=reading&view=archive");await page.locator(".item-card .bookmark").first().click();
+ await expect(page.locator(".item-card .bookmark").first()).toHaveClass(/saved/);
+ await page.goto("/inspiration/?channel=opensource&view=archive");
+ await expect(page.locator(".item-card .bookmark").first()).not.toHaveClass(/saved/);
+});
+
 test("empty public channels show a clear no-content state instead of fabricated entries",async({page})=>{
  await page.goto("/atlas/");await page.locator('[data-view="reading"]').first().click();
  await expect(page.getByText("这条信息流还没有内容。",{exact:true})).toBeVisible();
