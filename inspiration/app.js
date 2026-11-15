@@ -3,7 +3,7 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
 const main=$("#main"),searchInput=$("#searchInput");
 let db={reports:[],channels:[]},query="",activeCategory="全部",saved=new Set();
 try{saved=new Set(JSON.parse(localStorage.getItem("ih-saved")||"[]"));}catch{}
-const channelNames={inspiration:"灵感采集",opensource:"开源项目雷达",all:"全部内容"};
+const channelNames={world:"每日世界新闻",reading:"精选阅读",inspiration:"灵感采集",opensource:"开源项目雷达",all:"全部内容"};
 const glyphs={"交互与网站":"↗","品牌视觉":"✳","字体与排版":"Aa","游戏与像素":"▦","动态与影像":"▶","数字艺术":"◌","插画与出版":"▤","摄影与叙事":"◉","创意工具":"⌘","声音与音乐":"♫","展览与研究":"✷","产品设计":"◇","AI / Agent":"⌘","开发工具":"⌁","知识与趋势":"◈"};
 const artClass=c=>({"交互与网站":"art-motion","品牌视觉":"art-brand","字体与排版":"art-type","游戏与像素":"art-game","动态与影像":"art-motion","数字艺术":"art-art","插画与出版":"art-photo","摄影与叙事":"art-photo","创意工具":"art-tool","声音与音乐":"art-sound","展览与研究":"art-type","产品设计":"art-game","AI / Agent":"art-tool","开发工具":"art-motion","知识与趋势":"art-art"}[c]||"art-art");
 const channelOf=r=>r.channel||"inspiration";
@@ -22,7 +22,7 @@ function updateHeader(view,ch){
 function art(item,n=0){return '<div class="card-art '+artClass(item.category)+'"><span class="art-code">'+String(n+1).padStart(2,"0")+' / FIELD NOTE</span><span class="art-glyph">'+(glyphs[item.category]||"✳")+'</span></div>';}
 function card(item,n=0){
  const isSaved=saved.has(item.id),ch=item.channel||"inspiration";
- return '<article class="item-card">'+art(item,n)+'<div class="card-body"><div class="card-top"><span class="category-label">'+esc(item.category)+'</span><span class="age-label">'+esc(item.age||channelLabel(ch))+'</span></div><h3>'+esc(item.title)+'</h3><div class="creator">'+esc(item.creator)+'</div><p class="card-summary">'+esc(item.why)+'</p><div class="card-foot"><a href="?channel='+encodeURIComponent(ch)+'&date='+encodeURIComponent(item.reportDate)+'#item-'+encodeURIComponent(item.id)+'">研究方法 ↗</a><button class="bookmark '+(isSaved?"saved":"")+'" data-action="bookmark" data-id="'+esc(item.id)+'" aria-label="'+(isSaved?"取消收藏":"收藏")+'">'+(isSaved?"★":"☆")+'</button></div></div></article>';
+ return '<article class="item-card">'+art(item,n)+'<div class="card-body"><div class="card-top"><span class="category-label">'+esc(item.category)+'</span><span class="age-label">'+esc(item.age||channelLabel(ch))+'</span></div><h3>'+esc(item.title)+'</h3><div class="creator">'+esc(item.creator||item.author||item.team||"")+'</div><p class="card-summary">'+esc(item.why||item.summary||item.description||"")+'</p><div class="card-foot"><a href="?channel='+encodeURIComponent(ch)+'&date='+encodeURIComponent(item.reportDate)+'#item-'+encodeURIComponent(item.id)+'">研究方法 ↗</a><button class="bookmark '+(isSaved?"saved":"")+'" data-action="bookmark" data-id="'+esc(item.id)+'" aria-label="'+(isSaved?"取消收藏":"收藏")+'">'+(isSaved?"★":"☆")+'</button></div></div></article>';
 }
 function reportRow(r){
  const ch=channelOf(r);
@@ -61,7 +61,7 @@ function renderChannel(ch){
  main.innerHTML='<section class="page-intro"><span class="eyebrow">CHANNEL / '+esc((ch||"").toUpperCase())+'</span><h1>'+esc(meta.label)+'</h1><p>'+esc(meta.description)+'</p><div class="hero-actions"><a class="button-quiet" href="?channel='+encodeURIComponent(ch)+'&view=archive">浏览频道档案 ↗</a><a class="button-quiet" href="?channel=all&view=archive">查看全部内容</a></div></section>'+
  (list.length?'<div class="report-list">'+list.map(reportRow).join("")+'</div>':'<div class="empty-state"><strong>频道已建立，内容正在接入</strong>下一次定时研究完成并成功发布后，这里就会出现新内容。<br><small>自动发布会保留原始来源、分析和可执行建议。</small></div>');
 }
-function filterItems(items){const q=query.trim().toLowerCase();return items.filter(i=>(activeCategory==="全部"||i.category===activeCategory)&&(!q||[i.title,i.creator,i.category,i.why,i.method,i.uses,...(i.tags||[])].join(" ").toLowerCase().includes(q)));}
+function filterItems(items){const q=query.trim().toLowerCase();return items.filter(i=>(activeCategory==="全部"||i.category===activeCategory)&&(!q||[i.title,i.creator,i.author,i.source,i.category,i.summary,i.why,i.method,i.uses,i.stack,i.maturity,i.difficulty,i.license,i.risks,i.recommendation,i.version,i.platforms,...(i.tags||[])].map(v=>Array.isArray(v)?v.join(" "):String(v||"")).join(" ").toLowerCase().includes(q)));}
 function renderArchive(ch){
  const items=filterItems(itemsFor(ch)),list=reportsFor(ch),title=ch==="all"?"全部内容档案":channelLabel(ch)+"档案";
  main.innerHTML='<section class="page-intro"><span class="eyebrow">ARCHIVE / '+String(list.length).padStart(3,"0")+' ISSUES</span><h1>'+esc(title)+'</h1><p>按日期回看内容，也可以搜索作品、作者、设计方法与应用方向。所有条目保留原始来源，方便继续研究。</p></section><div class="toolbar"><span class="result-count">'+items.length+' ITEMS FOUND · '+list.length+' ISSUES</span>'+categoryChips(ch)+'</div>'+(items.length?'<div class="card-grid">'+items.map(card).join("")+'</div>':'<div class="empty-state"><strong>这个频道暂时没有匹配条目</strong>可以清除筛选，或查看其他内容频道。</div>')+'<div style="height:44px"></div>'+sectionHead("ISSUE HISTORY","按日期浏览")+'<div class="report-list">'+list.map(reportRow).join("")+'</div>';
@@ -72,7 +72,7 @@ function renderTopics(ch){
  main.innerHTML='<section class="page-intro"><span class="eyebrow">TAXONOMY / METHODS</span><h1>主题索引</h1><p>从创作问题出发，而不只是按作品类型浏览。选择一个方向，查看相关案例和可迁移的方法。</p></section><div class="topic-grid">'+topics.map(([c,n])=>'<button class="topic-card" data-topic="'+esc(c)+'"><span class="eyebrow">'+esc(glyphs[c]||"✳")+' / TOPIC</span><strong>'+esc(c)+'</strong><small>'+n+' IDEAS · EXPLORE ↗</small></button>').join("")+'</div>';
 }
 function detailItem(i,n){
- const extras=[["技术栈",i.stack],["成熟度",i.maturity],["上手难度",i.difficulty],["许可证",i.license],["风险与限制",i.risks],["推荐等级",i.recommendation]].filter(x=>x[1]);
+ const extras=[["技术栈",i.stack],["成熟度",i.maturity],["上手难度",i.difficulty],["许可证",i.license],["风险与限制",i.risks],["推荐等级",i.recommendation],["适合复用到项目",i.project_fit||i.suitability],["版本",i.version],["Star 数",i.stars],["平台支持",i.platforms]].filter(x=>x[1]);
  return '<article class="detail-card" id="item-'+esc(i.id)+'"><div class="detail-head"><div><span class="category-label">'+esc(i.category)+' · '+esc(i.age||"参考案例")+'</span><h2>'+esc(i.title)+'</h2><p>'+esc(i.creator)+'</p></div><span class="detail-number">'+String(n+1).padStart(2,"0")+' / '+String(allItems().length).padStart(2,"0")+'</span></div><div class="detail-grid"><section class="detail-cell"><span class="eyebrow">01 / WHY IT MATTERS</span><p>'+esc(i.why)+'</p></section><section class="detail-cell"><span class="eyebrow">02 / TAKEAWAY</span><p>'+esc(i.method)+'</p></section><section class="detail-cell"><span class="eyebrow">03 / WHERE TO USE</span><p>'+esc(i.uses)+'</p></section></div>'+(extras.length?'<div class="extra-grid">'+extras.map(x=>'<div><small>'+esc(x[0])+'</small><p>'+esc(x[1])+'</p></div>').join("")+'</div>':"")+'<div class="detail-footer"><div class="tag-list">'+(i.tags||[]).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div><div style="display:flex;gap:15px;align-items:center"><button class="bookmark '+(saved.has(i.id)?"saved":"")+'" data-action="bookmark" data-id="'+esc(i.id)+'">'+(saved.has(i.id)?"★ 已收藏":"☆ 收藏")+'</button><a class="source-link" href="'+esc(i.url)+'" target="_blank" rel="noopener noreferrer">打开原始来源 ↗</a></div></div></article>';
 }
 function getReport(date,ch){return db.reports.find(r=>r.date===date&&channelOf(r)===ch)||db.reports.find(r=>r.date===date);}
@@ -125,7 +125,7 @@ $("#themeToggle").addEventListener("click",()=>{const next=document.documentElem
 window.addEventListener("popstate",render);
 (async()=>{
  const theme=localStorage.getItem("ih-theme");if(theme)document.documentElement.dataset.theme=theme;
- try{const res=await fetch(DATA_URL,{cache:"no-store"});if(!res.ok)throw new Error("内容加载失败");db=await res.json();db.reports=(db.reports||[]).filter(r=>r.channel!=="knowledge");db.channels=(db.channels||[]).filter(c=>c.id!=="knowledge");db.reports.sort((a,b)=>b.date.localeCompare(a.date));$("#footerMeta").textContent="更新于 "+db.updatedAt+" · "+db.reports.length+" 期内容 · "+allItems().length+" 个条目";render();}
+ try{const res=await fetch(DATA_URL,{cache:"no-store"});if(!res.ok)throw new Error("内容加载失败");db=await res.json();if((db.reports||[]).some(r=>r.channel==="knowledge")||(db.channels||[]).some(c=>c.id==="knowledge"))throw new Error("检测到禁止公开的私人知识回顾频道，已停止加载。");db.reports=(db.reports||[]).filter(r=>["world","reading","opensource","inspiration"].includes(r.channel));db.channels=(db.channels||[]).filter(c=>["world","reading","opensource","inspiration"].includes(c.id));db.reports.sort((a,b)=>b.date.localeCompare(a.date));$("#footerMeta").textContent="更新于 "+db.updatedAt+" · "+db.reports.length+" 期内容 · "+allItems().length+" 个条目";render();}
  catch(err){main.innerHTML='<div class="empty-state"><strong>内容暂时无法加载</strong>请检查网络连接后刷新页面。<br><small>'+esc(err.message)+'</small></div>';}
  if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});}
 })();
