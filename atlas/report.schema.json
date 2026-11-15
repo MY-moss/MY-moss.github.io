@@ -42,7 +42,10 @@
         "type": "object",
         "required": [
           "id",
-          "title"
+          "title",
+          "source",
+          "why",
+          "tags"
         ],
         "properties": {
           "id": {
@@ -219,7 +222,24 @@
             ]
           }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "anyOf": [
+          {
+            "required": [
+              "url"
+            ]
+          },
+          {
+            "required": [
+              "repo_url"
+            ]
+          },
+          {
+            "required": [
+              "website_url"
+            ]
+          }
+        ]
       }
     },
     "sections": {
@@ -247,5 +267,132 @@
       }
     }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "channel": {
+            "const": "inspiration"
+          }
+        },
+        "required": [
+          "channel"
+        ]
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "required": [
+                "creator",
+                "method",
+                "uses"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "channel": {
+            "const": "world"
+          }
+        },
+        "required": [
+          "channel"
+        ]
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "required": [
+                "summary",
+                "confidence"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "channel": {
+            "const": "reading"
+          }
+        },
+        "required": [
+          "channel"
+        ]
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "required": [
+                "author",
+                "published_at",
+                "reading_minutes",
+                "access"
+              ],
+              "properties": {
+                "published_at": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "reading_minutes": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "access": {
+                  "enum": [
+                    "free",
+                    "paid",
+                    "unknown"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "channel": {
+            "const": "opensource"
+          }
+        },
+        "required": [
+          "channel"
+        ]
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "required": [
+                "stack",
+                "maturity",
+                "difficulty",
+                "risks",
+                "recommendation",
+                "license",
+                "uses",
+                "project_fit",
+                "version",
+                "stars",
+                "platforms"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }

@@ -27,6 +27,13 @@ function scanUrls(value,path="feed"){
  }
 }
 scanUrls(feed);
+const channelFields={inspiration:["creator","method","uses"],world:["summary","confidence"],reading:["author","published_at","reading_minutes","access"],opensource:["stack","maturity","difficulty","risks","recommendation","license","uses","project_fit","version","stars","platforms"]};
+for(const report of feed.reports)for(const [index,item] of (report.items||[]).entries()){
+ for(const field of ["source","why","tags"])if(item[field]===undefined||item[field]===null||item[field]===""||(field==="tags"&&(!Array.isArray(item.tags)||item.tags.length===0)))errors.push("missing common item field "+report.channel+"/"+report.date+"["+index+"] "+field);
+ if(!item.url&&!item.repo_url&&!item.website_url)errors.push("missing source URL "+report.channel+"/"+report.date+"["+index+"]");
+ for(const field of channelFields[report.channel]||[])if(item[field]===undefined||item[field]===null||item[field]===""||(Array.isArray(item[field])&&item[field].length===0))errors.push("missing channel-specific field "+report.channel+"/"+report.date+"["+index+"] "+field);
+ if(report.channel==="reading"&&item.access&&!["free","paid","unknown"].includes(item.access))errors.push("invalid reading access status "+report.date+"["+index+"]");
+}
 const raw=JSON.stringify(feed);
 const checks=[
  ["GitHub token",/\b(?:github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,})\b/],
