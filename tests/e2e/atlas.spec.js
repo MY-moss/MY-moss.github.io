@@ -47,3 +47,14 @@ test("empty public channels show a clear no-content state instead of fabricated 
  await page.goto("/atlas/");await page.locator('[data-view="reading"]').first().click();
  await expect(page.getByText("这条信息流还没有内容。",{exact:true})).toBeVisible();
 });
+
+test("read markers persist and remain visible",async({page})=>{
+ await page.goto("/atlas/");const card=page.locator(".entry-card").first();const title=await card.locator("h3").innerText();
+ await card.locator('[data-action="read"]').click();await expect(card.locator('[data-action="read"]')).toContainText("已读");
+ await page.reload();const same=page.locator(".entry-card").filter({hasText:title}).first();await expect(same.locator('[data-action="read"]')).toContainText("已读");
+});
+test("archive filters by public channel",async({page})=>{
+ await page.goto("/atlas/");await page.locator('[data-view="archive"]').first().click();await expect(page.locator("#archive-channel")).toBeVisible();
+ await page.locator("#archive-channel").selectOption("world");await expect(page.locator(".entry-card").first()).toBeVisible();
+ await page.locator("#archive-channel").selectOption("reading");await expect(page.locator(".feed-empty")).toBeVisible();
+});

@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   var CONFIG = window.ATLAS_CONFIG;
-  var state = { view: "overview", previousView: "overview", selectedId: null, query: "", docs: {}, entries: [], errors: [], refreshTimer: null, bookmarks: loadStore("atlas_bookmarks", []), read: loadStore("atlas_read", []), lastSync: null, loading: false };
+  var state = { view: "overview", previousView: "overview", selectedId: null, query: "", docs: {}, entries: [], errors: [], refreshTimer: null, bookmarks: loadStore("atlas_bookmarks", []), read: loadStore("atlas_read", []), lastSync: null, loading: false, archiveChannel: "all" };
   var labels = { overview: "总览", world: "世界新闻", reading: "精选阅读", opensource: "开源雷达", inspiration: "灵感采集", archive: "历史档案", bookmarks: "我的书架", settings: "设置与连接", detail: "内容详情" };
   function $(id) { return document.getElementById(id); }
   function loadStore(key, fallback) { try { var v = JSON.parse(localStorage.getItem(key)); return Array.isArray(v) ? v : fallback; } catch (_) { return fallback; } }
@@ -150,10 +150,13 @@
   }
   function renderArchive() {
     var entries = filtered(state.entries);
+    if (state.archiveChannel !== "all") entries = entries.filter(function(e){return e.stream === state.archiveChannel;});
     var grouped = {};
     entries.forEach(function(e){var key=String(e.date||"日期待核").slice(0,10);(grouped[key]||(grouped[key]=[])).push(e);});
     var html = Object.keys(grouped).sort().reverse().map(function(day){return '<div class="section-heading"><div><div class="section-kicker">ARCHIVE DATE</div><h2>'+esc(day)+'</h2></div><span class="meta-label">'+grouped[day].length+' ITEMS</span></div><div class="entry-list">'+grouped[day].map(card).join("")+'</div>';}).join("");
-    return pageHeader("CHRONOLOGICAL LIBRARY","历史档案","按日期回看所有已经归档的文章、项目、作品。",entries.length+" 条记录")+(html||empty("历史档案尚为空。","新内容会自动按照日期追加保存。"));
+    var options = '<option value="all">全部频道</option>' + CONFIG.streams.map(function(s){return '<option value="'+s.id+'"'+(state.archiveChannel===s.id?' selected':'')+'>'+esc(s.title)+'</option>';}).join("");
+    var filter = '<div class="archive-toolbar"><label>频道筛选 <select id="archive-channel">'+options+'</select></label><span>'+entries.length+' 条内容</span></div>';
+    return pageHeader("CHRONOLOGICAL LIBRARY","历史档案","按日期和频道回看全部报告；每一期保留来源与原始链接。",entries.length+" 条记录")+filter+(html||empty("历史档案尚为空。","新内容会自动按照日期追加保存。"));
   }
   function renderBookmarks() {
     var entries = state.entries.filter(function(e){return isSaved(e.id);});
@@ -195,7 +198,7 @@
   function updateBookmarkCount() { $("bookmark-count").textContent = state.bookmarks.length; }
   document.addEventListener("click",function(event){
     var nav=event.target.closest("[data-view]");
-    if(nav){state.previousView=state.view;state.view=nav.getAttribute("data-view");render();return;}
+    if(nav){state.previousView=state.view;state.view=nav.getAttribute("data-view");if(state.view==="archive")state.archiveChannel="all";render();return;}
     var open=event.target.closest("[data-open-entry]");
     if(open){state.previousView=state.view;state.selectedId=open.getAttribute("data-open-entry");state.view="detail";render();return;}
     var action=event.target.closest("[data-action]");
@@ -208,6 +211,7 @@
   $("refresh-button").addEventListener("click",loadAll);
   $("top-refresh").addEventListener("click",loadAll);
   $("global-search").addEventListener("input",function(e){state.query=e.target.value.trim();render();});
+  $("page-content").addEventListener("change",function(e){if(e.target.id==="archive-channel"){state.archiveChannel=e.target.value;render();}});
   $("theme-button").addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",dark?"dark":"light");try{localStorage.setItem("atlas_theme",dark?"dark":"light");}catch(_){}});
   document.addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("global-search").focus();}if(e.key==="Escape"&&document.activeElement===$("global-search")){$("global-search").blur();}});
   try { var theme=localStorage.getItem("atlas_theme"); if(theme==="dark"||theme==="light")document.documentElement.setAttribute("data-theme",theme); } catch(_){}
