@@ -1,11 +1,12 @@
 (function () {
   "use strict";
   var CONFIG = window.ATLAS_CONFIG;
-  var state = { view: "overview", query: "", docs: {}, entries: [], errors: [], refreshTimer: null, bookmarks: loadStore("atlas_bookmarks", []), read: loadStore("atlas_read", []), lastSync: null, loading: false };
-  var labels = { overview: "总览", world: "世界新闻", reading: "精选阅读", opensource: "开源雷达", inspiration: "灵感采集", archive: "历史档案", bookmarks: "我的书架", settings: "设置与连接" };
+  var state = { view: "overview", previousView: "overview", selectedId: null, query: "", docs: {}, entries: [], errors: [], refreshTimer: null, bookmarks: loadStore("atlas_bookmarks", []), read: loadStore("atlas_read", []), lastSync: null, loading: false };
+  var labels = { overview: "总览", world: "世界新闻", reading: "精选阅读", opensource: "开源雷达", inspiration: "灵感采集", archive: "历史档案", bookmarks: "我的书架", settings: "设置与连接", detail: "内容详情" };
   function $(id) { return document.getElementById(id); }
   function loadStore(key, fallback) { try { var v = JSON.parse(localStorage.getItem(key)); return Array.isArray(v) ? v : fallback; } catch (_) { return fallback; } }
   function saveStore(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {} }
+  function loadObject(key) { try { var v=JSON.parse(localStorage.getItem(key)); return v && typeof v === "object" ? v : null; } catch (_) { return null; } }
   function esc(value) { return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[c]; }); }
   function safeUrl(value) { try { var u = new URL(value); return u.protocol === "https:" ? u.href : ""; } catch (_) { return ""; } }
   function dateLabel(value) { if (!value) return "日期待核"; var d = new Date(value); return isNaN(d.getTime()) ? esc(value) : d.toLocaleDateString("zh-CN", { year:"numeric", month:"short", day:"numeric" }); }
@@ -25,7 +26,7 @@
     return list.map(function(item,index){
       item=typeof item==="string"?{title:item}:(item||{});
       var title=item.title||item.name||item.project||item.headline||item.topic||"未命名条目";
-      var url=safeUrl(item.url||item.article_url||item.repo_url||item.website_url||item.link);
+      var url=safeUrl(item.url||item.article_url||item.repo_url||item.repository_url||item.website_url||item.link);
       var tags=Array.isArray(item.tags)?item.tags.slice():(item.category?[item.category]:[]);
       return {
         id:stream+":"+date+":"+(item.id||(index+":"+title)),stream:stream,
@@ -40,7 +41,19 @@
         tags:tags,
         confidence:item.confidence||item.certainty||"",
         language:item.language||"",
-        maturity:item.maturity||"",
+        maturity:item.maturity||item.project_maturity||"",
+        stack:item.stack||item.tech_stack||item.technology||item.dependencies||"",
+        difficulty:item.difficulty||item.setup_difficulty||item.onboarding_difficulty||"",
+        license:item.license||item.licence||item.license_name||"",
+        risks:item.risks||item.limitations||item.risk||"",
+        recommendation:item.recommendation||item.recommendation_level||item.priority||"",
+        uses:item.uses||item.use_cases||item.how_to_try||item.play_with||"",
+        projectFit:item.project_fit||item.suitability||item.reuse_value||"",
+        version:item.version||item.latest_version||"",
+        stars:item.stars||item.star_count||"",
+        platforms:item.platforms||item.platform_support||item.supported_platforms||"",
+        homeUrl:safeUrl(item.website_url||item.homepage||""),
+        docsUrl:safeUrl(item.docs_url||item.documentation_url||""),
         raw:item
       };
     });
@@ -55,6 +68,7 @@
       if (!response.ok) throw new Error("内容读取失败（HTTP " + response.status + "）");
       var feed = await response.json();
       if (!feed || !Array.isArray(feed.reports)) throw new Error("内容索引不是有效的报告列表");
+      if ((feed.channels||[]).some(function(c){return c.id==="knowledge";}) || feed.reports.some(function(r){return r.channel==="knowledge";})) throw new Error("检测到禁止公开的私人知识回顾频道，已停止加载。");
       var known = new Set(CONFIG.streams.map(function(s){ return s.id; }));
       var seen = new Set();
       state.docs = {};
@@ -76,14 +90,23 @@
       });
       CONFIG.streams.forEach(function(s){state.docs[s.id].sort(function(a,b){return b.date.localeCompare(a.date);});});
       state.entries.sort(function(a,b){return String(b.date).localeCompare(String(a.date));});
+      saveStore("atlas_feed_cache",{cachedAt:new Date().toISOString(),feed:feed});
       state.lastSync=new Date();
       setStatus(true,state.errors.length?"已同步（有异常）":"公开档案已更新","同步于 "+state.lastSync.toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit"})+(state.errors.length?" · "+state.errors.length+" 条异常":" · 四条信息流"));
       $("workspace").setAttribute("aria-hidden","false");
       render();
       if(state.errors.length)toast(state.errors.length+" 条内容异常，请检查源文件");
     } catch(e) {
-      setStatus(false,"同步失败",e.message);
-      toast(e.message);
+      var cached=loadObject("atlas_feed_cache");
+      if(cached&&cached.feed&&Array.isArray(cached.feed.reports)) {
+        try {
+          if(cached.feed.reports.some(function(r){return r.channel==="knowledge";}) || (cached.feed.channels||[]).some(function(c){return c.id==="knowledge";})) throw new Error("缓存中包含禁止公开的私人频道");
+          state.docs={};state.entries=[];CONFIG.streams.forEach(function(s){state.docs[s.id]=[];});
+          cached.feed.reports.forEach(function(report){if(!CONFIG.streams.some(function(s){return s.id===report.channel;}))return;var key=report.channel+":"+report.date;var doc={stream:report.channel,file:key,date:report.date,title:report.title||"未命名报告",summary:report.summary||"",items:flattenDoc(report,report.channel,key),raw:report};state.docs[report.channel].push(doc);state.entries=state.entries.concat(doc.items);});
+          CONFIG.streams.forEach(function(s){state.docs[s.id].sort(function(a,b){return b.date.localeCompare(a.date);});});state.entries.sort(function(a,b){return String(b.date).localeCompare(String(a.date));});
+          setStatus(false,"离线缓存","最近成功同步于 "+dateLabel(cached.cachedAt));render();
+        } catch(cacheError) { setStatus(false,"缓存校验失败",cacheError.message);toast(cacheError.message); }
+      } else {setStatus(false,"同步失败",e.message);toast(e.message);}
     } finally {state.loading=false;updateBookmarkCount();}
   }
   function streamMeta(id) { return CONFIG.streams.find(function(s){return s.id===id;}) || CONFIG.streams[0]; }
@@ -98,13 +121,13 @@
     var priority = entry.priority ? '<span class="entry-priority">'+esc(entry.priority)+'</span>' : "";
     var minutes = entry.minutes ? "约 " + esc(entry.minutes) + " 分钟" : "";
     var open = entry.url ? '<a href="'+esc(entry.url)+'" target="_blank" rel="noopener noreferrer">打开原始来源 ↗</a>' : "";
-    return '<article class="entry-card"><div class="entry-top"><span class="entry-source">'+esc(source || meta.en)+'</span>'+priority+'</div><h3>'+esc(entry.title)+'</h3><p class="entry-summary">'+esc(entry.summary || entry.why || "暂无摘要，打开原始来源了解详情。")+'</p><div class="entry-meta"><span>'+esc(meta.title)+'</span><span>'+esc(dateLabel(entry.date))+'</span>'+(author?'<span>'+author+'</span>':"")+(minutes?'<span>'+minutes+'</span>':"")+(entry.confidence?'<span>可信度 · '+esc(entry.confidence)+'</span>':"")+'</div>'+(tags?'<div class="entry-tags">'+tags+'</div>':"")+'<div class="entry-actions">'+open+'<button data-action="bookmark" data-id="'+esc(entry.id)+'" class="'+(saved?"is-saved":"")+'">'+(saved?"♥ 已收藏":"♡ 收藏")+'</button><button data-action="read" data-id="'+esc(entry.id)+'">'+(read?"✓ 已读":"标记已读")+'</button></div></article>';
+    return '<article class="entry-card"><div class="entry-top"><span class="entry-source">'+esc(source || meta.en)+'</span>'+priority+'</div><h3><button class="entry-title-button" data-open-entry="'+esc(entry.id)+'">'+esc(entry.title)+'</button></h3><p class="entry-summary">'+esc(entry.summary || entry.why || "暂无摘要，打开原始来源了解详情。")+'</p><div class="entry-meta"><span>'+esc(meta.title)+'</span><span>'+esc(dateLabel(entry.date))+'</span>'+(author?'<span>'+author+'</span>':"")+(minutes?'<span>'+minutes+'</span>':"")+(entry.confidence?'<span>可信度 · '+esc(entry.confidence)+'</span>':"")+'</div>'+(tags?'<div class="entry-tags">'+tags+'</div>':"")+'<div class="entry-actions">'+open+'<button data-action="bookmark" data-id="'+esc(entry.id)+'" class="'+(saved?"is-saved":"")+'">'+(saved?"♥ 已收藏":"♡ 收藏")+'</button><button data-action="read" data-id="'+esc(entry.id)+'">'+(read?"✓ 已读":"标记已读")+'</button></div></article>';
   }
   function empty(title, copy) { return '<div class="feed-empty"><div class="empty-symbol">✳</div><h3>'+esc(title)+'</h3><p>'+esc(copy)+'</p></div>'; }
   function filtered(entries) {
     if (!state.query) return entries;
     var q = state.query.toLowerCase();
-    return entries.filter(function(e){ return [e.title,e.summary,e.why,e.author,e.source].concat(e.tags).join(" ").toLowerCase().indexOf(q)>=0; });
+    return entries.filter(function(e){ return [e.title,e.summary,e.why,e.author,e.source,e.stack,e.maturity,e.difficulty,e.license,e.risks,e.recommendation,e.uses,e.projectFit,e.version,e.platforms].concat(e.tags).join(" ").toLowerCase().indexOf(q)>=0; });
   }
   function pageHeader(kicker,title,copy,mark) {
     return '<div class="page-title-row"><div><div class="page-title-mark">'+esc(kicker)+'</div><h1>'+esc(title)+'</h1><p>'+esc(copy)+'</p></div>'+(mark?'<span class="status-pill">'+esc(mark)+'</span>':"")+'</div>';
@@ -136,6 +159,17 @@
     var entries = state.entries.filter(function(e){return isSaved(e.id);});
     return pageHeader("YOUR READING SHELF","我的书架","收藏的文章、项目与灵感。收藏状态保存在当前浏览器。",entries.length+" 条收藏")+(entries.length?'<div class="entry-list">'+entries.map(card).join("")+'</div>':empty("书架还没有收藏。","在任意条目下点击“收藏”，它就会出现在这里。"));
   }
+  function renderDetail() {
+    var entry=state.entries.find(function(e){return e.id===state.selectedId;});
+    if(!entry)return pageHeader("CONTENT DETAIL","内容详情","这条内容可能已更新或移除。","")+empty("没有找到这条内容。","返回频道或历史档案继续浏览。");
+    var project=entry.stream==="opensource";
+    var fields=project?[["核心用途",entry.summary],["技术栈 / 关键依赖",entry.stack],["项目成熟度",entry.maturity],["上手难度",entry.difficulty],["许可证",entry.license],["潜在风险 / 限制",entry.risks],["推荐等级",entry.recommendation],["可以怎么玩",entry.uses],["适合复用到自己的项目",entry.projectFit],["版本",entry.version],["Star 数",entry.stars],["平台支持",entry.platforms]]:[["核心内容",entry.summary],["值得关注的原因",entry.why],["作者 / 团队",entry.author],["来源",entry.source],["分类",entry.category],["标签",entry.tags]];
+    function field(label,value){var text=Array.isArray(value)?value.join("、"):String(value||"未提供 / 未核实");return '<div class="detail-cell"><span class="eyebrow">'+esc(label)+'</span><p>'+esc(text)+'</p></div>';}
+    var links=[["GitHub / 原始项目",entry.url],["官方网站",entry.homeUrl],["文档",entry.docsUrl]].filter(function(x,i,a){return x[1]&&a.findIndex(function(y){return y[1]===x[1];})===i;});
+    return pageHeader(project?"OPEN SOURCE PROJECT":streamMeta(entry.stream).en,entry.title,entry.summary||entry.why,entry.recommendation||"")+
+      '<div class="detail-layout"><section class="detail-panel"><div class="detail-grid">'+fields.map(function(x){return field(x[0],x[1]);}).join("")+'</div><div class="detail-actions">'+links.map(function(x){return '<a href="'+esc(x[1])+'" target="_blank" rel="noopener noreferrer">'+esc(x[0])+' ↗</a>';}).join("")+'</div></section>'+
+      '<aside class="detail-aside"><div class="side-panel"><h3>研究判断</h3><p>'+esc(entry.why||"未提供 / 未核实")+'</p></div><div class="side-panel"><h3>记录信息</h3><p>所属频道：'+esc(streamMeta(entry.stream).title)+'</p><p>报告日期：'+esc(dateLabel(entry.date))+'</p></div><div class="side-panel"><button class="button button-quiet" data-action="bookmark" data-id="'+esc(entry.id)+'">'+(isSaved(entry.id)?"♥ 已收藏":"♡ 收藏")+'</button> <button class="button button-quiet" data-action="read" data-id="'+esc(entry.id)+'">'+(state.read.indexOf(entry.id)>=0?"✓ 已读":"标记已读")+'</button></div></aside></div><button class="plain-link detail-back" data-action="back">← 返回上一页</button>';
+  }
   function renderSettings() {
     return pageHeader("ABOUT & PREFERENCES","关于 ATLAS","开放的知识与创意研究档案，无需登录。","PUBLIC")+
       '<div class="settings-grid"><section class="settings-card"><h3>公开内容来源</h3><span class="status-pill">无需登录</span><p>ATLAS 读取同域公开 JSON 索引；四条信息流会通过 GitHub Actions 重新部署并自动刷新。</p><div class="settings-value">'+esc(CONFIG.feedUrl)+'</div></section>'+
@@ -151,6 +185,7 @@
     else if (view==="archive") html=renderArchive();
     else if (view==="bookmarks") html=renderBookmarks();
     else if (view==="settings") html=renderSettings();
+    else if (view==="detail") html=renderDetail();
     else html=renderFeed(view);
     $("page-content").innerHTML = html;
     $("global-search").value = state.query;
@@ -159,12 +194,15 @@
   function updateBookmarkCount() { $("bookmark-count").textContent = state.bookmarks.length; }
   document.addEventListener("click",function(event){
     var nav=event.target.closest("[data-view]");
-    if(nav){state.view=nav.getAttribute("data-view");render();return;}
+    if(nav){state.previousView=state.view;state.view=nav.getAttribute("data-view");render();return;}
+    var open=event.target.closest("[data-open-entry]");
+    if(open){state.previousView=state.view;state.selectedId=open.getAttribute("data-open-entry");state.view="detail";render();return;}
     var action=event.target.closest("[data-action]");
     if(!action)return;
     var id=action.getAttribute("data-id"), kind=action.getAttribute("data-action");
     if(kind==="bookmark"){var i=state.bookmarks.indexOf(id);if(i>=0)state.bookmarks.splice(i,1);else state.bookmarks.push(id);saveStore("atlas_bookmarks",state.bookmarks);render();toast(i>=0?"已从书架移除":"已加入书架");}
     if(kind==="read"){var j=state.read.indexOf(id);if(j>=0)state.read.splice(j,1);else state.read.push(id);saveStore("atlas_read",state.read);render();toast(j>=0?"已取消已读标记":"已标记为已读");}
+    if(kind==="back"){state.view=state.previousView||"overview";render();}
   });
   $("refresh-button").addEventListener("click",loadAll);
   $("top-refresh").addEventListener("click",loadAll);
