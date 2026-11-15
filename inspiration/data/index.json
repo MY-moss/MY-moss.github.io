@@ -212,6 +212,75 @@
       ]
     },
     {
+      "channel": "inspiration",
+      "date": "2026-11-15",
+      "title": "从可编辑像素到字体识别：把视觉创意变成可维护的系统",
+      "summary": "精选11月12日更新的像素编辑工具与两项2026年品牌设计案例，研究可追溯的色板编辑、活动视觉系统和字形识别。仅首项属于近七天明确更新；其余为较早作品的经典参考，不宣称近期重新走红。",
+      "theme": "可编辑性、品牌系统与字形",
+      "items": [
+        {
+          "id": "klad-pixel-layers-20261112",
+          "title": "klad 0.2.0：可编辑像素图层",
+          "creator": "klad-app 项目维护者（个人署名未核实）",
+          "source": "GitHub / 官方 CHANGELOG",
+          "url": "https://github.com/klad-app/klad/blob/main/CHANGELOG.md",
+          "why": "2026-11-12 更新将像素图层、整数缩放、色板关联与 CLI 操作整合为一致的创作流程；像素不再只是导出结果，而是可重新着色、移动的结构化对象。",
+          "method": "为颜色建立语义引用而非把颜色值烘焙到每个像素；提供1×真实尺寸预览、整数缩放与可脚本化编辑，并测试旧文件兼容性。",
+          "uses": "像素图标编辑器、游戏素材工作台、可编程创意工具",
+          "tags": [
+            "像素画",
+            "开源",
+            "工具设计",
+            "色板"
+          ],
+          "published": "2026-11-12（更新日志）"
+        },
+        {
+          "id": "summit-wetrio-20260524",
+          "title": "Summit Branding & Visual Identity",
+          "creator": "WeTrio Agency、tiah m.",
+          "source": "Behance / 创作者项目页",
+          "url": "https://www.behance.net/gallery/249936785/Summit-Branding-Visual-Identity",
+          "why": "围绕高端行业峰会建立统一的活动品牌方向，值得研究如何让邀请函、场地物料与数字触点具有一致的身份。",
+          "method": "先制定活动视觉的字体层级、核心形状与材质规则，再分别验证大屏、邀请函、胸牌和移动端的适配；具体制作技术未获核实。",
+          "uses": "会议网站、产品发布会、展览视觉、活动主视觉",
+          "tags": [
+            "品牌视觉",
+            "活动设计",
+            "视觉系统"
+          ],
+          "published": "2026-05-24（作品页）"
+        },
+        {
+          "id": "typographic-logo-valery-20260209",
+          "title": "Typographic Logo — 2026",
+          "creator": "LittleFoxNice / Valery",
+          "source": "Behance / 创作者项目页",
+          "url": "https://www.behance.net/gallery/243835935/Typographic-Logo-2026",
+          "why": "以字形本身作为识别核心的标志设计练习，适合观察字母轮廓、字距和整体识别感之间的关系。",
+          "method": "从黑白小尺寸字标开始，测试字距、笔画粗细、负形和缩放后的识别，再扩展到彩色及应用场景；不直接复制受版权保护的字形。",
+          "uses": "独立软件品牌、游戏标题字标、编辑海报、创作者身份设计",
+          "tags": [
+            "字体",
+            "Logo",
+            "字标"
+          ],
+          "published": "2026-02-09（作品页）"
+        }
+      ],
+      "sections": [
+        {
+          "title": "本期最值得实践的方法",
+          "summary": "用语义色板保留可编辑性；用统一的视觉规则贯穿不同载体；让字标先通过黑白与小尺寸测试。",
+          "itemIds": [
+            "klad-pixel-layers-20261112",
+            "summit-wetrio-20260524",
+            "typographic-logo-valery-20260209"
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026-11-14",
       "title": "让声音成为界面，让真实物体成为动画画布",
       "summary": "声音驱动的网站、实体投影映射、流体交互菜单与国际海报设计。重点研究统一时间轴、真实数据驱动的视觉反馈，以及可迁移的交互规则。",
