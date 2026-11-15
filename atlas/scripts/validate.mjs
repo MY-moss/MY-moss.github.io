@@ -47,7 +47,9 @@ const checks=[
  ["China mobile",/\b1[3-9]\d{9}\b/],
  ["private Windows path",/\b[A-Z]:\\Users\\[^\\]+/i],
  ["private Unix home path",/(?:\/Users\/[^/\s]+\/|\/home\/[^/\s]+\/)/],
- ["private chat",/(?:根据(?:你|用户)(?:之前|过去|个人)|私人聊天记录|聊天记录中提到|用户的个人信息)/i]
+ ["private chat",/(?:根据(?:你|用户)(?:之前|过去|个人)|私人聊天记录|聊天记录中提到|用户的个人信息)/i],
+ ["personalized private project reference",/(?:用户|你的|我的|自己)(?:的)?(?:项目|软件|工具|工作区|应用|设备|学校)/i],
+ ["personalized recommendation",/(?:适合(?:你|用户|我)(?:的)?项目|对(?:你|用户|我)(?:自己的)?项目|根据你的偏好)/i]
 ];
 for(const [name,pattern] of checks)if(pattern.test(raw))errors.push("privacy scan "+name);
 if(errors.length){console.error(errors.join("\n"));process.exit(1);}
