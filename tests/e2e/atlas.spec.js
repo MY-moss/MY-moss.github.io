@@ -45,5 +45,5 @@ test("existing landing page and inspiration sub-site still load",async({page})=>
 });
 test("empty public channels show a clear no-content state instead of fabricated entries",async({page})=>{
  await page.goto("/atlas/");await page.locator('[data-view="reading"]').first().click();
- await expect(page.getByText("等待首期发布",{exact:true})).toBeVisible();
+ await expect(page.getByText("这条信息流还没有内容。",{exact:true})).toBeVisible();
 });
