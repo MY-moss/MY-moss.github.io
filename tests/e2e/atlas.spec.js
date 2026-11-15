@@ -64,6 +64,7 @@ test("inspiration sub-site renders reading and open-source details correctly",as
   {channel:"reading",date:"2026-11-16",title:"阅读详情跨频道测试",summary:"阅读报告摘要",items:[{id:"reading-cross",title:"Cross-channel Reading",author:"Test Author",source:"Test Journal",url:"https://example.com/article",summary:"文章摘要",why:"值得精读",published_at:"2026-11-15",reading_minutes:18,access:"free",tags:["文学"]}]},
   {channel:"opensource",date:"2026-11-16",title:"开源项目跨频道测试",summary:"项目报告摘要",items:[{id:"project-cross",title:"Cross-channel Project",source:"GitHub",url:"https://github.com/example/project",summary:"项目用途",why:"值得关注",stack:["TypeScript","Rust"],maturity:"活跃维护",difficulty:"中等",license:"MIT",risks:"依赖需审查",recommendation:"值得关注",uses:"制作最小原型",project_fit:"可复用的开发工具",version:"未核实",stars:"未核实",platforms:["Windows","macOS"],tags:["开发工具"]}]}
  );
+ await page.addInitScript(()=>{Object.defineProperty(navigator,"serviceWorker",{configurable:true,value:{register:()=>Promise.resolve({update:()=>Promise.resolve()})}});});
  await page.route("**/inspiration/data/index.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(feed)}));
  await page.goto("/inspiration/?channel=reading&date=2026-11-16");
  await expect(page.locator(".detail-items")).toContainText("Test Author");await expect(page.locator(".detail-items")).toContainText("免费全文");await expect(page.locator(".detail-items")).toContainText("18 分钟");
@@ -86,6 +87,7 @@ test("inspiration bookmarks are namespaced by channel and report date",async({pa
   {channel:"reading",date:"2026-11-16",title:"同 ID 阅读测试",summary:"测试",items:[{id:"shared-id",title:"Reading Shared ID",author:"A",source:"A",url:"https://example.com/a",why:"A",published_at:"2026-11-15",reading_minutes:10,access:"free",tags:["A"]}]},
   {channel:"opensource",date:"2026-11-16",title:"同 ID 项目测试",summary:"测试",items:[{id:"shared-id",title:"Project Shared ID",source:"GitHub",url:"https://github.com/example/b",why:"B",stack:"Rust",maturity:"稳定",difficulty:"低",license:"MIT",risks:"无",recommendation:"值得关注",uses:"测试",project_fit:"工具",version:"1.0",stars:10,platforms:"跨平台",tags:["B"]}]}
  );
+ await page.addInitScript(()=>{Object.defineProperty(navigator,"serviceWorker",{configurable:true,value:{register:()=>Promise.resolve({update:()=>Promise.resolve()})}});});
  await page.route("**/inspiration/data/index.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(feed)}));
  await page.goto("/inspiration/?channel=reading&view=archive");await page.locator(".item-card .bookmark").first().click();
  await expect(page.locator(".item-card .bookmark").first()).toHaveClass(/saved/);
