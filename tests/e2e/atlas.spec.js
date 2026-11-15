@@ -23,7 +23,7 @@ test("project details show known metadata and explicit unknown values",async({pa
  stack:["TypeScript","WebAssembly"],maturity:"活跃维护（测试值）",difficulty:"中等（测试值）",license:"MIT",
  risks:"依赖升级频率需要检查",recommendation:"值得关注",uses:"尝试制作一个最小原型",project_fit:"适合用作前端原型"}]});
  await page.route("**/atlas/data/index.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(feed)}));
- await page.goto("/atlas/");await page.locator('[data-view="opensource"]').click();await page.getByRole("button",{name:"ATLAS Demo Project"}).click();
+ await page.goto("/atlas/");await page.locator('[data-view="opensource"]').first().click();await page.getByRole("button",{name:"ATLAS Demo Project"}).click();
  await expect(page.locator(".detail-grid")).toContainText("TypeScript");await expect(page.locator(".detail-grid")).toContainText("MIT");
  await expect(page.locator(".detail-grid")).toContainText("值得关注");await expect(page.locator(".detail-grid")).toContainText("未提供 / 未核实");
 });
