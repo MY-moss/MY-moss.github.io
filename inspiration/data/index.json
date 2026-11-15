@@ -4,6 +4,214 @@
   "updatedAt": "2026-11-15",
   "reports": [
     {
+      "channel": "world",
+      "date": "2026-11-15",
+      "title": "星舰首次捕获上面级、开源语音模型发布与霍尔木兹航运风险",
+      "summary": "11月15日世界新闻：SpaceX实现星舰上面级发射塔捕获；ZONOS3-Mini开源语音模型值得关注；Microsoft 365恢复服务；霍尔木兹油轮触雷说法仍待独立核实；俄乌与中东外交、东盟缅甸政策持续变化。",
+      "theme": "技术突破与全球安全的不确定性",
+      "items": [
+        {
+          "id": "starship-upper-stage-catch-20261114",
+          "title": "星舰上面级首次由发射塔机械臂捕获",
+          "summary": "SpaceX 11月14日完成22小时轨道任务，星舰上面级绕地14圈后返回得州发射场并被机械臂捕获；助推器本次未成功回收。",
+          "source": "Reuters；Al Jazeera",
+          "url": "https://www.reuters.com/business/aerospace-defense/spacexs-starship-aces-first-return-texas-2026-11-14/",
+          "why": "上面级回收是全复用火箭的重要技术节点，但不等于已实现两级同时回收或快速复飞。",
+          "confidence": "高：Reuters与Al Jazeera相互印证；技术成熟度仍待后续飞行验证",
+          "time": "2026-11-14",
+          "tags": [
+            "航天",
+            "工程",
+            "可复用"
+          ]
+        },
+        {
+          "id": "zonos3-mini-20261112",
+          "title": "ZONOS3-Mini 发布开源语音合成与克隆模型",
+          "summary": "Zyphra公布ZONOS3-Mini：约8.86亿总参数、每token约1亿激活参数，提供多语言语音合成、参考音频克隆及WebGPU、MLX、ggml等推理路径。11月12日发布，近两日出现技术报告和更多解读。",
+          "source": "Zyphra GitHub；arXiv 技术报告",
+          "url": "https://github.com/Zyphra/ZONOS3-Mini",
+          "why": "有利于本地语音应用、浏览器交互和低成本音频原型；应核对具体权重许可及声音授权。",
+          "confidence": "高：项目仓库与技术论文可核验；性能数据主要为作者自测",
+          "time": "2026-11-12—14",
+          "tags": [
+            "AI",
+            "开源",
+            "语音",
+            "WebGPU"
+          ]
+        },
+        {
+          "id": "microsoft365-recovery-20261114",
+          "title": "Microsoft 365 全球服务中断后宣布恢复",
+          "summary": "微软11月14日宣布Teams、Outlook等服务在超过24小时的全球性故障后恢复，故障原因仍需等待更完整的技术复盘。",
+          "source": "Reuters；Microsoft 官方公开声明（经Reuters转述）",
+          "url": "https://www.reuters.com/technology/microsoft-365-outlook-down-thousands-us-users-downdetector-shows-2026-11-12/",
+          "why": "大型云协作平台故障凸显业务连续性、离线能力与跨服务冗余的重要性。",
+          "confidence": "中高：恢复由公司声明确认，完整根因未独立核实",
+          "time": "2026-11-14",
+          "tags": [
+            "云服务",
+            "可靠性",
+            "软件"
+          ]
+        },
+        {
+          "id": "nvidia-open-model-debate-20261114",
+          "title": "英伟达管理层变化引发开放模型生态讨论",
+          "summary": "在英伟达11月12日宣布管理层变动后，研究者Nathan Lambert于14日讨论Nemotron等开放模型支持的长期不确定性；目前未见英伟达宣布终止开放模型计划。",
+          "source": "Reuters；Interconnects（Nathan Lambert评论）",
+          "url": "https://www.interconnects.ai/p/open-source-ai-without-jensen",
+          "why": "区分已发生的企业人事变动与尚未证实的开源战略调整，避免将评论当成公司决定。",
+          "confidence": "中：人事事件有Reuters报道；开源投入前景属于分析判断",
+          "time": "2026-11-12—14",
+          "tags": [
+            "AI",
+            "开源生态",
+            "评论"
+          ]
+        },
+        {
+          "id": "hormuz-tankers-20261114",
+          "title": "伊朗称霍尔木兹海峡三艘油轮触雷起火",
+          "summary": "伊朗海军及国家媒体11月14日称三艘油轮在霍尔木兹海峡触雷并起火。Reuters明确表示暂无法独立核实船舶、伤亡及事故细节。",
+          "source": "Reuters；AP（引述伊朗国家电视台）",
+          "url": "https://www.reuters.com/world/middle-east/irans-navy-says-oil-tanker-fire-after-hitting-mine-hormuz-2026-11-14/",
+          "why": "若证实将进一步增加关键能源航道的安全和保险风险；目前不能将伊朗单方叙述视作独立确认。",
+          "confidence": "待确认：双方媒体均报道伊朗声明，但并非两个独立现场核实来源",
+          "time": "2026-11-14",
+          "tags": [
+            "地缘政治",
+            "能源",
+            "待确认"
+          ]
+        },
+        {
+          "id": "us-iran-restraint-20261114",
+          "title": "消息称美国总统考虑暂缓进一步对伊朗打击",
+          "summary": "Reuters引述知情人士称，特朗普向顾问表示在没有新的挑衅时可能暂缓对伊朗的进一步打击，但尚未就结束冲突作出最终决定。",
+          "source": "Reuters（匿名消息人士）",
+          "url": "https://www.reuters.com/world/middle-east/trump-tells-advisers-he-may-hold-off-iran-attacks-barring-new-provocations-2026-11-14/",
+          "why": "与海峡航运风险共同决定能源市场的不确定性；政策尚未正式敲定。",
+          "confidence": "中：单家媒体匿名信源，非正式政策公告",
+          "time": "2026-11-14",
+          "tags": [
+            "美国",
+            "伊朗",
+            "外交"
+          ]
+        },
+        {
+          "id": "ukraine-security-proposal-20261114",
+          "title": "乌克兰质疑美国提出的欧洲安全框架构想",
+          "summary": "泽连斯基称美国讨论的部分欧洲安全框架设想可能削弱北约，并强调乌克兰不会以割让仍控制的顿巴斯领土换取安全安排；俄乌谈判仍未达成协议。",
+          "source": "Associated Press（引述泽连斯基）",
+          "url": "https://apnews.com/article/f9a8629626c087424f05adc85d127780",
+          "why": "欧洲安全保障、领土条件和停火次序仍是谈判关键分歧。",
+          "confidence": "高：乌方公开立场可核实；美方提案具体内容与俄方回应仍待交叉验证",
+          "time": "2026-11-14",
+          "tags": [
+            "乌克兰",
+            "欧洲安全",
+            "外交"
+          ]
+        },
+        {
+          "id": "asean-myanmar-20261114",
+          "title": "东盟特使称对缅甸五点共识政策尚未放松",
+          "summary": "东盟特使11月14日表示对缅甸的五点共识仍有效，是否允许缅甸军方支持的代表重返高级别会议尚无决定；领导人峰会定于11月15日至17日。",
+          "source": "Reuters（东盟特使声明）",
+          "url": "https://www.reuters.com/world/asia-pacific/asean-not-easing-myanmar-approach-blocs-special-envoy-says-2026-11-14/",
+          "why": "东南亚区域外交在结束缅甸暴力冲突与恢复接触之间面临艰难取舍。",
+          "confidence": "高：特使公开表态已确认；峰会结果尚未知",
+          "time": "2026-11-14",
+          "tags": [
+            "东盟",
+            "缅甸",
+            "外交"
+          ]
+        },
+        {
+          "id": "autonomous-weapons-debate-20261115",
+          "title": "自主武器监管讨论聚焦人类控制边界",
+          "summary": "AFP于11月15日刊发专题，讨论能够自主识别和选择目标的武器系统及国际监管缺口。这是议题分析，并非当天签署的新国际条约。",
+          "source": "AFP／Taipei Times",
+          "url": "https://www.taipeitimes.com/News/world/archives/2026/11/15/2003867785",
+          "why": "AI治理正延伸至战场决策，技术自主性与人类责任划分亟待明确。",
+          "confidence": "中高：专家评论可核实；各国政策和具体系统能力存在差异",
+          "time": "2026-11-15",
+          "tags": [
+            "AI治理",
+            "安全",
+            "研究"
+          ]
+        },
+        {
+          "id": "gaza-strike-20261114",
+          "title": "加沙北部无人机袭击致两人死亡，停火持续承压",
+          "summary": "据当地医院官员，贾巴利亚一场以色列无人机袭击造成两名巴勒斯坦人死亡；以军称目标为两名哈马斯成员。身份及现场细节缺乏独立核实。",
+          "source": "Associated Press（医院与以军双方说法）",
+          "url": "https://apnews.com/article/ade76bebaf22135168aac6eb3016bc19",
+          "why": "停火框架下仍发生致命袭击，需持续区分双方声明与独立证据。",
+          "confidence": "中：伤亡为医院通报、目标身份为以军声明",
+          "time": "2026-11-14",
+          "tags": [
+            "中东",
+            "人道主义",
+            "冲突"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "AI / 科技 / 开源",
+          "itemIds": [
+            "starship-upper-stage-catch-20261114",
+            "zonos3-mini-20261112",
+            "microsoft365-recovery-20261114",
+            "nvidia-open-model-debate-20261114"
+          ]
+        },
+        {
+          "title": "创意 / 设计 / 文化",
+          "summary": "过去24小时未核实到足以列为重大新闻的独立事件；语音合成和浏览器交互可作为创作技术观察。",
+          "itemIds": [
+            "zonos3-mini-20261112"
+          ]
+        },
+        {
+          "title": "全球政治与地缘",
+          "itemIds": [
+            "hormuz-tankers-20261114",
+            "us-iran-restraint-20261114",
+            "ukraine-security-proposal-20261114",
+            "asean-myanmar-20261114",
+            "gaza-strike-20261114"
+          ]
+        },
+        {
+          "title": "经济与商业",
+          "summary": "重点关注海峡航运风险和英伟达管理层变动对AI供应链的潜在影响，避免将市场评论当作已确认结果。",
+          "itemIds": [
+            "hormuz-tankers-20261114",
+            "nvidia-open-model-debate-20261114"
+          ]
+        },
+        {
+          "title": "科学与社会",
+          "itemIds": [
+            "starship-upper-stage-catch-20261114",
+            "autonomous-weapons-debate-20261115"
+          ]
+        },
+        {
+          "title": "其他值得知道",
+          "summary": "未来24小时关注东盟峰会、霍尔木兹海峡独立船舶核验、乌克兰安全谈判及Microsoft事故复盘。",
+          "itemIds": []
+        }
+      ]
+    },
+    {
       "date": "2026-11-14",
       "title": "让声音成为界面，让真实物体成为动画画布",
       "summary": "声音驱动的网站、实体投影映射、流体交互菜单与国际海报设计。重点研究统一时间轴、真实数据驱动的视觉反馈，以及可迁移的交互规则。",
@@ -977,6 +1185,10 @@
       "label": "开源项目雷达",
       "kicker": "OPEN SOURCE RADAR",
       "description": "筛选真正值得尝试的开源项目，关注技术栈、成熟度、许可证、风险与项目复用价值。"
+    },
+    {
+      "id": "world",
+      "label": "每日世界新闻"
     }
   ]
 }
