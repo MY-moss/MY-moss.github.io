@@ -375,7 +375,7 @@
           "source": "It's Nice That",
           "why": "为品牌建立 Joy、Simplicity、Craft 三条动作原则，让动画风格能被不同团队持续复用。",
           "method": "将品牌性格转化为 Motion Tokens：时长、缓动、方向、反馈强度和减少动态模式。",
-          "uses": "Clover、AI Agent 工作台、桌面应用、动态品牌",
+          "uses": "AI Agent 工作台、桌面应用、动态品牌",
           "tags": [
             "Motion Design",
             "品牌规范",
@@ -443,7 +443,7 @@
           "source": "Codrops",
           "why": "强调复杂 AI 产品必须在真实使用之后验证，关注信息层级、组件状态、长文本和错误恢复。",
           "method": "建立第二天验收机制：用长任务、多 Agent、失败恢复和不同设备检验 UI。",
-          "uses": "Clover、BlockForge Studio、AI Agent 控制台、桌面应用",
+          "uses": "创意软件、AI Agent 控制台、桌面应用",
           "tags": [
             "AI 产品",
             "UX",
@@ -1008,7 +1008,7 @@
           "source": "It's Nice That",
           "why": "设计师参与真实运动场景，强调产品设计必须在实际物件和使用环境中验证。",
           "method": "在真实数据、错误状态、长时间使用和不同屏幕下评审 UI，而不只看效果图。",
-          "uses": "Clover、AI Agent 控制台、游戏 HUD",
+          "uses": "AI Agent 控制台、游戏 HUD",
           "tags": [
             "产品设计",
             "真实场景"
@@ -1033,7 +1033,7 @@
           "source": "Codrops",
           "why": "网站像杂志一样通过缩放和裁切展开内容，并可根据时间与用户操作连续改变主题色彩。",
           "method": "将主题从简单深浅模式扩展为时间、场景和用户操作驱动的视觉状态。",
-          "uses": "Clover、AI 助手昼夜状态、数字杂志",
+          "uses": "AI 助手的状态变化、数字杂志",
           "tags": [
             "Nuxt",
             "GSAP",
@@ -1125,7 +1125,7 @@
           "source": "Codrops",
           "why": "将品牌概念扩展成完整世界观，让角色、动画、网站与文字共同表达产品性格。",
           "method": "先定义世界观隐喻，再让头像、启动画面、任务动画共享同一视觉逻辑。",
-          "uses": "Clover AI 助手、游戏世界观网站、角色 IP",
+          "uses": "AI 助手、游戏世界观网站、角色 IP",
           "tags": [
             "品牌世界观",
             "叙事设计"
