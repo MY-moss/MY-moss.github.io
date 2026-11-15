@@ -10,3 +10,13 @@ html[data-theme=dark]{color-scheme:dark;--bg:#171b18;--paper:#202722;--paper-2:#
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 body:not(.is-locked) .login-screen{display:none}
+
+/* ATLAS v3 responsive refinements */
+.stream-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.entry-title-button{border:0;padding:0;background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.entry-title-button:hover{color:var(--green-2);text-decoration:underline;text-underline-offset:4px}
+.project-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.project-meta span{font-size:9px;color:var(--muted);padding:4px 7px;background:var(--paper-2);border-radius:5px}
+.network-banner{padding:9px 13px;margin:10px 0;border:1px solid #b98c48;border-radius:8px;background:#f4e8d2;color:#60451e;font-size:11px}.network-banner[hidden]{display:none}
+@media(max-width:1250px){.stream-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.stream-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){.stream-grid{grid-template-columns:1fr}}

@@ -1,33 +1,13 @@
 # ATLAS — Public Intelligence Library
 
-Website: https://my-moss.github.io/atlas/
+Live: https://my-moss.github.io/atlas/
 
-ATLAS is now a **public GitHub Pages site**. The public reader does not require a GitHub account or personal access token.
+Four public channels: world, reading, opensource, inspiration. The weekly personal knowledge review remains private to ChatGPT and is never published.
 
-Four public streams: `world` (daily news), `reading` (daily curated reading), `inspiration` (daily creative inspiration), and `opensource` (weekly GitHub radar). Weekly personal knowledge review is private and excluded.
+Canonical feed: inspiration/data/index.json. The Pages build copies the validated feed into atlas/data/index.json so the ATLAS Service Worker can cache it within its own scope. JSON contracts are in feed.schema.json and report.schema.json.
 
-## Content storage
+Features: search, four-channel navigation, chronological archive, local bookmarks/read markers, theme switching, responsive layout, PWA manifest, versioned Service Workers and offline feed caching. Open-source project details are being upgraded in the next application pass.
 
-The canonical public dataset is `inspiration/data/index.json` in the same repository. Both `/atlas/` and the existing `/inspiration/` site consume it. The index must retain `schemaVersion`, `updatedAt`, `channels[]` and `reports[]`. Each report has `channel`, `date`, `title`, `summary`, `items[]`, and optional `sections[]`. Upsert key: `channel + date`.
+Node.js 22: npm install, npm run prepare:feed, npm run validate, npm run test:e2e. Pages deployment waits for schema, privacy and Playwright tests.
 
-The four ChatGPT scheduled public reports publish through GitHub Contents API using the latest blob SHA. A successful commit automatically invokes the existing GitHub Pages deployment workflow. The site automatically reloads the public JSON index every five minutes.
-
-## Safety
-
-Never publish API tokens, private user notes, health records, school information, unpublished personal project materials, or other private details. No credential input or private data source exists in the public frontend. Reader bookmarks, read markers and theme preferences stay in the local browser only.
-
-## Check
-
-```sh
-node --check atlas/config.js
-node --check atlas/app.js
-node atlas/scripts/validate.mjs
-```
-
-Deployment is handled by `.github/workflows/pages.yml` on changes to `main`. This project lives entirely under `atlas/`, preserving the existing homepage and other sub-sites.
-
-See `atlas/automation-spec.md` for the publication contract.
-
-## Privacy boundary
-
-The personal weekly knowledge review (`knowledge`) has been removed from every public-facing interface and the public feed index. The scheduled task is paused. Do not include private conversations, personal life summaries, or non-public project details in any other published channel.
+Never publish credentials, private conversations, personal knowledge reviews, contact details, school/health records, private paths, unpublished user material or private project notes. Bookmarks and read status stay in local browser storage.

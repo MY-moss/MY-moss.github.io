@@ -172,6 +172,9 @@
   $("theme-button").addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",dark?"dark":"light");try{localStorage.setItem("atlas_theme",dark?"dark":"light");}catch(_){}});
   document.addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("global-search").focus();}if(e.key==="Escape"&&document.activeElement===$("global-search")){$("global-search").blur();}});
   try { var theme=localStorage.getItem("atlas_theme"); if(theme==="dark"||theme==="light")document.documentElement.setAttribute("data-theme",theme); } catch(_){}
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js?v=3",{scope:"./",updateViaCache:"none"}).then(function(registration){return registration.update();}).catch(function(){});
+  window.addEventListener("online",function(){var banner=$("network-banner");if(banner)banner.hidden=true;loadAll();});
+  window.addEventListener("offline",function(){var banner=$("network-banner");if(banner){banner.hidden=false;banner.textContent="当前离线：正在使用最近一次成功缓存的内容。";}});
   loadAll();
-  window.setInterval(function(){if(!state.loading)loadAll();},CONFIG.refreshIntervalMs||300000);
+  window.setInterval(function(){if(!state.loading&&navigator.onLine)loadAll();},CONFIG.refreshIntervalMs||300000);
 })();

@@ -1,11 +1,20 @@
 {
+  "id": "/atlas/",
   "name": "ATLAS — Personal Intelligence Library",
   "short_name": "ATLAS",
-  "description": "A public, curated library of world news, reading, open source, design and knowledge.",
+  "description": "四个公开信息流：世界新闻、精选阅读、开源项目雷达与灵感采集。",
   "start_url": "/atlas/",
   "scope": "/atlas/",
   "display": "standalone",
   "background_color": "#f4f1e9",
   "theme_color": "#f4f1e9",
-  "icons": []
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

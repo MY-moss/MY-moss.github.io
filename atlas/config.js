@@ -1,6 +1,7 @@
 window.ATLAS_CONFIG = Object.freeze({
-  feedUrl: "../inspiration/data/index.json",
+  feedUrl: "./data/index.json",
   refreshIntervalMs: 300000,
+  cacheVersion: "atlas-v3-20261115",
   streams: [
     { id: "world", title: "每日世界新闻", en: "WORLD BRIEF", cadence: "每日 · 09:00", description: "全球重要事件、多源核验与影响判断", icon: "◉" },
     { id: "reading", title: "每日精选阅读", en: "CURATED READING", cadence: "每日 · 19:00", description: "跨领域高质量文章、随笔与深度报道", icon: "▤" },

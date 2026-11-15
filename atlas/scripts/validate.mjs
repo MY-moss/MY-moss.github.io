@@ -1,39 +1,9 @@
-import {readFileSync,existsSync} from "node:fs";
-import vm from "node:vm";
-import assert from "node:assert/strict";
-const html=readFileSync("atlas/index.html","utf8");
-const app=readFileSync("atlas/app.js","utf8");
-const css=readFileSync("atlas/styles.css","utf8");
-const source=readFileSync("atlas/config.js","utf8");
-const manifest=JSON.parse(readFileSync("atlas/manifest.webmanifest","utf8"));
-const feed=JSON.parse(readFileSync("inspiration/data/index.json","utf8"));
-const box={window:{}}; vm.runInNewContext(source,box,{timeout:1000});
-const cfg=box.window.ATLAS_CONFIG;
-assert.equal(cfg.feedUrl,"../inspiration/data/index.json");
-assert.deepEqual(Array.from(cfg.streams,s=>s.id),["world","reading","opensource","inspiration"]);
-for(const file of ["styles.css","config.js","app.js","manifest.webmanifest"]){
- assert.ok(existsSync("atlas/"+file));
- assert.ok(html.includes("./"+file));
-}
-assert.ok(html.includes('content="index,follow"'));
-assert.ok(!html.includes('id="login-form"')&&!html.includes('is-locked'));
-assert.ok(!app.includes("Bearer ")&&!app.includes("atlas_token"));
-assert.ok(app.includes("fetch(new URL(CONFIG.feedUrl"));
-assert.ok(css.includes("@media"));
-assert.equal(manifest.scope,"/atlas/");
-assert.equal(feed.schemaVersion,1);
-assert.ok(Array.isArray(feed.reports)&&Array.isArray(feed.channels));
-assert.ok(!feed.channels.some(c=>c.id==="knowledge"),"Do not expose private weekly knowledge review channel");
-assert.ok(!feed.reports.some(r=>r.channel==="knowledge"),"Do not publish private weekly knowledge review reports");
-const ids=new Set(cfg.streams.map(s=>s.id));
-const seen=new Set();
-for(const report of feed.reports){
- assert.ok(ids.has(report.channel),"Unknown channel "+report.channel);
- assert.ok(typeof report.date==="string" && report.date.length===10);
- assert.ok(Array.isArray(report.items));
- const key=report.channel+":"+report.date;
- assert.ok(!seen.has(key),"Duplicate "+key);seen.add(key);
- for(const item of report.items)assert.ok(typeof item.title==="string"&&item.title.trim());
-}
-assert.ok(!/github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}/.test(JSON.stringify(feed)));
-console.log("ATLAS public edition validated: four public streams, "+feed.reports.length+" reports, no login.");
+import {readFileSync} from "node:fs";import Ajv2020 from "ajv/dist/2020.js";import addFormats from "ajv-formats";
+const read=p=>JSON.parse(readFileSync(p,"utf8")),feed=read("inspiration/data/index.json"),fs=read("atlas/feed.schema.json"),rs=read("atlas/report.schema.json");
+const ajv=new Ajv2020({allErrors:true,strict:false});addFormats(ajv);ajv.addSchema(rs);const errors=[],vf=ajv.compile(fs),vr=ajv.compile(rs);
+if(!vf(feed))errors.push(...vf.errors.map(e=>"feed "+e.instancePath+" "+e.message));for(const [n,r] of feed.reports.entries())if(!vr(r))errors.push(...vr.errors.map(e=>"reports["+n+"] "+e.instancePath+" "+e.message));
+const allow=new Set(["world","reading","opensource","inspiration"]),ids=feed.channels.map(c=>c.id);if(ids.includes("knowledge")||feed.reports.some(r=>r.channel==="knowledge"))errors.push("private knowledge channel must never be public");for(const id of allow)if(!ids.includes(id))errors.push("missing channel "+id);if(new Set(ids).size!==ids.length)errors.push("duplicate channel");
+const keys=new Set(),itemIds=new Set();for(const r of feed.reports){if(!allow.has(r.channel))errors.push("forbidden channel "+r.channel);const k=r.channel+":"+r.date;if(keys.has(k))errors.push("duplicate report "+k);keys.add(k);for(const i of r.items||[]){const x=k+":"+i.id;if(itemIds.has(x))errors.push("duplicate item "+x);itemIds.add(x);}}
+const raw=JSON.stringify(feed),checks=[["GitHub token",/(?:github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,})/],["API secret",/(?:sk-[A-Za-z0-9_-]{24,}|AIza[0-9A-Za-z_-]{30,})/],["email",/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i],["China mobile",/\b1[3-9]\d{9}\b/],["private Windows path",/\b[A-Z]:\\Users\\[^\\]+/i],["private chat",/(?:根据(?:你|用户)(?:之前|过去|个人)|私人聊天记录|聊天记录中提到|用户的个人信息)/i]];
+for(const [n,re] of checks)if(re.test(raw))errors.push("privacy scan "+n);for(const r of feed.reports)for(const i of r.items||[])for(const k of ["url","repo_url","website_url","docs_url"])if(i[k]&&!String(i[k]).startsWith("https://"))errors.push("non-HTTPS URL "+r.channel+"/"+i.id);
+if(errors.length){console.error(errors.join("\n"));process.exit(1);}console.log("ATLAS schema/privacy checks passed: "+feed.reports.length+" reports, "+itemIds.size+" items, "+ids.length+" public channels.");

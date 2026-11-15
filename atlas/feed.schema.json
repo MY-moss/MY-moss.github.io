@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://my-moss.github.io/atlas/feed.schema.json",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "site",
+    "updatedAt",
+    "channels",
+    "reports"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "site": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date"
+    },
+    "channels": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "world",
+              "reading",
+              "opensource",
+              "inspiration"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "kicker": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "reports": {
+      "type": "array",
+      "items": {
+        "$ref": "https://my-moss.github.io/atlas/report.schema.json"
+      }
+    }
+  },
+  "additionalProperties": false
+}

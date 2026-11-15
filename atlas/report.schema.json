@@ -1,97 +1,250 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://my-moss.github.io/atlas/report.schema.json",
-  "title": "ATLAS Feed Report",
   "type": "object",
-  "required": ["schema_version", "stream", "date", "title", "summary", "items"],
+  "required": [
+    "channel",
+    "date",
+    "title",
+    "summary",
+    "items"
+  ],
   "properties": {
-    "schema_version": { "const": 1 },
-    "stream": { "enum": ["world", "reading", "opensource", "inspiration"] },
-    "date": { "type": "string", "format": "date" },
-    "week": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
-    "title": { "type": "string", "minLength": 1 },
-    "summary": { "type": "string" },
-    "intro": { "type": "string" },
-    "items": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "stories": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "top_stories": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "articles": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "projects": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "works": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "highlights": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "trends": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "people_projects": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "saved_sources": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "next_week": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "sections": { "type": "array", "items": { "$ref": "#/$defs/item" } },
-    "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
-    "editorial_note": { "type": "string" }
-  },
-  "$defs": {
-    "item": {
-      "type": "object",
-      "required": ["title"],
-      "properties": {
-        "title": { "type": "string", "minLength": 1 },
-        "name": { "type": "string" },
-        "project": { "type": "string" },
-        "headline": { "type": "string" },
-        "topic": { "type": "string" },
-        "heading": { "type": "string" },
-        "author": { "type": "string" },
-        "creator": { "type": "string" },
-        "team": { "type": "string" },
-        "maintainer": { "type": "string" },
-        "source": { "type": "string" },
-        "publisher": { "type": "string" },
-        "media": { "type": "string" },
-        "repository": { "type": "string" },
-        "published_at": { "type": "string" },
-        "date": { "type": "string" },
-        "url": { "type": "string", "format": "uri" },
-        "article_url": { "type": "string", "format": "uri" },
-        "repo_url": { "type": "string", "format": "uri" },
-        "website_url": { "type": "string", "format": "uri" },
-        "link": { "type": "string", "format": "uri" },
-        "reading_minutes": { "type": "integer", "minimum": 1 },
-        "access": { "enum": ["free", "paid", "unknown"] },
-        "priority": { "type": "string" },
-        "recommendation": { "type": "string" },
-        "tags": { "type": "array", "items": { "type": "string" } },
-        "category": { "type": "string" },
-        "summary": { "type": "string" },
-        "description": { "type": "string" },
-        "what_happened": { "type": "string" },
-        "what_it_is": { "type": "string" },
-        "one_line": { "type": "string" },
-        "body": { "type": "string" },
-        "analysis": { "type": "string" },
-        "why_read": { "type": "string" },
-        "why_worth_reading": { "type": "string" },
-        "why_important": { "type": "string" },
-        "takeaway": { "type": "string" },
-        "why": { "type": "string" },
-        "implication": { "type": "string" },
-        "confidence": { "type": "string" },
-        "certainty": { "type": "string" },
-        "language": { "type": "string" },
-        "maturity": { "type": "string" },
-        "risks": { "type": "string" },
-        "what_works": { "type": "string" },
-        "takeaways": { "type": "array", "items": { "type": "string" } }
-      },
-      "additionalProperties": true
+    "channel": {
+      "enum": [
+        "world",
+        "reading",
+        "opensource",
+        "inspiration"
+      ]
     },
-    "source": {
-      "type": "object",
-      "properties": {
-        "name": { "type": "string" },
-        "url": { "type": "string", "format": "uri" },
-        "checked_at": { "type": "string" },
-        "type": { "type": "string" }
-      },
-      "required": ["url"],
-      "additionalProperties": true
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string"
+    },
+    "week": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "repo_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "website_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "docs_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "author": {
+            "type": "string"
+          },
+          "creator": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "uses": {
+            "type": "string"
+          },
+          "use_cases": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "stack": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "tech_stack": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "maturity": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "risks": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "limitations": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "recommendation": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string"
+          },
+          "project_fit": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "stars": {
+            "type": [
+              "string",
+              "number",
+              "integer"
+            ]
+          },
+          "platforms": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "platform_support": {
+            "type": [
+              "string",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "published": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "string"
+          },
+          "minutes": {
+            "type": "integer"
+          },
+          "reading_minutes": {
+            "type": "integer"
+          },
+          "access": {
+            "enum": [
+              "free",
+              "paid",
+              "unknown"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "itemIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": true

@@ -10,11 +10,11 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>ATLAS — Personal Intelligence Library</title>
   <meta name="description" content="A public library of news, open source, reading, design and ideas.">
-  <link rel="stylesheet" href="./styles.css?v=2">
-  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css?v=3">
+  <link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icon.svg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231f342d'/%3E%3Cpath d='M15 43 32 12l17 31H15Z' fill='none' stroke='%23e8d8b5' stroke-width='3'/%3E%3Ccircle cx='32' cy='36' r='5' fill='%23d5a36b'/%3E%3C/svg%3E">
-  <script defer src="./config.js?v=2"></script>
-  <script defer src="./app.js?v=2"></script>
+  <script defer src="./config.js?v=3"></script>
+  <script defer src="./app.js?v=3"></script>
 </head>
 <body>
   <div class="workspace" id="workspace" aria-hidden="false">
@@ -53,7 +53,7 @@
           <button class="button button-quiet" id="top-refresh">刷新内容 <span>↻</span></button>
         </div>
       </header>
-      <div class="mobile-nav" aria-label="移动端导航">
+      <div class="network-banner" id="network-banner" hidden role="status" aria-live="polite"></div><div class="mobile-nav" aria-label="移动端导航">
         <button data-view="overview" class="is-active">总览</button><button data-view="world">世界</button><button data-view="reading">阅读</button><button data-view="opensource">开源</button><button data-view="inspiration">灵感</button>
       </div>
       <div class="page-content" id="page-content">

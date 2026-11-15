@@ -1,19 +1,15 @@
 name: Deploy Pages (game, inspiration, ATLAS)
-
 on:
   push:
     branches: [master, main]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
-
 jobs:
   deploy:
     environment:
@@ -21,19 +17,25 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Validate ATLAS frontend
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Run schema, privacy and browser tests
+        run: npm test
+      - name: Prepare same-origin ATLAS feed
+        run: npm run prepare:feed
+      - name: Check site assets
         run: |
           test -s atlas/index.html
+          test -s atlas/data/index.json
+          test -s inspiration/index.html
           node --check atlas/config.js
           node --check atlas/app.js
-          node atlas/scripts/validate.mjs
-          if grep -R -E 'github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}' atlas --exclude='README.md'; then echo 'Possible GitHub credential found in public ATLAS files.'; exit 1; fi
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Upload static files
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: .
       - name: Deploy to GitHub Pages

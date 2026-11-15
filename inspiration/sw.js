@@ -1,24 +1,4 @@
-const CACHE="inspiration-hub-v1";
-const CORE=["./","./index.html","./styles.css?v=1","./app.js?v=1","./data/index.json","./manifest.webmanifest","./favicon.svg"];
-const scopePath=new URL(self.registration.scope).pathname;
-self.addEventListener("install",event=>{
- event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));
-});
-self.addEventListener("activate",event=>{
- event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith("inspiration-hub-")&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
-});
-self.addEventListener("fetch",event=>{
- const req=event.request,url=new URL(req.url);
- if(req.method!=="GET"||url.origin!==location.origin||!url.pathname.startsWith(scopePath))return;
- if(url.pathname.endsWith("/data/index.json")){
-  event.respondWith(fetch(req,{cache:"no-store"}).then(res=>{
-   if(res.ok){const copy=res.clone();caches.open(CACHE).then(c=>c.put(req,copy));}
-   return res;
-  }).catch(()=>caches.match(req).then(hit=>hit||new Response("离线状态下暂时没有缓存这份内容",{status:503,headers:{"Content-Type":"text/plain;charset=utf-8"}}))));
-  return;
- }
- event.respondWith(caches.match(req).then(hit=>hit||fetch(req).then(res=>{
-  if(res.ok){const copy=res.clone();caches.open(CACHE).then(c=>c.put(req,copy));}
-  return res;
- }).catch(()=>req.mode==="navigate"?caches.match("./index.html"):new Response("",{status:503}))));
-});
+const CACHE="inspiration-hub-v2-20261115",CORE=["./","./index.html","./styles.css?v=2","./app.js?v=2","./data/index.json","./manifest.webmanifest","./favicon.svg"],scopePath=new URL(self.registration.scope).pathname;
+self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
+self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith("inspiration-hub-")&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener("fetch",e=>{const r=e.request,u=new URL(r.url);if(r.method!=="GET"||u.origin!==location.origin||!u.pathname.startsWith(scopePath))return;if(u.pathname.endsWith("/data/index.json")){e.respondWith(fetch(r,{cache:"no-store"}).then(res=>{if(res.ok)caches.open(CACHE).then(c=>c.put(r,res.clone())).catch(()=>{});return res;}).catch(async()=>{const hit=await caches.match(r);return hit||new Response("离线状态下暂时没有缓存这份内容",{status:503,headers:{"Content-Type":"text/plain;charset=utf-8"}});}));return;}if(r.mode==="navigate"){e.respondWith(fetch(r).then(res=>{if(res.ok)caches.open(CACHE).then(c=>c.put("./index.html",res.clone())).catch(()=>{});return res;}).catch(()=>caches.match("./index.html")));return;}e.respondWith(caches.match(r).then(hit=>hit||fetch(r).then(res=>{if(res.ok)caches.open(CACHE).then(c=>c.put(r,res.clone())).catch(()=>{});return res;})));});

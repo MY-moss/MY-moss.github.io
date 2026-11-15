@@ -1244,10 +1244,14 @@
   ],
   "channels": [
     {
-      "id": "inspiration",
-      "label": "灵感采集",
-      "kicker": "DAILY INSPIRATION",
-      "description": "设计、网站、交互、品牌视觉、字体、游戏 UI、数字艺术与可迁移的创作方法。"
+      "id": "world",
+      "label": "每日世界新闻"
+    },
+    {
+      "id": "reading",
+      "label": "精选阅读",
+      "kicker": "CURATED READING",
+      "description": "跨领域高质量文章、随笔与深度报道，保留作者、来源、发表日期和阅读价值。"
     },
     {
       "id": "opensource",
@@ -1256,8 +1260,10 @@
       "description": "筛选真正值得尝试的开源项目，关注技术栈、成熟度、许可证、风险与项目复用价值。"
     },
     {
-      "id": "world",
-      "label": "每日世界新闻"
+      "id": "inspiration",
+      "label": "灵感采集",
+      "kicker": "DAILY INSPIRATION",
+      "description": "设计、网站、交互、品牌视觉、字体、游戏 UI、数字艺术与可迁移的创作方法。"
     }
   ]
 }
