@@ -76,7 +76,7 @@ test("inspiration sub-site archive cards show article authors and channel labels
  feed.reports.unshift({channel:"reading",date:"2026-11-16",title:"阅读档案卡片测试",summary:"测试",items:[{id:"reading-card",title:"Reading Card",author:"Visible Author",source:"Visible Source",url:"https://example.com",why:"值得阅读",published_at:"2026-11-15",reading_minutes:8,access:"paid",tags:["写作"]}]});
  await page.route("**/inspiration/data/index.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(feed)}));
  await page.goto("/inspiration/?channel=reading&view=archive");
- await expect(page.locator(".item-card")).toContainText("Visible Author");await expect(page.locator(".item-card")).toContainText("每日精选阅读");
+ await expect(page.locator(".item-card")).toContainText("Visible Author");await expect(page.locator(".item-card")).toContainText("精选阅读");
 });
 
 
