@@ -27,6 +27,8 @@ jobs:
         run: npm test
       - name: Prepare same-origin ATLAS feed
         run: npm run prepare:feed
+      - name: Version static assets and Service Worker caches
+        run: npm run prepare:release
       - name: Check site assets
         run: |
           test -s atlas/index.html
@@ -34,6 +36,7 @@ jobs:
           test -s inspiration/index.html
           node --check atlas/config.js
           node --check atlas/app.js
+          node --check inspiration/app.js
       - uses: actions/configure-pages@v5
       - name: Remove test-only files before publishing
         run: rm -rf node_modules test-results playwright-report

@@ -32,12 +32,14 @@
         id:stream+":"+date+":"+(item.id||(index+":"+title)),stream:stream,
         title:title,url:url,
         author:item.author||item.creator||item.team||item.maintainer||"",
-        source:item.source||item.publisher||item.media||item.repository||"",
+        source:Array.isArray(item.source)?item.source.join(" · "):(item.source||item.publisher||item.media||item.repository||""),
         date:item.published_at||item.publishedAt||item.date||date,
+        published:item.published_at||item.publishedAt||item.published||item.date||date,
         summary:item.summary||item.description||item.what_happened||item.what_it_is||item.one_line||item.body||item.analysis||item.why||item.detail||"",
         why:item.why_read||item.why_worth_reading||item.why_important||item.takeaway||item.why||item.implication||item.method||item.uses||"",
         priority:item.priority||item.recommendation||"",
         minutes:item.reading_minutes||item.readingMinutes||item.minutes||null,
+        access:item.access||item.access_status||"unknown",
         tags:tags,
         confidence:item.confidence||item.certainty||"",
         language:item.language||"",
@@ -50,7 +52,7 @@
         uses:item.uses||item.use_cases||item.how_to_try||item.play_with||"",
         projectFit:item.project_fit||item.suitability||item.reuse_value||"",
         version:item.version||item.latest_version||"",
-        stars:item.stars||item.star_count||"",
+        stars:item.stars!==undefined&&item.stars!==null?item.stars:(item.star_count!==undefined&&item.star_count!==null?item.star_count:""),
         platforms:item.platforms||item.platform_support||item.supported_platforms||"",
         homeUrl:safeUrl(item.website_url||item.homepage||""),
         docsUrl:safeUrl(item.docs_url||item.documentation_url||""),
@@ -127,7 +129,7 @@
   function filtered(entries) {
     if (!state.query) return entries;
     var q = state.query.toLowerCase();
-    return entries.filter(function(e){ return [e.title,e.summary,e.why,e.author,e.source,e.stack,e.maturity,e.difficulty,e.license,e.risks,e.recommendation,e.uses,e.projectFit,e.version,e.platforms].concat(e.tags).join(" ").toLowerCase().indexOf(q)>=0; });
+    return entries.filter(function(e){ return [e.title,e.summary,e.why,e.author,e.source,e.stack,e.maturity,e.difficulty,e.license,e.risks,e.recommendation,e.uses,e.projectFit,e.version,e.platforms,e.access,e.published].concat(e.tags).join(" ").toLowerCase().indexOf(q)>=0; });
   }
   function pageHeader(kicker,title,copy,mark) {
     return '<div class="page-title-row"><div><div class="page-title-mark">'+esc(kicker)+'</div><h1>'+esc(title)+'</h1><p>'+esc(copy)+'</p></div>'+(mark?'<span class="status-pill">'+esc(mark)+'</span>':"")+'</div>';
@@ -165,8 +167,8 @@
   function renderDetail() {
     var entry=state.entries.find(function(e){return e.id===state.selectedId;});
     if(!entry)return pageHeader("CONTENT DETAIL","内容详情","这条内容可能已更新或移除。","")+empty("没有找到这条内容。","返回频道或历史档案继续浏览。");
-    var project=entry.stream==="opensource";
-    var fields=project?[["核心用途",entry.summary],["技术栈 / 关键依赖",entry.stack],["项目成熟度",entry.maturity],["上手难度",entry.difficulty],["许可证",entry.license],["潜在风险 / 限制",entry.risks],["推荐等级",entry.recommendation],["可以怎么玩",entry.uses],["适合复用到自己的项目",entry.projectFit],["版本",entry.version],["Star 数",entry.stars],["平台支持",entry.platforms]]:[["核心内容",entry.summary],["值得关注的原因",entry.why],["作者 / 团队",entry.author],["来源",entry.source],["分类",entry.category],["标签",entry.tags]];
+    var project=entry.stream==="opensource", reading=entry.stream==="reading";
+    var fields=project?[["核心用途",entry.summary],["技术栈 / 关键依赖",entry.stack],["项目成熟度",entry.maturity],["上手难度",entry.difficulty],["许可证",entry.license],["潜在风险 / 限制",entry.risks],["推荐等级",entry.recommendation],["可以怎么玩",entry.uses],["适合复用到通用开发场景",entry.projectFit],["版本",entry.version],["Star 数",entry.stars],["平台支持",entry.platforms]]:reading?[["文章摘要",entry.summary],["值得精读的原因",entry.why],["作者",entry.author],["来源",entry.source],["发表日期",entry.published],["预计阅读时间",entry.minutes?"约 "+entry.minutes+" 分钟":""],["阅读权限",entry.access==="free"?"免费全文":entry.access==="paid"?"付费 / 订阅":entry.access==="unknown"?"访问状态待核实":entry.access],["主题标签",entry.tags]]:[["核心内容",entry.summary],["值得关注的原因",entry.why],["作者 / 团队",entry.author],["来源",entry.source],["分类",entry.category],["标签",entry.tags]];
     function field(label,value){var text=Array.isArray(value)?value.join("、"):String(value||"未提供 / 未核实");return '<div class="detail-cell"><span class="eyebrow">'+esc(label)+'</span><p>'+esc(text)+'</p></div>';}
     var links=[["GitHub / 原始项目",entry.url],["官方网站",entry.homeUrl],["文档",entry.docsUrl]].filter(function(x,i,a){return x[1]&&a.findIndex(function(y){return y[1]===x[1];})===i;});
     return pageHeader(project?"OPEN SOURCE PROJECT":streamMeta(entry.stream).en,entry.title,entry.summary||entry.why,entry.recommendation||"")+
