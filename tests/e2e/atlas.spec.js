@@ -37,3 +37,13 @@ test("cached content remains available offline",async({page,context})=>{
  await page.evaluate(async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener("controllerchange",resolve,{once:true}));});
  await context.setOffline(true);await page.reload();await expect(page.locator(".entry-title-button").first()).toBeVisible();await expect(page.locator("#network-banner")).toBeVisible();
 });
+
+test("existing landing page and inspiration sub-site still load",async({page})=>{
+ await page.goto("/");await expect(page).toHaveTitle(/上岸模拟器/);await expect(page.locator("#app")).toBeVisible();
+ await page.goto("/inspiration/");await expect(page).toHaveTitle(/灵感研究所/);await expect(page.locator("#main")).toBeVisible();
+ await expect(page.getByText("知识回顾",{exact:true})).toHaveCount(0);
+});
+test("empty public channels show a clear no-content state instead of fabricated entries",async({page})=>{
+ await page.goto("/atlas/");await page.locator('[data-view="reading"]').first().click();
+ await expect(page.getByText("等待首期发布",{exact:true})).toBeVisible();
+});
