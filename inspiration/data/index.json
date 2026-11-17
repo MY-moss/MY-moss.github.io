@@ -1,8 +1,98 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-15",
+  "updatedAt": "2026-11-17",
   "reports": [
+    {
+      "channel": "reading",
+      "date": "2026-11-17",
+      "title": "今日精选阅读｜法律幻觉、民主与平台、生命起源、文学中的AI",
+      "summary": "五篇跨领域精读：伪法律与社会信任、平台权力与民主、生命起源的新解释、生成式AI对出版的冲击，以及关于快乐与消费的文学评论。",
+      "theme": "当熟悉的解释框架遭遇现实",
+      "items": [
+        {
+          "id": "reading-sovereign-citizens-20261117",
+          "title": "‘Nothing they said made sense’: down the rabbit hole with Britain’s sovereign citizens",
+          "author": "Mark Blacklock",
+          "date": "2026-11-17",
+          "read_time": "约25–35分钟",
+          "access": "免费正文",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/news/2026/nov/17/nothing-they-said-made-sense-down-the-rabbit-hole-with-britains-sovereign-citizens",
+          "why": "以法律文书、当事人经历和调查报道解释伪法律运动为何吸引受债务困扰的人，适合思考制度信任与阴谋论。",
+          "tags": [
+            "社会",
+            "法律",
+            "调查报道"
+          ]
+        },
+        {
+          "id": "reading-maria-ressa-20261116",
+          "title": "‘Two dictators in my story – Duterte and Zuckerberg’: Nobel peace prize winner’s warning for democracy",
+          "author": "David Smith",
+          "date": "2026-11-16",
+          "read_time": "约12–16分钟",
+          "access": "免费正文",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/us-news/2026/nov/16/duterte-zuckerberg-maria-ressa-book",
+          "why": "以Maria Ressa的亲身经历连接政治权力、平台激励与公共信息秩序；其观点值得与其他民主研究对照。",
+          "tags": [
+            "世界",
+            "媒体",
+            "人物访谈"
+          ]
+        },
+        {
+          "id": "reading-chemistry-biology-20261112",
+          "title": "The Evolving Story of How Chemistry Became Biology",
+          "author": "Yasemin Saplakoglu",
+          "date": "2026-11-12",
+          "read_time": "约18–24分钟",
+          "access": "免费正文",
+          "source": "Quanta Magazine",
+          "url": "https://www.quantamagazine.org/the-evolving-story-of-how-chemistry-became-biology-20261112/",
+          "why": "把生命起源研究从单一分子先后之争转向化学系统的整体演化，拓宽对科学假说和证据的理解。",
+          "tags": [
+            "科学",
+            "生命起源",
+            "研究"
+          ]
+        },
+        {
+          "id": "reading-ai-literary-world-20261114",
+          "title": "‘It’s like the wild west’: how AI has rocked the literary world",
+          "author": "Sophie McBain",
+          "date": "2026-11-14",
+          "read_time": "约18–24分钟",
+          "access": "免费正文",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/books/ng-interactive/2026/nov/14/its-like-the-wild-west-how-ai-has-rocked-the-literary-world",
+          "why": "通过作者、代理人、出版商与争议案例，审视机器写作、版权和误判风险；文中部分研究仍待同行评审。",
+          "tags": [
+            "文学",
+            "出版",
+            "人工智能"
+          ]
+        },
+        {
+          "id": "reading-sensualist-review-20261116",
+          "title": "The Sensualist by Gary Shteyngart review – a delectable romp through life’s pleasures",
+          "author": "Melissa Denes",
+          "date": "2026-11-16",
+          "read_time": "约7–10分钟",
+          "access": "免费书评（原书另购）",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/books/2026/nov/16/the-sensualist-by-gary-shteyngart-review-a-delectable-romp-through-lifes-pleasures",
+          "why": "从幽默散文与昂贵消费的张力追问快乐能否成为抵抗效率崇拜的方式，书评也质疑其阶层局限。",
+          "tags": [
+            "文学",
+            "文化评论",
+            "生活哲学"
+          ]
+        }
+      ],
+      "sections": []
+    },
     {
       "channel": "world",
       "date": "2026-11-15",
