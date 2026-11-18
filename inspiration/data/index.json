@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-18T04:07:12.607Z",
   "reports": [
     {
       "channel": "world",
@@ -166,6 +166,71 @@
           "itemIds": [
             "world-2026-11-18-gaza-winter-shelter"
           ]
+        }
+      ]
+    },
+    {
+      "channel": "inspiration",
+      "date": "2026-11-18",
+      "title": "从视觉效果到可生长的设计语言",
+      "summary": "精选 Shelby 品牌识别、Font Animation Studio 字体动效与 Graphite 程序化图形工具，提炼几何规则、字体参数动画与非破坏性编辑方法。",
+      "theme": "动态品牌识别 · 字体动画 · 程序化创作",
+      "items": [
+        {
+          "id": "2026-11-18-shelby-ashfall",
+          "title": "Shelby — 动态几何品牌系统",
+          "creator": "Ashfall Studio",
+          "source": "The Brand Identity（2026-05-15 案例报道）",
+          "url": "https://the-brandidentity.com/project/how-ashfall-built-out-shelbys-identity-from-an-extruded-hexagon",
+          "why": "从六边形与球体建立静态、动态与三维品牌识别，通过动效规范支持多团队一致制作。",
+          "method": "先定义核心几何符号，再制定二维/三维变体、运动节奏、缓动、尺寸和组合规则，让视觉资产从规则中生成。",
+          "uses": "软件品牌、技术产品官网、动态 Logo、产品发布视频",
+          "tags": [
+            "品牌识别",
+            "动效",
+            "几何系统"
+          ],
+          "published": "2026-05-15（案例报道；非作品首发日期）"
+        },
+        {
+          "id": "2026-11-18-font-animation-studio",
+          "title": "Font Animation Studio",
+          "creator": "Yanone",
+          "source": "GitHub 官方项目",
+          "url": "https://github.com/yanone/fontanimation",
+          "why": "将可变字体轴与 OpenType 特性纳入关键帧时间轴，提供实时预览和视频导出。",
+          "method": "把字重、字宽、倾斜等字体参数作为可动画化属性，关键帧与字体数据分离，使用插值并测试高分辨率渲染。",
+          "uses": "MG 动画、片头字幕、动态海报、品牌宣传片",
+          "tags": [
+            "字体",
+            "动效",
+            "开源",
+            "时间轴"
+          ],
+          "published": "未核实首次发布日期"
+        },
+        {
+          "id": "2026-11-18-graphite",
+          "title": "Graphite — 程序化图形编辑器",
+          "creator": "GraphiteEditor 社区",
+          "source": "GitHub 官方项目",
+          "url": "https://github.com/GraphiteEditor/Graphite",
+          "why": "结合图层与节点式生成流程，探索可重编辑、非破坏性的矢量及栅格创作方式；目前仍处于 Alpha 阶段。",
+          "method": "将基础形状、重复、形变、配色、合成组织为可调整的节点操作链，使用参数化模板生成多种版式。",
+          "uses": "图标生成、矢量编辑、程序化海报、设计自动化",
+          "tags": [
+            "节点编辑",
+            "程序化设计",
+            "开源",
+            "非破坏性"
+          ],
+          "published": "未核实首次发布日期"
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日方法实验",
+          "content": "选择一个几何符号，制作黑白可识别的静态标志、三种参数化变体与一段可变字体标题动画；测试小尺寸辨识、配色替换和不同画面比例。"
         }
       ]
     },
