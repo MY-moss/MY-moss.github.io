@@ -1,8 +1,174 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-17",
+  "updatedAt": "2026-11-18",
   "reports": [
+    {
+      "channel": "world",
+      "date": "2026-11-18",
+      "title": "世界新闻简报｜英伟达财报、微软AI模型与全球基础设施风险",
+      "summary": "英伟达第三财季营收同比翻倍；微软Ignite发布面向编码与安全的新模型；美国连续技术故障、AI芯片管制及COP31清洁AI倡议引发关注。俄乌桥梁袭击和加沙冬季人道风险仍需追踪。",
+      "theme": "算力繁荣与现实系统的承压",
+      "items": [
+        {
+          "id": "world-2026-11-18-nvidia-fy27-q3",
+          "title": "英伟达第三财季营收1158亿美元，同比增长103%",
+          "summary": "数据中心营收1076亿美元，同比增长110%；下季度营收指引1300亿美元±3%。说明AI算力需求仍强，但不能据此判断长期投资回报。",
+          "source": "英伟达官方财报",
+          "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/",
+          "why": "数据中心营收1076亿美元，同比增长110%；下季度营收指引1300亿美元±3%。说明AI算力需求仍强，但不能据此判断长期投资回报。",
+          "confidence": "已确认：公司财报；Guardian和Barron's核对",
+          "time": "2026-11-17",
+          "tags": [
+            "AI",
+            "财报"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-microsoft-ignite-models",
+          "title": "微软Ignite推出MAI Code 2系列等七款模型",
+          "summary": "Code 2及Flash面向Agent编码；厂商声称更优成本效率，横向基准仍需独立测试。微软官方博客确认Copilot和Foundry的提供安排。",
+          "source": "Microsoft AI",
+          "url": "https://microsoft.ai/news/microsoft-ignite-2026/",
+          "why": "Code 2及Flash面向Agent编码；厂商声称更优成本效率，横向基准仍需独立测试。微软官方博客确认Copilot和Foundry的提供安排。",
+          "confidence": "已确认：产品发布；性能为厂商评测",
+          "time": "2026-11-17",
+          "tags": [
+            "AI",
+            "开发工具"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-us-tech-outages",
+          "title": "美国航空与云服务连续故障引发基础设施可靠性调查",
+          "summary": "FAA、微软和银行等多起故障不宜合并归因。官员称未见网络攻击证据；FAA路由器故障根因尚未最终确认。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/us-official-says-recent-tech-woes-not-tied-cyberattacks-2026-11-17/",
+          "why": "FAA、微软和银行等多起故障不宜合并归因。官员称未见网络攻击证据；FAA路由器故障根因尚未最终确认。",
+          "confidence": "已确认：故障与调查；根因仍在调查",
+          "time": "2026-11-17",
+          "tags": [
+            "科技",
+            "安全"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-ai-chip-seasia",
+          "title": "美国AI芯片管制冲击东南亚数据中心投资",
+          "summary": "东南亚数据中心相关股票承压，新加坡正与企业及美方沟通；政策影响已从芯片供应链延伸到云算力服务。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/asia-pacific/us-ai-chip-curbs-threaten-southeast-asia-data-centre-boom-shares-tumble-2026-11-17/",
+          "why": "东南亚数据中心相关股票承压，新加坡正与企业及美方沟通；政策影响已从芯片供应链延伸到云算力服务。",
+          "confidence": "已确认：市场反应和沟通；长期影响待观察",
+          "time": "2026-11-17",
+          "tags": [
+            "AI",
+            "政策"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-cop31-ai-pledge",
+          "title": "COP31清洁AI倡议获90项支持但美国主要科技企业未加入",
+          "summary": "倡议强调低碳电力、能效和排放披露；缺乏主要超大规模云服务商参与，实际减排效果有待观察。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/sustainability/cop/cop31-ai-pledge-fails-lure-us-big-tech-2026-11-17/",
+          "why": "倡议强调低碳电力、能效和排放披露；缺乏主要超大规模云服务商参与，实际减排效果有待观察。",
+          "confidence": "已确认：倡议及签署情况；效果未验证",
+          "time": "2026-11-17",
+          "tags": [
+            "气候",
+            "科技"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-ukraine-crimea-bridge",
+          "title": "乌克兰宣布打击克里米亚大桥，损坏程度仍需独立核实",
+          "summary": "乌方称持续数周的行动打击桥梁；Reuters尚不能独立核实部分影像。与此同时俄方继续袭击乌克兰能源和交通设施。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/europe/ukraine-strikes-crimean-bridge-second-day-russia-pounds-kyiv-bridges-2026-11-17/",
+          "why": "乌方称持续数周的行动打击桥梁；Reuters尚不能独立核实部分影像。与此同时俄方继续袭击乌克兰能源和交通设施。",
+          "confidence": "已确认：双方声明与攻击报道；部分战损待确认",
+          "time": "2026-11-17",
+          "tags": [
+            "国际",
+            "俄乌"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-gaza-winter-shelter",
+          "title": "国际移民组织警告加沙冬季失温风险",
+          "summary": "暴雨和帐篷短缺使流离失所家庭尤其儿童面临危险；IOM称冬季庇护项目存在1.73亿美元资金缺口。以方称持续允许物资进入，实际准入存在争议。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/middle-east/un-agency-warns-gaza-hypothermia-deaths-without-more-supplies-2026-11-17/",
+          "why": "暴雨和帐篷短缺使流离失所家庭尤其儿童面临危险；IOM称冬季庇护项目存在1.73亿美元资金缺口。以方称持续允许物资进入，实际准入存在争议。",
+          "confidence": "已确认：IOM警告；个别死因尚待核实",
+          "time": "2026-11-17",
+          "tags": [
+            "社会",
+            "人道"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-iceye-avio-bid",
+          "title": "芬兰ICEYE提出20亿欧元收购意大利Avio",
+          "summary": "拟整合卫星制造、遥感与火箭发射，强化欧洲自主航天能力；交易仍需董事会审议和监管批准。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/aerospace-defense/finnish-iceye-oy-launches-bid-italian-rocket-maker-avio-2026-11-17/",
+          "why": "拟整合卫星制造、遥感与火箭发射，强化欧洲自主航天能力；交易仍需董事会审议和监管批准。",
+          "confidence": "已确认：收购要约；尚未完成",
+          "time": "2026-11-17",
+          "tags": [
+            "航天",
+            "商业"
+          ]
+        },
+        {
+          "id": "world-2026-11-18-ebrd-ai-gap",
+          "title": "欧洲复兴开发银行警告发展中经济体可能错过AI基础设施红利",
+          "summary": "报告指出电网、融资和制造能力不足限制部分国家建设数据中心，但AI应用层仍有机会。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/finance/developing-economies-risk-missing-out-defence-ai-boom-ebrd-warns-2026-11-17/",
+          "why": "报告指出电网、融资和制造能力不足限制部分国家建设数据中心，但AI应用层仍有机会。",
+          "confidence": "已确认：报告发布；未来发展属于预测",
+          "time": "2026-11-17",
+          "tags": [
+            "经济",
+            "AI"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "AI / 科技 / 开源",
+          "itemIds": [
+            "world-2026-11-18-nvidia-fy27-q3",
+            "world-2026-11-18-microsoft-ignite-models",
+            "world-2026-11-18-us-tech-outages",
+            "world-2026-11-18-ai-chip-seasia",
+            "world-2026-11-18-cop31-ai-pledge"
+          ]
+        },
+        {
+          "title": "全球政治与地缘",
+          "itemIds": [
+            "world-2026-11-18-ukraine-crimea-bridge"
+          ]
+        },
+        {
+          "title": "经济与商业",
+          "itemIds": [
+            "world-2026-11-18-iceye-avio-bid",
+            "world-2026-11-18-ebrd-ai-gap"
+          ]
+        },
+        {
+          "title": "科学与社会",
+          "itemIds": [
+            "world-2026-11-18-gaza-winter-shelter"
+          ]
+        }
+      ]
+    },
     {
       "channel": "reading",
       "date": "2026-11-17",
