@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-18T04:07:12.607Z",
+  "updatedAt": "2026-11-18T10:49:47Z",
   "reports": [
     {
       "channel": "world",
@@ -233,6 +233,64 @@
           "content": "选择一个几何符号，制作黑白可识别的静态标志、三种参数化变体与一段可变字体标题动画；测试小尺寸辨识、配色替换和不同画面比例。"
         }
       ]
+    },
+    {
+      "channel": "reading",
+      "date": "2026-11-18",
+      "title": "今日精选阅读｜不起眼的地方、脆弱的系统与被误解的思想",
+      "summary": "三篇跨越社会观察、网络安全与科学史的精读作品，关注评价体系、技术脆弱性与知识史中的被忽略者。",
+      "theme": "日常系统与被忽视的复杂性",
+      "items": [
+        {
+          "id": "reading-20261118-motorway",
+          "title": "‘We can’t be at the bottom indefinitely’: Can Britain’s most maligned service station be turned around?",
+          "author": "Imogen West-Knights",
+          "source": "The Guardian",
+          "date": "2026-11-12",
+          "read_time": "约20–30分钟",
+          "access": "免费",
+          "url": "https://www.theguardian.com/news/ng-interactive/2026/nov/12/motorway-services",
+          "why": "以英国一家长期排名垫底的高速公路服务区为切口，描写员工、顾客与评价制度的复杂关系，展示日常空间中的劳动尊严和改善困境。",
+          "tags": [
+            "社会观察",
+            "城市与交通",
+            "人物报道"
+          ]
+        },
+        {
+          "id": "reading-20261118-fridges",
+          "title": "Hot fridges, a fake nuclear alert and a $6bn heist: are we in the foothills of a hacking epidemic?",
+          "author": "Dan Milmo、Aisha Down",
+          "source": "The Guardian",
+          "date": "2026-11-08",
+          "read_time": "约9–12分钟",
+          "access": "免费",
+          "url": "https://www.theguardian.com/news/ng-interactive/2026/nov/08/hot-fridges-a-fake-nuclear-alert-and-a-6bn-heist-are-we-in-the-foothills-of-a-hacking-epidemic",
+          "why": "从冷藏设备遭攻击等案例考察联网基础设施的脆弱性，同时区分AI可能加剧的风险与既有密码和维护缺陷，避免技术恐慌式叙事。",
+          "tags": [
+            "网络安全",
+            "基础设施",
+            "社会与科技"
+          ]
+        },
+        {
+          "id": "reading-20261118-lamarck",
+          "title": "The self-making world",
+          "author": "Jessica Riskin",
+          "source": "Aeon",
+          "date": "2026-11-02",
+          "read_time": "约25–30分钟",
+          "access": "免费",
+          "url": "https://aeon.co/essays/the-self-making-world-of-jean-baptiste-lamarck",
+          "why": "重新审视拉马克的科学史地位及生物主动塑造环境的观点，提醒读者区分思想史重估与现代进化论中仍有争论的科学主张。发表日期早于近14天窗口，作为深度补充。",
+          "tags": [
+            "科学史",
+            "演化生物学",
+            "思想史"
+          ]
+        }
+      ],
+      "sections": []
     },
     {
       "channel": "reading",
