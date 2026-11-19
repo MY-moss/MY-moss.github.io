@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-19T03:54:28.000Z",
+  "updatedAt": "2026-11-19T10:48:34Z",
   "reports": [
     {
       "channel": "world",
@@ -224,6 +224,67 @@
           "content": "制作一个交互式字形故事页：以可操作的数字游走解释规则，用字形曲率控制背景波纹，并用 8 帧像素角色引导阅读。验收包括暂停/重启、键盘操作、减少动态效果、文本替代说明和小屏性能。"
         }
       ]
+    },
+    {
+      "channel": "reading",
+      "date": "2026-11-19",
+      "title": "今日精选阅读｜短视频暴力、加勒比艺术与愤怒的表达",
+      "summary": "三篇跨越体育商业、文化身份与文学戏剧的作品，探讨注意力经济、旅游凝视和激烈表达的边界。",
+      "theme": "被观看的世界与表达的权力",
+      "items": [
+        {
+          "id": "reading-2026-11-19-power-slap",
+          "title": "Nothing but highlights: is Power Slap the sport we deserve?",
+          "author": "Stuart McGurk",
+          "date": "2026-11-19",
+          "read_time": "约25–35分钟",
+          "access": "免费",
+          "priority": "必读",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/news/2026/nov/19/nothing-but-highlights-is-power-slap-the-sport-we-deserve",
+          "why": "深入一项为短视频传播而设计的竞技产业，结合运动员经历、商业策略与脑损伤风险，揭示平台注意力机制如何改变体育本身。",
+          "tags": [
+            "体育商业",
+            "媒体",
+            "注意力经济"
+          ]
+        },
+        {
+          "id": "reading-2026-11-19-caribbean-art",
+          "title": "Am I Caribbean, or am I a tourist? How art helped me find the answer",
+          "author": "Micha Frazer-Carroll",
+          "date": "2026-11-18",
+          "read_time": "约10–14分钟",
+          "access": "免费",
+          "priority": "强烈推荐",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/news/2026/nov/18/caribbean-artists-speaking-truth-to-the-world",
+          "why": "通过巴哈马艺术展和创作者访谈，探讨旅游凝视、移民身份与艺术如何抵抗扁平化的文化想象。",
+          "tags": [
+            "艺术",
+            "文化身份",
+            "旅游"
+          ]
+        },
+        {
+          "id": "reading-2026-11-19-solanas",
+          "title": "Valerie Solanas’s obscenely funny Scum Manifesto is an unignorable burst of female outrage",
+          "author": "Emily Woof",
+          "date": "2026-11-18",
+          "read_time": "约8–12分钟",
+          "access": "免费",
+          "priority": "值得读",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/stage/2026/nov/18/valerie-solanas-scum-manifesto-andy-warhol-emily-woof",
+          "why": "一位戏剧创作者从瓦莱丽·索拉纳斯的作品出发，讨论愤怒、讽刺、暴力与艺术表达的边界；属于鲜明立场的评论而非中立传记。",
+          "tags": [
+            "文学",
+            "戏剧",
+            "女性主义"
+          ]
+        }
+      ],
+      "sections": []
     },
     {
       "channel": "world",
