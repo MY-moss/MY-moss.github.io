@@ -1,8 +1,160 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-18T10:49:47Z",
+  "updatedAt": "2026-11-19T01:44:59.856Z",
   "reports": [
+    {
+      "channel": "world",
+      "date": "2026-11-19",
+      "title": "世界新闻简报｜AI 模型来源监管、APEC 外交与加沙停火争议",
+      "summary": "美国考虑 AI 模型来源披露规则，微软潜在跨境 AI 服务交易引发质询；深圳 APEC 会谈聚焦贸易与安全，加沙停火执行争议持续。",
+      "theme": "AI 治理与全球外交",
+      "items": [
+        {
+          "id": "world-2026-11-19-us-china-ai-disclosure",
+          "title": "美国讨论要求企业披露中国 AI 模型使用",
+          "summary": "监管从芯片延伸至模型来源透明度；目前仅为内部讨论，未成为正式规则",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/trump-administration-weighs-forcing-us-firms-disclose-chinese-ai-use-2026-11-18/",
+          "why": "监管从芯片延伸至模型来源透明度；目前仅为内部讨论，未成为正式规则",
+          "confidence": "待确认",
+          "tags": [
+            "AI",
+            "政策"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-microsoft-bytedance",
+          "title": "美国议员要求微软解释潜在字节跳动 AI 服务交易",
+          "summary": "500百万美元交易为媒体报道，国会质询已发生，交易未证实完成",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/us-house-panel-seeks-microsoft-briefing-reported-ai-deal-talks-with-chinas-2026-11-18/",
+          "why": "500百万美元交易为媒体报道，国会质询已发生，交易未证实完成",
+          "confidence": "部分确认",
+          "tags": [
+            "AI",
+            "云服务"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-tencent-chips",
+          "title": "腾讯称美国算力限制可能拖慢模型训练",
+          "summary": "公司财报与管理层回应提供 AI 算力限制的实际企业影响案例",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/technology/tencent-q3-revenue-growth-slows-8-misses-estimates-2026-11-18/",
+          "why": "公司财报与管理层回应提供 AI 算力限制的实际企业影响案例",
+          "confidence": "公司披露",
+          "tags": [
+            "AI",
+            "商业"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-nvidia-military",
+          "title": "美国委员会报告关注先进芯片军事用途",
+          "summary": "区分美国委员会评估与已独立确认的实际采购",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/china-seeks-advanced-nvidia-chips-ai-weapons-despite-us-curbs-report-says-2026-11-18/",
+          "why": "区分美国委员会评估与已独立确认的实际采购",
+          "confidence": "报告主张",
+          "tags": [
+            "半导体",
+            "安全"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-apec",
+          "title": "深圳 APEC 期间美中俄领导人会谈受关注",
+          "summary": "贸易、核军控、俄乌及伊朗问题交织；会议结果不可提前推定",
+          "source": "AP",
+          "url": "https://apnews.com/article/a04dc76ed8e786b087e2c1ea9598783a",
+          "why": "贸易、核军控、俄乌及伊朗问题交织；会议结果不可提前推定",
+          "confidence": "日程报道",
+          "tags": [
+            "外交",
+            "APEC"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-gaza-report",
+          "title": "加沙停火执行受到美方和平委员会报告批评",
+          "summary": "报告指双方未履行部分承诺；哈马斯反驳，相关指控应注明来源",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/middle-east/trumps-board-peace-faults-israel-hamas-failure-end-gaza-war-2026-11-18/",
+          "why": "报告指双方未履行部分承诺；哈马斯反驳，相关指控应注明来源",
+          "confidence": "报告已发布、争议存在",
+          "tags": [
+            "加沙",
+            "人道"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-iran-strikes",
+          "title": "以色列情报负责人据报游说美国再次打击伊朗",
+          "summary": "来自知情人士，尚不代表美国已决定军事行动",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/middle-east/israeli-spy-chief-lobbied-joint-iran-strikes-us-visit-sources-say-2026-11-18/",
+          "why": "来自知情人士，尚不代表美国已决定军事行动",
+          "confidence": "匿名来源待确认",
+          "tags": [
+            "中东",
+            "安全"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-climate",
+          "title": "COP31 聚焦减排与气候资金执行",
+          "summary": "区分政策目标与实际执行，关注弱势国家的气候融资需求",
+          "source": "AP",
+          "url": "https://apnews.com/article/9c3945f36e4445dd4427f490c40e4bf3",
+          "why": "区分政策目标与实际执行，关注弱势国家的气候融资需求",
+          "confidence": "会议报道",
+          "tags": [
+            "气候",
+            "科学"
+          ]
+        },
+        {
+          "id": "world-2026-11-19-microsoft-models",
+          "title": "微软发布面向编程与安全的专业 AI 模型",
+          "summary": "前日发布的持续进展；厂商性能宣称仍需第三方评测",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/legal/litigation/microsoft-unveils-ai-models-coding-cybersecurity-it-takes-anthropic-openai-2026-11-17/",
+          "why": "前日发布的持续进展；厂商性能宣称仍需第三方评测",
+          "confidence": "发布已确认",
+          "tags": [
+            "AI",
+            "开发工具"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "AI / 科技 / 开源",
+          "itemIds": [
+            "world-2026-11-19-us-china-ai-disclosure",
+            "world-2026-11-19-microsoft-bytedance",
+            "world-2026-11-19-tencent-chips",
+            "world-2026-11-19-nvidia-military",
+            "world-2026-11-19-microsoft-models"
+          ]
+        },
+        {
+          "title": "全球政治与地缘",
+          "itemIds": [
+            "world-2026-11-19-apec",
+            "world-2026-11-19-gaza-report",
+            "world-2026-11-19-iran-strikes"
+          ]
+        },
+        {
+          "title": "科学与社会",
+          "itemIds": [
+            "world-2026-11-19-climate"
+          ]
+        }
+      ]
+    },
     {
       "channel": "world",
       "date": "2026-11-18",
