@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-19T01:44:59.856Z",
+  "updatedAt": "2026-11-19T03:54:28.000Z",
   "reports": [
     {
       "channel": "world",
@@ -152,6 +152,76 @@
           "itemIds": [
             "world-2026-11-19-climate"
           ]
+        }
+      ]
+    },
+    {
+      "channel": "inspiration",
+      "date": "2026-11-19",
+      "title": "让数据成为故事，让字形与像素拥有自己的规则",
+      "summary": "精选 The Pudding 的《The Afterlife of Pi》、Besprited 像素动画编辑器和 AlgorithmicTypography 生成字体库，分别研究可操作的数据叙事、动画资源编辑与由字形几何驱动的运动。",
+      "theme": "交互叙事 · 像素动画 · 算法字体",
+      "items": [
+        {
+          "id": "2026-11-19-afterlife-of-pi",
+          "title": "The Afterlife of Pi",
+          "creator": "Russell Samora / The Pudding",
+          "source": "The Pudding · 原创交互报道（2026年11月，具体发布日期未核实）",
+          "url": "https://pudding.cool/2026/11/pi/",
+          "why": "用可暂停、可重播、可拖动步数的随机游走可视化，把圆周率计算史中的抽象概率问题转化为读者能亲自验证的体验；配有文字描述和历史材料。",
+          "method": "将长篇叙事分成「一个问题→一次可操作实验→历史证据→修正结论」的循环；动画附暂停/重启/速度/步骤控制和文本等价说明。",
+          "uses": "科普互动文章、数字博物馆、教学网页、可探索的数据故事",
+          "tags": [
+            "交互叙事",
+            "数据可视化",
+            "无障碍",
+            "历史"
+          ],
+          "published": "2026-11（作品页面路径与作者作品列表支持月份，具体日期未核实）"
+        },
+        {
+          "id": "2026-11-19-besprited",
+          "title": "Besprited — 可编辑的像素动画工作流",
+          "creator": "Veritaware / Nidrax",
+          "source": "GitHub 官方项目与发布记录",
+          "url": "https://github.com/veritaware/Besprited",
+          "why": "把像素绘制、洋葱皮、帧标签、每帧时长、平铺预览、脚本和精灵表导出放在同一条动画工作流中，并明确标注 Aseprite 格式兼容范围。",
+          "method": "把像素动画建模为图层×时间帧，独立保存帧时长和标签；以洋葱皮辅助动作连续性，并在导出精灵表时保留元数据。",
+          "uses": "2D 游戏角色、像素 UI 动效、Sprite Sheet 编辑器、复古游戏素材",
+          "tags": [
+            "像素艺术",
+            "游戏UI",
+            "动画",
+            "开源"
+          ],
+          "published": "v1.26.09 于 2026-08-31 发布（GitHub Releases；非近七日新品）"
+        },
+        {
+          "id": "2026-11-19-algorithmic-typography",
+          "title": "AlgorithmicTypography — 字形作为动画材料",
+          "creator": "Michail Semoglou",
+          "source": "GitHub 官方项目及 v0.3.0 发布说明",
+          "url": "https://github.com/MichailSemoglou/AlgorithmicTypography",
+          "why": "将字形外轮廓曲率、内白空间、笔画重量与波动、节奏、网格和粒子运动建立参数映射，而非仅在文字外层套动画特效。",
+          "method": "从字体轮廓提取曲率、内外轮廓和字重等几何特征，再映射到振幅、相位、速度；把参数保存在 JSON 中以便复现和导出。",
+          "uses": "动态标题、品牌片头、实验排版、音乐视觉化、Processing 教学",
+          "tags": [
+            "字体",
+            "生成艺术",
+            "Processing",
+            "动效"
+          ],
+          "published": "v0.3.0 于 2026-03-28 发布（GitHub Releases；非近七日新品）"
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日可迁移的方法",
+          "content": "互动叙事要让读者能控制实验；像素动画要让时间与图层保持可编辑；字体动画应从字形结构推导运动，而不是简单叠加装饰效果。"
+        },
+        {
+          "title": "实践提案",
+          "content": "制作一个交互式字形故事页：以可操作的数字游走解释规则，用字形曲率控制背景波纹，并用 8 帧像素角色引导阅读。验收包括暂停/重启、键盘操作、减少动态效果、文本替代说明和小屏性能。"
         }
       ]
     },
