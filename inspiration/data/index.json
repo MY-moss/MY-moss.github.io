@@ -1,8 +1,181 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-19T10:48:34Z",
+  "updatedAt": "2026-11-20T01:50:11.061Z",
   "reports": [
+    {
+      "channel": "world",
+      "date": "2026-11-20",
+      "title": "世界新闻简报｜Anthropic上市、AI芯片许可与三国核风险对话",
+      "summary": "Anthropic上市首日上涨，国会披露美国对华AI芯片许可；欧盟确认网络攻击，深圳三国会谈承诺核风险对话但未达裁军协议。",
+      "theme": "AI资本与国际安全",
+      "items": [
+        {
+          "id": "world-2026-11-20-anthropic-ipo",
+          "title": "Anthropic 上市首日上涨 17%，融资约 810 亿美元",
+          "summary": "上市定价每股83美元，收盘97.17美元；IPO规模及价格来自交易报道，市场估值不等于AI商业模式已获证明",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19/",
+          "why": "上市定价每股83美元，收盘97.17美元；IPO规模及价格来自交易报道，市场估值不等于AI商业模式已获证明",
+          "confidence": "已报道并可与交易数据核对",
+          "tags": [
+            "AI",
+            "资本市场"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-chip-licenses",
+          "title": "美国国会披露近88万枚对华AI芯片出口许可",
+          "summary": "委员会称2025年12月至2026年5月批准约879000枚芯片出口，许可并不等于全部实际交付；数字来自委员会披露",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/license-information-ai-chips-sent-china-released-by-us-house-committee-2026-11-19/",
+          "why": "委员会称2025年12月至2026年5月批准约879000枚芯片出口，许可并不等于全部实际交付；数字来自委员会披露",
+          "confidence": "官方委员会披露；交付数量待核实",
+          "tags": [
+            "AI",
+            "芯片",
+            "政策"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-tsmc-restrictions",
+          "title": "台积电据报加强中国AI芯片代工限制",
+          "summary": "美国规则变化影响先进芯片制造供应链；具体企业执行范围需进一步官方确认",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/tsmc-tightens-china-ai-chip-curbs-new-us-rules-close-manufacturing-loophole-2026-11-19/",
+          "why": "美国规则变化影响先进芯片制造供应链；具体企业执行范围需进一步官方确认",
+          "confidence": "媒体知情人士报道",
+          "tags": [
+            "芯片",
+            "供应链"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-eu-cyberattack",
+          "title": "欧盟委员会确认遭AI相关网络攻击",
+          "summary": "欧盟确认10月22日检测到攻击并临时关闭部分应用；泄露范围和攻击者身份仍在调查，不能将媒体猜测当作定论",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/legal/litigation/eu-commission-targeted-cyberattack-politico-reports-2026-11-19/",
+          "why": "欧盟确认10月22日检测到攻击并临时关闭部分应用；泄露范围和攻击者身份仍在调查，不能将媒体猜测当作定论",
+          "confidence": "欧盟确认事件；损害范围待核实",
+          "tags": [
+            "网络安全",
+            "AI"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-github-review",
+          "title": "GitHub Copilot代码审查增强跨仓库上下文与密钥检测",
+          "summary": "官方11月17日发布；自适应审查、跨公开仓库上下文及密钥检测处于相应预览阶段，不能代替独立安全审计",
+          "source": "GitHub Changelog",
+          "url": "https://github.blog/changelog/2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more/",
+          "why": "官方11月17日发布；自适应审查、跨公开仓库上下文及密钥检测处于相应预览阶段，不能代替独立安全审计",
+          "confidence": "官方发布",
+          "tags": [
+            "开源",
+            "开发工具"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-ovh-ai-cloud",
+          "title": "OVHcloud 推出欧洲托管AI云产品",
+          "summary": "欧洲云服务商扩充本地托管AI能力，数据主权与部署位置成为竞争维度",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/ovhcloud-launches-ai-cloud-products-hosted-europe-2026-11-19/",
+          "why": "欧洲云服务商扩充本地托管AI能力，数据主权与部署位置成为竞争维度",
+          "confidence": "产品发布已报道",
+          "tags": [
+            "AI",
+            "云服务"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-apec-nuclear",
+          "title": "美中俄深圳会谈承诺降低核风险，未达裁军协议",
+          "summary": "三国领导人重申核战争不可获胜并同意就核风险对话；特朗普承认具体限制核武谈判困难",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/trump-says-after-talks-with-xi-putin-deal-limiting-nuclear-weapons-will-be-hard-2026-11-19/",
+          "why": "三国领导人重申核战争不可获胜并同意就核风险对话；特朗普承认具体限制核武谈判困难",
+          "confidence": "会谈与声明已报道；协议未达成",
+          "tags": [
+            "外交",
+            "核军控"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-ukraine-energy-truce",
+          "title": "普京排除黑海及能源设施停火安排",
+          "summary": "俄方将立场与克里米亚大桥袭击相联系；相关战损和各方军事说法需区分来源",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/putin-rules-out-black-sea-energy-truce-after-crimea-bridge-strike-2026-11-19/",
+          "why": "俄方将立场与克里米亚大桥袭击相联系；相关战损和各方军事说法需区分来源",
+          "confidence": "俄方立场已确认；战损待核实",
+          "tags": [
+            "俄乌",
+            "能源"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-alibaba-results",
+          "title": "阿里巴巴季度营收超预期，AI云业务受关注",
+          "summary": "季度业绩反映AI云需求，但投资收益带来的利润变化不能直接等同于核心业务改善",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/retail-consumer/chinas-alibaba-beats-quarterly-revenue-estimates-2026-11-19/",
+          "why": "季度业绩反映AI云需求，但投资收益带来的利润变化不能直接等同于核心业务改善",
+          "confidence": "公司财报及媒体报道",
+          "tags": [
+            "AI",
+            "商业"
+          ]
+        },
+        {
+          "id": "world-2026-11-20-iea-energy",
+          "title": "国际能源署警告伊朗战争引发长期能源结构冲击",
+          "summary": "霍尔木兹海峡风险推动供应多元化与能源转型；2030及2035运输量为预测，不是已发生事实",
+          "source": "AP",
+          "url": "https://apnews.com/article/a53b5522e557afd5370c08aee351032b",
+          "why": "霍尔木兹海峡风险推动供应多元化与能源转型；2030及2035运输量为预测，不是已发生事实",
+          "confidence": "机构观点及预测",
+          "tags": [
+            "能源",
+            "气候"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "AI / 科技 / 开源",
+          "itemIds": [
+            "world-2026-11-20-anthropic-ipo",
+            "world-2026-11-20-chip-licenses",
+            "world-2026-11-20-tsmc-restrictions",
+            "world-2026-11-20-eu-cyberattack",
+            "world-2026-11-20-github-review",
+            "world-2026-11-20-ovh-ai-cloud"
+          ]
+        },
+        {
+          "title": "全球政治与地缘",
+          "itemIds": [
+            "world-2026-11-20-apec-nuclear",
+            "world-2026-11-20-ukraine-energy-truce"
+          ]
+        },
+        {
+          "title": "经济与商业",
+          "itemIds": [
+            "world-2026-11-20-anthropic-ipo",
+            "world-2026-11-20-alibaba-results"
+          ]
+        },
+        {
+          "title": "科学与社会",
+          "itemIds": [
+            "world-2026-11-20-iea-energy"
+          ]
+        }
+      ]
+    },
     {
       "channel": "world",
       "date": "2026-11-19",
