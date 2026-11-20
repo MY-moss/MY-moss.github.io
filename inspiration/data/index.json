@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-20T01:50:11.061Z",
+  "updatedAt": "2026-11-20T04:14:44.121Z",
   "reports": [
     {
       "channel": "world",
@@ -173,6 +173,69 @@
           "itemIds": [
             "world-2026-11-20-iea-energy"
           ]
+        }
+      ]
+    },
+    {
+      "channel": "inspiration",
+      "date": "2026-11-20",
+      "title": "从爵士即兴到可演奏的设计系统",
+      "summary": "精选 Mitch Paone 动态识别方法、Findest 光线品牌系统与 b5 可视化创意编程界面，研究如何将设计规则转化为可操作的视觉工具。",
+      "theme": "动态识别 · 语义品牌 · 可视化编程",
+      "items": [
+        {
+          "id": "2026-11-20-mitch-paone-kinetic-identity",
+          "title": "Mitch Paone — Kinetic Identity 的设计方法",
+          "creator": "Mitch Paone / DIA Studio；The Brand Identity 访谈 Angelo Benedetto、Alexia Mathieu、Jonas Voegeli、Roosje Klap 等",
+          "source": "The Brand Identity（2026-11-18 访谈报道）",
+          "url": "https://the-brandidentity.com/interview/remembering-mitch-paone-the-jazz-pianist-who-coined-kinetic-identity",
+          "why": "以爵士乐的节奏、约束与即兴解释动态识别：先构造可演奏的视觉规则，再由规则产生不同媒介的作品。",
+          "method": "把动效的速度、节奏、重复、变奏抽象成少量参数；先生成大量变体再筛选；要求系统在创作者离开后仍可由团队独立使用。",
+          "uses": "动态品牌、展览视觉、生成式海报、游戏菜单动效、创意工具",
+          "tags": [
+            "动态识别",
+            "设计方法",
+            "生成式系统"
+          ],
+          "published": "2026-11-18（访谈报道；非作品首次发布日期）"
+        },
+        {
+          "id": "2026-11-20-findest-light-identity",
+          "title": "Findest — The Findest Light 品牌系统",
+          "creator": "Verve（设计）；Patswerk（插画）；Matthew Gilbert（3D）",
+          "source": "The Brand Identity（2026-04-30 案例报道）",
+          "url": "https://the-brandidentity.com/project/how-did-verve-turn-deep-tech-research-into-a-guiding-light-for-findest",
+          "why": "将光线拆成 Guiding、Supercharged、Illuminated 三种具有明确用途的状态，避免将渐变和发光当作纯装饰。",
+          "method": "先定义用户旅程中的语义状态，再为每种状态指定图形、动效和应用场景；用命名规则与工具让非设计师也能稳定复用。",
+          "uses": "AI 产品界面、研究工具、技术品牌官网、状态反馈系统",
+          "tags": [
+            "品牌视觉",
+            "语义动效",
+            "设计系统"
+          ],
+          "published": "2026-04-30（案例报道；作品首发日未核实）"
+        },
+        {
+          "id": "2026-11-20-b5-visual-programming",
+          "title": "b5 — 节点式创意编程编辑器",
+          "creator": "Peiling Jiang",
+          "source": "GitHub 原始项目 / CHI EA 2023 研究",
+          "url": "https://github.com/peilingjiang/b5",
+          "why": "用方块、节点和连线取代单纯的代码文本，让创意编程的变化在画布上实时呈现，降低非程序员参与图形实验的门槛。",
+          "method": "以可连接的操作块表达绘制与控制逻辑，边修改边预览；让参数、依赖关系和最终效果同时可见。",
+          "uses": "教学工具、程序化图形编辑器、交互原型、视觉实验工作台",
+          "tags": [
+            "交互设计",
+            "可视化编程",
+            "创意工具"
+          ],
+          "published": "2023（CHI EA 论文年份；仓库首次发布日期未核实）"
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日可迁移的设计实验",
+          "summary": "构建一套有三种语义状态的视觉符号：先以可编辑参数生成静态和动态变体，再用节点图暴露状态切换与动画节奏；测试不同屏幕尺寸和低动态模式。"
         }
       ]
     },
