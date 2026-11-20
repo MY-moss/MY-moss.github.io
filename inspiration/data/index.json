@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-20T04:14:44.121Z",
+  "updatedAt": "2026-11-20T10:07:44Z",
   "reports": [
     {
       "channel": "world",
@@ -238,6 +238,84 @@
           "summary": "构建一套有三种语义状态的视觉符号：先以可编辑参数生成静态和动态变体，再用节点图暴露状态切换与动画节奏；测试不同屏幕尺寸和低动态模式。"
         }
       ]
+    },
+    {
+      "channel": "reading",
+      "date": "2026-11-20",
+      "title": "今日精选阅读｜从生存困境到艺术与科学",
+      "summary": "四篇跨领域精读：马拉维粮食危机、埃舍尔的数学艺术、俄罗斯导演的流亡与创作、可食用包装的商业现实。",
+      "theme": "个人经验、抽象结构与现实约束",
+      "items": [
+        {
+          "id": "reading-20261120-malawi",
+          "title": "饥饿是确定的，鳄鱼只是可能的：马拉维采集者的生存困境",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/global-development/2026/nov/16/malawi-hunger-food-foraging-nyika-shire-river-crocodiles",
+          "author": "Kenneth Zindondo",
+          "date": "2026-11-16",
+          "read_time": "约 9–12 分钟",
+          "access": "免费全文",
+          "priority": "必读",
+          "why": "实地报道以采集睡莲块茎的家庭为中心，揭示粮价、气候冲击、公共粮食供应与生态风险如何叠加。值得关注它如何把宏观粮食安全问题写成具体而复杂的个人选择。",
+          "tags": [
+            "世界",
+            "粮食安全",
+            "社会报道"
+          ]
+        },
+        {
+          "id": "reading-20261120-escher",
+          "title": "埃舍尔的艺术如何创造奇异的数学世界",
+          "source": "Quanta Magazine",
+          "url": "https://www.quantamagazine.org/how-m-c-eschers-art-creates-bizarre-mathematical-worlds-20261118/",
+          "author": "Shalma Wegsman",
+          "date": "2026-11-18",
+          "read_time": "约 12–18 分钟（含图）",
+          "access": "免费全文",
+          "priority": "强烈推荐",
+          "why": "结合原作图像、数学家访谈与艺术史，解释平面镶嵌、对称、双曲几何和视觉悖论。展示直觉创作与严格数学之间可以相互启发。",
+          "tags": [
+            "艺术",
+            "数学",
+            "视觉文化"
+          ]
+        },
+        {
+          "id": "reading-20261120-zvyagintsev",
+          "title": "从昏迷到流亡：导演安德烈·兹维亚金采夫谈电影、俄罗斯与生存",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/film/2026/nov/20/andrey-zvyagintsev-covid-putin-russia-life-in-exile",
+          "author": "Xan Brooks",
+          "date": "2026-11-20",
+          "read_time": "约 12–16 分钟",
+          "access": "免费全文",
+          "priority": "强烈推荐",
+          "why": "人物访谈把疾病康复、政治流亡与电影创作连接起来，展现艺术家如何在历史危机中保持表达。采访中的个人经历与政治判断应分别理解。",
+          "tags": [
+            "电影",
+            "人物访谈",
+            "世界"
+          ]
+        },
+        {
+          "id": "reading-20261120-packaging",
+          "title": "把杯子吃掉：可食用包装能解决塑料问题吗？",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/environment/2026/nov/20/could-edible-packaging-help-solve-world-plastic-problem",
+          "author": "Sarah Marsh",
+          "date": "2026-11-20",
+          "read_time": "约 8–11 分钟",
+          "access": "免费全文",
+          "priority": "值得读",
+          "why": "从海藻饮料胶囊和可食用杯子出发，检验材料创新的保质期、成本、卫生与规模化障碍。文章也提出比材料替换更根本的减少一次性消费问题。",
+          "tags": [
+            "环境",
+            "商业",
+            "材料创新"
+          ]
+        }
+      ],
+      "sections": []
     },
     {
       "channel": "world",
