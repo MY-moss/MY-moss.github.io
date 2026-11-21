@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-21T10:33:54Z",
   "reports": [
     {
       "channel": "world",
@@ -352,6 +352,64 @@
           ]
         }
       ]
+    },
+    {
+      "channel": "reading",
+      "date": "2026-11-21",
+      "title": "今日精选阅读｜2026-11-21",
+      "summary": "三篇跨越互动艺术、网络数学与植物自然史的精选文章，讨论复杂系统、感知与观察。",
+      "theme": "从系统到感知：重新理解世界的连接方式",
+      "items": [
+        {
+          "id": "reading-20261121-parreno-5moons",
+          "title": "一场由一万七千公里外沙漠驱动的展览",
+          "author": "Dee Jefferson",
+          "date": "2026-11-21",
+          "read_time": "约 9–12 分钟",
+          "access": "免费",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/artanddesign/2026/nov/21/in-a-sydney-gallery-philippe-parrenos-art-is-powered-by-a-desert-17000km-away",
+          "why": "通过实时气象数据、声音和机械装置，讨论艺术如何从静态物品变为不断变化的环境，以及观看者的注意力如何参与作品。",
+          "tags": [
+            "艺术",
+            "交互设计",
+            "环境"
+          ]
+        },
+        {
+          "id": "reading-20261121-perfect-resilience",
+          "title": "网络研究者找到了“完美韧性”的四种障碍",
+          "author": "Ben Brubaker",
+          "date": "2026-11-20",
+          "read_time": "约 13–18 分钟",
+          "access": "免费",
+          "source": "Quanta Magazine",
+          "url": "https://www.quantamagazine.org/network-researchers-nail-down-theory-of-perfect-resilience-20261120/",
+          "why": "通过图论中的四种禁用结构解释局部路由为什么可能陷入循环，并揭示更多连接不一定意味着更高韧性。",
+          "tags": [
+            "数学",
+            "计算机科学",
+            "系统思维"
+          ]
+        },
+        {
+          "id": "reading-20261121-green-kingdom",
+          "title": "《绿色王国》书评：植物自然史与凝视世界的能力",
+          "author": "Kathryn Hughes",
+          "date": "2026-11-20",
+          "read_time": "约 6–9 分钟",
+          "access": "书评免费，原书付费",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/books/2026/nov/20/green-kingdom-by-ben-dark-review-a-luscious-natural-history-of-plant-life",
+          "why": "从植物演化、民间传说和广岛幸存的银杏树出发，思考科学数据与细致观察在认识自然时各自不可替代的价值。",
+          "tags": [
+            "自然史",
+            "文学",
+            "认识论"
+          ]
+        }
+      ],
+      "sections": []
     },
     {
       "channel": "world",
