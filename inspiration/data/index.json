@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-21T01:26:27.075Z",
+  "updatedAt": "2026-11-21",
   "reports": [
     {
       "channel": "world",
@@ -157,6 +157,78 @@
           "itemIds": [
             "world-2026-11-21-cop31-draft"
           ]
+        }
+      ]
+    },
+    {
+      "channel": "inspiration",
+      "date": "2026-11-21",
+      "title": "灵感采集｜把生产过程变成品牌，把封面变成可探索界面",
+      "summary": "精选 STOW 的参数化咖啡品牌、Inherited 的互动唱片封面，以及 PixelPen 的游戏引擎内嵌式像素工作流，重点提炼数据可视化、跨媒介线索与工具嵌入的可迁移设计方法。",
+      "theme": "信息结构、交互叙事与创作工作流",
+      "items": [
+        {
+          "id": "inspiration-20261121-stow-raw",
+          "title": "STOW — Roasting Made Visible",
+          "creator": ".raw（品牌设计）；STOW（委托方）",
+          "source": "The Brand Identity · 2026-11-18 案例报道",
+          "url": "https://the-brandidentity.com/project/how-raw-reworked-stows-identity-to-make-its-coffee-roasting-visible",
+          "why": "将烘焙参数、实验图表与数据记录转化为排版系统；保留原有厂房符号，以黑白主色、五种风味强调色和包装顶部识别带建立产品家族。报道日期为2026-11-18，品牌实际完成日期未核实。",
+          "method": "先识别产品背后的真实操作流程，提取其中的图表、字段、符号与层级；把参数视觉化用于标签和信息结构，再用有限的颜色编码区分产品类别，避免单纯复制实验室装饰风格。",
+          "uses": "消费品包装、仪表盘、数据驱动品牌、科研展示与产品信息卡片",
+          "tags": [
+            "品牌识别",
+            "信息设计",
+            "包装",
+            "字体"
+          ]
+        },
+        {
+          "id": "inspiration-20261121-inherited-microsite",
+          "title": "Inherited — Me, Myself & Sam Interactive Cover",
+          "creator": "Eder Anaya（创意与设计）；Adrien Lamy（网页开发）；Alex Boyd（插画）",
+          "source": "The Brand Identity · 2026年10月底案例报道（报道相对日期，具体日期待核）",
+          "url": "https://the-brandidentity.com/project/eder-anaya-makes-inheriteds-ep-cover-a-microsite-you-can-investigate",
+          "why": "把唱片封面设计成可以进入的调查板，社交媒体线索、宣传片、音效和拖拽配对交互组成同一叙事，用户通过重建碎片逐步发现对应歌曲；报道提及 three.js、SvelteKit、GSAP 与 Blender。",
+          "method": "以一个可操作的核心隐喻贯穿预热内容、主视觉与网页；将线索按阶段释放，用户完成匹配后再解锁信息，让互动承担叙事推进而非装饰；注意题材涉及真实犯罪，借鉴交互结构而非猎奇主题。",
+          "uses": "互动专辑、游戏世界观档案、数字展览、谜题式活动页、叙事型作品集",
+          "tags": [
+            "交互叙事",
+            "音乐视觉",
+            "网页",
+            "游戏化"
+          ]
+        },
+        {
+          "id": "inspiration-20261121-pixelpen",
+          "title": "PixelPen — Godot-Native Pixel Art Workflow",
+          "creator": "Bayu SW / Yarvis Games（PixelPen 开发团队）",
+          "source": "GitHub · pixelpen-dev/pixelpen 官方 README；项目首发日期未核实",
+          "url": "https://github.com/pixelpen-dev/pixelpen",
+          "why": "同一像素绘图工具既可作为 Godot 插件又可独立运行，使用 GDScript 与 C++ GDExtension，并提供可试用的网页预览（官方提示部分功能可能不可用）；价值在于减少素材创作与游戏引擎之间的切换。",
+          "method": "优先把高频创作能力嵌入使用素材的工作环境，保留独立运行路径；设计共享的数据模型、导出格式与编辑命令，让插件与桌面端拥有一致的编辑行为；插件兼容性与功能完整性应通过实际版本验证。",
+          "uses": "像素素材工具、游戏引擎插件、Sprite 工作流、创作软件嵌入式编辑器",
+          "tags": [
+            "像素画",
+            "游戏开发",
+            "工具设计",
+            "Godot"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日可迁移的三个方法",
+          "summary": "STOW：用真实工作流程定义视觉语法；Inherited：让主视觉本身成为可探索的交互空间；PixelPen：让创作工具靠近内容实际使用的环境。",
+          "itemIds": [
+            "inspiration-20261121-stow-raw",
+            "inspiration-20261121-inherited-microsite",
+            "inspiration-20261121-pixelpen"
+          ]
+        },
+        {
+          "title": "实践建议",
+          "summary": "尝试制作一个虚构的数字展览页面：用结构化标签呈现作品元数据、用可拖拽线索板引导探索，并允许创作者在原型中直接替换像素素材。验收标准是语义清晰、交互可回退、资源可编辑。"
         }
       ]
     },
