@@ -1,8 +1,165 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-20T10:07:44Z",
+  "updatedAt": "2026-11-21T01:26:27.075Z",
   "reports": [
+    {
+      "channel": "world",
+      "date": "2026-11-21",
+      "title": "世界新闻简报｜AI股市重挫、波兰领空事件与COP31谈判",
+      "summary": "AI相关美股大幅回调，美国拟限制海外数据中心投资；波兰报告俄方武器进入领空，国际法院罗兴亚人种族灭绝裁决引发缅甸反对，COP31草案弱化化石燃料表述。",
+      "theme": "AI投资与全球安全",
+      "items": [
+        {
+          "id": "world-2026-11-21-ai-market",
+          "title": "AI板块大幅下挫，纳斯达克单日跌约5.3%",
+          "summary": "11月20日纳斯达克跌5.28%，英伟达跌13.8%，Anthropic上市第二日跌9.1%。金融市场的估值调整不等于AI技术进步停止。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/",
+          "why": "高资本开支与利率预期对AI产业估值构成压力。",
+          "confidence": "市场收盘数据已报道；原因属多因素分析",
+          "tags": [
+            "AI",
+            "市场"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-overseas-datacenter-tax",
+          "title": "特朗普提出对海外AI数据中心征收高额税款",
+          "summary": "11月20日特朗普表示考虑对美国企业在海外建设AI数据中心施加高额税负，但尚未形成具体政策方案。",
+          "source": "AP",
+          "url": "https://apnews.com/article/f1ac03b73d13445400eeed8631d9d879",
+          "why": "影响AI算力部署地理分布、电力成本与国际投资。",
+          "confidence": "总统表态已确认；税制未出台",
+          "tags": [
+            "AI",
+            "政策"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-china-chip-curbs",
+          "title": "中国科技公司评估美国AI芯片及海外算力限制",
+          "summary": "11月20日报道显示阿里巴巴和腾讯担心下一代模型训练与云扩张受到限制；国内替代芯片仍受产能及高带宽内存约束。",
+          "source": "Reuters / AP",
+          "url": "https://www.reuters.com/business/retail-consumer/us-ai-chip-curbs-hit-china-tech-stocks-spur-self-sufficiency-push-2026-11-20/",
+          "why": "区分训练算力受限与既有推理业务的短期表现。",
+          "confidence": "新规已生效；长期影响为企业及分析师预测",
+          "tags": [
+            "AI",
+            "芯片"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-military-ai-human",
+          "title": "美方称中美领导人同意军事AI重大决策应有人类参与",
+          "summary": "美国财长贝森特11月20日表示两国领导人认同重大军事AI决策应有人类参与；尚无公开可核查的双边条约或具体执行机制。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/trump-xi-agreed-that-military-ai-decisions-should-involve-humans-bessent-says-2026-11-20/",
+          "why": "AI自主武器的控制边界是全球治理核心问题。",
+          "confidence": "美方表态已确认；双边细节未独立核实",
+          "tags": [
+            "AI",
+            "国际治理"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-poland-airspace",
+          "title": "波兰称俄方导弹及无人机侵犯领空",
+          "summary": "11月20日波兰报告疑似两枚俄方导弹及一架无人机落入境内；波兰政府与北约称事件严重，俄方意图仍在调查。",
+          "source": "Reuters / AP / Poland government",
+          "url": "https://www.reuters.com/business/aerospace-defense/polish-army-investigates-report-unknown-objects-near-ukraine-border-2026-11-20/",
+          "why": "涉及俄乌战争外溢及北约东翼安全；不能直接认定已触发集体防御。",
+          "confidence": "领空事件多来源确认；故意性待核实",
+          "tags": [
+            "地缘",
+            "俄乌"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-myanmar-icj",
+          "title": "国际法院裁定缅甸对罗兴亚人实施种族灭绝，缅方反对",
+          "summary": "国际法院11月19日作出裁决；11月20日缅甸外交部表示失望并否认种族灭绝意图。赔偿与难民安全返回的执行仍困难。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/asia-pacific/myanmar-calls-icj-ruling-genocide-unfair-2026-11-20/",
+          "why": "国际法上的国家责任裁决及其执行机制具有长期影响。",
+          "confidence": "法院裁决已确认；执行待观察",
+          "tags": [
+            "国际法",
+            "人权"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-uk-eu-reset",
+          "title": "英国与欧盟达成深化合作安排",
+          "summary": "11月20日欧盟与英国峰会确认加强防务、食品贸易规则、青年交流和碳市场合作；多项措施尚需后续实施。",
+          "source": "European Council / Reuters",
+          "url": "https://www.consilium.europa.eu/en/meetings/international-summit/2026/11/20/",
+          "why": "影响英国脱欧后贸易成本、人员流动和欧洲安全合作。",
+          "confidence": "官方联合声明已发布；具体措施尚待落实",
+          "tags": [
+            "欧洲",
+            "经济"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-cop31-draft",
+          "title": "COP31谈判草案删除化石燃料退出表述",
+          "summary": "11月20日安塔利亚气候谈判继续，修订草案移除化石燃料相关措辞并弱化适应资金目标；尚不能视作最终协议。",
+          "source": "Reuters / Le Monde",
+          "url": "https://www.reuters.com/sustainability/climate-focus-cop31-draft-deal-strips-fossil-fuel-references-2026-11-20/",
+          "why": "影响全球能源转型与发展中国家气候资金。",
+          "confidence": "草案已报道；最终协议仍在谈判",
+          "tags": [
+            "气候",
+            "能源"
+          ]
+        },
+        {
+          "id": "world-2026-11-21-mideast-escalation",
+          "title": "沙特与胡塞武装交火，伊朗谈判仍无突破",
+          "summary": "11月20日沙特联军称打击胡塞武装目标并拦截无人机及导弹；特朗普称伊朗希望达成协议，但未提出美方接受的条件。",
+          "source": "AP",
+          "url": "https://apnews.com/article/16c39c487a23b53b73c5eabb7f0fd57a",
+          "why": "地区冲突影响红海与海湾能源、航运安全。",
+          "confidence": "交火及外交表态已报道；双方战果待核实",
+          "tags": [
+            "中东",
+            "能源"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "AI / 科技 / 开源",
+          "itemIds": [
+            "world-2026-11-21-ai-market",
+            "world-2026-11-21-overseas-datacenter-tax",
+            "world-2026-11-21-china-chip-curbs",
+            "world-2026-11-21-military-ai-human"
+          ]
+        },
+        {
+          "title": "全球政治与地缘",
+          "itemIds": [
+            "world-2026-11-21-poland-airspace",
+            "world-2026-11-21-myanmar-icj",
+            "world-2026-11-21-mideast-escalation"
+          ]
+        },
+        {
+          "title": "经济与商业",
+          "itemIds": [
+            "world-2026-11-21-uk-eu-reset"
+          ]
+        },
+        {
+          "title": "科学与社会",
+          "itemIds": [
+            "world-2026-11-21-cop31-draft"
+          ]
+        }
+      ]
+    },
     {
       "channel": "world",
       "date": "2026-11-20",
