@@ -233,6 +233,127 @@
       ]
     },
     {
+      "channel": "opensource",
+      "date": "2026-11-21",
+      "title": "开源项目雷达｜Agent 创作流水线、真实世界 Minecraft 与像素画",
+      "summary": "本期精选 5 个可实际验证的开源工具，优先关注 Agent 可复用技能、长任务编码、Minecraft 场景生成和视频/像素创作。部分项目的近两周版本变化未独立确认，未作增长量断言。",
+      "theme": "Agent 工作流与创作工具",
+      "items": [
+        {
+          "id": "opensource-garden-skills",
+          "title": "Garden Skills",
+          "source": "GitHub 官方仓库 / README",
+          "url": "https://github.com/ConardLi/garden-skills",
+          "repository": "https://github.com/ConardLi/garden-skills",
+          "why": "Agent Skills 覆盖动效短片、网页设计、知识检索；近期社区关注上升，官方 README 展示可编辑源码和渲染工作流。",
+          "technology": "Agent Skills、JavaScript、FFmpeg（动效模块）",
+          "maturity": "多模块技能集合，成熟度中等",
+          "difficulty": "低至中",
+          "limitations": "不同技能依赖不同，生成内容需要人工验收",
+          "play": "用 motion-showreel 制作 15 秒动态标题，比较输出视频与可编辑源文件",
+          "verdict": "强烈推荐试玩",
+          "tags": [
+            "Agent",
+            "设计",
+            "视频"
+          ]
+        },
+        {
+          "id": "opensource-whip",
+          "title": "WhipCode",
+          "source": "GitHub 官方仓库 / README",
+          "url": "https://github.com/context-labs/whip",
+          "repository": "https://github.com/context-labs/whip",
+          "why": "独立 daemon、递归委派和可追踪执行树，适合研究长任务 Agent；当前 CLI 有 alpha 轨道。",
+          "technology": "Go、Bubble Tea、Starlark/JavaScript、MCP",
+          "maturity": "Beta/Alpha 混合",
+          "difficulty": "中",
+          "limitations": "桌面 Beta 限 Apple Silicon macOS 14+；模型提供方需单独配置；基准不能直接横向比较",
+          "play": "在测试仓库比较任务恢复与子 Agent 协作",
+          "verdict": "强烈推荐试玩",
+          "tags": [
+            "Coding Agent",
+            "Go",
+            "MCP"
+          ]
+        },
+        {
+          "id": "opensource-arnis",
+          "title": "Arnis",
+          "source": "GitHub 官方仓库 / README",
+          "url": "https://github.com/louis-e/arnis",
+          "repository": "https://github.com/louis-e/arnis",
+          "why": "GitHub 11月3日专题介绍其将真实地理数据转成 Minecraft 世界，老项目因新报道重新值得关注。",
+          "technology": "Rust、OpenStreetMap、地形高程数据",
+          "maturity": "已有可用发行版",
+          "difficulty": "低至中",
+          "limitations": "地图精度依赖公开地理数据；大范围生成耗时且不等于真实建筑还原",
+          "play": "选取一处公共地标生成地图，验证镜头取景与建筑比例",
+          "verdict": "强烈推荐试玩",
+          "tags": [
+            "Minecraft",
+            "Rust",
+            "地图"
+          ]
+        },
+        {
+          "id": "opensource-pixelskill",
+          "title": "PixelSkill",
+          "source": "GitHub 官方仓库 / README",
+          "url": "https://github.com/Shanghaitech-DataTech/PixelSkill",
+          "repository": "https://github.com/Shanghaitech-DataTech/PixelSkill",
+          "why": "把像素画生成封装成可被编码 Agent 调用的技能，原生尺寸 PNG 与放大预览并行输出。",
+          "technology": "Python 3.9+、Agent Skills；Pillow 可选",
+          "maturity": "实验性工具",
+          "difficulty": "低",
+          "limitations": "图像质量受 Agent 影响，仍需像素网格、色板与版权审查",
+          "play": "生成 16/32/64 像素图标并人工检查边缘与调色板",
+          "verdict": "值得关注",
+          "tags": [
+            "像素画",
+            "Agent",
+            "创作"
+          ]
+        },
+        {
+          "id": "opensource-openmontage",
+          "title": "OpenMontage",
+          "source": "GitHub 官方仓库 / README",
+          "url": "https://github.com/OpenMontageInc/OpenMontage",
+          "repository": "https://github.com/OpenMontageInc/OpenMontage",
+          "why": "将研究、脚本、素材与合成串成 Agent 视频制作流水线；适合考察复杂创作任务的编排。",
+          "technology": "Agent Skills、Remotion（仓库含 remotion-composer）",
+          "maturity": "快速迭代",
+          "difficulty": "高",
+          "limitations": "依赖链长，第三方素材和生成服务成本及授权须单独确认",
+          "play": "做 20 秒无版权素材的产品演示，记录每阶段人工修改次数",
+          "verdict": "值得关注",
+          "tags": [
+            "视频",
+            "Agent",
+            "创作"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "优先试玩",
+          "itemIds": [
+            "opensource-garden-skills",
+            "opensource-whip",
+            "opensource-arnis"
+          ]
+        },
+        {
+          "title": "值得观察与验证",
+          "itemIds": [
+            "opensource-pixelskill",
+            "opensource-openmontage"
+          ]
+        }
+      ]
+    },
+    {
       "channel": "world",
       "date": "2026-11-20",
       "title": "世界新闻简报｜Anthropic上市、AI芯片许可与三国核风险对话",
