@@ -261,6 +261,64 @@
       ]
     },
     {
+      "channel": "reading",
+      "date": "2026-11-22",
+      "title": "今日精选阅读｜视觉谜题、杂交蟹与数学发现",
+      "summary": "三篇跨越艺术史、海洋生态与数学研究的精读作品，探索分类、真实与发现的复杂性。",
+      "theme": "当现实超越我们的解释框架",
+      "items": [
+        {
+          "id": "reading-20261122-van-eyck",
+          "title": "凡·艾克肖像中的视觉谜题",
+          "source": "The Guardian",
+          "author": "Charlotte Higgins",
+          "date": "2026-11-19",
+          "read_time": "15–20 分钟",
+          "access": "免费全文",
+          "url": "https://www.theguardian.com/artanddesign/2026/nov/19/jan-van-eyck-portraits-national-gallery-frames-inscriptions",
+          "why": "逼真肖像、画框与铭文如何让观看者不断怀疑眼前的真实；一篇兼具视觉细读与艺术史洞察的评论。",
+          "tags": [
+            "艺术史",
+            "视觉文化",
+            "绘画"
+          ]
+        },
+        {
+          "id": "reading-20261122-hybrid-crabs",
+          "title": "法律分类之外的白令海杂交蟹",
+          "source": "The Guardian",
+          "author": "Fanni Szakál",
+          "date": "2026-11-21",
+          "read_time": "10–14 分钟",
+          "access": "免费全文",
+          "url": "https://www.theguardian.com/environment/2026/nov/21/alaska-bering-sea-heatwave-snow-tanner-hybrid-crabs-fishing-quotas",
+          "why": "海洋热浪、生态变化与渔业配额制度之间的矛盾，呈现科学的不确定性如何成为公共治理难题。",
+          "tags": [
+            "海洋生态",
+            "气候",
+            "治理"
+          ]
+        },
+        {
+          "id": "reading-20261122-elliptic-curves",
+          "title": "高秩椭圆曲线搜索与 AI 数学研究的边界",
+          "source": "Quanta Magazine",
+          "author": "Konstantin Kakaes",
+          "date": "2026-11-19",
+          "read_time": "12–17 分钟",
+          "access": "免费全文",
+          "url": "https://www.quantamagazine.org/updates/transformation/",
+          "why": "AI 扩大了数学实例搜索规模，但真正的结构性洞察仍是另一种挑战；从椭圆曲线研究认识科学发现。",
+          "tags": [
+            "数学",
+            "AI",
+            "科学方法"
+          ]
+        }
+      ],
+      "sections": []
+    },
+    {
       "channel": "world",
       "date": "2026-11-21",
       "title": "世界新闻简报｜AI股市重挫、波兰领空事件与COP31谈判",
