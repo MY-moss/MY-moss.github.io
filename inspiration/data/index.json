@@ -1,8 +1,193 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-21T10:33:54Z",
+  "updatedAt": "2026-11-22T01:34:28Z",
   "reports": [
+    {
+      "channel": "world",
+      "date": "2026-11-22",
+      "title": "每日世界新闻｜自主武器谈判、韩国AI数据中心与COP31加时",
+      "summary": "联合国自主武器谈判延至2028年，韩国加快AI算力建设；COP31继续加时，俄乌与伊朗外交局势仍在发展。",
+      "theme": "AI治理与基础设施、国际安全、气候谈判",
+      "items": [
+        {
+          "id": "world-2026-11-22-autonomous-weapons",
+          "title": "各国延长自主武器谈判至2028年",
+          "summary": "日内瓦会议同意继续谈判，但未就有约束力的规则达成协议。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/states-agree-to-un-talks-aiming-regulate-killer-robots-by-2028-2026-11-21/",
+          "why": "AI军事决策的人类控制与问责仍缺少国际共识。",
+          "confidence": "已确认会议结果；无新条约",
+          "tags": [
+            "AI",
+            "国际治理"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-korea-datacenter",
+          "title": "韩国推进蔚山AI数据中心",
+          "summary": "SK集团与AWS合作项目计划至2029年投资约7万亿韩元，初期容量103MW。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/media-telecom/south-koreas-lee-says-speed-is-vital-ai-race-data-centre-visit-2026-11-21/",
+          "why": "反映AI竞争对电力、建设能力与区域产业布局的依赖。",
+          "confidence": "项目规划已报道；未来规模待实现",
+          "tags": [
+            "AI",
+            "基础设施"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-coreweave-debt",
+          "title": "CoreWeave债务风险引发AI云融资讨论",
+          "summary": "报道分析CoreWeave约470亿美元债务及GPU抵押融资模式。",
+          "source": "The Guardian",
+          "url": "https://www.theguardian.com/business/2026/nov/21/debt-laden-cloud-computing-company-coreweave-ai-boom",
+          "why": "AI算力需求与云服务商偿债能力需分开评估。",
+          "confidence": "媒体财务分析；未来风险不确定",
+          "tags": [
+            "AI",
+            "商业"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-chip-compliance",
+          "title": "AI芯片出口管制延伸至客户核验",
+          "summary": "美国拟议规则可能要求出口商和数据中心核实最终使用者。",
+          "source": "Reuters Breakingviews",
+          "url": "https://www.reuters.com/commentary/breakingviews/global-markets-breakingviews-2026-11-21/",
+          "why": "影响跨境算力服务与数据中心合规成本。",
+          "confidence": "政策分析；规则未正式生效",
+          "tags": [
+            "半导体",
+            "政策"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-ukraine-strike",
+          "title": "乌克兰克里维里赫遭导弹袭击",
+          "summary": "当地官员称袭击造成至少两人死亡、多人受伤。",
+          "source": "DW",
+          "url": "https://amp.dw.com/en/russia-strikes-zelenskyys-hometown-killing-2/a-80009458",
+          "why": "俄乌冲突持续危及城市平民与基础设施。",
+          "confidence": "袭击已报道；伤亡数字可能更新",
+          "tags": [
+            "国际",
+            "俄乌"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-iran-qatar",
+          "title": "卡塔尔代表团赴伊朗接触",
+          "summary": "伊朗官员称卡塔尔代表团赴德黑兰讨论外交斡旋。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/middle-east/qatari-delegation-visits-tehran-talks-iranian-official-says-2026-11-21/",
+          "why": "地区冲突的外交渠道影响航运和能源安全。",
+          "confidence": "官员表态已报道；未达成协议",
+          "tags": [
+            "地缘政治"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-china-summit",
+          "title": "深圳峰会后的中美关系受到审视",
+          "summary": "Reuters分析峰会后中国在贸易与外交议题上的谈判位置。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/trump-basks-summit-pomp-chinas-xi-strengthens-his-hand-2026-11-21/",
+          "why": "有助于区分领导人接触与结构性政策分歧。",
+          "confidence": "分析评论，非新协议",
+          "tags": [
+            "国际",
+            "经济"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-ai-market",
+          "title": "AI股市回调促使资金轮动",
+          "summary": "11月20日科技股大幅下跌，投资者重新评估AI资本支出与估值。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/finance/ai-tech-rout-prompts-us-investors-rush-into-value-stocks-2026-11-20/",
+          "why": "技术进步与投资回报并不等价。",
+          "confidence": "行情已确认；原因属综合分析",
+          "tags": [
+            "市场",
+            "AI"
+          ],
+          "date": "2026-11-21"
+        },
+        {
+          "id": "world-2026-11-22-cop31-overtime",
+          "title": "COP31进入第二天加时",
+          "summary": "近200国继续争论化石燃料和气候资金，最后阶段提案尚待正式公布。",
+          "source": "AP",
+          "url": "https://apnews.com/article/b54eebcade92e5ee4c513b9a5b2192a7",
+          "why": "最终文本关系能源转型与脆弱国家的气候适应资金。",
+          "confidence": "谈判延期已确认；最终协议待确认",
+          "tags": [
+            "气候",
+            "国际"
+          ],
+          "date": "2026-11-21"
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日最重要的五件事",
+          "items": [
+            "world-2026-11-22-autonomous-weapons",
+            "world-2026-11-22-korea-datacenter",
+            "world-2026-11-22-ukraine-strike",
+            "world-2026-11-22-iran-qatar",
+            "world-2026-11-22-cop31-overtime"
+          ]
+        },
+        {
+          "title": "AI / 科技 / 开源",
+          "items": [
+            "world-2026-11-22-autonomous-weapons",
+            "world-2026-11-22-korea-datacenter",
+            "world-2026-11-22-coreweave-debt",
+            "world-2026-11-22-chip-compliance"
+          ]
+        },
+        {
+          "title": "创意 / 设计 / 文化",
+          "summary": "本时段未核实到足够重大的新增事件，不为凑数填充。",
+          "items": []
+        },
+        {
+          "title": "全球政治与地缘",
+          "items": [
+            "world-2026-11-22-ukraine-strike",
+            "world-2026-11-22-iran-qatar",
+            "world-2026-11-22-china-summit"
+          ]
+        },
+        {
+          "title": "经济与商业",
+          "items": [
+            "world-2026-11-22-ai-market"
+          ]
+        },
+        {
+          "title": "科学与社会",
+          "items": [
+            "world-2026-11-22-cop31-overtime"
+          ]
+        },
+        {
+          "title": "今天值得继续关注",
+          "summary": "COP31最终文本；自主武器谈判路线图；乌克兰伤亡与设施损失；卡塔尔—伊朗接触；AI云融资风险。",
+          "items": []
+        }
+      ]
+    },
     {
       "channel": "world",
       "date": "2026-11-21",
