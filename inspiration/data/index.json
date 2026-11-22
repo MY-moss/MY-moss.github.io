@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-22T01:34:28Z",
+  "updatedAt": "2026-11-22",
   "reports": [
     {
       "channel": "world",
@@ -185,6 +185,78 @@
           "title": "今天值得继续关注",
           "summary": "COP31最终文本；自主武器谈判路线图；乌克兰伤亡与设施损失；卡塔尔—伊朗接触；AI云融资风险。",
           "items": []
+        }
+      ]
+    },
+    {
+      "channel": "inspiration",
+      "date": "2026-11-22",
+      "title": "每日灵感采集｜让品牌会变化、像素可复用、滚动成为叙事",
+      "summary": "三种可迁移设计方法：受约束的动态字标、像素资产组件化、以阅读动作驱动交互叙事。",
+      "theme": "可变识别、可编辑资产与叙事交互",
+      "items": [
+        {
+          "id": "inspiration-20261122-lartista",
+          "title": "L’Artista — 动态品牌识别",
+          "creator": "Hochburg；动效 Nadine Klumpp",
+          "source": "The Brand Identity（2026-11-20 案例报道）",
+          "url": "https://the-brandidentity.com/project/hochburg-brings-together-pizza-and-hip-hop-in-lartistas-identity",
+          "why": "手绘字标保留可识别轮廓，却允许笔势、比例、裁切和逐帧变化；跨包装、菜单、服饰和视频建立统一语言。品牌设计可追溯至 2022 年，2025 年扩展至新店，2026-11-20 为报道日期。",
+          "method": "先建立稳定的字标轮廓与识别约束，再设计多个手绘变体，用短循环测试动态识别；用克制的辅助字体平衡高能量主视觉。",
+          "uses": "动态 Logo、音乐活动视觉、游戏标题、包装与社交媒体设计",
+          "tags": [
+            "品牌识别",
+            "动态字标",
+            "字体",
+            "包装"
+          ]
+        },
+        {
+          "id": "inspiration-20261122-baipix",
+          "title": "Baipix — 可复用像素设计系统",
+          "creator": "baipix 开源项目维护团队（个人作者未核实）",
+          "source": "GitHub 原始项目 README",
+          "url": "https://github.com/baipix/baipix",
+          "why": "多画板、图层、可复用实例、色板约束和可编辑 SVG 输出，将像素图像纳入现代设计工具工作流；具体首次发布日期未核实。",
+          "method": "分离像素数据、语义色板、组件实例和导出逻辑；相邻同色像素合并为 SVG 路径，保留分组和图层以支持二次编辑。",
+          "uses": "像素游戏 UI、图标组件库、创作编辑器、Figma 与游戏资产协作",
+          "tags": [
+            "像素画",
+            "开源",
+            "SVG",
+            "组件化"
+          ]
+        },
+        {
+          "id": "inspiration-20261122-theboat",
+          "title": "The Boat — 滚动叙事互动漫画",
+          "creator": "Nam Le、Matt Huynh、Kylie Boltin、Matt Smith、Sam Petty、SBS Online",
+          "source": "SBS 官方发布（2015-04-29）；Matt Huynh 创作者项目页；制作团队技术案例",
+          "url": "https://www.sbs.com.au/theboat/",
+          "why": "将手绘图像、滚动、动画、声音和历史档案结合，使阅读手势与故事的运动和情绪节奏相互对应；2015 年经典案例，不属于本周新品。",
+          "method": "先定义叙事节奏，再将滚动距离、视觉位移与音效层级映射到具体情节；同时保留纯文字、声音控制与减少动态效果的可访问性路径。",
+          "uses": "交互漫画、数字展览、历史叙事、教育网站、游戏世界观页面",
+          "tags": [
+            "交互叙事",
+            "滚动体验",
+            "数字艺术",
+            "经典案例"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日实践",
+          "summary": "制作一个虚构艺术节页面：动态字标使用受约束变体，像素图标使用组件实例与语义色板，叙事章节用滚动与节奏关联；检验小尺寸识别、资产复用和无动效阅读。",
+          "itemIds": [
+            "inspiration-20261122-lartista",
+            "inspiration-20261122-baipix",
+            "inspiration-20261122-theboat"
+          ]
+        },
+        {
+          "title": "证据与时间说明",
+          "summary": "L’Artista 2026-11-20 是媒体报道日，品牌早于该日期；Baipix 具体首发日未核实；The Boat 2015-04-29 正式发布。未进行软件性能实测或原站跨浏览器兼容性测试。"
         }
       ]
     },
