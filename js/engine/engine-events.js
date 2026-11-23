@@ -1009,7 +1009,11 @@ GameEngine.prototype.checkEndings = function() {
     if (h.mentalPressure >= 70 && h.familyPressure >= 60) { p.deathReason = 'death'; p.ending = 'burnout'; return; }
     // 退休窗口：当年至 +2 年，每年 45% 概率触发返聘选择（v2.49：原严格限定退休当年、失败即永久失去返聘剧情，放宽为窗口内可重掷；窗口内未触发不结算退休，最后一年强制结束窗口正常退休）
     const baseRetireAge = (p.gender === '女' ? 55 : 60);
-    if (p.age >= baseRetireAge && p.age <= baseRetireAge + 2 && !p.flags.retireAsked) {
+    // 已有职业/人物抉择在显示时不插入退休邀请，也不提前判定退休结局。
+    // 解决选择后可再次 checkEndings，或等下年继续按窗口判定。
+    if (p.age >= baseRetireAge && p.age <= baseRetireAge + 2 && !p.flags.retireAsked
+        && (this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer)) return;
+    if (p.age >= baseRetireAge && p.age <= baseRetireAge + 2 && !p.flags.retireAsked && !this.state.currentEvent && !this.state.pendingPromotion && !this.state.pendingTransfer) {
       const ret = GameData.events.find(x => x.id === 'e110');
       if (ret && !p.seenEvents.includes('e110') && this.randf() < 0.45) {
         p.flags.retireAsked = true;

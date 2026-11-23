@@ -33,3 +33,7 @@
 - [第三轮 1,799 个事件逐项结构目录](docs/EVENT_CONTENT_AUDIT_ROUND3.csv)
 - [第三轮更新日志](docs/CHANGELOG_ROUND3.md)
 - 验证：`node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs tests/round2-content.test.mjs tests/round3-content.test.mjs`、`node tests/round3-simulation.cjs`。
+
+## v2.1.87 · 生命周期/晋升规则修复
+
+参见 [第四轮审计与长局统计](docs/ROUND4_AUDIT_2026-11-23.md) 与 [更新日志](docs/CHANGELOG_ROUND4.md)。修复在退休年龄附近有剧情时可能丢失决策、返聘事件抢占剧情，以及晋升资格误用累计工龄的问题；不重置存档。
