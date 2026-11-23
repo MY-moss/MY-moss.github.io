@@ -620,11 +620,22 @@ GameEngine.prototype.getCausalChainSteps = function() {
         // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链（入口在下方概率注入）
         { flag: 'parentIllness', next: 'ent294', delay: 1 },
         { flag: 'parentCaring', next: 'ent295', delay: 2 },
+        { flag: 'parentShared', next: 'enl215', delay: 2 },
+        { flag: 'parentCareReviewed', next: 'enl216', delay: 3 },
         { flag: 'leveragedInvest', next: 'ent297', delay: 2 },
+        { flag: 'leveragedHeavy', next: 'ent302', delay: 2 },
         { flag: 'investCrash', next: 'ent298', delay: 1 },
         { flag: 'seconded', next: 'ent300', delay: 1 },
         { flag: 'secondReview', next: 'ent301', delay: 1 },
         { flag: 'secondDone', next: 'enw126', delay: 1 },
+        // Real qualifications and appointment reviews must never award outcomes before the initiating choice.
+        { flag: 'qualificationApplied', next: 'enw246', delay: 1 },
+        { flag: 'selectedVillage', next: 'enw249', delay: 1 },
+        { flag: 'cadreInquiry', next: 'enc125', delay: 1 },
+        { flag: 'cadreDossier', next: 'enc126', delay: 1 },
+        { flag: 'cadreOpenReview', next: 'enc127', delay: 1 },
+        { flag: 'cadreQuietReview', next: 'enc140', delay: 1 },
+        { flag: 'cadreReviewClosed', next: 'enc128', delay: 1 },
         // 财务与廉政风险：接受不当利益、挪用公款和灰色理财均兑现延迟后果。
         { flag: 'bg_tempt_1', next: 'e743', delay: 1 },
         { flag: 'bg_tempt_2', next: 'e744', delay: 1 },
@@ -696,8 +707,8 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
-      [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$/,'父母照护'],
-      [/^ent2(96|97|98)$/,'资产与风险'],[/^ent(299|300|301)$/,'借调与考察'],
+      [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$|^enl21[56]$/,'父母照护'],
+      [/^ent2(96|97|98)$|^ent302$/,'资产与风险'],[/^ent(299|300|301)$|^enw249$/,'借调与考察'],[/^enc(125|126|127|128|140)$/,'干部考察 · 异议与复核'],[/^enw246$/,'岗位业务评审'],
       [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648|649)$/,'调查与责任'],[/^e(805|806|807|808)$/,'基层挂职'],[/^enw126$/,'借调与考察'],[/^e(728|729|730|731)$/,'人脉枢纽'],[/^e(616|617|618|743|744|747|748|756|758|765)$/,'财务与廉政后果'],
       [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$/,'房贷与家庭财务']
     ];
@@ -952,7 +963,7 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         if (evP) { p.seenEvents = p.seenEvents || []; if (evP.eventType === 'auto' || evP.eventType === 'sudden') p.seenEvents.push('ent293'); event = evP; }
       }
       // v2.1.68 理财暴雷链入口：28 岁后每年 3% 遇到高息理财诱惑
-      if (!event && !p.flags.leveragedInvest && !p.flags.investCrash && !p.flags.investLesson && !(p.seenEvents || []).includes('ent296') && p.age >= 28 && this.randf() < 0.03) {
+      if (!event && !p.flags.leveragedInvest && !p.flags.leveragedHeavy && !p.flags.investCrash && !p.flags.investLesson && !(p.seenEvents || []).includes('ent296') && p.age >= 28 && this.randf() < 0.03) {
         const evI = (GameData.events || []).find(x => x && x.id === 'ent296');
         if (evI) { p.seenEvents = p.seenEvents || []; if (evI.eventType === 'auto' || evI.eventType === 'sudden') p.seenEvents.push('ent296'); event = evI; }
       }

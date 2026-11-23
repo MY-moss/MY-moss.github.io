@@ -5,9 +5,9 @@
 // 全部走既有效果键白名单、无新 flag、era 用数组格式；剧本散件按 scenario 字段入专属池。
 const gd_events_new_v2172 = [
   // ---------- 1. 选调生与队伍建设 ×4 ----------
-  { id: 'enw248', stage: 'work', eventType: 'choice', weight: 4, year: [22, 30], title: '选调生入职报到', text: '你是今年新入职的选调生，报到第一天，组织股给你发了驻村两年的安排表——和你在校时想象的"坐办公室"不太一样。', choices: [
-    { text: '爽快接下驻村安排，把基层当第一课', effects: { workAbility: 2, peopleReputation: 2, familyPressure: 2 }, result: '驻村两年日志写满，组织股记住了你' },
-    { text: '先提出个人困难，争取留机关一年', effects: { background: 1, eq: 1, familyPressure: -2 }, result: '缓了一年，基层课补上了' },
+  { id: 'enw248', stage: 'work', eventType: 'choice', weight: 4, excludeFlag: 'grassrootsActive', requireRankMax: 2, requireUnitLevelMin: 1, year: [22, 30], title: '年轻干部驻村选派', text: '组织股下发两年驻村锻炼征集通知。你刚在机关业务上摸到门道，去乡镇却要重新熟悉农户、村账和驻点生活。名额自愿报名，原岗位保留。', choices: [
+    { text: '主动申请两年驻村，按程序交接工作', effects: { workAbility: 2, peopleReputation: 2, familyPressure: 2, flag: 'selectedVillage', grassrootsDispatch: {duration:2, reason:'年轻干部驻村选派'} }, result: '组织同意选派，你办理交接，正式到乡镇报到；期满仍需组织考核。' },
+    { text: '先提出个人困难，争取留机关一年', effects: { background: 1, eq: 1, familyPressure: -2 }, result: '个人困难已登记，此次暂不派驻，今后仍可重新申请' },
     { text: '向组织股了解培养路径再决定', effects: { iq: 1, background: 1 }, result: '路径摸清，选择更主动' },
     { text: '先看看同期同学怎么选的', effects: { eq: 1, background: -1 }, result: '随大流，慢了半拍' }
   ] },
@@ -23,39 +23,55 @@ const gd_events_new_v2172 = [
     { text: '展示个性风格，与众不同', effects: { iq: 1, background: 1, risk: 1 }, result: '风格记住了，分数看评委' },
     { text: '顺其自然，能上就上', effects: { mentalPressure: -1, background: -1 }, result: '心态好，成绩平平' }
   ] },
-  { id: 'enw249', stage: 'work', eventType: 'choice', weight: 4, year: [22, 32], pools: ['基层单位'], title: '选调生基层锻炼期', text: '选调生基层锻炼一年期满，村里人已经把你当"自己人"，但原单位催你回去报一篇署名材料。两边都放不下。', choices: [
-    { text: '留下把村里的产业项目跟到底', effects: { workAbility: 2, peopleReputation: 2, background: 1 }, result: '项目落地，组织看到你啃硬骨头的本事' },
-    { text: '按计划回去，基层经历写进总结', effects: { background: 1, reputation: 1, peopleReputation: -1 }, result: '按期返回，村口的大娘有点失落' },
-    { text: '回去报材料的同时兼任驻村联络', effects: { workAbility: 2, mentalPressure: 3 }, result: '两头挂，两边都念你' },
-    { text: '请组织协调延长锻炼期', effects: { background: 1, eq: 1 }, result: '延期获批，基层资历更厚' }
+  { id: 'enw249', stage: 'work', eventType: 'choice', weight: 4, requireUnitLevelMax: 0, requireFlag: 'selectedVillage', year: [22, 32],  title: '驻村阶段复盘', text: '驻村第一年结束，村里的水渠维修还差最后一道验收，原单位又催你提交阶段总结。你在村部整理材料，手机里是家人问你什么时候能完整地过一个周末。', choices: [
+    { text: '在村里完成水渠验收，按期交阶段报告', effects: { workAbility: 2, peopleReputation: 2, background: 1 }, result: '一期验收完成。剩余工作仍由驻村团队跟进，返岗安排待期满考核。' },
+    { text: '把已完成事项写成清楚的阶段移交', effects: { background: 1, reputation: 1, peopleReputation: -1 }, result: '交接材料齐全，期满时的去留仍由组织决定。' },
+    { text: '协调原单位远程审核，继续驻村工作', effects: { workAbility: 2, mentalPressure: 3 }, result: '你用几次视频会议把两端进度拉齐，辛苦却没有耽误现场工作。' },
+    { text: '提交下一年度重点项目与人员接续建议', effects: { background: 1, eq: 1 }, result: '项目接续方案已报送，是否延长派驻还需组织另行决定。' }
   ] },
   // ---------- 2. 考察-公示-试用闭环 ×4 ----------
-  { id: 'enc125', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, year: [30, 52], title: '任职考察谈话深化', text: '民主推荐结束后，考察组增加了第二轮深谈：要求你提供近三年经手项目的得失清单，并约谈两名与你合作过的同事。', choices: [
-    { text: '清单如实列，得失都写', effects: { integrity: 2, background: 2, mentalPressure: 1 }, result: '考察组说"材料经得起翻"' },
-    { text: '重点突完成绩，风险一笔带过', effects: { background: 1, risk: 1 }, result: '成绩亮眼，经手风险被追问' },
-    { text: '主动约谈同事，把话先说透', effects: { eq: 2, background: 1 }, result: '同事口径一致，考察顺利' },
-    { text: '请人点拨谈话口径', effects: { eq: 1, background: -1, risk: 1 }, result: '口径统一了，痕迹也重了' }
+  { id: 'enc125', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'cadreInquiry', year: [30, 52], title: '任职考察谈话深化', text: '民主推荐结束后，考察组增加了第二轮深谈：要求你提供近三年经手项目的得失清单，并约谈两名与你合作过的同事。', choices: [
+    { text: '清单如实列，得失都写', effects: { integrity: 2, background: 2, mentalPressure: 1 , flag: 'cadreDossier'}, result: '考察组收下了原始材料，是否推荐仍需集体研究' },
+    { text: '重点突完成绩，风险一笔带过', effects: { background: 1, risk: 1 , flag: 'cadreDossier'}, result: '成绩亮眼，经手风险被追问' },
+    { text: '主动约谈同事，把话先说透', effects: { eq: 2, background: 1 , flag: 'cadreDossier'}, result: '同事补充了不同视角，考察组要求把分歧也记入材料' },
+    { text: '请人点拨谈话口径', effects: { eq: 1, background: -1, risk: 1 , flag: 'cadreDossier'}, result: '口径统一了，痕迹也重了' }
   ] },
-  { id: 'enc126', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, year: [30, 55], title: '拟任公示异议', text: '拟任人选公示第三天，组织部门收到一封匿名异议信，内容指向你三年前一个项目里的"程序瑕疵"。公示期还剩四天。', choices: [
-    { text: '主动向组织说明当时情况并提供材料', effects: { integrity: 3, background: 1, mentalPressure: 2 }, result: '材料自证，公示如期通过' },
-    { text: '实名请求组织复核该事项', effects: { integrity: 2, workAbility: 1 }, result: '复核明确不存在问题，异议撤销' },
-    { text: '托人了解异议信来源再应对', effects: { eq: 1, background: 1, risk: 2 }, result: '来源打听到了，动作也慢了' },
-    { text: '静默处理，等公示期自动过去', effects: { mentalPressure: 2, background: -1, risk: 1 }, result: '公示期满照常通过，风声却留着' }
+  { id: 'enc126', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'cadreDossier', year: [30, 55], title: '考察材料中的异议', text: '第二轮考察材料递上去不久，组织部门收到对你三年前经手项目的一封异议信。纸上没有具体署名，只有一处被红笔圈出的审批日期。工作人员请你在规定期限内补充书面说明，任用讨论暂缓。', choices: [
+    { text: '主动向组织说明当时情况并提供材料', effects: { integrity: 3, background: 1, mentalPressure: 2 , flag: 'cadreOpenReview'}, result: '材料送交核查组，最终结论尚需等待' },
+    { text: '实名请求组织复核该事项', effects: { integrity: 2, workAbility: 1 , flag: 'cadreOpenReview'}, result: '你要求按原始记录独立核对，而不是提前宣布无问题' },
+    { text: '托人了解异议信来源再应对', effects: { eq: 1, background: 1, risk: 2 , flag: 'cadreQuietReview'}, result: '来源打听到了，动作也慢了' },
+    { text: '静默处理，等公示期自动过去', effects: { mentalPressure: 2, background: -1, risk: 1 , flag: 'cadreQuietReview'}, result: '几个月过去，核查并不会因沉默自动结束' }
   ] },
-  { id: 'enc127', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 4, year: [30, 55], title: '公示复核与撤回', text: '组织复核认定异议部分属实：你当年确有工作流程走得不规范，虽不构成问题，但按程序本次拟任暂缓。', choices: [
-    { text: '接受暂缓，把流程问题整改到位', effects: { integrity: 2, workAbility: 2, background: -1, mentalPressure: 2 }, result: '半年后重新进入推荐名单' },
-    { text: '申请补充说明，争取原有安排', effects: { eq: 1, background: 1, risk: 1 }, result: '说明被采纳，次月重新公示' },
-    { text: '公开整改报告后请求重新启动', effects: { integrity: 2, peopleReputation: 1 }, result: '整改报告获好评，程序重启' },
-    { text: '承认失误，主动要求后补历练', effects: { integrity: 1, workAbility: 1, background: -1 }, result: '后补历练一年，再提再察' }
+  { id: 'enc127', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 4, requireFlag: 'cadreOpenReview', year: [30, 55], title: '异议复核的补正通知', text: '复核组核对了原始台账，认定当年存在材料归档不完整的问题，但目前没有证据证明违规获利。推荐程序因此暂缓，组织要求补齐证据并明确今后的风险控制责任。', choices: [
+    { text: '接受暂缓，把流程问题整改到位', effects: { integrity: 2, workAbility: 2, background: -1, mentalPressure: 2 , flag: 'cadreReviewClosed'}, result: '整改清单得到确认，但新的推荐仍需重新考察' },
+    { text: '申请补充说明，争取原有安排', effects: { eq: 1, background: 1, risk: 1 , flag: 'cadreReviewClosed'}, result: '补充说明纳入复核卷宗，任用决定仍由组织作出' },
+    { text: '公开整改报告后请求重新启动', effects: { integrity: 2, peopleReputation: 1 , flag: 'cadreReviewClosed'}, result: '整改方案公开，单位启动内部流程检查' },
+    { text: '承认失误，主动要求后补历练', effects: { integrity: 1, workAbility: 1, background: -1 , flag: 'cadreReviewClosed'}, result: '你申请交流锻炼，未来是否获推荐仍未确定' }
   ] },
-  { id: 'enc128', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, year: [32, 55], title: '试用期转正考核', text: '新岗位试用期将满，转正考核表上周送到你桌上。分管领导在"发展方向"栏留了空格——那是给你自己填的位置。', choices: [
-    { text: '填管理型方向并附三年设想', effects: { background: 2, positionWeight: 1, mentalPressure: 2 }, result: '设想进了后备库' },
+  { id: 'enc128', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'cadreReviewClosed', year: [32, 55], title: '复核之后的履历', text: '当年的任用讨论没有直接变成一纸任命。一年后，组织要求你重新填写发展方向和整改进展。你发现履历里最难写的不是成绩，而是如何解释一份曾经缺页的材料。', choices: [
+    { text: '填管理型方向并附三年设想', effects: { background: 2, positionWeight: 1, mentalPressure: 2 }, result: '设想作为干部培养参考，提拔仍需竞争' },
     { text: '填业务型方向，明确深耕线', effects: { workAbility: 2, reputation: 1 }, result: '业务深耕获认可' },
-    { text: '不填，交由组织安排', effects: { background: -1, eq: 1 }, result: '组织替你填了"综合"二字' },
+    { text: '不填，交由组织安排', effects: { background: -1, eq: 1 }, result: '暂时没有新推荐，你仍需把本职工作做好' },
     { text: '先探领导口风再填', effects: { background: 1, integrity: -1 }, result: '口径对上了，风格没了' }
   ] },
+  // 选择隐瞒/打听异议来源的路线，有独立后果，不能直接跳到公开补正的积极结果。
+  { id: 'enc140', stage: 'career', eventType: 'choice', weight: 2, requireRankMin: 4, requireFlag: 'cadreQuietReview', year: [30, 60], title: '那份拖延的说明', text: '过了一年，组织再次来函催交当年项目的原始记录。那个曾替你打听消息的熟人已经调离，留下的只有一张没有签名的复印件。你的任职讨论仍停在原地。', choices: [
+    { text: '补交真实档案，主动说明此前的迟延', effects: {flag: 'cadreReviewClosed', integrity: 2, risk: -2, mentalPressure: 2, background: -1}, result: '补交记录已经签收，但迟延本身仍记入复核说明。' },
+    { text: '请原经办人协助重新核对时间线', effects: {flag: 'cadreReviewClosed', workAbility: 2, mentalPressure: 3, eq: 1}, result: '你们重新翻出老台账，找到几个此前无人注意的时间节点。' },
+    { text: '继续依赖私人消息，希望不了了之', effects: {flag: 'cadreReviewClosed', risk: 5, integrity: -3, background: -2, mentalPressure: 3}, result: '正式核查并未停止，长期不回应让组织对你的评价更加谨慎。' }
+  ] },
+  { id: 'enl215', stage: 'life', eventType: 'choice', weight: 2, requireFlag: 'parentShared', year: [48, 76], title: '轮班表上的空位', text: '两年前你和参与照护的亲属定下轮班表。如今母亲的复诊日临时改期，原本负责陪诊的人又要出差。家族群里没有吵架，只是那个空白日期静静挂了一整晚。', choices: [
+    { text: '自己调休补上这一天，之后重新议定轮班', effects: {flag:'parentCareReviewed', familyPressure:-2, mentalPressure:2, positionWeight:-1, eq:2}, result:'医院的走廊很长。你替大家补了这一次，也让每个人把下个月的安排写清楚。' },
+    { text: '征求家人意见，合请可靠护工分担', effects: {flag:'parentCareReviewed', wealth:-12, familyPressure:-3, eq:1}, result:'费用由几家分摊，复诊没有耽误；你们开始认真讨论照护的可持续性。' },
+    { text: '坚持原约定，由轮值者自行协调', effects: {flag:'parentCareReviewed', familyPressure:3, mentalPressure:1, eq:-1}, result:'复诊最后还是有人陪了，但家族群里几天没人说话。' }
+  ] },
+  { id: 'enl216', stage: 'life', eventType: 'choice', weight: 2, requireFlag: 'parentCareReviewed', year: [50, 80], title: '五年后的病历袋', text: '整理家里的旧抽屉时，你发现父母的病历袋越来越厚，有些日期旁写着自己的名字，有些是其他亲人代签的。那些年各家都不容易，没人能把所有事情做得完美。今后怎样分担，已经比当年谁付出得多更重要。', choices: [
+    { text: '把照护记录整理给全家，明确紧急联络与复诊计划', effects: {eq:2, familyPressure:-3, mentalPressure:1, workAbility:1}, result:'表格没有让亲情变得生硬，反而让每个人都知道什么时候该主动补位。' },
+    { text: '保留固定探望，允许家人按各自生活重新分工', effects: {eq:2, familyPressure:-2, mentalPressure:-2, positionWeight:-1}, result:'你们不再为错过某一天互相指责，也不再把照护变成某一个人的责任。' },
+    { text: '维持旧安排，先把工作上的事做完', effects: {positionWeight:1, familyPressure:3, mentalPressure:2}, result:'当晚没有人催你，但后来那条未读消息，你记了很久。' }
+  ] },
   // ---------- 3. 老年生活线 ×5（year 下限 ≥55 破冰） ----------
-  { id: 'enl176', stage: 'life', eventType: 'choice', weight: 4, year: [55, 72], title: '晨练棋友', text: '退休后的清晨，公园石桌边的象棋摊成了你的固定去处。老周棋臭但话多，老李棋精却总让半先。你坐在旁边看了一个月，今天有人让了位置。', choices: [
+  { id: 'enl176', stage: 'life', eventType: 'choice', weight: 4, year: [55, 72], title: '晨练棋友', text: '工作节奏渐渐放缓。周末清晨，公园石桌边的象棋摊成了你的固定去处。老周棋臭但话多，老李棋精却总让半先。你坐在旁边看了一个月，今天有人让了位置。', choices: [
     { text: '坐下杀几盘，输赢都开心', effects: { body: 1, mentalPressure: -2, familyPressure: -1 }, result: '棋盘上赢不了人生，却赢回了笑声' },
     { text: '只观棋不谈棋，保持距离', effects: { mentalPressure: -1, peopleReputation: -1 }, result: '独来独往，公园的椅子空一半' },
     { text: '带一壶茶去，慢慢融进圈子', effects: { eq: 2, peopleReputation: 1 }, result: '茶香开了话匣子，圈子里有了你的位置' },
@@ -98,7 +114,7 @@ const gd_events_new_v2172 = [
     { text: '把旧领域成果包装成新打法', effects: { iq: 1, reputation: 1, risk: 1 }, result: '包装被识破一半，好在底子实在' },
     { text: '如实汇报磨合期的磕碰', effects: { integrity: 2, background: -1 }, result: '真诚换理解，岗位稳了' }
   ] },
-  { id: 'enl181', stage: 'life', eventType: 'choice', weight: 4, scenario: 'retired', year: [50, 65], title: '退休生活的头三个月', text: '退休手续办完，第一个月你睡到自然醒，第二个月开始觉得空，第三个月你站在窗口看楼下来来往往的人——他们都在上班。', choices: [
+  { id: 'enl181', stage: 'life', eventType: 'choice', weight: 4, scenario: 'retired', year: [50, 65], title: '慢下来的头三个月', text: '岗位分工调整后，周末终于不再被会议占满。第一个月你睡到自然醒，第二个月又觉得空。第三个月的清晨，你站在窗口看楼下来往的行人，突然不知道该从哪件事重新开始。', choices: [
     { text: '把以前没时间做的清单挨个做一遍', effects: { iq: 1, eq: 1, mentalPressure: -2 }, result: '清单越做越短，生活越填越满' },
     { text: '重拾年轻时的爱好，从零开始', effects: { eq: 2, body: 1 }, result: '爱好成了新身份' },
     { text: '找老朋友组常聚的局', effects: { eq: 1, peopleReputation: 1 }, result: '老友常聚，日子有烟火气' },

@@ -92,10 +92,10 @@ const gd_events_new_v2170 = [
   ] },
   // ---------- 中年窗口 career ×4（35-44 岁起始窗，补零档） ----------
   { id: 'enc117', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, year: [35, 50], title: '组织考察谈话', text: '组织部考察组为一批岗位开展民主推荐和个别谈话，你是谈话对象也是被推荐人之一。"谈谈你的优缺点"——这句老问题的分量你现在才懂。', choices: [
-    { text: '优缺各半，缺点选可改进项', effects: { integrity: 2, background: 2, eq: 1 }, result: '考察组记下"认识清醒"，推荐票稳了' },
-    { text: '扬长避短，突出实绩数据', effects: { background: 1, reputation: 2, risk: 1 }, result: '实绩亮眼，缺点轻描淡写' },
-    { text: '主动提及一次失误与复盘', effects: { integrity: 2, background: 1, mentalPressure: 1 }, result: '坦诚换理解，考察谈话成为加分项' },
-    { text: '打听考察组偏好再组织语言', effects: { eq: 1, background: -1, risk: 2 }, result: '消息有偏差，准备过了头' }
+    { text: '优缺各半，缺点选可改进项', effects: { integrity: 2, background: 2, eq: 1 , flag: 'cadreInquiry'}, result: '考察组记下"认识清醒"，推荐票稳了' },
+    { text: '扬长避短，突出实绩数据', effects: { background: 1, reputation: 2, risk: 1 , flag: 'cadreInquiry'}, result: '实绩亮眼，缺点轻描淡写' },
+    { text: '主动提及一次失误与复盘', effects: { integrity: 2, background: 1, mentalPressure: 1 , flag: 'cadreInquiry'}, result: '坦诚换理解，考察谈话成为加分项' },
+    { text: '打听考察组偏好再组织语言', effects: { eq: 1, background: -1, risk: 2 , flag: 'cadreInquiry'}, result: '消息有偏差，准备过了头' }
   ] },
   { id: 'enc118', requireRankMin: 4, stage: 'career', eventType: 'choice', weight: 5, year: [38, 52], title: '班子调整谈心', text: '单位班子调整风声传了三个月，分管领导终于找你谈心："组织上准备动一动你的岗位。"话没说明，但方向有数。', choices: [
     { text: '表态服从安排，同时讲清个人诉求', effects: { background: 2, integrity: 1, eq: 1 }, result: '进退有据，组织记住了你的分寸' },

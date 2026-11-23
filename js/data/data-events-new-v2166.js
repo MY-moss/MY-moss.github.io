@@ -9,20 +9,20 @@ const gd_events_new_v2166 = [
     { text: '先挂专家号问清楚，再决定怎么办', effects: { flag: 'parentIllness', iq: 1, familyPressure: 1, mentalPressure: 1 }, result: '诊断下来了，需要长期照护' },
     { text: '把报告拍照发给熟人医生参谋', effects: { flag: 'parentIllness', background: 1, eq: 1 }, result: '熟人给出了中肯的方案，但照护仍需人手' }
   ] },
-  { id: 'ent294', stage: 'life', eventType: 'choice', weight: 5, year: [48, 70], requireFlag: 'parentIllness', title: '照护抉择', text: '医生说需要人长期照看。你腾不出整块时间，兄弟姐妹各有各的难处，护工的价钱又年年涨。这张排班表，谁来填？', choices: [
+  { id: 'ent294', stage: 'life', eventType: 'choice', weight: 5, year: [48, 70], requireFlag: 'parentIllness', title: '照护抉择', text: '医生说需要人长期照看。你腾不出整块时间，亲人各有各的难处，护工的价钱又年年涨。这张排班表，谁来填？', choices: [
     { text: '自己扛下主要照护，工作往边上排', effects: { flag: 'parentCaring', familyPressure: 3, mentalPressure: 3, positionWeight: -2, body: -2 }, result: '你成了父母的准时闹钟，工作节奏慢了下来' },
     { text: '请专业护工，自己每周探望', effects: { flag: 'parentCaring', wealth: -25, familyPressure: 1, eq: 1 }, result: '护工分担了体力活，账单分担了心理负担' },
-    { text: '和兄弟姐妹轮班，签好照护协议', effects: { deleteFlag: 'parentIllness', flag: 'parentShared', eq: 2, familyPressure: -1 }, result: '排班表贴在冰箱上，责任分摊心不散' }
+    { text: '和能参与的亲属商量轮班，明确照护协议', effects: { deleteFlag: 'parentIllness', flag: 'parentShared', eq: 2, familyPressure: -1 }, result: '排班表贴在冰箱上，责任分摊心不散' }
   ] },
-  { id: 'ent295', stage: 'life', eventType: 'choice', weight: 5, year: [50, 72], requireFlag: 'parentCaring', title: '漫长照护之后', text: '两年过去了，父母的身体在照护下稳中有降——降压药从三种减到两种。你也在这套节奏里学会了喘息。', choices: [
-    { text: '体检指标好转，逐步恢复自己的生活', effects: { flag: 'parentRecovered', mentalPressure: -5, familyPressure: -4, eq: 2 }, result: '雨过天晴，一家人的日子重新向前' },
-    { text: '接受长期照护是常态，重新安排人生', effects: { flag: 'parentLongTerm', familyPressure: -2, mentalPressure: -2, eq: 3, body: 1 }, result: '照护成了生活的一部分，你也长出了耐心' }
+  { id: 'ent295', stage: 'life', eventType: 'choice', weight: 5, year: [50, 72], requireFlag: 'parentCaring', title: '漫长照护之后', text: '两年过去，父母的复诊日期被写在冰箱门上。病情有好有坏，药不能轻易停，但你已经学会把夜里临时起床和白天的工作安排分开。', choices: [
+    { text: '趁病情相对稳定，逐步找回自己的生活', effects: { setFlags: ['parentRecovered', 'parentCareReviewed'], mentalPressure: -5, familyPressure: -4, eq: 2 }, result: '日子尚需照料，但你终于不再每晚靠硬撑渡过' },
+    { text: '接受长期照护是常态，重新安排人生', effects: { setFlags: ['parentLongTerm', 'parentCareReviewed'], familyPressure: -2, mentalPressure: -2, eq: 3, body: 1 }, result: '照护成了生活的一部分，你也长出了耐心' }
   ] },
 
   // ---------- B. 理财暴雷链（life，28-58 岁） ----------
   { id: 'ent296', stage: 'life', eventType: 'choice', weight: 4, year: [28, 58], title: '加杠杆理财的诱惑', text: '老同学拉你进了一个"稳赚"群，年化宣称十八个点，还能加杠杆。他晒出的收益截图红得晃眼。', choices: [
     { text: '小仓位试水，加一点杠杆', effects: { flag: 'leveragedInvest', wealth: -10, desire: 2, luck: 1 }, result: '头两个月确实赚了，你开始心动加仓' },
-    { text: 'all in 杠杆，搏一把大的', effects: { flag: 'leveragedInvest', wealth: -20, desire: 3, familyPressure: 2 }, result: '重仓杀入，账户曲线成了心里的大石' },
+    { text: '重仓加杠杆，押上大半积蓄', effects: { flag: 'leveragedHeavy', wealth: -20, desire: 3, familyPressure: 3, mentalPressure: 2 }, result: '账户第一张截图是红色盈利，合同上那些风险条款你却没看完。' },
     { text: '只买底仓不动杠杆', effects: { wealth: -5, iq: 1 }, result: '稳字当头，睡得着觉' },
     { text: '拉黑群聊，当没看见', effects: { mentalPressure: -1, integrity: 1 }, result: '富贵险中求，你选择不求' }
   ] },
@@ -30,6 +30,12 @@ const gd_events_new_v2166 = [
     { text: '果断止损，能收回多少是多少', effects: { deleteFlag: 'leveragedInvest', wealth: -30, mentalPressure: -3, iq: 1 }, result: '割肉离场，学费交得肉疼但睡了个好觉' },
     { text: '补仓摊薄成本，等它起死回生', effects: { flag: 'investCrash', wealth: -15, desire: 1, mentalPressure: 3 }, result: '越陷越深，窟窿肉眼可见地扩大' },
     { text: '装死不动，假装没这回事', effects: { flag: 'investCrash', mentalPressure: 2, familyPressure: 2 }, result: '眼不见心不烦，账不会自己消失' }
+  ] },
+  { id: 'ent302', stage: 'life', eventType: 'choice', weight: 3, year: [28, 62], requireFlag: 'leveragedHeavy', title: '重仓后的兑付通知', text: '两年前那份“稳赚”的收益截图已经从群公告里撤下。平台只留下一张延期兑付通知。你翻出合同，才发现最后一页的风险提示当时根本没有仔细读过。晚饭桌上，家人还在商量明年的计划。', choices: [
+    { text: '停止追加投入，核对债务并依法登记追索', effects: { flag: 'investLesson', wealth: -35, iq: 2, mentalPressure: 2, familyPressure: 1 }, result: '你按账单一项项核对损失。止损未能把钱变回来，却至少留下了清楚的证据。' },
+    { text: '继续借钱补仓，赌平台能够恢复兑付', effects: { flag: 'investCrash', wealth: -40, familyPressure: 5, mentalPressure: 6 }, result: '到账的借款很快又转进平台。群里没有人再晒盈利截图。' },
+    { text: '暂时瞒着家里，靠工资慢慢填窟窿', effects: { flag: 'investCrash', familyPressure: 5, mentalPressure: 5, risk: 2 }, result: '你删掉了手机通知，可每个月的账单并没有消失。' },
+    { text: '把合同给家人看，分清生活费和追偿资金', effects: { flag: 'investCrash', wealth: -20, familyPressure: -2, mentalPressure: 3, eq: 1 }, result: '桌上沉默了很久。你们把接下来三个月的必要开支先圈了出来。' }
   ] },
   { id: 'ent298', stage: 'life', eventType: 'choice', weight: 5, year: [28, 60], requireFlag: 'investCrash', title: '暴雷处置', text: '平台正式暴雷，经侦介入登记。群里流传着各种回款比例的小道消息，家庭开支也开始受影响。', choices: [
     { text: '认赔离场，从此只碰存款和国债', effects: { flag: 'investLesson', wealth: -35, mentalPressure: -4, integrity: 1 }, result: '血泪一课：年化超过六的都要打问号' },
@@ -78,13 +84,17 @@ const gd_events_new_v2166 = [
     { text: '买耳塞和白噪音机自救', effects: { wealth: -2, mentalPressure: -1 }, result: '物理隔音，相安无事' },
     { text: '以牙还牙，早上六点放广场舞神曲', effects: { mentalPressure: 2, peopleReputation: -2, risk: 1 }, result: '战争升级，两败俱伤' }
   ] },
-  { id: 'enw245', stage: 'work', eventType: 'choice', weight: 5, pools: ['public'], title: '职称评审材料', text: '职称评审窗口下周截止，业绩材料还差近三年的成果证明——而你的获奖证书压在搬家纸箱的最底层。', choices: [
-    { text: '连夜翻箱倒柜整理材料', effects: { workAbility: 2, mentalPressure: 2, body: -1 }, result: '材料齐了，盖章跑到腿软' },
-    { text: '请同事帮忙补齐佐证', effects: { eq: 2, peopleReputation: 1 }, result: '同事仗义，材料一次过审' },
-    { text: '突出重点重新撰写业务总结', effects: { iq: 1, workAbility: 1 }, result: '总结写得漂亮，评审组印象深刻' },
+  { id: 'enw245', stage: 'work', eventType: 'choice', weight: 5, pools: ['public'], title: '业务资格评审材料', text: '单位正在组织业务骨干资格评审。材料下周截止，你还欠近三年的项目佐证。翻出搬家纸箱时，几份被咖啡洇过的原始记录让你想起当年的加班夜。', choices: [
+    { text: '连夜翻箱倒柜整理材料', effects: { workAbility: 2, mentalPressure: 2, body: -1 , flag: 'qualificationApplied'}, result: '材料齐了，盖章跑到腿软' },
+    { text: '请同事帮忙补齐佐证', effects: { eq: 2, peopleReputation: 1 , flag: 'qualificationApplied'}, result: '同事仗义，佐证终于齐全，申请按时提交' },
+    { text: '突出重点重新撰写业务总结', effects: { iq: 1, workAbility: 1 , flag: 'qualificationApplied'}, result: '总结写得漂亮，申请提交前又核对了一遍事实' },
     { text: '今年赶不上就明年再来', effects: { mentalPressure: -1, positionWeight: -1 }, result: '明年政策可能就变了' }
   ] },
-  { id: 'enw246', stage: 'work', eventType: 'auto', weight: 5, pools: ['public'], title: '职称兑现', effects: { workAbility: 2, positionWeight: 2, wealth: 3, reputation: 1 }, text: '职称批文下来了，工资条上多了一栏"专业技术职务津贴"。办公室同事轮着道贺，你把批文复印了一份寄回家。' },
+  { id: 'enw246', stage: 'work', eventType: 'choice', weight: 5, requireFlag: 'qualificationApplied', pools: ['public'], title: '一年后的业务评审', text: '一年前递交的业务评审有了答复。评审组认可项目确实办成了，但要求进一步分清团队成果和个人贡献。补充材料只给一周时间，你手边还有正在催办的新项目。', choices: [
+    { text: '逐项核对原始记录，补齐本人职责与协作过程', effects: { flag: 'qualificationRecognized', workAbility: 2, positionWeight: 1, mentalPressure: 2 }, result: '评审组接受补正，业务骨干评价正式记入履历；这不是自动晋升。' },
+    { text: '与团队共同署名，补交完整成果与交接记录', effects: { flag: 'qualificationRecognized', eq: 2, peopleReputation: 2, mentalPressure: 1 }, result: '共同署名的记录得到认可，团队对你更信任；个人升迁仍需另行考察。' },
+    { text: '本轮不补材料，把时间留给眼前的民生项目', effects: { mentalPressure: -2, peopleReputation: 1, positionWeight: -1 }, result: '评审本轮未获通过。你把精力留给了手头的项目，失去的是一次履历机会。' }
+  ] },
   { id: 'enw247', stage: 'work', eventType: 'choice', weight: 4, pools: ['public'], year: [26, 40], title: '遴选笔试通知', text: '公告栏贴出上级机关公开遴选公告：笔试时间就在两周后，不限报名人数。办公室瞬间安静了几秒。', choices: [
     { text: '立即报名，工作之余闭关刷题', effects: { iq: 1, workAbility: 1, mentalPressure: 3, luck: 1 }, result: '两周魔鬼刷题，考场上手心里全是字' },
     { text: '和领导通气后低调备考', effects: { background: 1, iq: 1, mentalPressure: 1 }, result: '领导点头放行，备考少了后顾之忧' },

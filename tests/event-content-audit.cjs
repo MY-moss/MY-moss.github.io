@@ -49,6 +49,38 @@ for(const e of events){
  if(e.year && (e.year[1]<22||e.year[0]>70||e.year[0]>e.year[1]))add(e,'bad_age_window',e.year);
  if(e.stage==='life'&&e.pools?.includes('public')===false&&e.pools?.length>0)add(e,'life_special_pool',e.pools);
 }
+// Review the source as well as the evaluated data: JavaScript silently overwrites
+// duplicate object keys such as { flag: 'first', flag: 'second' }.
+// Only inspect top-level keys inside each effects object; nested effect payloads
+// (e.g. grassrootsDispatch) have their own independent key namespace.
+for (const source of orderedSource) {
+ const text=source.text;
+ for (const match of text.matchAll(/\beffects\s*:\s*\{/g)) {
+  const keys=new Set();const duplicates=new Set();
+  let level=1,quote=null,escaped=false;
+  const start=match.index+match[0].length;
+  for(let i=start;i<text.length&&level>0;i++){
+   const ch=text[i];
+   if(quote){if(escaped){escaped=false;continue;}if(ch==='\\'){escaped=true;continue;}if(ch===quote)quote=null;continue;}
+   if(ch==='\''||ch==='"'||ch==='`'){quote=ch;continue;}
+   if(ch==='{'){level++;continue;}if(ch==='}'){level--;continue;}
+   if(level!==1||!/[A-Za-z_$]/.test(ch))continue;
+   let j=i+1;while(j<text.length&&/[A-Za-z0-9_$]/.test(text[j]))j++;
+   let next=j;while(next<text.length&&/\s/.test(text[next]))next++;
+   if(text[next]===':'){
+    const key=text.slice(i,j);
+    if(keys.has(key))duplicates.add(key);
+    keys.add(key);
+   }
+   i=j-1;
+  }
+  if(duplicates.size){
+   const eventStart=Math.max(0,text.lastIndexOf('{ id:',match.index));
+   const eid=text.slice(eventStart,match.index).match(/\bid\s*:\s*['"]([^'"]+)/)?.[1]||'unknown';
+   issues.push({id:eid,file:source.path,code:'duplicate_effect_key',detail:[...duplicates]});
+  }
+ }
+}
 const by=(arr,key)=>arr.reduce((m,o)=>(m[o[key]||'unknown']=(m[o[key]||'unknown']||0)+1,m),{});
 const stats={count:events.length,stages:by(events,'stage'),types:by(events,'eventType'),sourceFiles:by(events.map(e=>({file:owner(e.id)})),'file'),era:by(events.map(e=>({era:e.era?.join?.(',')||'any'})),'era'),scenarioCount:events.filter(e=>e.scenario).length,hasFlag:events.filter(e=>e.requireFlag||e.requireFlags).length,withYear:events.filter(e=>e.year).length,flagsProduced:flags.size,runtimeFlagsProduced:runtimeFlags.size,issues:by(issues,'code'),duplicateTitles:groups.title.length,duplicateTexts:groups.text.length,duplicateChoiceSets:groups.choices.length};
 const report={stats,issues,duplicateTitles:groups.title.map(([k,es])=>({title:k,ids:es.map(e=>e.id),file:owner(es[0].id)})),duplicateTexts:groups.text.map(([k,es])=>({text:k,ids:es.map(e=>e.id)})),duplicateChoiceSets:groups.choices.map(([k,es])=>({ids:es.map(e=>e.id),choices:k.slice(0,200)}))};
