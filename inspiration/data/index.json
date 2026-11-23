@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-23T01:48:03.327Z",
+  "updatedAt": "2026-11-23",
   "reports": [
     {
       "channel": "world",
@@ -133,6 +133,78 @@
         {
           "title": "今天值得继续关注",
           "summary": "英伟达回应、AI安全倡议、亚洲股市、COP31后续谈判。"
+        }
+      ]
+    },
+    {
+      "channel": "inspiration",
+      "date": "2026-11-23",
+      "title": "每日灵感采集｜字标秩序、像素资产变体与游戏化状态反馈",
+      "summary": "精选 Perfume Palace、GlyphStudio 与 Twin Gem Picker，研究字形光学平衡、可复用像素资产家族与状态机驱动的互动设计。",
+      "theme": "字标秩序、可复用资产与状态机交互",
+      "items": [
+        {
+          "id": "inspiration-perfume-palace-molto-20261123",
+          "title": "Perfume Palace — 品牌字标与系列包装",
+          "creator": "Molto Bureau / Andriy Muzychka",
+          "source": "The Brand Identity（2026-11-19 案例报道）",
+          "url": "https://the-brandidentity.com/project/how-molto-bureau-designed-the-identity-of-a-saudi-perfume-house",
+          "why": "以字形比例微调、统一白色包装和书脊式排列建立系列识别，不靠单品各自配色。报道日期不是作品首发日期。",
+          "method": "对核心字标做光学宽度与字距校准；用统一网格组织产品名、编号和品牌；通过摄影与材质提供差异。",
+          "uses": "精品包装、品牌字标、系列卡片、编辑设计与产品视觉规范",
+          "tags": [
+            "品牌识别",
+            "字体",
+            "包装",
+            "近期报道"
+          ]
+        },
+        {
+          "id": "inspiration-glyphstudio-20261123",
+          "title": "GlyphStudio — 像素素材变体家族",
+          "creator": "mcp-tool-shop-org",
+          "source": "GitHub 原始仓库",
+          "url": "https://github.com/mcp-tool-shop-org/glyphstudio",
+          "why": "将像素编辑、动画、姿态与调色板变体及可复用部件组织为统一资产工作流；首次发布时间与近七天更新未核实。",
+          "method": "把基础图像、方向姿态、调色板变体与导出元数据分离；共享编辑逻辑与撤销历史；批量导出命名清晰的资源家族。",
+          "uses": "像素角色、游戏 UI、动画素材管理、创作工具与可复用资源库",
+          "tags": [
+            "开源",
+            "像素画",
+            "游戏美术",
+            "设计工具"
+          ]
+        },
+        {
+          "id": "inspiration-twin-gem-picker-rive-20261123",
+          "title": "Twin Gem Picker — 状态机驱动的互动卡牌",
+          "creator": "Suman-D-R",
+          "source": "Rive Marketplace（2025-07-31 作品页面）",
+          "url": "https://rive.app/marketplace/22515-42135-twin-gem-picker-built-with-rive-and-the-power-of-data-binding/",
+          "why": "用属性组、数据绑定与状态机组织翻牌、配对和反馈动画；属于经典交互参考而非本周新作。",
+          "method": "定义 idle、flipped、matched、retry 等状态，明确输入、过渡和事件，让动画由单一交互状态驱动。",
+          "uses": "游戏菜单、卡片组件、互动教学、动态 UI 与移动端微交互",
+          "tags": [
+            "交互设计",
+            "Rive",
+            "状态机",
+            "经典案例"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "今日可迁移方法",
+          "summary": "将视觉系统拆成三类规则：字形与系列排版规范、可复用素材变体、数据驱动的交互状态。",
+          "itemIds": [
+            "inspiration-perfume-palace-molto-20261123",
+            "inspiration-glyphstudio-20261123",
+            "inspiration-twin-gem-picker-rive-20261123"
+          ]
+        },
+        {
+          "title": "实践建议",
+          "summary": "制作一套六张收藏卡：统一字标和编号布局，基础像素素材生成姿态与配色变体，用状态机实现翻转、配对、错误反馈，并验证键盘与减少动态效果。"
         }
       ]
     },
