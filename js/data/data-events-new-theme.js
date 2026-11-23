@@ -620,45 +620,45 @@ const gd_events_new_theme = [
     { id: 'ent166', stage: 'life', eventType: 'auto', weight: 5, requireChild: true, requireFlag: 'childEmployed', requireChildAgeMin: 23, title: '孩子自立门户', text: '孩子工作稳定下来了，开始往家里寄钱。你说不用，他坚持："爸妈养我这么多年，该轮到我孝敬你们了。"', effects: {familyPressure: -3, wealth: 5, reputation: 1} },
     // ====== v2.51 负面关系系统：树敌事件（addEnemy effects，选择不留情面分支会结怨） ======
     { id: 'ent167', stage: 'work', eventType: 'choice', weight: 5, title: '当众批评', text: '部门例会上，同事的方案有明显漏洞。你权衡着怎么开口——当众指出来，他以后可能记恨你；但装没看见，出了问题要一起背锅。', choices: [
-      { text: '当众指出问题，不留情面', effects: {workAbility: 2, reputation: 2, risk: 2, addEnemy: { id: 'enemy_167', name: '王副科长', position: '同部门同事', description: '曾在例会上被你当众批评，一直耿耿于怀' }} },
+      { text: '当众指出问题，不留情面', effects: {workAbility: 2, reputation: 2, risk: 2, flag: 'wangDispute', addEnemy: { id: 'enemy_167', name: '王副科长', position: '同部门同事', description: '曾在例会上被你当众批评，一直耿耿于怀' }} },
       { text: '会后私下提醒，给足面子', effects: {eq: 2, reputation: 1, workAbility: 1} },
       { text: '多一事不如少一事', effects: {eq: -1, mentalPressure: 1} },
     ]},
     { id: 'ent168', stage: 'work', eventType: 'choice', weight: 4, title: '抢功风波', text: '你们小组的项目出了成绩，隔壁组的张处长却在上报时把你的名字排在了后面，功劳大半归了他们组。你攥着原始方案稿，犹豫着要不要找领导说清楚。', choices: [
-      { text: '直接找领导对质，还原真相', effects: {reputation: 3, background: 1, addEnemy: { id: 'enemy_168', name: '张处长', position: '隔壁组处长', description: '抢你功劳被你揭穿，结下梁子' }, heat: 1} },
+      { text: '直接找领导对质，还原真相', effects: {reputation: 3, background: 1, flag: 'directorDispute', addEnemy: { id: 'enemy_168', name: '张处长', position: '隔壁组处长', description: '抢你功劳被你揭穿，结下梁子' }, heat: 1} },
       { text: '把证据递给领导，不正面冲突', effects: {workAbility: 2, reputation: 1, risk: 1} },
       { text: '忍了，下次自己留个心眼', effects: {mentalPressure: 3, reputation: -1} },
     ]},
     // ====== v2.51 敌人事件链：使绊/化解/仇怨（requireContact 走敌人 id，requireContactMin 负值门槛） ======
-    { id: 'ent169', stage: 'work', eventType: 'auto', weight: 7, requireContact: 'enemy_111', requireContactMin: -30, title: '打小报告', text: '纪检部门收到一封匿名举报信，内容捕风捉影却指向你。虽然查无实据，但谈话记录还是进了档案。你知道是谁的手笔。', effects: {risk: 5, mentalPressure: 3, reputation: -1} },
-    { id: 'ent170', stage: 'work', eventType: 'auto', weight: 6, requireContact: 'enemy_236', requireContactMin: -30, title: '抢功搅局', text: '季度评优公示前，有人把你的项目功劳算到了别人头上。公示栏前围了一圈人，你盯着自己的名字排在最后，血压有点高。', effects: {positionWeight: -1, mentalPressure: 4, reputation: -1} },
-    { id: 'ent171', stage: 'work', eventType: 'auto', weight: 6, requireContact: 'enemy_054', requireContactMin: -30, title: '散布谣言', text: '饭桌上有人提起你"办事要打点"的传言，传得有鼻子有眼。你明明没收过一分钱，却百口莫辩。', effects: {reputation: -4, mentalPressure: 6} },
-    { id: 'ent172', stage: 'work', eventType: 'choice', weight: 6, requireContact: 'enemy_111', requireContactMin: -30, title: '和解试探', text: '老张托人递话，说想跟你把话说开。他约你在茶楼见面，这些年的事像茶垢一样堆在心里。', choices: [
+    { id: 'ent169', stage: 'work', eventType: 'auto', weight: 7, requireContact: 'enemy_111', requireContactMax: -30, title: '打小报告', text: '纪检部门收到一封匿名举报信，内容捕风捉影却指向你。虽然查无实据，但谈话记录还是进了档案。你怀疑和此前与老张的争执有关，却没有证据。', effects: {mentalPressure: 3, reputation: -1, flag: 'oldZhangPetition'} },
+    { id: 'ent170', stage: 'work', eventType: 'auto', weight: 6, requireContact: 'enemy_236', requireContactMax: -30, title: '抢功搅局', text: '季度评优公示前，有人把你的项目功劳算到了别人头上。公示栏前围了一圈人，你盯着自己的名字排在最后，血压有点高。', effects: {positionWeight: -1, mentalPressure: 4, reputation: -1} },
+    { id: 'ent171', stage: 'work', eventType: 'auto', weight: 6, requireContact: 'enemy_054', requireContactMax: -30, title: '散布谣言', text: '饭桌上有人提起你"办事要打点"的传言，传得有鼻子有眼。这次传言没有附上证据，你决定把经办记录留存备查。', effects: {reputation: -4, mentalPressure: 6} },
+    { id: 'ent172', stage: 'work', eventType: 'choice', weight: 6, requireContact: 'enemy_111', requireContactMax: -30, title: '和解试探', text: '老张托人递话，说想跟你把话说开。他约你在茶楼见面，这些年的事像茶垢一样堆在心里。', choices: [
       { text: '主动伸手，冰释前嫌', effects: {eq: 2, mentalPressure: -3, contactRelation: { id: 'enemy_111', delta: 45 }, reputation: 1} },
       { text: '淡淡聊几句，不深不浅', effects: {eq: 1, contactRelation: { id: 'enemy_111', delta: 15 } } },
       { text: '摔门而去，老死不相往来', effects: {contactRelation: { id: 'enemy_111', delta: -25 }, mentalPressure: 2} },
     ]},
-    { id: 'ent173', stage: 'life', eventType: 'choice', weight: 5, requireContact: 'enemy_168', requireContactMin: -30, title: '仇人见面', text: '上级单位组织的座谈会上，你和张处长被分到同一组。他全程没正眼看你，空气里都是火药味。', choices: [
-      { text: '主动破冰，谈工作不谈恩怨', effects: {eq: 2, reputation: 1, contactRelation: { id: 'enemy_168', delta: 20 } } },
-      { text: '公事公办，不卑不亢', effects: {workAbility: 1, contactRelation: { id: 'enemy_168', delta: 5 } } },
-      { text: '当众给他难堪', effects: {reputation: -2, risk: 3, contactRelation: { id: 'enemy_168', delta: -20 } } },
+    { id: 'ent173', stage: 'life', eventType: 'choice', weight: 5, requireContact: 'enemy_168', requireContactMax: -30, title: '再次与张处长共事', text: '上级单位组织的座谈会上，你和张处长被分到同一组。他全程没正眼看你，空气里都是火药味。', choices: [
+      { text: '主动对齐业务分工，提议公开联合复盘', effects: {eq: 2, reputation: 1, contactRelation: { id: 'enemy_168', delta: 35 } } },
+      { text: '保持书面往来，边界清楚即可', effects: {workAbility: 1, contactRelation: { id: 'enemy_168', delta: 5 }, flag: 'directorBoundary' } },
+      { text: '在讨论会上回击，对过去的事不再退让', effects: {reputation: -2, risk: 3, contactRelation: { id: 'enemy_168', delta: -20 }, flag: 'directorEscalated' } },
     ]},
-    { id: 'ent174', stage: 'work', eventType: 'choice', weight: 4, requireContact: 'enemy_168', requireContactMin: -70, title: '鱼死网破', text: '张处长四处散布你的"黑料"，你忍无可忍。朋友劝你冷处理，但你知道他背后还憋着更大的招。', choices: [
-      { text: '整理证据反手举报', effects: {risk: 8, heat: 4, mentalPressure: 6, reputation: -2, integrity: 1, addEnemy: { id: 'enemy_168b', name: '张处长的心腹', position: '张处长一派', description: '你举报张处长后，他身边人盯上了你' }} },
+    { id: 'ent174', stage: 'work', eventType: 'choice', weight: 4, requireContact: 'enemy_168', requireContactMax: -45, title: '没有签名的举报材料', text: '张处长开始在几个部门转述对你不利的说法。某份材料被人匿名退回，原因只写了“程序存疑”。你手里有当年的原始方案，但如何使用这些材料，将决定这段恩怨是否继续升级。', choices: [
+      { text: '按程序整理原始材料，实名请求核查', effects: {risk: 1, heat: 2, mentalPressure: 4, integrity: 2, flag: 'directorRetaliation', addEnemy: { id: 'enemy_168b', name: '张处长的下属', position: '相关业务处室', description: '你申请对原始材料复核后，相关经办人对你产生不满' }} },
       { text: '找上级领导说明情况', effects: {background: 2, reputation: 1, mentalPressure: 2, risk: 2} },
       { text: '以退为进，申请调岗回避', effects: {mentalPressure: -3, positionWeight: -1, contactRelation: { id: 'enemy_168', delta: 5 } } },
     ]},
     // ====== v2.52 特色人物专属链：恩师郑教授/青梅竹马苏晓/同乡老周/下属小赵 ======
-    { id: 'ent175', stage: 'work', eventType: 'auto', weight: 6, requireContact: 'mentor', title: '恩师来访', text: '郑教授来市里参加学术会议，特意来看你。饭桌上他问起你的近况，给你讲了个"做学问如做人"的道理，听得你豁然开朗。', effects: {workAbility: 2, iq: 1, mentalPressure: -2} },
+    { id: 'ent175', stage: 'work', eventType: 'auto', weight: 6, requireContact: 'mentor', title: '恩师来访', text: '郑教授来市里参加学术会议，特意来看你。饭桌上他问起你的近况，给你讲了个"做学问如做人"的道理，听得你豁然开朗。', effects: {workAbility: 2, iq: 1, mentalPressure: -2, flag: 'mentorVisitMemory'} },
     { id: 'ent176', stage: 'work', eventType: 'choice', weight: 5, requireContact: 'mentor', requireContactMin: 50, title: '恩师引荐', text: '郑教授说他在政策研究所有个老朋友，缺个懂实务的人去讲课，问他推荐谁。他说"你要是愿意，我推荐你去"。', choices: [
-      { text: '欣然应允，认真准备', effects: {reputation: 2, workAbility: 2, background: 1, mentalPressure: 2} },
+      { text: '应允讲座，请郑教授帮你核实研究方法', effects: {reputation: 1, workAbility: 2, background: 1, mentalPressure: 2, flag: 'mentorLecture'} },
       { text: '婉拒，怕影响本职', effects: {eq: 1, mentalPressure: -1, contactRelation: { id: 'mentor', delta: 5 } } },
-      { text: '答应但敷衍了事', effects: {mentalPressure: -1, reputation: -2, contactRelation: { id: 'mentor', delta: -15 } } },
+      { text: '答应后一直没有准备，临近日期仍想敷衍', effects: {mentalPressure: -1, reputation: -2, contactRelation: { id: 'mentor', delta: -15 }, flag: 'mentorLetdown' } },
     ]},
-    { id: 'ent177', stage: 'life', eventType: 'choice', weight: 4, requireContact: 'mentor', requireContactMin: 70, title: '恩师病重', text: '郑教授住院了。消息传来时你正在忙一个紧急任务。师母在电话里哽咽着说"老师一直念叨你"。', choices: [
-      { text: '放下工作连夜赶去探望', effects: {eq: 3, integrity: 2, mentalPressure: 3, reputation: 1} },
-      { text: '电话问候并托人送花', effects: {eq: 1, mentalPressure: 1, contactRelation: { id: 'mentor', delta: 5 } } },
-      { text: '等忙完这阵子再说', effects: {eq: -2, risk: 1, contactRelation: { id: 'mentor', delta: -20 } } },
+    { id: 'ent177', stage: 'life', eventType: 'choice', weight: 4, requireContact: 'mentor', requireContactMin: 55, title: '恩师病重', text: '郑教授住院接受治疗。消息传来时你正在赶一份应急材料。师母在电话里说，他把病房里的书叠得整整齐齐，仍惦记着你上次问过的研究难题。', choices: [
+      { text: '请人接手当晚工作，赶去病房探望', effects: {eq: 2, positionWeight: -1, mentalPressure: 2, setFlags: ['mentorVisited','mentorCared'], contactRelation: {id:'mentor',delta:10}} },
+      { text: '电话问候并托人送花', effects: {eq: 1, mentalPressure: 1, contactRelation: { id: 'mentor', delta: 5 }, setFlags: ['mentorCalled','mentorCared'] } },
+      { text: '答应改天去，但没有确定日期', effects: {eq: -2, risk: 1, contactRelation: { id: 'mentor', delta: -20 }, flag: 'mentorAbsent' } },
     ]},
     { id: 'ent178', stage: 'life', eventType: 'auto', weight: 5, requireContact: 'qingmei', title: '青梅小聚', text: '苏晓约你周末爬山。山风清爽，她笑你还像小时候一样爱较真。多年未见，却一点不生分。', effects: {mentalPressure: -4, familyPressure: -2, eq: 1} },
     { id: 'ent179', stage: 'life', eventType: 'choice', weight: 4, requireContact: 'qingmei', requireContactMin: 60, title: '青梅情愫', text: '苏晓生日，你送了束花。她接过花的时候，沉默了一下，说"你还记得我喜欢向日葵"。空气忽然安静。', choices: [
@@ -669,8 +669,8 @@ const gd_events_new_theme = [
     { id: 'ent180', stage: 'work', eventType: 'auto', weight: 5, requireContact: 'hometown', requireContactMin: 30, title: '老乡牵线', text: '同乡老周帮你牵线认识了老家县里的实权人物。那人听说你在省城工作，态度格外热络，说"咱们老家人，要多走动"。', effects: {background: 2, peopleReputation: 2, reputation: 1} },
     { id: 'ent181', stage: 'work', eventType: 'auto', weight: 5, requireContact: 'subordinate', requireContactMin: 50, title: '下属成才', text: '小赵在市里的业务竞赛拿了名次。他在发言里专门感谢了你的培养，台下领导多看了你几眼——会带队伍的人，值得托付更大的担子。', effects: {reputation: 2, positionWeight: 1, workAbility: 1} },
     // ====== v2.53 人物生命线：联系人会老去、离开、传承 ======
-    { id: 'ent182', stage: 'life', eventType: 'auto', weight: 5, requireContact: 'mentor', requireContactMin: 60, title: '恩师康健', text: '郑教授出院了，精神比想象中好。他拉着你的手说"病一场，反而想开了，学问是做不完的，人是会老的"。你在心里记下了这句话。', effects: {background: 1, workAbility: 1, mentalPressure: -2} },
-    { id: 'ent183', stage: 'life', eventType: 'auto', weight: 4, requireContact: 'mentor', requireContactMax: 30, title: '恩师辞世', text: '郑教授走了。消息是师母在电话里哭着告诉你的。你想起上次他说"常来看看我"时，你正忙着赶材料，答应改天——那个改天，再也没有来。', effects: {mentalPressure: 8, background: 2, integrity: 1} },
+    { id: 'ent182', stage: 'life', eventType: 'auto', weight: 5, requireContact: 'mentor', requireFlag: 'mentorCared', title: '出院后的那封信', text: '一年多后，郑教授转入康复阶段，给你寄来一封手写信。信里没有励志的套话，只有你上次留给他的那个问题，旁边画了三道红线。', effects: {workAbility: 1, mentalPressure: -2, flag: 'mentorRevisited'} },
+    { id: 'ent183', stage: 'life', eventType: 'auto', weight: 4, requireContact: 'mentor', requireFlag: 'mentorAbsent', title: '迟到的病房电话', text: '师母再次来电时，你才想起自己说过“忙完就去”。郑教授已经转入康复病房，近来精神起伏大，却仍托她问你工作有没有太累。你把通话记录翻到最上面，沉默了许久。', effects: {mentalPressure: 4, familyPressure: 1, flag: 'mentorRevisited', contactRelation: {id:'mentor',delta:-8}} },
     { id: 'ent184', stage: 'work', eventType: 'auto', weight: 5, requireContact: 'hometown', requireContactMin: 40, title: '老乡还乡', text: '老周要回老家养老了。临行前他把几个老伙计的联系方式留给你："在省城有什么难处，报我名字。"这份人情，沉甸甸的。', effects: {background: 2, peopleReputation: 2} },
     { id: 'ent185', stage: 'work', eventType: 'choice', weight: 5, requireContact: 'subordinate', requireContactMin: 60, title: '下属调离', text: '上级单位来借调小赵，说是借调，明眼人都知道是机会。小赵来征求你的意见，眼神里有期待也有不舍。', choices: [
       { text: '鼓励他去，给他写了推荐信', effects: {reputation: 2, background: 1, eq: 2, contactRelation: { id: 'subordinate', delta: 15 } } },
@@ -1376,12 +1376,12 @@ const gd_events_new_theme = [
       { text: '人走茶凉，不必多事', effects: {eq: -1, background: -1, contactRelation: {id: 'exBoss', delta: -8}} },
     ]},
     // v2.1.6 敌人互动补全：enemy_167（当众批评结怨）/enemy_168b（举报后心腹盯梢）此前只有结识无互动——补消费事件闭环
-    { id: 'ent285', stage: 'work', eventType: 'choice', weight: 5, requireContact: 'enemy_167', requireContactMin: -30, title: '陈年旧账', text: '晋升考察谈话时，考察组问起你和王副科长的关系。当年例会上你当众批评过他，如今他在关键节点提起这事，话里话外都是刺。', choices: [
+    { id: 'ent285', stage: 'work', eventType: 'choice', weight: 5, requireContact: 'enemy_167', requireContactMax: -30, title: '陈年旧账', text: '年度民主测评时，有同事问起你和王副科长的关系。当年例会上你当众批评过他，如今他在关键节点提起这事，话里话外都是刺。', choices: [
       { text: '坦承分歧，但不评价个人', effects: {integrity: 2, reputation: 1, mentalPressure: 2, contactRelation: { id: 'enemy_167', delta: 10 } } },
-      { text: '主动找他叙旧化解', effects: {eq: 2, contactRelation: { id: 'enemy_167', delta: 25 }, mentalPressure: -2} },
-      { text: '跟考察组说他能力不行', effects: {reputation: -2, risk: 2, contactRelation: { id: 'enemy_167', delta: -20 } } },
+      { text: '主动找他叙旧化解', effects: {eq: 2, contactRelation: { id: 'enemy_167', delta: 35 }, flag: 'wangReconciled', mentalPressure: -2} },
+      { text: '跟考察组说他能力不行', effects: {reputation: -2, risk: 2, contactRelation: { id: 'enemy_167', delta: -20 }, flag: 'wangHostility' } },
     ]},
-    { id: 'ent286', stage: 'work', eventType: 'auto', weight: 5, requireContact: 'enemy_168b', requireContactMin: -30, title: '暗处的眼睛', text: '张处长的心腹似乎盯上了你——你的工作汇报总被提前"解读"，档案室还出现了不该有的借阅记录。你隐隐觉得有人在收集什么。', effects: { mentalPressure: 4, risk: 2, reputation: -1 } },
+    { id: 'ent286', stage: 'work', eventType: 'auto', weight: 5, requireContact: 'enemy_168b', requireContactMax: -30, title: '暗处的眼睛', text: '张处长的心腹似乎盯上了你——你的工作汇报总被提前"解读"，档案室还出现了不该有的借阅记录。你隐隐觉得有人在收集什么。', effects: { mentalPressure: 4, risk: 2, reputation: -1 } },
 
     // ================= v2.1.8 时代专属事件再扩充（reform/stable/rectify 各 +2 → 17） =================
     // ---- 改革年代 reform +2 ----

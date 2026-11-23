@@ -70,6 +70,37 @@ const gd_events_new_v2172 = [
     { text: '保留固定探望，允许家人按各自生活重新分工', effects: {eq:2, familyPressure:-2, mentalPressure:-2, positionWeight:-1}, result:'你们不再为错过某一天互相指责，也不再把照护变成某一个人的责任。' },
     { text: '维持旧安排，先把工作上的事做完', effects: {positionWeight:1, familyPressure:3, mentalPressure:2}, result:'当晚没有人催你，但后来那条未读消息，你记了很久。' }
   ] },
+  // 人物记忆：不是新的随机噪音，只有玩家当年作出的明确选择才会在几年后出现。
+  { id: 'ent303', stage: 'work', eventType: 'choice', weight: 3, requireFlag: 'directorBoundary', requireContact: 'enemy_168', title: '联署表上的两个名字', text: '三年前你与张处长约定，过去的事不必私下清算，但今后的协作必须留痕。如今两个科室要联合署名一份整改报告，页尾的负责人栏里并排印着你们的名字。', choices: [
+    { text: '逐项核对事实，保留双方共同签署的复盘记录', effects: {workAbility:2,integrity:2,mentalPressure:2,contactRelation:{id:'enemy_168',delta:15}}, result: '记录经得起核对，关系没有突然变亲密，但不再妨碍各自工作。' },
+    { text: '只签自己负责部分，明确双方责任边界', effects: {integrity:2,eq:1,mentalPressure:1}, result: '职责划清楚了，既没有假装冰释前嫌，也没有让旧怨混进程序。' },
+    { text: '坚持全部由对方签字，自己不再参与', effects: {positionWeight:-2,mentalPressure:-2,eq:-1}, result: '你暂时退出争议，错过了完成这项工作的一次机会。' }
+  ] },
+  { id: 'ent304', stage: 'work', eventType: 'choice', weight: 3, requireFlag: 'wangReconciled', requireContact: 'enemy_167', title: '王副科长的手写修改', text: '你和王副科长把当年的误会说开后，几年间各自忙碌。这次他把一份业务培训讲稿交给你，边角有密密麻麻的红字，其中一句正是你当年批评过的那个漏洞。', choices: [
+    { text: '一起修订案例，邀请年轻同事参与讲解', effects: {eq:2,workAbility:2,peopleReputation:1,contactRelation:{id:'enemy_167',delta:10}}, result: '讨论了一下午，讲稿最后署上了两人的名字。' },
+    { text: '尊重他的成果，只提供技术校对', effects: {integrity:2,mentalPressure:-1,contactRelation:{id:'enemy_167',delta:5}}, result: '你没有抢回当年的话语权，讲稿却因此更扎实。' },
+    { text: '坚持由他独自完成，不再牵扯旧关系', effects: {mentalPressure:-2,eq:-1}, result: '双方保留礼貌的距离，团队失去了一次共同传授经验的机会。' }
+  ] },
+  { id: 'ent305', stage: 'work', eventType: 'choice', weight: 3, requireFlag: 'wangHostility', requireContact: 'enemy_167', title: '复核桌上的另一份记录', text: '两年前的民主测评之后，你和王副科长的分歧更深。今天复核组把两份相互矛盾的项目记录放在同一张桌上，请你们分别说明。每一个日期都能在系统里查到。', choices: [
+    { text: '只核对事实和职责，不再评价他的能力', effects: {integrity:3,workAbility:1,mentalPressure:2,contactRelation:{id:'enemy_167',delta:12}}, result: '复核组没有评判私人恩怨，只按证据修正了材料。' },
+    { text: '要求第三方参与复核，接受其独立结论', effects: {integrity:2,background:-1,mentalPressure:1}, result: '结论来得慢，却更难被任何一方否认。' },
+    { text: '再次抓住对方失误，把争执带到会上', effects: {risk:3,reputation:-2,heat:2,contactRelation:{id:'enemy_167',delta:-15}}, result: '会场里声音很大，但真正需要核清的事实反而被盖住了。' }
+  ] },
+  { id: 'ent306', stage: 'life', eventType: 'choice', weight: 3, requireFlag: 'mentorRevisited', title: '郑教授留下的批注', text: '三年后，有人整理郑教授过去的讲义，发现一页写着你们曾讨论过的基层案例。那段字被反复修改，末尾只有一行：不要替后来者把结论写死。', choices: [
+    { text: '把相关材料补充完整，留给新来的年轻同事', effects: {workAbility:2,eq:2,peopleReputation:1}, result: '讲义旁添了几页实际案例，年轻人读完后又提出了自己的疑问。' },
+    { text: '给郑教授写信，说说当年的决定和这些年的变化', effects: {mentalPressure:-3,eq:2,contactRelation:{id:'mentor',delta:8}}, result: '信寄出后，你不再急着等待肯定的回话。' },
+    { text: '保留讲义，继续埋头做自己的事', effects: {workAbility:1,mentalPressure:-1,eq:-1}, result: '纸张夹回书里。你仍记得那一句话，但暂时没有告诉别人。' }
+  ] },
+  { id: 'ent307', stage: 'work', eventType: 'choice', weight: 3, requireContact: 'mentor', title: '那场讲座的回信', text: '一年前郑教授约你到政策研究所交流。如今研究所寄来一封回信，里面夹着两页尚待确认的基层案例。你知道，它能否成为可靠的资料，还取决于你是否愿意核实。', choices: [
+    { text: '补齐原始数据和责任单位，再提交研究所', effects: {workAbility:2,integrity:2,mentalPressure:2,contactRelation:{id:'mentor',delta:8}}, result: '附件经过几轮复核才被采用，讲座变成了可以借鉴的案例。' },
+    { text: '请团队共同校对，署名和成果公开透明', effects: {eq:2,peopleReputation:2,mentalPressure:1}, result: '材料交出去时，你把参与者的名字都留在了末页。' },
+    { text: '只挑有利于自己履历的部分汇报', effects: {background:1,integrity:-2,risk:2}, result: '材料得到短暂关注，后续追问却让你难以解释删掉的部分。' }
+  ] },
+  { id: 'ent308', stage: 'work', eventType: 'choice', weight: 4, excludeContact: 'mentor', year: [26, 48], title: '研讨会后的一页笔记', text: '市里组织政策研讨，台上讲课的郑教授不讲空话，而是拿一张基层服务流程图问：这里谁还在排队？你看见好几位干部低头翻材料。散会后他还站在白板前，等着有人继续问。', choices: [
+    { text: '拿出经手的真实案例，与他讨论责任边界', effects: {flag:'mentorMet',contact:{id:'mentor',name:'郑教授',position:'高校教授与政策研究者',relation:65,description:'在政策研讨会上与你讨论过基层公共服务的责任边界'},workAbility:2,mentalPressure:1}, result:'郑教授在你的材料上留了联系方式，约你之后把复核结果再告诉他。' },
+    { text: '留下帮忙整理提问清单，约定日后核实答复', effects: {flag:'mentorMet',contact:{id:'mentor',name:'郑教授',position:'高校教授与政策研究者',relation:55,description:'在政策研讨会上与你整理过基层案例的提问清单'},eq:2,workAbility:1}, result:'他看完清单，把“尚未答复”四个字圈了起来，提醒你别为了漂亮结论删掉问题。' },
+    { text: '听完就回去处理积压任务，不再留下', effects: {workAbility:1,mentalPressure:1}, result:'报告发了出去。那张没讨论完的流程图，你后来偶尔还会想起。' }
+  ] },
   // ---------- 3. 老年生活线 ×5（year 下限 ≥55 破冰） ----------
   { id: 'enl176', stage: 'life', eventType: 'choice', weight: 4, year: [55, 72], title: '晨练棋友', text: '工作节奏渐渐放缓。周末清晨，公园石桌边的象棋摊成了你的固定去处。老周棋臭但话多，老李棋精却总让半先。你坐在旁边看了一个月，今天有人让了位置。', choices: [
     { text: '坐下杀几盘，输赢都开心', effects: { body: 1, mentalPressure: -2, familyPressure: -1 }, result: '棋盘上赢不了人生，却赢回了笑声' },

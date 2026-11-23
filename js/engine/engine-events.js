@@ -393,7 +393,7 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
     const reasonCodeByGate = {
       employment: 'EMPLOYMENT', era: 'ERA', scenario: 'SCENARIO', requireFlag: 'REQUIRE_FLAG', requireFlags: 'REQUIRE_FLAG', excludeFlag: 'EXCLUDE_FLAG', excludeFlags: 'EXCLUDE_FLAG',
       reputation: 'REPUTATION', yearsWorked: 'WORK_YEARS', ageWindow: 'YEAR_WINDOW', legacyTitleGate: 'TITLE_GATE',
-      contact: 'CONTACT', contactRelation: 'CONTACT_RELATION', contactArchetype: 'CONTACT_ARCHETYPE', contactStatus: 'CONTACT_STATUS', contactTrust: 'CONTACT_TRUST',
+      contact: 'CONTACT', excludeContact: 'EXCLUDE_CONTACT', contactRelation: 'CONTACT_RELATION', contactArchetype: 'CONTACT_ARCHETYPE', contactStatus: 'CONTACT_STATUS', contactTrust: 'CONTACT_TRUST',
       requireChild: 'CHILD', requireNoChild: 'NO_CHILD', requireMarried: 'MARRIED', requireSingle: 'SINGLE', requireGender: 'GENDER', requireTalent: 'TALENT', excludeTalent: 'EXCLUDE_TALENT', requireBackground: 'BACKGROUND', requirePolitical: 'POLITICAL', requireUnitSystem: 'UNIT_SYSTEM',
       requireMentalPressure: 'MENTAL_PRESSURE', requireRisk: 'RISK', requireHeat: 'HEAT', requireBody: 'BODY', requireAppearance: 'APPEARANCE', requireFamily: 'FAMILY', requireLuck: 'LUCK', requirePositionWeight: 'POSITION_WEIGHT', requireWealth: 'WEALTH', requireDebt: 'DEBT', minBackground: 'BACKGROUND', maxBackground: 'BACKGROUND', requireUnitLevelMin: 'UNIT_LEVEL', requireRankMin: 'RANK', requireYearsWorkedMin: 'WORK_YEARS', requireBodyMax: 'BODY_MAX', requireChildAgeMax: 'CHILD_AGE', requireRankMax: 'RANK_MAX', requireUnitLevelMax: 'UNIT_LEVEL_MAX', maxWealth: 'WEALTH_MAX', maxReputation: 'REPUTATION_MAX', requireChildAgeMin: 'CHILD_AGE', requirePeopleReputationMax: 'PEOPLE_REPUTATION', requireHeatOrRisk: 'HEAT_OR_RISK', pool: 'UNIT_POOL'
     };
@@ -470,6 +470,7 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
       }
       const titleReason = titleBlocked(event);
       if (titleReason) fail('legacyTitleGate', titleReason);
+      if (event.excludeContact && contacts.some(c=>contactMatches(c,event.excludeContact))) fail('excludeContact', '已经认识相关人物：'+event.excludeContact);
       if (event.requireContact && !hasContact(event)) fail('contact', '缺少指定联系人：' + event.requireContact);
       else if (event.requireContact) pass('contact', '指定联系人已建立');
       if ((event.requireContactMin !== undefined || event.requireContactMax !== undefined)) {
@@ -639,6 +640,7 @@ GameEngine.prototype.generateEvent = function(force) {
       if (e.id && RIGID_NEXT_SET.has(e.id)) return false;
       // 联系人条件
       if (e.requireContact && !p.contacts.some(c => c.id === e.requireContact || c.uid === e.requireContact || c.legacyId === e.requireContact)) return false;
+      if (e.excludeContact && p.contacts.some(c => c.id === e.excludeContact || c.uid === e.excludeContact || c.legacyId === e.excludeContact)) return false;
       // v2.20 人际网络：联系人关系值门槛（requireContactMin/Max，配合 requireContact 使用）
       if (e.requireContactMin !== undefined || e.requireContactMax !== undefined) {
         const rc = e.requireContact ? p.contacts.find(c => c.id === e.requireContact || c.uid === e.requireContact || c.legacyId === e.requireContact) : (e.requireContactArchetype ? p.contacts.find(c => c.archetype === e.requireContactArchetype || (c.roles || []).includes(e.requireContactArchetype)) : null);

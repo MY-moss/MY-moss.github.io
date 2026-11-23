@@ -636,6 +636,22 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'cadreOpenReview', next: 'enc127', delay: 1 },
         { flag: 'cadreQuietReview', next: 'enc140', delay: 1 },
         { flag: 'cadreReviewClosed', next: 'enc128', delay: 1 },
+        // Remembered people: a choice with an actual named counterpart returns after years.
+        { flag: 'wangDispute', next: 'ent285', delay: 2 },
+        { flag: 'wangReconciled', next: 'ent304', delay: 2 },
+        { flag: 'wangHostility', next: 'ent305', delay: 2 },
+        { flag: 'directorDispute', next: 'ent173', delay: 2 },
+        { flag: 'directorBoundary', next: 'ent303', delay: 3 },
+        { flag: 'directorEscalated', next: 'ent174', delay: 1 },
+        { flag: 'directorRetaliation', next: 'ent286', delay: 1 },
+        { flag: 'oldZhangPetition', next: 'ent172', delay: 1 },
+        { flag: 'mentorMet', next: 'ent175', delay: 1 },
+        { flag: 'mentorVisitMemory', next: 'ent176', delay: 1 },
+        { flag: 'mentorLecture', next: 'ent307', delay: 1 },
+        { flag: 'mentorLetdown', next: 'ent307', delay: 1 },
+        { flag: 'mentorCared', next: 'ent182', delay: 2 },
+        { flag: 'mentorAbsent', next: 'ent183', delay: 2 },
+        { flag: 'mentorRevisited', next: 'ent306', delay: 3 },
         // 财务与廉政风险：接受不当利益、挪用公款和灰色理财均兑现延迟后果。
         { flag: 'bg_tempt_1', next: 'e743', delay: 1 },
         { flag: 'bg_tempt_2', next: 'e744', delay: 1 },
@@ -708,7 +724,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
       [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$|^enl21[56]$/,'父母照护'],
-      [/^ent2(96|97|98)$|^ent302$/,'资产与风险'],[/^ent(299|300|301)$|^enw249$/,'借调与考察'],[/^enc(125|126|127|128|140)$/,'干部考察 · 异议与复核'],[/^enw246$/,'岗位业务评审'],
+      [/^ent2(96|97|98)$|^ent302$/,'资产与风险'],[/^ent(299|300|301)$|^enw249$/,'借调与考察'],[/^ent(169|17[0-4]|28[56]|30[3-5])$/,'职场分歧 · 当年旧账'],[/^ent(17[5-7]|18[23]|30[6-8])$/,'郑教授 · 多年往来'],[/^enc(125|126|127|128|140)$/,'干部考察 · 异议与复核'],[/^enw246$/,'岗位业务评审'],
       [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648|649)$/,'调查与责任'],[/^e(805|806|807|808)$/,'基层挂职'],[/^enw126$/,'借调与考察'],[/^e(728|729|730|731)$/,'人脉枢纽'],[/^e(616|617|618|743|744|747|748|756|758|765)$/,'财务与廉政后果'],
       [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$/,'房贷与家庭财务']
     ];
@@ -744,13 +760,29 @@ GameEngine.prototype.getVentureReviewEvent = function() {
 };
 // 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
 GameEngine.prototype.getLifePathEvent = function(event) {
-  if (!event || !/^arc_life_/.test(event.id || '')) return event;
+  if (!event || !/^(arc_life_|ent30[67])/.test(event.id || '')) return event;
   const f=this.state.player.flags||{};
   const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
   const add=(text)=>{out.text=(out.text||'')+' '+text;};
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'ent306':
+      if(f.mentorVisited) add('你想起当年赶去病房时，郑教授从枕头下拿出一张写满笔记的纸。你并不知道他后来又读过多少遍。');
+      else if(f.mentorCalled) add('你想起那通仓促的电话。虽然没有赶去病房，你还是把当时没能说完的问题记在本子上。');
+      else if(f.mentorAbsent) { add('那次你答应改天去，后来一拖再拖。讲义的最后一行字让你明白，有些话不必等对方先开口。');bump(1,{mentalPressure:1}); }
+      break;
+    case 'ent307':
+      if(f.mentorLetdown){
+        out.text='你答应郑教授的讲座最后没能认真准备。研究所来信要求你解释几段引用材料的来源。你终于有机会把此前的敷衍补回来，但必须为迟延负责。';
+        result(0,'你把未核实的资料标明作废，补交可靠的一手案例，并承认原先准备不足。');
+        result(1,'团队一起补证，署名中也写清了最初那次失误。');
+        bump(0,{integrity:1,background:-1});
+      } else if(f.mentorLecture){
+        add('你记得那次讲座结束时，有年轻研究员追着你问了三个具体问题。');
+        result(0,'你逐项核实当时被追问的资料，研究所据此修订了公开案例。');
+      }
+      break;
     case 'arc_life_career_2':
       if(f.lifeCareerLead){add('你当年从重点专班带回来的不只是项目结果，还有一套跨部门协作的办法。新负责人最关心的是：这套办法能不能离开你继续运转。');result(0,'你把专班的协作机制和风险清单一起交给接班人，项目不再只靠你一个人维持。');result(1,'你决定继续盯住最关键的项目节点，但同时明确哪些协调工作必须由团队共同承担。');bump(0,{peopleReputation:1});bump(1,{mentalPressure:1,workAbility:1});}
       else if(f.lifeCareerExpert){add('你留在专业岗位后积累的标准和流程，已经被几个业务科室沿用。新负责人希望知道，哪些判断必须由专业人员把关。');result(0,'你把关键判断标准和常见错误写进交接手册，让后来者能够独立处理大部分业务。');result(1,'你继续把关最复杂的专业问题，同时培养一名能够接手核心工作的同事。');bump(0,{integrity:1,workAbility:1});bump(1,{workAbility:1,mentalPressure:1});}
@@ -951,6 +983,29 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
           && !p.flags.classmateFavor && !p.flags.classmateBoundaries && p.yearsWorked >= 3
           && p.age >= 26 && p.age <= 45 && this.randf() < 0.08) {
         event = GameData.events.find(x => x.id === 'e094') || null;
+      }
+      // 可发现的连续人物线：大事件队列空闲时才给玩家遇见重要人物的机会；
+      // 不把后续事件直接扔进随机池，不影响已约定的旧事、项目或里程碑。
+      // 一局至多引入一位潜在职场对手；是否结怨仍由玩家当下的选择决定。
+      const npcSeen=p.seenEvents||[], npcFlags=p.flags||{};
+      if (!event && p.isEmployed && p.yearsWorked>=3 && p.yearsWorked<=18 && p.age>=26 && p.age<=48
+          && !npcFlags.wangDispute && !npcFlags.directorDispute
+          && !npcSeen.includes('ent167') && !npcSeen.includes('ent168') && this.randf()<0.12) {
+        event=GameData.events.find(x=>x.id===(this.randf()<0.5?'ent167':'ent168'))||null;
+      }
+      // 郑教授不是凭空出现的人脉增益：先在公开研讨会结识，再有一年后的重逢。
+      if (!event && p.isEmployed && p.yearsWorked>=3 && p.yearsWorked<=18 && p.age>=26 && p.age<=48
+          && !npcSeen.includes('ent308') && !npcFlags.mentorMet && !(p.contacts||[]).some(c=>c.id==='mentor'||c.legacyId==='mentor') && this.randf()<0.11) {
+        event=GameData.events.find(x=>x.id==='ent308')||null;
+      }
+      // 旧识成为人生记忆需要时间：五年往来后，偶尔出现一次真实的照护抉择。
+      // 只对仍然联系的导师开放，事件本身不宣布生死；终局之前有时间兑现回访。
+      if (!event && npcFlags.mentorMet && Number(npcFlags.mentorMet_since)>0
+          && p.age>=Math.max(36,Number(npcFlags.mentorMet_since)+5) && p.age<=50
+          && !npcSeen.includes('ent177') && !npcFlags.mentorVisited && !npcFlags.mentorCalled && !npcFlags.mentorAbsent
+          && (p.contacts||[]).some(c=>(c.id==='mentor'||c.legacyId==='mentor')&&Number(c.relation)>=55)
+          && this.randf()<0.10) {
+        event=GameData.events.find(x=>x.id==='ent177')||null;
       }
       // v2.66 买房入口注入：28-45 岁每年 2%（买房是重要人生节点——原 weight 8 在 1265 事件池里生涯触发率仅 ~2%）
       if (!event && !p.flags.mortgage && !(p.seenEvents || []).includes('ent257') && p.age >= 28 && p.age <= 45 && this.randf() < 0.02) {

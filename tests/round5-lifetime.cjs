@@ -7,7 +7,7 @@ const local=new Map();const ctx={console,Date,Math,Map,Set,JSON,Number,String,Ar
 for(const f of files)runInNewContext(readFileSync(f,'utf8'),ctx,{filename:f});
 runInNewContext('globalThis.Ctor=GameEngine;globalThis.Data=GameData',ctx);
 const e=new ctx.Ctor();const data=ctx.Data;
-const N=300;let crossing={start:0,review:0,final:0,echo:0,endedBeforeEcho:0,interruptedAtEnding:0,options:{open:0,phase:0,seal:0}};let entered=0,second=0,third=0,ended=0,years=0,earned=0,net=0,pressure=0,invalid=0;let family=0,team=0,teamLast=0,familyLast=0,teamRoute={shared:0,deferred:0},familyRoute={present:0,absent:0},classmate={entered:0,second:0,finale:0,branches:{open:0,favor:0,boundary:0}};
+const N=300;let crossing={start:0,review:0,final:0,echo:0,endedBeforeEcho:0,interruptedAtEnding:0,options:{open:0,phase:0,seal:0}};let entered=0,second=0,third=0,ended=0,years=0,earned=0,net=0,pressure=0,invalid=0;let mentorMemory={illnessStarted:0,legacyReached:0,interruptedByEnding:0};let family=0,team=0,teamLast=0,familyLast=0,teamRoute={shared:0,deferred:0},familyRoute={present:0,absent:0},classmate={entered:0,second:0,finale:0,branches:{open:0,favor:0,boundary:0}};
 const stages={},outcomes={},routes={open:0,quiet:0};
 for(let seed=1;seed<=N;seed++){let pcStart=0,pcEcho=0;
  e.reset();
@@ -62,7 +62,19 @@ for(let seed=1;seed<=N;seed++){let pcStart=0,pcEcho=0;
    if(current.length) crossing.interruptedAtEnding++;
    else crossing.endedBeforeEcho++;
  }
+ // The mentor's illness must either reach its later-life memory or remain
+ // visibly queued at terminal retirement. Never silently consume an unseen node.
+ if((p.seenEvents||[]).includes('ent177')){
+   mentorMemory.illnessStarted++;
+   if((p.seenEvents||[]).includes('ent306')) mentorMemory.legacyReached++;
+   else {
+     const pending=e.getPendingCausalConsequences().filter(x=>['ent182','ent183','ent306'].includes(x.id));
+     assert.ok(pending.length,`seed ${seed}: mentor's remembered illness lost its queued consequences`);
+     assert.ok(pending.some(x=>x.dueAge>p.age||e.state.currentEvent?.id===x.id),`seed ${seed}: mentor's due callback lost at age ${p.age}`);
+     mentorMemory.interruptedByEnding++;
+   }
+ }
  earned+=p.promotions;net+=p.wealth;pressure+=h.mentalPressure;
 }
-const summary={seeds:N,years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,finale:familyLast,branches:familyRoute},classmate,crossing,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&id.startsWith('arc_')))};
-console.log(JSON.stringify(summary,null,2));assert.equal(invalid,0,'unexpected unresolvable choice');assert.equal(ended,N,'all long games should reach a terminal outcome');assert.equal(crossing.start,crossing.echo+crossing.endedBeforeEcho+crossing.interruptedAtEnding,'crossroads must finish, await future due age, or be interrupted by its own visible pending choice at terminal ending');
+const summary={seeds:N,years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,finale:familyLast,branches:familyRoute},classmate,crossing,mentorMemory,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&id.startsWith('arc_')))};
+console.log(JSON.stringify(summary,null,2));assert.equal(mentorMemory.illnessStarted,mentorMemory.legacyReached+mentorMemory.interruptedByEnding,'mentor story must resolve or be visibly scheduled at the terminal ending');assert.equal(invalid,0,'unexpected unresolvable choice');assert.equal(ended,N,'all long games should reach a terminal outcome');assert.equal(crossing.start,crossing.echo+crossing.endedBeforeEcho+crossing.interruptedAtEnding,'crossroads must finish, await future due age, or be interrupted by its own visible pending choice at terminal ending');
