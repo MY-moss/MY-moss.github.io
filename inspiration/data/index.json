@@ -1,8 +1,141 @@
 {
   "schemaVersion": 1,
   "site": "Inspiration Hub",
-  "updatedAt": "2026-11-22",
+  "updatedAt": "2026-11-23T01:48:03.327Z",
   "reports": [
+    {
+      "channel": "world",
+      "date": "2026-11-23",
+      "title": "每日世界新闻｜AI安全阈值、对华芯片核查与COP31谈判破裂",
+      "summary": "OpenAI科学家提出AI能力阈值，美国寻求英伟达对华销售解释，德国测试军事AI；COP31未达成总体政治协议，全球市场关注AI股回调。",
+      "theme": "AI治理、芯片供应链、全球气候",
+      "items": [
+        {
+          "id": "world-2026-11-23-ai-safety",
+          "title": "OpenAI科学家提出模型能力阈值",
+          "summary": "OpenAI首席科学家提出行业共同能力限制，安全监测达标后再提高阈值。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/openai-scientist-proposes-industry-ai-limits-tied-model-intelligence-metric-2026-11-22/",
+          "why": "为AI安全治理提出可衡量的阶段性框架。",
+          "confidence": "提议已报道；尚非实施法规",
+          "tags": [
+            "AI",
+            "安全"
+          ],
+          "date": "2026-11-22"
+        },
+        {
+          "id": "world-2026-11-23-nvidia",
+          "title": "美国寻求英伟达解释对华芯片销售",
+          "summary": "美国财政部长表示政府正寻求解释；目前不能据此认定违规。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/us-seeks-answers-nvidias-sale-chips-china-bessent-says-2026-11-22/",
+          "why": "芯片出口合规继续影响全球AI供应链。",
+          "confidence": "官员表态已报道；调查结果待确认",
+          "tags": [
+            "芯片",
+            "政策"
+          ],
+          "date": "2026-11-22"
+        },
+        {
+          "id": "world-2026-11-23-germany",
+          "title": "德国在立陶宛测试巡飞弹及AI识别",
+          "summary": "德军在立陶宛首次战术测试巡飞弹，并测试AI目标识别工具。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/aerospace-defense/german-army-starts-testing-kamikaze-drones-ai-targeting-tool-lithuania-2026-11-22/",
+          "why": "欧洲防务与AI辅助军事应用的交汇。",
+          "confidence": "演习已报道；系统能力待评估",
+          "tags": [
+            "军事",
+            "AI"
+          ],
+          "date": "2026-11-22"
+        },
+        {
+          "id": "world-2026-11-23-cop31",
+          "title": "COP31未达成总体政治协议",
+          "summary": "各国未就化石燃料与气候资金等核心问题形成总体政治协议。",
+          "source": "Reuters、AP",
+          "url": "https://www.reuters.com/sustainability/cop/cop31-climate-deal-balance-after-fractious-talks-2026-11-22/",
+          "why": "气候治理重要进展；多家独立媒体核实。",
+          "confidence": "已交叉核实",
+          "tags": [
+            "气候",
+            "国际"
+          ],
+          "date": "2026-11-22"
+        },
+        {
+          "id": "world-2026-11-23-markets",
+          "title": "AI科技股回调引发亚洲市场担忧",
+          "summary": "亚洲投资者关注美股AI抛售的传导，美国股指期货出现反弹。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-22/",
+          "why": "市场对AI资本开支回报与估值风险重新定价。",
+          "confidence": "市场即时数据；走势待观察",
+          "tags": [
+            "经济",
+            "AI"
+          ],
+          "date": "2026-11-22"
+        },
+        {
+          "id": "world-2026-11-23-anthropic",
+          "title": "Anthropic上市承销流程引发争论",
+          "summary": "Reuters调查报道Anthropic采取不寻常IPO流程，引发部分银行不满。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/world/like-spacex-anthropic-ran-unusual-ipo-process-chafing-some-bankers-2026-11-22/",
+          "why": "观察前沿模型公司进入公开资本市场的治理与融资模式。",
+          "confidence": "媒体调查报道",
+          "tags": [
+            "AI",
+            "商业"
+          ],
+          "date": "2026-11-22"
+        },
+        {
+          "id": "world-2026-11-23-outages",
+          "title": "美国情报负责人警告系统升级可能增加故障",
+          "summary": "美国情报负责人预测系统升级期间可能出现更多技术服务中断。",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/finance/us-intelligence-chief-predicts-more-tech-outages-systems-undergo-upgrades-2026-11-22/",
+          "why": "提醒关注数字基础设施可靠性。",
+          "confidence": "官员预测；非已发生事故",
+          "tags": [
+            "网络",
+            "科技"
+          ],
+          "date": "2026-11-22"
+        }
+      ],
+      "sections": [
+        {
+          "title": "AI / 科技 / 开源",
+          "summary": "模型能力阈值、芯片出口核查、军事AI测试与系统可靠性。"
+        },
+        {
+          "title": "创意 / 设计 / 文化",
+          "summary": "无充分核实的重大新事件，不凑数。"
+        },
+        {
+          "title": "全球政治与地缘",
+          "summary": "欧洲军事AI测试与国际安全治理。"
+        },
+        {
+          "title": "经济与商业",
+          "summary": "Anthropic上市承销模式与AI科技股回调。"
+        },
+        {
+          "title": "科学与社会",
+          "summary": "COP31未达成总体政治协议；Reuters、AP、Al Jazeera独立核实。"
+        },
+        {
+          "title": "今天值得继续关注",
+          "summary": "英伟达回应、AI安全倡议、亚洲股市、COP31后续谈判。"
+        }
+      ]
+    },
     {
       "channel": "world",
       "date": "2026-11-22",
