@@ -18,7 +18,16 @@ const groupBy=(fn)=>{const m=new Map();for(const e of events){const k=fn(e);if(!
 const groups={title:groupBy(e=>e.title?.trim()),text:groupBy(e=>e.text?.trim()),choices:groupBy(e=>e.eventType==='choice'?e.choices?.map(c=>c.text).join('||'):null)};
 const issues=[];const add=(e,code,detail)=>issues.push({id:e.id,file:owner(e.id),title:e.title,code,detail});
 const flags=new Set();for(const e of events){const eff=[e.effects,...(e.choices||[]).map(c=>c.effects)];for(const x of eff){for(const f of [x?.flag,...(x?.setFlags||[])])if(typeof f==='string')flags.add(f)}}
-const permitted=new Set(['wealth','political','education','childEducation','childCompany','reputation','peopleReputation','flag','setFlags','deleteFlag','marry','child','contact','addEnemy','contactRelation','contactRelation2','contactDelta','contactEvolution','grassrootsDispatch','debtForgive','debtRateMul','heat','leadershipRank','central','grassrootsReturn','grassrootsStay','grassrootsLower','iq','eq','luck','family','appearance','body','desire','familyPressure','integrity','risk','background','workAbility','positionWeight','mentalPressure','careerLogNote','reformCount']);
+// 事件之外，派驻、晋升、返聘、借贷等运行时机制也会产生前置 flag。
+// 只认实际源码中显式赋值 true 的 flag，避免把真实的孤儿前置静默豁免。
+const scriptFiles=[...html.matchAll(/<script defer src="([^"]+)/g)].map(x=>x[1].split('?')[0]);
+const runtimeFlags=new Set();
+for(const path of scriptFiles.filter(path=>path.startsWith('js/engine/')||path.startsWith('js/app/'))){
+ const text=readFileSync(resolve(root,path),'utf8');
+ for(const match of text.matchAll(/\.flags\.([A-Za-z_$][\w$]*)\s*=\s*true\b/g))runtimeFlags.add(match[1]);
+}
+for(const f of runtimeFlags)flags.add(f);
+const permitted=new Set(['wealth','addDebt','political','education','childEducation','childCompany','reputation','peopleReputation','flag','setFlags','deleteFlag','deleteFlags','marry','child','contact','addEnemy','contactRelation','contactRelation2','contactDelta','contactEvolution','grassrootsDispatch','debtForgive','debtRateMul','heat','leadershipRank','central','grassrootsReturn','grassrootsStay','grassrootsLower','iq','eq','luck','family','appearance','body','desire','familyPressure','integrity','risk','background','workAbility','positionWeight','mentalPressure','careerLogNote','reformCount']);
 for(const e of events){
  if(!e.id||!e.title||!e.stage||!e.eventType||!e.text) add(e,'missing_core',Object.keys(e));
  if(e.text?.length<33) add(e,'short_scene',e.text);
@@ -41,7 +50,7 @@ for(const e of events){
  if(e.stage==='life'&&e.pools?.includes('public')===false&&e.pools?.length>0)add(e,'life_special_pool',e.pools);
 }
 const by=(arr,key)=>arr.reduce((m,o)=>(m[o[key]||'unknown']=(m[o[key]||'unknown']||0)+1,m),{});
-const stats={count:events.length,stages:by(events,'stage'),types:by(events,'eventType'),sourceFiles:by(events.map(e=>({file:owner(e.id)})),'file'),era:by(events.map(e=>({era:e.era?.join?.(',')||'any'})),'era'),scenarioCount:events.filter(e=>e.scenario).length,hasFlag:events.filter(e=>e.requireFlag||e.requireFlags).length,withYear:events.filter(e=>e.year).length,flagsProduced:flags.size,issues:by(issues,'code'),duplicateTitles:groups.title.length,duplicateTexts:groups.text.length,duplicateChoiceSets:groups.choices.length};
+const stats={count:events.length,stages:by(events,'stage'),types:by(events,'eventType'),sourceFiles:by(events.map(e=>({file:owner(e.id)})),'file'),era:by(events.map(e=>({era:e.era?.join?.(',')||'any'})),'era'),scenarioCount:events.filter(e=>e.scenario).length,hasFlag:events.filter(e=>e.requireFlag||e.requireFlags).length,withYear:events.filter(e=>e.year).length,flagsProduced:flags.size,runtimeFlagsProduced:runtimeFlags.size,issues:by(issues,'code'),duplicateTitles:groups.title.length,duplicateTexts:groups.text.length,duplicateChoiceSets:groups.choices.length};
 const report={stats,issues,duplicateTitles:groups.title.map(([k,es])=>({title:k,ids:es.map(e=>e.id),file:owner(es[0].id)})),duplicateTexts:groups.text.map(([k,es])=>({text:k,ids:es.map(e=>e.id)})),duplicateChoiceSets:groups.choices.map(([k,es])=>({ids:es.map(e=>e.id),choices:k.slice(0,200)}))};
 writeFileSync('/tmp/shangan-round2-audit.json',JSON.stringify(report,null,2));
 writeFileSync('/tmp/shangan-round2-events.json',JSON.stringify(events.map(e=>({ ...e, source:owner(e.id) })),null,2));
@@ -54,7 +63,7 @@ if(process.argv.includes('--write-catalog')){
    const found=issuesById.get(e.id)||[];
    const needs=found.filter(code=>!['orphan_req_flag','orphan_req_flags'].includes(code));
    const status=needs.length?'待人工叙事复审':'结构审核通过（非人工全文验收）';
-   const gates=['year','era','scenario','requireFlag','requireFlags','requireChild','requireChildAgeMin','requireChildAgeMax','requireMarried','requireRankMin','requireUnitSystem'].filter(k=>e[k]!==undefined).map(k=>k+'='+JSON.stringify(e[k])).join('; ');
+   const gates=['year','era','scenario','requireFlag','requireFlags','excludeFlag','excludeFlags','requireChild','requireNoChild','requireChildAgeMin','requireChildAgeMax','requireMarried','requireSingle','requireRankMin','requireRankMax','requireYearsWorkedMin','requireUnitLevelMin','requireUnitLevelMax','requireRisk','requireBodyMax','requireUnitSystem'].filter(k=>e[k]!==undefined).map(k=>k+'='+JSON.stringify(e[k])).join('; ');
    return [e.id,e.title,owner(e.id),e.stage,e.eventType,e.choices?.length||0,status,found.join(';'),gates,e.text?.length||0];
  });
  const csv=[header,...rows].map(r=>r.map(esc).join(',')).join('\n')+'\n';
@@ -65,3 +74,10 @@ if(process.argv.includes('--write-catalog')){
 console.log('STATS',JSON.stringify(stats,null,2));
 console.log('EXACT_DUP_TITLES',JSON.stringify(report.duplicateTitles.slice(0,35),null,2));
 console.log('SAMPLE_ISSUES',JSON.stringify(issues.filter(x=>['identical_choice_effects','choice_no_effect','orphan_req_flag','missing_core','unknown_effect_key','bad_age_window'].includes(x.code)).slice(0,100),null,2));
+
+if(process.argv.includes('--strict')){
+ if(issues.length){
+   console.error('STRICT_AUDIT_FAILED',JSON.stringify(issues));
+   process.exitCode=1;
+ } else console.log('STRICT_AUDIT_PASSED',events.length,'events');
+}

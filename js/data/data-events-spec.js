@@ -274,10 +274,10 @@ const gd_events_spec = [
       { text: '亲自去医院核实病情', effects: {integrity: 3, eq: 1, body: -1, mentalPressure: 2} },
       { text: '请科室会议集体研讨决定', effects: {eq: 1, background: 1, mentalPressure: 1, workAbility: 1} },
     ]},
-    { id: 'e614', stage: 'work', eventType: 'choice', title: '拆迁协调', weight: 5, text: '一片旧城改造项目涉及几百户居民拆迁。大多数签约了，还剩几户"钉子户"——不是想多要补偿就是故土难离。施工单位催得很急。', pools: ['住建', '政府部门', '民生部门'], choices: [
+    { id: 'e614', stage: 'work', eventType: 'choice', title: '拆迁协调', weight: 5, text: '一片旧城改造项目涉及几百户居民。大多数已经签约，仍有几户居民对补偿标准、安置方案或故土情感有顾虑。施工单位催得很急，项目进度与居民合法权益都需要妥善处理。', pools: ['住建', '政府部门', '民生部门'], choices: [
       { text: '逐户耐心沟通了解真实诉求', effects: {eq: 2, workAbility: 2, mentalPressure: 4, reputation: 2} },
       { text: '在法律框架内给予合理补偿', effects: {integrity: 3, workAbility: 2, mentalPressure: 2, reputation: 1} },
-      { text: '动用强制手段清场', effects: {risk: 5, integrity: -4, reputation: -5, mentalPressure: 3} },
+      { text: '绕开协商程序，强行推进清场', effects: {risk: 5, integrity: -4, reputation: -5, mentalPressure: 3} },
       { text: '请社区和街道出面做工作', effects: {background: 2, eq: 1, mentalPressure: 2, workAbility: 1} },
       { text: '调整规划方案尽量保留原有格局', effects: {iq: 2, workAbility: 2, mentalPressure: 3, reputation: 2} },
     ]},
@@ -369,14 +369,14 @@ const gd_events_spec = [
       { text: '让伴侣请假自己不耽误工作', effects: {workAbility: 2, mentalPressure: 2, familyPressure: 2, reputation: -1, eq: -1} },
     ]},
     { id: 'e633', stage: 'life', eventType: 'auto', title: '亲子时光', weight: 5, text: '孩子的病好了，搂着你的脖子说"爸爸/妈妈我最喜欢你了"。那一刻你觉得所有的疲惫都值得了。你发现自己变得更柔软了——也更有力量了。', pools: ['public'], requireFlag: 'parenting', effects: {familyPressure: -3, mentalPressure: -3, eq: 1, reputation: 1, integrity: 1} },
-    { id: 'e634', stage: 'life', eventType: 'choice', title: '孩子入学', weight: 5, text: '孩子到了上小学的年龄。你跑了几个学校，学区房太贵、私立太远、公办又怕教学质量不够好。当父母的焦虑在这一刻集中爆发。', pools: ['public'], requireChild: true, choices: [
+    { id: 'e634', stage: 'life', eventType: 'choice', title: '孩子入学', weight: 5, text: '孩子到了上小学的年龄。你跑了几个学校，学区房太贵、私立太远、公办又怕教学质量不够好。当父母的焦虑在这一刻集中爆发。', pools: ['public'], requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 7, choices: [
       { text: '努力攒钱买学区房', effects: {familyPressure: 5, mentalPressure: 3, desire: 2, workAbility: 1, reputation: 1} },
       { text: '相信公办学校的教育质量', effects: {integrity: 2, mentalPressure: -1, familyPressure: 1, reputation: 1} },
       { text: '在家附近找一所口碑好的学校', effects: {workAbility: 1, mentalPressure: 1, familyPressure: 1, eq: 1} },
       { text: '提前开始辅导孩子学习', effects: {iq: 2, workAbility: 1, mentalPressure: 2, familyPressure: 1, body: -1} },
       { text: '找关系托人帮忙进好学校', effects: {background: 2, risk: 3, integrity: -2, mentalPressure: 2, familyPressure: -2} },
     ]},
-    { id: 'e635', stage: 'life', eventType: 'choice', title: '家长会', weight: 5, text: '班主任打电话说要你去学校一趟——你心里咯噔一下。到了办公室，老师说你孩子在学校打架了。你看着站在墙角低着头的小身影，不知道该先骂还是先问。', pools: ['public'], requireChild: true, choices: [
+    { id: 'e635', stage: 'life', eventType: 'choice', title: '家长会', weight: 5, text: '班主任打电话说要你去学校一趟——你心里咯噔一下。到了办公室，老师说你孩子在学校打架了。你看着站在墙角低着头的小身影，不知道该先骂还是先问。', pools: ['public'], requireChild: true, requireChildAgeMin: 6, requireChildAgeMax: 18, choices: [
       { text: '先了解原因再和孩子沟通', effects: {eq: 2, integrity: 2, mentalPressure: 2, familyPressure: -1, reputation: 1, flag: 'parenting2'} },
       { text: '严厉批评孩子不能动手', effects: {integrity: 2, familyPressure: 2, mentalPressure: 2, reputation: 1} },
       { text: '替孩子向老师道歉', effects: {eq: 1, mentalPressure: 1, reputation: 1, familyPressure: 1} },
@@ -472,8 +472,8 @@ const gd_events_spec = [
 
     // ==================== 调查结果链（e237 选择后的终局） ====================
     // e646：调查结果（被调查后按 flag 判定结局）
-    { id: 'e646', stage: 'work', eventType: 'choice', title: '调查结果', weight: 10, text: '调查组对你的问题做出了初步结论。你坐在纪委的谈话室里，等待着命运的宣判——是坦白从宽，还是死扛到底？', pools: ['public'], requireRisk: 15, requireFlag: 'underInvestigation', choices: [ // v2.59 断链修复：e646 需先经历 e237 调查（引擎设 underInvestigation），不再独立刷出
-      { text: '接受组织处理，积极退赃', effects: {heat: -15, risk: -10, mentalPressure: 5, reputation: 2, integrity: 3, positionWeight: -4} },
+    { id: 'e646', stage: 'work', eventType: 'choice', title: '调查结果', weight: 10, text: '调查组对你的问题做出了初步结论。你坐在纪委的谈话室里，等待着命运的宣判——是坦白从宽，还是死扛到底？', pools: ['public'], requireFlag: 'underInvestigation', choices: [ // 刚性链已确认进入调查流程，结果不应再受风险值回落阻断：e646 需先经历 e237 调查（引擎设 underInvestigation），不再独立刷出
+      { text: '接受组织处理，积极退赃', effects: {heat: -15, risk: -10, mentalPressure: 5, reputation: 2, integrity: 3, positionWeight: -4, flag: 'selfSurrender'} },
       { text: '申诉辩解，争取从轻', effects: {risk: -3, heat: -3, mentalPressure: 4, positionWeight: -2, reputation: -1} },
       { text: '拒绝配合调查', effects: {wealth: 10, risk: 10, heat: 10, mentalPressure: 8, integrity: -5, reputation: -4, flag: 'defied'} },
       { text: '接受调查组建议，主动自首', effects: {heat: -20, risk: -15, mentalPressure: -3, reputation: 3, integrity: 5, positionWeight: -6, flag: 'selfSurrender'} },
@@ -483,7 +483,7 @@ const gd_events_spec = [
     // e648：死扛到底 → 被抓（终局）
     { id: 'e648', stage: 'work', eventType: 'auto', title: '锒铛入狱', weight: 8, text: '你拒不配合调查，组织决定依法将你移送司法机关。当手铐铐上手腕的那一刻，你想起多年前入职时宣读的誓言，一切都结束了。', pools: ['public'], requireFlag: 'defied', effects: {risk: 30, heat: 30, mentalPressure: 15, reputation: -20, integrity: -10}, terminal: 'arrest' },
     // e649：跑路 → 亡命天涯（终局）
-    { id: 'e649', stage: 'work', eventType: 'auto', title: '亡命天涯', weight: 8, text: '你连夜出逃，换掉了手机号，躲进了千里之外的县城出租屋。你以为能逃过一切，但通缉令已经贴满了全国。从此，你只能在阴影里活着。', pools: ['public'], requireFlag: 'fled', effects: {risk: 30, heat: 30, mentalPressure: 15, reputation: -25, integrity: -10}, terminal: 'arrest' },
+    { id: 'e649', stage: 'work', eventType: 'auto', title: '亡命天涯', weight: 8, text: '你连夜出逃，换掉了手机号，躲进千里之外的县城出租屋。通缉令已经贴满全国。几个月后，一次身份核查暴露了行踪，你最终被抓获并移送司法机关。', pools: ['public'], requireFlag: 'fled', effects: {risk: 30, heat: 30, mentalPressure: 15, reputation: -25, integrity: -10}, terminal: 'arrest' },
 
 
     // ==================== 多步骤专案系统（v2.1） ====================
@@ -622,8 +622,8 @@ const gd_events_spec = [
       { text: '借势而上，主动汇报工作', effects: {positionWeight: 3, background: 3, reputation: 2, flag: 'hub_recommend'} },
       { text: '保持低调，继续积累口碑', effects: {eq: 1, background: 2, reputation: 2, integrity: 1, flag: 'hub_recommend'} },
     ]},
-    { id: 'e730', stage: 'life', eventType: 'auto', title: '口碑传播', weight: 4, requireFlag: 'hub_recommend', text: '"有事找小X"成了单位里的一句口头禅。从司机班到领导层，都知道你是个"靠谱的中间人"——信息在你这里汇聚，资源经你调配。', pools: ['public'], effects: {reputation: 4, background: 4, positionWeight: 2, mentalPressure: -2} },
-    { id: 'e731', stage: 'work', eventType: 'choice', title: '枢纽地位', weight: 4, requireFlag: 'hub_recommend', text: '你几乎成了单位默认的"枢纽"——矛盾到你这里化解，事情经你这里办成。但这也意味着，你开始被各方"惦记"。', pools: ['public'], choices: [
+    { id: 'e730', stage: 'life', eventType: 'auto', title: '口碑传播', weight: 4, requireFlag: 'hub_recommend', text: '"有事找小X"成了单位里的一句口头禅。从司机班到领导层，都知道你是个"靠谱的中间人"——信息在你这里汇聚，资源经你调配。', pools: ['public'], effects: {reputation: 4, background: 4, positionWeight: 2, mentalPressure: -2, flag: 'hub_spread'} },
+    { id: 'e731', stage: 'work', eventType: 'choice', title: '枢纽地位', weight: 4, requireFlag: 'hub_spread', text: '你几乎成了单位默认的"枢纽"——矛盾到你这里化解，事情经你这里办成。但这也意味着，你开始被各方"惦记"。', pools: ['public'], choices: [
       { text: '甘当枢纽，继续服务大家', effects: {background: 3, reputation: 3, eq: 1, mentalPressure: 3} },
       { text: '适当收一收，专注本职工作', effects: {workAbility: 2, background: 1, mentalPressure: -2, integrity: 2} },
       { text: '把这些人望用到仕途上', effects: {positionWeight: 4, risk: 3, desire: 3, background: 2} },
@@ -634,9 +634,9 @@ const gd_events_spec = [
       { text: '两边都不得罪，建议加名额', effects: {eq: 2, background: 2, reputation: 1, risk: 1} },
       { text: '倾向关系更近的一边', effects: {background: 2, eq: -1, integrity: -2, risk: 2} },
     ]},
-    { id: 'e733', stage: 'work', eventType: 'choice', title: '跨部门借调', weight: 3, minBackground: 40, maxBackground: 70, text: '隔壁单位临时缺人，点名想借调你——因为"你两边都熟"。借调是机会，也是人情。', pools: ['public'], choices: [
-      { text: '欣然前往，积累跨部门人脉', effects: {background: 3, workAbility: 2, positionWeight: 1, mentalPressure: 2} },
-      { text: '婉拒，安心本职工作', effects: {workAbility: 1, mentalPressure: -1, background: -1} },
+    { id: 'e733', stage: 'work', eventType: 'choice', title: '跨部门借调', weight: 3, year: [26, 45], minBackground: 40, maxBackground: 70, excludeFlags: ['seconded', 'secondReview', 'secondDone'], text: '隔壁单位临时缺人，点名想借调你——因为"你两边都熟"。借调是机会，也是人情。', pools: ['public'], choices: [
+      { text: '欣然前往，积累跨部门人脉', effects: {background: 3, workAbility: 2, positionWeight: 1, mentalPressure: 2, flag: 'seconded'}, result: '你与两边单位办好交接，正式到新岗位报到；期满考核将决定下一步去留。' },
+      { text: '婉拒，安心本职工作', effects: {workAbility: 1, mentalPressure: -1, background: -1}, result: '你说明当前岗位离不开人手，对方理解了你的难处，借调安排暂时作罢。' },
     ]},
     { id: 'e734', stage: 'work', eventType: 'choice', title: '领导私下询问', weight: 3, minBackground: 40, maxBackground: 70, text: '一位领导私下找你了解另一个部门的情况。你知道他醉翁之意不在酒，但也知道说错一句话的代价——你人缘好，意味着知道的事也多。', pools: ['public'], choices: [
       { text: '如实客观陈述，不带情绪', effects: {integrity: 2, background: 2, eq: 1} },
@@ -689,9 +689,9 @@ const gd_events_spec = [
     { id: 'e745', stage: 'life', eventType: 'auto', title: '债务催收', weight: 6, requireFlag: 'borrowed', maxWealth: -1, text: '催收电话开始打到你单位了。对方说话客气，但每一句都在提醒你——这笔钱，躲是躲不掉的。同事的目光，也多了些说不清的东西。', pools: ['public'], effects: {mentalPressure: 8, risk: 4, familyPressure: 4, reputation: -2} },
     { id: 'e746', stage: 'life', eventType: 'auto', title: '债务危机', weight: 6, requireFlag: 'loanOnline', maxWealth: -5, text: '网贷的利息像雪球一样滚起来了。你算了一笔账，发现靠工资这辈子都还不完。催收的人找到了你单位门口，领导已经找你谈过话了。', pools: ['public'], effects: {mentalPressure: 10, risk: 6, familyPressure: 5, reputation: -3} },
     { id: 'e747', stage: 'life', eventType: 'choice', title: '赌博戒断', weight: 6, requireFlag: 'gamblingAddict', text: '家人发现了你买彩票、打牌的记录，摊在桌上。母亲红着眼眶说："咱家不指望你发财，只指望你别走歪了。"你攥着手机，手心全是汗。', pools: ['public'], choices: [
-      { text: '下决心戒赌，工资卡交给家人', effects: {deleteFlag: 'gamblingAddict', integrity: 2, familyPressure: 3, eq: 1} },
-      { text: '再赌最后一次翻本', effects: {wealth: -20, desire: 3, risk: 3, mentalPressure: 4} },
-      { text: '找单位工会谈心求助', effects: {deleteFlag: 'gamblingAddict', mentalPressure: -3, background: 1, reputation: 1} },
+      { text: '下决心戒赌，工资卡交给家人', effects: {deleteFlag: 'gamblingAddict', integrity: 2, familyPressure: 3, eq: 1}, result: '你把常用支付账户交给家人暂管，也约定了遇到冲动时先开口求助。' },
+      { text: '再赌最后一次翻本', effects: {wealth: -20, desire: 3, risk: 3, mentalPressure: 4, flag: 'gamblingRelapse'}, result: '你以为只要赢回本金就能停手，结果输掉的钱更多，家人也开始担心你在隐瞒什么。' },
+      { text: '找单位工会谈心求助', effects: {deleteFlag: 'gamblingAddict', mentalPressure: -3, background: 1, reputation: 1}, result: '工会帮你联系了专业支持，你终于不必一个人扛着这件事。' },
     ]},
     { id: 'e748', stage: 'life', eventType: 'choice', title: '债务摊牌', weight: 5, requireFlag: 'borrowed', text: '债越滚越大，瞒不住了。你决定和家人摊牌——要么一起想办法，要么一起沉下去。', pools: ['public'], choices: [
       { text: '向父母坦白，借家里的钱还清', effects: {wealth: 25, familyPressure: 8, background: -3, mentalPressure: 3, integrity: 1, deleteFlag: 'borrowed'} },
@@ -702,14 +702,20 @@ const gd_events_spec = [
     { id: 'e749', stage: 'work', eventType: 'choice', title: '伸手解困', weight: 6, maxWealth: 20, text: '一个生意人"恰巧"知道了你的难处。他说朋友有难处，自己愿意搭把手——"三十万，先拿去用，不用急着还。"你当然知道，这世上没有白拿的钱。', pools: ['public'], choices: [
       { text: '接受"资助"，先把债还了', effects: {flag: 'tookBribe', wealth: 45, risk: 8, heat: 5, integrity: -5, mentalPressure: -6} },
       { text: '婉拒，自己想办法', effects: {mentalPressure: 3, integrity: 3, risk: -1} },
-      { text: '先向同事借钱周转', effects: {eq: 1, familyPressure: 2, wealth: 15, mentalPressure: 1} },
+      { text: '先向同事借钱周转', effects: {eq: 1, familyPressure: 2, wealth: 15, addDebt: {type: 'personal', amount: 15}, mentalPressure: 1, flag: 'borrowed'} },
     ]},
     { id: 'e755', stage: 'work', eventType: 'choice', title: '挪用公款诱惑', weight: 5, maxWealth: 30, text: '月底对账，你经手的账上有一笔"暂时没人发现"的钱。差这么一笔，你所有的债就都能还上——只要下个月补回去，就神不知鬼不觉。你盯着那个数字，看了很久。', pools: ['public'], choices: [
       { text: '鬼使神差挪了一笔，先填窟窿', effects: {flag: 'embezzle', wealth: 50, risk: 12, heat: 8, integrity: -8, mentalPressure: 5} },
       { text: '如实上报，坦白困境', effects: {integrity: 4, mentalPressure: 3, reputation: 1} },
       { text: '再想别的办法，不动公款', effects: {mentalPressure: 4, desire: 2} },
     ]},
-    { id: 'e756', stage: 'work', eventType: 'auto', title: '挪用败露（审计发现）', weight: 8, requireFlag: 'embezzle', text: '年底审计，账上的窟窿被发现了。纪委找你谈话的那天，你在走廊里遇见了当初"资助"你的那个生意人——他看你的眼神，像看一张用过的发票。', pools: ['public'], effects: {risk: 15, heat: 15, mentalPressure: 10, integrity: -5, reputation: -5} },
+    { id: 'e756', stage: 'work', eventType: 'auto', title: '挪用败露（审计发现）', weight: 8, requireFlag: 'embezzle', text: '年底审计，账上的窟窿被发现了。纪委找你谈话的那天，你在走廊里遇见了当初"资助"你的那个生意人——他看你的眼神，像看一张用过的发票。', pools: ['public'], effects: {risk: 15, heat: 15, mentalPressure: 10, integrity: -5, reputation: -5, flag: 'underInvestigation'} },
+    { id: 'e765', stage: 'life', eventType: 'choice', title: '输掉的最后一次', weight: 8, requireFlag: 'gamblingRelapse', text: '你说过只再赌一次，可账单和转账记录还是被家人发现了。母亲没有再责备，只把手机放在桌上："这次不谈保证，你打算怎么做？"你知道，真正难的不是赢回钱，而是承认自己已经失控。', pools: ['public'], choices: [
+      { text: '坦白损失，接受家人监督和专业帮助', effects: {deleteFlags: ['gamblingAddict', 'gamblingRelapse'], integrity: 3, familyPressure: 3, mentalPressure: -2}, result: '你把损失和欠款一笔笔列出来，家人陪你制定了停止赌博和逐步还款的计划。' },
+      { text: '拒绝帮助，继续赌到翻本为止', effects: {wealth: -30, risk: 5, integrity: -2, familyPressure: 7, mentalPressure: 8, desire: 4}, result: '你再次关掉家人的电话。钱越输越少，能求助的人也越来越少。' },
+      { text: '向单位工会和专业机构求助，先隔离赌局', effects: {deleteFlags: ['gamblingAddict', 'gamblingRelapse'], integrity: 2, mentalPressure: -4, familyPressure: -2, background: 1}, result: '你主动申请支持，把借贷渠道和牌局联系人逐一隔离，复发风险终于开始下降。' },
+    ]},
+
     // ---- 资金紧张与意外之财 ----
     { id: 'e750', stage: 'life', eventType: 'auto', title: '手头吃紧', weight: 4, maxWealth: 25, text: '月底还没到，钱包已经空了。同事约饭你找借口推掉，孩子想要个玩具你犹豫半天。穷，有时候不是一种状态，是一种难堪。', pools: ['public'], effects: {mentalPressure: 4, desire: 3, familyPressure: 2} },
     { id: 'e753', stage: 'life', eventType: 'auto', title: '物价上涨', weight: 4, maxWealth: 35, text: '菜价涨了，油价涨了，连楼下的包子都涨了五毛。工资没涨，日子却肉眼可见地变紧巴了。', pools: ['public'], effects: {wealth: -8, mentalPressure: 3, familyPressure: 2} },
@@ -878,26 +884,26 @@ const gd_events_spec = [
     ]},
     { id: 'e802', stage: 'work', eventType: 'choice', title: '组织的问询', weight: 6, requireFlag: 'reportCorruption', pools: ['public'], text: '纪委的同志约你到一间小会议室。桌上摆着复印件，对方问得很客气："这些材料，你了解多少？愿意配合核实吗？"窗外走廊传来脚步声，你意识到这件事已经进了程序。', choices: [
       { text: '知无不言，配合组织调查', effects: {integrity: 5, reputation: 2, risk: 3, mentalPressure: 2, flag: 'probeCorruption'} },
-      { text: '只说材料上看得见的内容', effects: {integrity: 2, reputation: 1, risk: 1, mentalPressure: 1, flag: 'probeCorruptionWeak'} },
+      { text: '只说材料上看得见的内容', effects: {integrity: 2, reputation: 1, risk: 1, mentalPressure: 1, setFlags: ['probeCorruption', 'probeCorruptionWeak']} },
       { text: '开始退缩，改口称记不清了', effects: {integrity: -4, reputation: -3, risk: 6, mentalPressure: 4} },
     ]},
     { id: 'e803', stage: 'work', eventType: 'auto', title: '风暴眼中的坚持', weight: 6, requireFlag: 'probeCorruption', pools: ['public'], text: '调查范围在扩大，被举报人通过各种渠道放出话来，说"有人想整人"。你的办公室电话突然多了起来，有些是打听消息的，有些是"关心"你前程的。你明白，自己已经站在了风口上。', effects: {mentalPressure: 5, risk: 4, reputation: 3, integrity: 2, flag: 'antiCorrStorm'} },
     { id: 'e804', stage: 'work', eventType: 'auto', title: '尘埃落定', weight: 6, requireFlag: 'antiCorrStorm', pools: ['public'], text: '案件终于查清，相关责任人受到组织处理。内部通报中特别提到"有关同志积极配合组织调查，体现了党员干部应有的觉悟"。你没有声张，但院里再开会时，你的位置悄悄往前挪了一排。', effects: {reputation: 6, integrity: 4, positionWeight: 3, mentalPressure: -6, flag: 'resolveCorruption'} },
     // ==================== v2.1.43 事件链系统：基层链（4事件）====================
-    { id: 'e805', stage: 'work', eventType: 'choice', title: '选派下乡', weight: 5, year: [25, 45], pools: ['public'], text: '组织部下发挂职锻炼名单，你的名字在列——去一个偏远的乡镇挂职两年。同事有的羡慕"镀金"，有的同情"流放"，你看着窗外的梧桐树，知道这两年不会轻松。', choices: [
-      { text: '主动请缨，把基层当课堂', effects: {workAbility: 3, reputation: 2, mentalPressure: 3, body: -1, flag: 'serveVillage'} },
-      { text: '服从安排，平常心对待', effects: {workAbility: 2, mentalPressure: 2, flag: 'serveVillageReluctant'} },
-      { text: '设法托人调去条件好一点的岗位', effects: {integrity: -2, reputation: -1, background: 1, mentalPressure: -1} },
+    { id: 'e805', stage: 'work', eventType: 'choice', title: '选派下乡', weight: 5, year: [25, 45], excludeFlags: ['grassrootsActive', 'grassrootsDone'], pools: ['public'], text: '组织部下发挂职锻炼名单，你的名字在列——去一个偏远的乡镇挂职三年。同事有的羡慕"镀金"，有的同情"流放"，你看着窗外的梧桐树，知道这两年不会轻松。', choices: [
+      { text: '主动请缨，把基层当课堂', effects: {workAbility: 3, reputation: 2, mentalPressure: 3, body: -1, flag: 'serveVillage', grassrootsDispatch: {duration: 3, reason: '乡镇挂职锻炼'}}, result: '你主动申请赴乡镇挂职，调令很快下达，新的岗位和三年任务都落了地。' },
+      { text: '服从安排，平常心对待', effects: {workAbility: 2, mentalPressure: 2, setFlags: ['serveVillage', 'serveVillageReluctant'], grassrootsDispatch: {duration: 3, reason: '乡镇挂职锻炼'}}, result: '你接受了组织安排，赴乡镇报到，同时与原单位约定定期沟通。' },
+      { text: '设法托人调去条件好一点的岗位', effects: {integrity: -2, reputation: -1, background: 1, mentalPressure: -1}, result: '你通过协调暂时留在原岗位，避开了基层压力，也错过了这次锻炼机会。' },
     ]},
     { id: 'e806', stage: 'work', eventType: 'choice', title: '驻村第一难', weight: 6, requireFlag: 'serveVillage', pools: ['基层单位'], text: '到任不久，村里一桩征地遗留问题爆发。十几户村民堵在镇政府门口，要求重新补偿。前任干部留下的台账不全，镇领导看着你："你是市里派来的，这事你牵头。"', choices: [
-      { text: '挨家挨户走访，把诉求一条条记下来', effects: {peopleReputation: 4, workAbility: 2, mentalPressure: 3, flag: 'villageDoorToDoor'} },
-      { text: '争取上级政策支持，从资金缺口入手', effects: {background: 2, reputation: 2, workAbility: 1, flag: 'villagePolicy'} },
-      { text: '先做稳控，承诺"研究研究"', effects: {risk: 2, reputation: -1, mentalPressure: -1} },
+      { text: '挨家挨户走访，把诉求一条条记下来', effects: {peopleReputation: 4, workAbility: 2, mentalPressure: 3, setFlags: ['villageDoorToDoor', 'villageFirstDone']}, result: '你把每户诉求和历史补偿凭据逐一登记，村民终于愿意坐下来谈。' },
+      { text: '争取上级政策支持，从资金缺口入手', effects: {background: 2, reputation: 2, workAbility: 1, setFlags: ['villagePolicy', 'villageFirstDone']}, result: '上级同意核查政策和资金来源，问题从争吵转向可执行的方案。' },
+      { text: '先做稳控，承诺"研究研究"', effects: {risk: 2, reputation: -1, mentalPressure: -1}, result: '现场暂时散去，但补偿争议仍在，村民对你的信任没有建立起来。' },
     ]},
-    { id: 'e807', stage: 'work', eventType: 'choice', title: '村里的产业项目', weight: 6, requireFlag: 'villageDoorToDoor', pools: ['基层单位'], text: '村里要上一个特色种植项目，有人主张"大干快上、一季见效"，有人担心市场不稳、技术跟不上。村支书把方案推到你面前："你是挂职干部，你定。"', choices: [
-      { text: '稳扎稳打，先小范围试点', effects: {peopleReputation: 3, workAbility: 2, integrity: 2, flag: 'villageSolid'} },
-      { text: '树典型造亮点，争取上级观摩', effects: {reputation: 3, positionWeight: 2, risk: 2, flag: 'villageShowcase'} },
-      { text: '按老规矩推进，出事再说不迟', effects: {integrity: -2, risk: 1, workAbility: -1} },
+    { id: 'e807', stage: 'work', eventType: 'choice', title: '村里的产业项目', weight: 6, requireFlag: 'villageFirstDone', pools: ['基层单位'], text: '村里要上一个特色种植项目，有人主张"大干快上、一季见效"，有人担心市场不稳、技术跟不上。村支书把方案推到你面前："你是挂职干部，你定。"', choices: [
+      { text: '稳扎稳打，先小范围试点', effects: {peopleReputation: 3, workAbility: 2, integrity: 2, setFlags: ['villageSolid', 'villageProjectDone']}, result: '试点规模控制住了，你们先把技术、销路和成本摸清，再决定是否扩大。' },
+      { text: '树典型造亮点，争取上级观摩', effects: {reputation: 3, positionWeight: 2, risk: 2, setFlags: ['villageShowcase', 'villageProjectDone']}, result: '你把项目打造成示范点争取资源，但进度和执行风险也随之抬高。' },
+      { text: '按老规矩推进，出事再说不迟', effects: {integrity: -2, risk: 1, workAbility: -1}, result: '项目沿用旧办法匆忙启动，短期看似省事，后续隐患却留在了村里。' },
     ]},
-    { id: 'e808', stage: 'work', eventType: 'auto', title: '归程与扎根', weight: 6, requireFlag: 'villageSolid', pools: ['基层单位'], text: '挂职期满，组织鉴定写得实在："能沉下心、敢碰硬事、群众认可度较高。"离任那天，几位老乡特意到路口送行，塞给你一兜自家种的菜。你推辞不过，接过来时心里一热。', effects: {peopleReputation: 5, reputation: 3, positionWeight: 2, background: 3, mentalPressure: -3, flag: 'villageLegacy'} },
+    { id: 'e808', stage: 'work', eventType: 'auto', title: '归程与扎根', weight: 6, requireFlag: 'villageProjectDone', pools: ['基层单位'], text: '挂职期满，组织鉴定写得实在："能沉下心、敢碰硬事、群众认可度较高。"离任那天，几位老乡特意到路口送行，塞给你一兜自家种的菜。你推辞不过，接过来时心里一热。', effects: {peopleReputation: 5, reputation: 3, positionWeight: 2, background: 3, mentalPressure: -3, flag: 'villageLegacy'} },
 ];

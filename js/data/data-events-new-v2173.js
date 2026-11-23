@@ -30,7 +30,7 @@ const gd_events_new_v2173 = [
   ] },
   // ---------- 2. life 突发扩 ×4（sudden） ----------
   { id: 'enl187', stage: 'life', eventType: 'sudden', weight: 4, year: [26, 70], title: '家人急送医', effects: { mentalPressure: 6, familyPressure: 3, wealth: -6, body: -1 }, text: '深夜十一点，家里老人突然胸痛倒地。救护车二十分钟才到，你在走廊里签了三次字，手还是抖的。' },
-  { id: 'enl188', stage: 'life', eventType: 'sudden', weight: 3, year: [28, 55], title: '孩子突发高烧', effects: { mentalPressure: 4, familyPressure: 3, body: -1, wealth: -3 }, text: '幼儿园傍晚来电：孩子高烧三十九度。你请了假冲过去，值班医生的表情让路上所有的红绿灯都变慢了。' },
+  { id: 'enl188', stage: 'life', eventType: 'sudden', weight: 3, requireChild: true, requireChildAgeMin: 3, requireChildAgeMax: 6, year: [28, 55], title: '孩子突发高烧', effects: { mentalPressure: 4, familyPressure: 3, body: -1, wealth: -3 }, text: '幼儿园傍晚来电：孩子高烧三十九度。你请了假冲过去，值班医生的表情让路上所有的红绿灯都变慢了。' },
   { id: 'enl189', stage: 'life', eventType: 'sudden', weight: 3, year: [26, 65], title: '老宅骤停水电', effects: { mentalPressure: 3, familyPressure: 2, wealth: -4 }, text: '台风夜里老宅突然停水停电，父母电话那头只有应急灯的一小圈光。你对着手机地图，测了三遍回家的距离。' },
   { id: 'enl190', stage: 'life', eventType: 'sudden', weight: 3, year: [28, 62], title: '大风雨窗玻璃', effects: { mentalPressure: 3, wealth: -5, body: 0 }, text: '一场大风掀了阳台玻璃窗，碎片落进客厅。邻居拍了视频发物业群里，@你问要不要帮忙清理。' },
   // ---------- 3. 执法/应急主题补强 ×6（work，主题分类器命中） ----------
@@ -77,19 +77,9 @@ const gd_events_new_v2173 = [
     { text: '现场把问题抛给台下集思广益', effects: { eq: 2, workAbility: 1 }, result: '互动热烈，观点被记进纪要' },
     { text: '请分管领导带队主讲', effects: { eq: 1, background: 2 }, result: '领导上台，你的名号留在幕后' }
   ] },
-  // ---------- 5. 挂职闭环 ×2 ----------
-  { id: 'enw261', stage: 'work', eventType: 'choice', weight: 4, pools: ['public'], title: '挂职归来汇报', text: '上级机关挂职一年期满归来，组织让你在班子会上汇报。原单位同事好奇"挂职一年到底捞到啥"，领导的眉头等你展开。', choices: [
-    { text: '汇报视野与资源，不炫耀人脉', effects: { workAbility: 2, background: 1, eq: 1 }, result: '汇报到位，视野被认可' },
-    { text: '如实讲挂职经历也对本单位的新认识', effects: { integrity: 1, reputation: 1 }, result: '中肯客观，两头都服' },
-    { text: '借汇报主动申请承接上级项目', effects: { background: 2, workAbility: 1, mentalPressure: 2 }, result: '项目拿到手，空间也打开了' },
-    { text: '轻描淡写，避免被说闲话', effects: { eq: 1, background: -1 }, result: '低调保身，机会也保没了' }
-  ] },
-  { id: 'enw262', stage: 'work', eventType: 'choice', weight: 4, pools: ['public'], title: '争取留任上级机关', text: '上级机关对你的挂职表现满意，正式询问是否愿意留任。原单位已经把你的岗位占了半席，两边都有说法。', choices: [
-    { text: '正式申请留任，走组织程序', effects: { background: 2, positionWeight: 1, familyPressure: 2 }, result: '留任获批，平台换了' },
-    { text: '回原单位，把经历沉淀成能力', effects: { reputation: 1, familyPressure: -1, workAbility: 1 }, result: '回归后重用，履历更完整' },
-    { text: '先谈条件再决定', effects: { background: 1, eq: -1, mentalPressure: 1 }, result: '条件谈成了，口碑也谈淡了' },
-    { text: '两边都留余地，再观望一年', effects: { background: -1, mentalPressure: 1 }, result: '观望的代价是选择权变小' }
-  ] },
+  // ---------- 5. 挂职/借调内容去重 ----------
+  // v2.1.93：移除原 enw261/enw262。两条事件描述“已经挂职归来/申请留任”，却没有前置挂职状态，
+  // 也没有实际办理留任/回原单位的状态变更；借调去留统一由 ent299 → ent300 → ent301 链承载。
   // ---------- 6. stable work 微补 ×3（含补录执法第 3 件） ----------
   { id: 'enw265', stage: 'work', eventType: 'choice', weight: 4, pools: ['执法部门', '政法系统'], title: '执法评议打分', text: '年度执法评议，群众代表和受邀企业给执法人员匿名打分。你执法严格出了名，有人提议给"较真的人"降降温。', choices: [
     { text: '接受评议，用案卷质量说话', effects: { integrity: 2, reputation: 1, mentalPressure: 1 }, result: '案卷质量过硬，评议分并列前茅' },

@@ -38,12 +38,12 @@ const gd_events_new_v2166 = [
   ] },
 
   // ---------- C. 借调上行链（work，26-45 岁） ----------
-  { id: 'ent299', stage: 'work', eventType: 'choice', weight: 4, year: [26, 45], title: '一纸借调函', text: '上级机关点名借调你去帮忙半年，原单位领导嘴上说支持，眼神里却写着"人手本来就紧"。', choices: [
+  { id: 'ent299', stage: 'work', eventType: 'choice', weight: 4, year: [26, 45], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '一纸借调函', text: '上级机关点名借调你去帮忙一年，原单位领导嘴上说支持，眼神里却写着"人手本来就紧"。', choices: [
     { text: '接下借调，把机会握在手里', effects: { flag: 'seconded', workAbility: 1, background: 1, mentalPressure: 2 }, result: '收拾工位那天，两种目光都落在你背上' },
     { text: '和领导交底后接下，留好退路', effects: { flag: 'seconded', eq: 2, background: 2, mentalPressure: 1 }, result: '谈开了再走，两边都念你的好' },
     { text: '婉拒借调，守好现有一亩三分地', effects: { peopleReputation: 1, positionWeight: 1, background: -1 }, result: '留下有留下的稳当' }
   ] },
-  { id: 'ent300', stage: 'work', eventType: 'choice', weight: 5, year: [26, 46], requireFlag: 'seconded', title: '借调考核期', text: '借调半年期满在即，带你的处长话里有话："小伙子踏实，就是不知道原单位放不放。"考核表就在他抽屉里。', choices: [
+  { id: 'ent300', stage: 'work', eventType: 'choice', weight: 5, year: [26, 46], requireFlag: 'seconded', title: '借调考核期', text: '借调或挂职期满在即，带你的处长话里有话："小伙子踏实，就是不知道原单位放不放。"考核表就在他抽屉里。', choices: [
     { text: '埋头把收尾材料做成样板', effects: { flag: 'secondReview', workAbility: 3, reputation: 1, mentalPressure: 2 }, result: '材料成了处里的模板，考核表写得满满当当' },
     { text: '工作之余把处里上下关系理顺', effects: { flag: 'secondReview', eq: 3, background: 1 }, result: '人熟了，话就好说了' },
     { text: '一边干一边悄悄打听遴选消息', effects: { flag: 'secondReview', iq: 1, background: 1, mentalPressure: 2 }, result: '退路和出路都摸清了' }
@@ -66,7 +66,7 @@ const gd_events_new_v2166 = [
     { text: '委托表妹陪去，你报销费用', effects: { wealth: -5, familyPressure: 1 }, result: '体检做了，老人念叨你没露面' },
     { text: '过期就过期吧，太忙了', effects: { familyPressure: 3, mentalPressure: 1 }, result: '卡过期那天，母亲说"不查更好"' }
   ] },
-  { id: 'enl171', stage: 'life', eventType: 'choice', weight: 5, year: [30, 65], title: '老宅漏水风波', text: '老家来电话，说连续暴雨把屋顶掀起一角，父母卧室里放了三个接水的盆。父亲坚持先拿塑料布盖住，母亲却担心下一场雨会泡坏电线。你在单位查看天气预报时，伴侣已经替你查好了回乡车票。', choices: [
+  { id: 'enl171', stage: 'life', eventType: 'choice', weight: 5, requireMarried: true, year: [30, 65], title: '老宅漏水风波', text: '老家来电话，说连续暴雨把屋顶掀起一角，父母卧室里放了三个接水的盆。父亲坚持先拿塑料布盖住，母亲却担心下一场雨会泡坏电线。你在单位查看天气预报时，伴侣已经替你查好了回乡车票。', choices: [
     { text: '出钱请人全面翻修', effects: { wealth: -20, familyPressure: -3, eq: 2 }, result: '翻新后的老屋，父母睡了个踏实觉' },
     { text: '先应急补漏，缓一缓再大修', effects: { wealth: -6, familyPressure: 1 }, result: '补漏管了一时，心里记着这笔账' },
     { text: '接父母进城同住', effects: { familyPressure: 2, eq: 2, mentalPressure: 2 }, result: '一家三代挤但热乎，老屋先空着' },

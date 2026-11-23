@@ -15,7 +15,7 @@ const gd_events_new_daily = [
   { id: 'edl002', stage: 'work', eventType: 'choice', weight: 6, year: [1, 38], title: '电梯里的三十秒', text: '早高峰电梯门快关上时，处长侧身挤了进来，就站在你旁边。三十秒的上升时间里，楼层数字一格一格地跳，谁都没说话。', choices: [
     { text: '点头问好聊句天气', effects: {eq: 2, positionWeight: 1} },
     { text: '顺便汇报昨天的工作进展', effects: {workAbility: 2, positionWeight: 2, mentalPressure: 1} },
-    { text: '安静站着目视前方', effects: {mentalPressure: 0, eq: 0, integrity: 1} },
+    { text: '安静站着，礼貌点头示意', effects: {eq: 1, mentalPressure: -1} },
     { text: '帮处长按住开门键送出门', effects: {eq: 1, positionWeight: 1} }
   ]},
   { id: 'edl003', stage: 'work', eventType: 'choice', weight: 6, year: [1, 40], title: '食堂阿姨的手', text: '食堂打菜窗口前，阿姨的手勺悬在半空看了你一眼。同样的菜，隔壁同事碗里明显多了两块排骨——他昨天刚给阿姨带了老家的特产。', choices: [

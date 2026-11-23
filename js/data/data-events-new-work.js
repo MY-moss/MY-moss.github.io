@@ -181,8 +181,8 @@ const gd_events_new_work = [
     ]},
     { id: 'enw035', stage: 'work', eventType: 'choice', weight: 4, title: '专项整治', text: '专项整治要求自查自纠，列问题清单。你写了五条，又被领导划掉两条——"这两条别报，影响形象"。', choices: [
       { text: '坚持如实上报全部问题', effects: {integrity: 4, risk: -1, positionWeight: -2, mentalPressure: 4} },
-      { text: '按领导意见，报三条', effects: {eq: 1, risk: 2, mentalPressure: 1} },
-      { text: '换一种表述，把问题写"轻"', effects: {workAbility: 2, risk: 1, mentalPressure: 2} },
+      { text: '按领导意见，报三条', effects: {eq: 1, risk: 2, integrity: -2, mentalPressure: 1} },
+      { text: '换一种表述，把问题写"轻"', effects: {workAbility: 2, risk: 1, integrity: -1, mentalPressure: 2} },
     ]},
     { id: 'enw036', stage: 'work', eventType: 'choice', weight: 4, title: '明察暗访', text: '有消息说明察暗访组要来。办公室的零食和躺椅被紧急转移，像一场小型搬家。', choices: [
       { text: '该怎样还怎样，不搞突击', effects: {integrity: 2, mentalPressure: -1, risk: -1} },
@@ -191,7 +191,7 @@ const gd_events_new_work = [
     ]},
     { id: 'enw037', stage: 'work', eventType: 'choice', weight: 5, title: '交叉检查', text: '兄弟单位来交叉检查，你既不能太严得罪人，也不能太松显得敷衍。这把尺子的刻度，全靠手感。', choices: [
       { text: '按标准来，问题如实记录', effects: {workAbility: 3, integrity: 2, eq: -1, mentalPressure: 2} },
-      { text: '提前沟通口径，互相体谅', effects: {eq: 2, background: 2, risk: 2, mentalPressure: 1} },
+      { text: '提前沟通口径，互相体谅', effects: {eq: 2, background: 2, risk: 2, integrity: -2, mentalPressure: 1} },
       { text: '抓大放小，重点提醒', effects: {workAbility: 2, eq: 1, mentalPressure: 1} },
     ]},
     { id: 'enw038', stage: 'work', eventType: 'choice', weight: 6, title: '年终考核', text: '年终考核指标下来，你分管的那一项权重不高，却是领导最关心的一项。你在"权重"和"关心"之间掂量。', choices: [
@@ -201,17 +201,17 @@ const gd_events_new_work = [
     ]},
     { id: 'enw039', stage: 'work', eventType: 'choice', weight: 5, title: '党建考核（三会一课）', text: '党建考核要看"三会一课"记录。你翻出记录本，发现某次会议的签名栏像一片稀疏的草坪。', choices: [
       { text: '如实说明缺席原因', effects: {integrity: 3, workAbility: 1, risk: -1, mentalPressure: 2} },
-      { text: '找当事人补签', effects: {risk: 3, mentalPressure: 2, eq: -1} },
+      { text: '找当事人补签', effects: {risk: 3, integrity: -3, mentalPressure: 2, eq: -1} },
       { text: '附上会议照片佐证', effects: {workAbility: 2, mentalPressure: 1, risk: 1} },
     ]},
     { id: 'enw040', stage: 'work', eventType: 'choice', weight: 5, title: '廉政考核', text: '廉政考核要填报个人事项。有一笔家属收入来源你不太确定，填或不填，都像踩在薄冰上。', choices: [
       { text: '如实填报，不清楚的标注说明', effects: {integrity: 4, risk: -2, mentalPressure: 3} },
       { text: '回家核实清楚再填', effects: {workAbility: 2, integrity: 2, mentalPressure: 2} },
-      { text: '按往年数据填报', effects: {risk: 3, mentalPressure: 1, workAbility: 1} },
+      { text: '按往年数据填报', effects: {risk: 3, integrity: -2, mentalPressure: 1, workAbility: 1} },
     ]},
     { id: 'enw041', stage: 'work', eventType: 'choice', weight: 4, title: '文明创建', text: '文明创建检查要来，单位安排全员搞卫生。你拿着抹布站在荣誉墙前，擦掉了一层灰，也擦掉了一个午休。', choices: [
       { text: '认真整理，顺便检查台账', effects: {workAbility: 3, mentalPressure: 2, body: -1} },
-      { text: '应付了事，做表面功夫', effects: {mentalPressure: -1, risk: 2, workAbility: 1} },
+      { text: '应付了事，做表面功夫', effects: {mentalPressure: -1, risk: 2, integrity: -1, workAbility: 1} },
       { text: '借机建立长效机制', effects: {workAbility: 3, iq: 2, mentalPressure: 3} },
     ]},
     { id: 'enw042', stage: 'work', eventType: 'choice', weight: 6, title: '绩效考核', text: '绩效考核结果关系到年底奖金。你的评分卡在"良好"和"优秀"之间，像一个停在半空的电梯。', choices: [
@@ -247,7 +247,7 @@ const gd_events_new_work = [
       { text: '请上级明确口径再报', effects: {eq: 1, mentalPressure: -1, positionWeight: -1} },
     ]},
     { id: 'enw048', stage: 'work', eventType: 'choice', weight: 6, title: '横向沟通', text: '平级单位有项工作需要配合，对方说"我们也很忙"。这句"也很忙"像一道客气的门。', choices: [
-      { text: '带上礼物——一份互利方案', effects: {eq: 2, workAbility: 2, mentalPressure: 2} },
+      { text: '带上清晰的合作方案，换位沟通', effects: {eq: 2, workAbility: 2, mentalPressure: 2} },
       { text: '请共同上级出面牵头', effects: {background: 2, mentalPressure: 1, eq: -1} },
       { text: '等对方忙完再对接', effects: {mentalPressure: -1, positionWeight: -1, workAbility: 1} },
     ]},
@@ -420,7 +420,7 @@ const gd_events_new_work = [
       { text: '双轨运行，纸质电子并行', effects: {workAbility: 2, mentalPressure: 2, body: -1} },
       { text: '组织培训，帮老同事上手', effects: {eq: 1, workAbility: 2, mentalPressure: 3} },
     ]},
-    { id: 'enw082', stage: 'work', eventType: 'choice', weight: 6, title: '移动办公', text: '移动办公让你随时在线。周末带娃时弹出一条工作消息，孩子的脸和领导的头像在屏幕上交替闪烁。', choices: [
+    { id: 'enw082', stage: 'work', eventType: 'choice', weight: 6, requireChild: true, title: '移动办公', text: '移动办公让你随时在线。周末带娃时弹出一条工作消息，孩子的脸和领导的头像在屏幕上交替闪烁。', choices: [
       { text: '立即处理，工作优先', effects: {workAbility: 3, familyPressure: 3, mentalPressure: 3} },
       { text: '告知稍后处理，先陪家人', effects: {familyPressure: -2, mentalPressure: 2, positionWeight: -1} },
       { text: '简单事项手机处理，复杂的延后', effects: {workAbility: 2, mentalPressure: 2, familyPressure: 1} },
@@ -435,10 +435,10 @@ const gd_events_new_work = [
       { text: '放弃名额，安心工作', effects: {workAbility: 2, mentalPressure: -1, positionWeight: 1} },
       { text: '申请改为线上学习', effects: {iq: 2, workAbility: 1, mentalPressure: 1} },
     ]},
-    { id: 'enw085', stage: 'work', eventType: 'choice', weight: 3, title: '挂职锻炼', text: '组织安排你到上级单位挂职一年。新环境新人脉，可原单位的活还得惦记着，像一只脚踩两条船。', choices: [
-      { text: '全身心投入挂职，多学多看', effects: {background: 3, workAbility: 3, mentalPressure: 4, positionWeight: 2} },
-      { text: '两头兼顾，保持联系', effects: {workAbility: 2, mentalPressure: 5, body: -2} },
-      { text: '婉拒，留在原岗位', effects: {mentalPressure: -2, positionWeight: -1, workAbility: 1} },
+    { id: 'enw085', stage: 'work', eventType: 'choice', weight: 3, year: [26, 45], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '挂职锻炼', text: '组织安排你到上级单位挂职一年。新环境新人脉，可原单位的活还得惦记着，像一只脚踩两条船。', choices: [
+      { text: '全身心投入挂职，多学多看', effects: {background: 3, workAbility: 3, mentalPressure: 4, positionWeight: 2, flag: 'seconded'}, result: '你在上级单位报到，开始承担具体任务；一年后的考核将决定去留。' },
+      { text: '两头兼顾，保持联系', effects: {workAbility: 2, mentalPressure: 5, body: -2, flag: 'seconded'}, result: '你在两边保持沟通，工作压力更大，但也为后续考核留住了余地。' },
+      { text: '婉拒，留在原岗位', effects: {mentalPressure: -2, positionWeight: -1, workAbility: 1}, result: '你选择留在原岗位，暂时守住了手头的工作。' },
     ]},
     { id: 'enw086', stage: 'work', eventType: 'choice', weight: 4, title: '跟班学习', text: '到先进地区跟班学习一个月。别人的做法很"先进"，可回来能不能落地，你心里打着鼓。', choices: [
       { text: '边学边记，整理可移植经验', effects: {iq: 3, workAbility: 3, mentalPressure: 2} },
@@ -572,11 +572,11 @@ const gd_events_new_work = [
       { text: '让会务组自行优化细节', effects: {eq: 1, workAbility: 1, risk: 1} },
     ]},
     { id: 'enw111', stage: 'work', eventType: 'auto', weight: 3, title: '材料大比武', text: '全市办公室系统材料大比武，你代表单位出战。三个小时，手写两千字命题材料。交卷时你手指发酸，但心里有种久违的痛快。', effects: {workAbility: 3, reputation: 2, mentalPressure: -1, desire: 1} },
-    { id: 'enw112', stage: 'work', eventType: 'choice', weight: 4, title: '借调函', text: '上级部门发来借调函，想借你过去帮忙一年。原单位领导不放人，借调单位催得紧，你夹在中间，像一块被两头拉扯的橡皮。', choices: [
-      { text: '服从原单位安排', effects: {eq: 1, integrity: 1, positionWeight: -1, background: -1} },
-      { text: '争取借调机会', effects: {background: 2, positionWeight: 1, mentalPressure: 2, eq: -1} },
-      { text: '请两边协调折中方案', effects: {eq: 2, workAbility: 1, mentalPressure: 1} },
-      { text: '顺其自然，听组织安排', effects: {mentalPressure: -1, desire: -1} },
+    { id: 'enw112', stage: 'work', eventType: 'choice', weight: 4, year: [26, 45], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '借调函', text: '上级部门发来借调函，想借你过去帮忙一年。原单位领导不放人，借调单位催得紧，你夹在中间，像一块被两头拉扯的橡皮。', choices: [
+      { text: '服从原单位安排', effects: {eq: 1, integrity: 1, positionWeight: -1, background: -1}, result: '你向原单位说明情况，借调安排暂缓，继续留在原岗位。' },
+      { text: '争取借调机会', effects: {background: 2, positionWeight: 1, mentalPressure: 2, eq: -1, flag: 'seconded'}, result: '你争取到借调机会并正式报到，一年后的考核将决定去留。' },
+      { text: '请两边协调折中方案', effects: {eq: 2, workAbility: 1, mentalPressure: 1, flag: 'seconded'}, result: '两边协调后，你接受借调并明确了工作交接，减少了后顾之忧。' },
+      { text: '顺其自然，听组织安排', effects: {mentalPressure: -1, desire: -1, flag: 'seconded'}, result: '你接受组织统筹，按安排报到；借调期满后再决定去留。' },
     ]},
 
     { id: 'enw113', stage: 'work', eventType: 'choice', weight: 4, title: '值班带班', text: '周末轮到你带班。晚上十点，值班电话响了：一起突发事件需要马上协调处置。你抓起电话，脑子飞速转着——先报告谁、怎么处置、要不要启动预案。', choices: [
@@ -642,12 +642,13 @@ const gd_events_new_work = [
       { text: '直言不讳，点名问题', effects: {integrity: 3, risk: 2, eq: -1} },
       { text: '借机反映基层负担问题', effects: {integrity: 2, peopleReputation: 1, risk: 1} },
     ]},
-    { id: 'enw125', stage: 'work', eventType: 'auto', weight: 3, title: '三八节活动', text: '单位组织三八节活动，女同事多，工会让你一个男同志负责后勤。你订花订蛋糕订场地，忙得脚不沾地——但看到大家笑得开心，你忽然觉得这事挺值的。', effects: {eq: 2, reputation: 1, mentalPressure: -1} },
-    { id: 'enw126', stage: 'work', eventType: 'choice', weight: 4, title: '借调到期', text: '借调期限到了，借调单位想留你，原单位催你回去。两边都给了"口头承诺"，你站在岔路口，谁的保证都不敢全信。', choices: [
-      { text: '回原单位，稳扎稳打', effects: {positionWeight: 1, eq: 1, background: -1} },
-      { text: '争取留任借调单位', effects: {positionWeight: 2, background: 2, risk: 2} },
-      { text: '向两边表达真实意愿', effects: {eq: 2, integrity: 1, mentalPressure: 1} },
-      { text: '让组织决定，不主动表态', effects: {mentalPressure: -1, desire: -1} },
+    { id: 'enw125', stage: 'work', eventType: 'auto', weight: 3, title: '三八节活动', text: '单位组织三八节活动，工会让你负责后勤。你订花订蛋糕订场地，忙得脚不沾地——看到大家笑得开心，你忽然觉得这事挺值的。', effects: {eq: 2, reputation: 1, mentalPressure: -1} },
+    { id: 'enw126', stage: 'work', eventType: 'choice', weight: 5, year: [26, 50], requireFlag: 'secondDone', title: '借调归来', text: '借调期满后的第一年，你终于有空整理这一年的材料。上级单位留下了继续合作的联系方式，原单位也有新的分工。你发现真正要决定的，不只是回不回去，而是怎样把这段经历变成下一段工作的起点。', choices: [
+      { text: '把借调期间形成的流程和经验整理成内部手册', effects: {workAbility: 2, iq: 1, reputation: 1}, result: '经验被整理成可复用的流程，后来接手的人不必从头摸索。' },
+      { text: '继续维护上级单位的业务联系', effects: {background: 2, eq: 1, mentalPressure: 1}, result: '你保留了跨单位协作的渠道，但也提醒自己不能只靠私人联系办事。' },
+      { text: '回归原单位，重新接手熟悉的工作', effects: {workAbility: 2, familyPressure: -1, positionWeight: 1}, result: '你把新经验带回原单位，原来的同事也逐渐找回了合作节奏。' },
+      { text: '主动申请更有挑战的岗位', effects: {desire: 2, positionWeight: 2, mentalPressure: 2}, result: '借调经历成为新的履历支点，你开始争取更大的责任。' },
+      { text: '放慢节奏，先处理家庭积压的事', effects: {familyPressure: -2, mentalPressure: -2, workAbility: -1}, result: '你把一部分精力还给家人，也接受职业发展不必每年都加速。' },
     ]},
 
     // ================= v2.1.11 内容扩充（enw127-enw144）：政法/机关/执法/垂管池 + 联系人深度 =================
@@ -760,7 +761,7 @@ const gd_events_new_work = [
       { text: '睁一只眼闭一只眼', effects: {risk: 3, integrity: -2, peopleReputation: -1} },
     ]},
     { id: 'enw149', stage: 'work', eventType: 'auto', weight: 4, title: '养老院检查', pools: ['民生部门'], text: '养老机构专项检查，你在一家民办养老院发现灭火器过期、食堂留样不规范。院长陪着笑脸解释，你指着墙上的安全须知问："这上面写着谁负责？"他沉默了。', effects: {workAbility: 2, integrity: 2, mentalPressure: 2} },
-    { id: 'enw150', stage: 'work', eventType: 'choice', weight: 4, title: '困境儿童走访', pools: ['民生部门'], text: '走访困境儿童家庭，一个十岁的小姑娘给你倒水，杯子洗得发亮。她爸爸残疾，妈妈外出打工。临走时她追出来问："阿姨，下学期学费……"', choices: [
+    { id: 'enw150', stage: 'work', eventType: 'choice', weight: 4, title: '困境儿童走访', pools: ['民生部门'], text: '走访困境儿童家庭，一个十岁的小姑娘给你倒水，杯子洗得发亮。她爸爸残疾，妈妈外出打工。临走时她追出来问："下学期学费……"', choices: [
       { text: '协调落实教育救助', effects: {peopleReputation: 2, workAbility: 2, eq: 2, integrity: 1} },
       { text: '留下联系方式持续跟进', effects: {eq: 2, workAbility: 1, mentalPressure: 1} },
       { text: '记录情况，转交救助站', effects: {workAbility: 1, mentalPressure: 1} },

@@ -7,9 +7,9 @@ const local=new Map();const ctx={console,Date,Math,Map,Set,JSON,Number,String,Ar
 for(const f of files)runInNewContext(readFileSync(f,'utf8'),ctx,{filename:f});
 runInNewContext('globalThis.Ctor=GameEngine;globalThis.Data=GameData',ctx);
 const e=new ctx.Ctor();const data=ctx.Data;
-const N=300;let crossing={start:0,review:0,final:0,echo:0,options:{open:0,phase:0,seal:0}};let entered=0,second=0,third=0,ended=0,years=0,earned=0,net=0,pressure=0,invalid=0;let family=0,team=0,teamLast=0,familyLast=0,teamRoute={shared:0,deferred:0},familyRoute={present:0,absent:0},classmate={entered:0,second:0,finale:0,branches:{open:0,favor:0,boundary:0}};
+const N=300;let crossing={start:0,review:0,final:0,echo:0,endedBeforeEcho:0,interruptedAtEnding:0,options:{open:0,phase:0,seal:0}};let entered=0,second=0,third=0,ended=0,years=0,earned=0,net=0,pressure=0,invalid=0;let family=0,team=0,teamLast=0,familyLast=0,teamRoute={shared:0,deferred:0},familyRoute={present:0,absent:0},classmate={entered:0,second:0,finale:0,branches:{open:0,favor:0,boundary:0}};
 const stages={},outcomes={},routes={open:0,quiet:0};
-for(let seed=1;seed<=N;seed++){
+for(let seed=1;seed<=N;seed++){let pcStart=0,pcEcho=0;
  e.reset();
  let x=(seed*2654435761)>>>0;
  const random=()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296};
@@ -26,10 +26,10 @@ for(let seed=1;seed<=N;seed++){
     const pick=Math.floor(random()*e.state.currentEvent.choices.length);
     if(id==='arc_receipt_1'){entered++;routes[pick===0?'open':'quiet']++}
     if(id==='e094')classmate.entered++;
-    if(id==='arc_crossroads_1'){crossing.start++;crossing.options[pick===0?'open':pick===1?'phase':'seal']++}
+    if(id==='arc_crossroads_1'){pcStart++;crossing.start++;crossing.options[pick===0?'open':pick===1?'phase':'seal']++}
     if(id?.startsWith('arc_crossroads_')&&id.endsWith('_2'))crossing.review++;
     if(id?.startsWith('arc_crossroads_')&&id.endsWith('_3'))crossing.final++;
-    if(id==='arc_crossroads_echo')crossing.echo++;
+    if(id==='arc_crossroads_echo'){pcEcho++;crossing.echo++;}
     if(id?.startsWith('arc_classmate_')&&id.endsWith('_2'))classmate.second++;
     if(id?.startsWith('arc_classmate_')&&id.endsWith('_3'))classmate.finale++;
     if(id==='arc_team_1'){team++;teamRoute[pick===0?'shared':'deferred']++}
@@ -49,7 +49,20 @@ for(let seed=1;seed<=N;seed++){
   if(!Number.isFinite(p.wealth)||!Number.isFinite(h.mentalPressure)){console.error('bad stats',seed,y);process.exit(1)}
  }
  if(p.ending){ended++;outcomes[p.ending]=(outcomes[p.ending]||0)+1}
+ // A terminal ending can truncate a future-dated epilogue, or interrupt a
+ // due choice already queued for the player. Neither is a lost causal node.
+ // Any already-due node missing from the current choice slot still fails.
+ if(p.ending && pcStart && !pcEcho){
+   const seen=p.seenEvents||[];
+   const pending=e.getPendingCausalConsequences().filter(x=>x.id.startsWith('arc_crossroads_'));
+   assert.ok(pending.length,`seed ${seed}: crossroads starts without a visible terminal or future consequence`);
+   const future=pending.filter(x=>x.dueAge>p.age);
+   const current=pending.filter(x=>x.dueAge<=p.age&&e.state.currentEvent?.id===x.id);
+   assert.ok(future.length+current.length>0,`seed ${seed}: scheduled crossroads consequence missing at age ${p.age}`);
+   if(current.length) crossing.interruptedAtEnding++;
+   else crossing.endedBeforeEcho++;
+ }
  earned+=p.promotions;net+=p.wealth;pressure+=h.mentalPressure;
 }
 const summary={seeds:N,years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,finale:familyLast,branches:familyRoute},classmate,crossing,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&id.startsWith('arc_')))};
-console.log(JSON.stringify(summary,null,2));assert.equal(invalid,0,'unexpected unresolvable choice');assert.equal(ended,N,'all long games should reach a terminal outcome');assert.equal(crossing.start,crossing.echo,'crossroads must finish in these long game seeds');
+console.log(JSON.stringify(summary,null,2));assert.equal(invalid,0,'unexpected unresolvable choice');assert.equal(ended,N,'all long games should reach a terminal outcome');assert.equal(crossing.start,crossing.echo+crossing.endedBeforeEcho+crossing.interruptedAtEnding,'crossroads must finish, await future due age, or be interrupted by its own visible pending choice at terminal ending');

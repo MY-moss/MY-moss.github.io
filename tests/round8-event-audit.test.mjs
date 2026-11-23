@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
+import {resolve} from 'node:path';
+const root=resolve(import.meta.dirname,'..');
+const html=readFileSync(resolve(root,'index.html'),'utf8');
+const scripts=[...html.matchAll(/<script defer src="([^"]+)/g)].map(x=>x[1].split('?')[0]).filter(f=>f.startsWith('js/data/')||f==='js/data.js');
+const ctx={console,Math,Date,Map,Set,JSON,Array,Object,String,Number};
+for(const file of scripts)runInNewContext(readFileSync(resolve(root,file),'utf8'),ctx,{filename:file});
+runInNewContext('globalThis.DATA=GameData',ctx);
+const events=ctx.DATA.events;
+const EFFECTS=new Set(['wealth','addDebt','political','education','childEducation','childCompany','reputation','peopleReputation','flag','setFlags','deleteFlag','deleteFlags','marry','child','contact','addEnemy','contactRelation','contactRelation2','contactDelta','contactEvolution','grassrootsDispatch','debtForgive','debtRateMul','heat','leadershipRank','central','grassrootsReturn','grassrootsStay','grassrootsLower','iq','eq','luck','family','appearance','body','desire','familyPressure','integrity','risk','background','workAbility','positionWeight','mentalPressure','careerLogNote']);
+test('all 1,824 loaded events have unique IDs and valid core schemas',()=>{assert.equal(events.length,1824);const ids=events.map(e=>e.id);assert.equal(new Set(ids).size,ids.length);for(const e of events){assert.ok(e.id&&e.title&&e.text&&['work','life','career'].includes(e.stage),e.id);assert.ok(['choice','auto','sudden'].includes(e.eventType),e.id);if(e.eventType==='choice')assert.ok(Array.isArray(e.choices)&&e.choices.length>=2,e.id);}});
+test('all event effects use supported keys and finite numeric values',()=>{for(const e of events){for(const [where,effect] of [['auto',e.effects],...(e.choices||[]).map((c,i)=>[`choice-${i}`,c.effects])])for(const [key,value]of Object.entries(effect||{})){assert.ok(EFFECTS.has(key),`${e.id} ${where}: unknown effect ${key}`);if(typeof value==='number')assert.ok(Number.isFinite(value),`${e.id} ${key} is not finite`);}}});
+test('event titles and full scene text contain no exact duplicates',()=>{for(const field of ['title','text']){const seen=new Set();for(const e of events){const value=(e[field]||'').trim();assert.ok(!seen.has(value),`${field} duplicated at ${e.id}`);seen.add(value);}}});
+test('the two unlinked secondment duplicates are removed and canonical chain remains',()=>{for(const id of ['enw261','enw262'])assert.ok(!events.some(e=>e.id===id));for(const id of ['ent299','ent300','ent301'])assert.ok(events.some(e=>e.id===id));});
+test('choice result feedback is surfaced immediately and remains recorded in the career log',()=>{const app=readFileSync(resolve(root,'js/app/app-career.js'),'utf8');const engine=readFileSync(resolve(root,'js/engine/engine-events.js'),'utf8');assert.match(app,/showToast\(selectedChoice\.result, 'info', 4200\)/);assert.match(engine,/event\.title.*c\.result|c\.result\.trim\(\)/);});

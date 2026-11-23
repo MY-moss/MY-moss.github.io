@@ -61,10 +61,10 @@ const gd_events_new_v2172 = [
     { text: '带一壶茶去，慢慢融进圈子', effects: { eq: 2, peopleReputation: 1 }, result: '茶香开了话匣子，圈子里有了你的位置' },
     { text: '教两个年轻人下棋', effects: { eq: 1, reputation: 1, body: 1 }, result: '收了两个学生，公园角落热闹了' }
   ] },
-  { id: 'enl177', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 18, year: [55, 72], title: '隔代带孙', text: '儿子儿媳都忙，三岁的孙女每周有三天送到你这里。你年轻时带儿子是"放养"，现在带孙女却总觉得怕磕着碰着。', choices: [
-    { text: '拿出当年带儿子的经验来', effects: { familyPressure: 1, eq: 1 }, result: '经验管用，孙女和你最亲' },
+  { id: 'enl177', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 18, year: [55, 72], title: '隔代带孙', text: '子女和他们的伴侣都忙，三岁的孙辈每周有三天送到你这里。你年轻时带孩子是"放养"，现在带孙辈却总觉得怕磕着碰着。', choices: [
+    { text: '拿出当年带孩子的经验来', effects: { familyPressure: 1, eq: 1 }, result: '经验管用，孙女和你最亲' },
     { text: '专门学些育儿知识，紧跟新理念', effects: { iq: 1, familyPressure: -1 }, result: '新理念上手，儿媳也放心了' },
-    { text: '和儿媳约法三章，各退一步', effects: { eq: 2, familyPressure: -1 }, result: '边界谈清，接送愉快' },
+    { text: '和子女商量照看规则，各退一步', effects: { eq: 2, familyPressure: -1 }, result: '边界谈清，接送愉快' },
     { text: '明确每周最多照看一天，留下时间给自己的生活', effects: { familyPressure: -3, mentalPressure: -2, eq: -1 }, result: '儿媳一开始有点失落，后来商量出了新的接送表' }
   ] },
   { id: 'enl178', stage: 'life', eventType: 'choice', weight: 3, year: [55, 72], title: '老年兴趣社团', text: '社区新开了书法和合唱两个老年班，报名表上写"名额有限，先到先得"。年轻时你两个都想学，都没学成。', choices: [
@@ -104,7 +104,7 @@ const gd_events_new_v2172 = [
     { text: '找老朋友组常聚的局', effects: { eq: 1, peopleReputation: 1 }, result: '老友常聚，日子有烟火气' },
     { text: '宅家看手机，等孩子回来', effects: { mentalPressure: 1, body: -1 }, result: '屋子安静，心也安静不下来' }
   ] },
-  { id: 'enl182', stage: 'life', eventType: 'choice', weight: 5, scenario: 'family', year: [35, 55], title: '中年家庭危机', text: '你在单位的晋升关键期撞上了家里的多事之秋：父母接连住院、孩子升学压力大、配偶的工作也出了变数。谁先谁后？', choices: [
+  { id: 'enl182', stage: 'life', eventType: 'choice', weight: 5, requireMarried: true, requireChild: true, scenario: 'family', year: [35, 55], title: '中年家庭危机', text: '你在单位的晋升关键期撞上了家里的多事之秋：父母接连住院、孩子升学压力大、配偶的工作也出了变数。谁先谁后？', choices: [
     { text: '家庭优先，向单位说明请一段假', effects: { familyPressure: -2, eq: 2, positionWeight: -1 }, result: '家稳了，单位里的位置等了你半年' },
     { text: '工作优先，家里靠爱人撑住', effects: { positionWeight: 1, familyPressure: 3 }, result: '晋升上了，家里的怨气也攒下了' },
     { text: '公开向组织说明困难，争取弹性安排', effects: { integrity: 2, background: 1, mentalPressure: 1 }, result: '组织给弹性，两头都顾上了' },
@@ -131,7 +131,7 @@ const gd_events_new_v2172 = [
   ] },
   // ---------- 6. 生活场景补件 ×4 ----------
   { id: 'enl183', stage: 'life', eventType: 'choice', weight: 4, year: [26, 60], title: '跟团旅行', text: '单位工会组织的疗养团建定了三条线路：海边的、山里的、古城的。费用工会出一半，另一半自费。', choices: [
-    { text: '选海边，好好休一次假', effects: { body: 1, mentalPressure: -2, wealth: -5 }, result: '海边回来，压力清零' },
+    { text: '选海边，好好休一次假', effects: { body: 1, mentalPressure: -2, wealth: -5 }, result: '海边回来，肩上的压力轻了些' },
     { text: '选古城，顺路访当年同学', effects: { eq: 1, peopleReputation: 1, wealth: -5 }, result: '老同学重逢，路线值回票价' },
     { text: '选山里，把娃也带上', effects: { familyPressure: -1, eq: 1, wealth: -6 }, result: '亲子游山，两全其美' },
     { text: '不去，把名额让给同事', effects: { eq: 1, body: -1, mentalPressure: 1 }, result: '人情落了，自己没歇上' }

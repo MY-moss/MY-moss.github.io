@@ -130,89 +130,89 @@ const gd_events_new_theme = [
       { text: '周末回家，平时住村', effects: {workAbility: 2, familyPressure: 2, mentalPressure: 1, flag: 'grassrootsWork', grassrootsDispatch: { duration: 2, reason: '驻村第一书记' }} },
       { text: '走形式，应付了事', effects: {eq: -3, risk: 2, integrity: -3, flag: 'grassrootsWork', grassrootsDispatch: { duration: 2, reason: '驻村第一书记' }} },
     ]},
-    { id: 'ent022', stage: 'career', eventType: 'choice', weight: 5, title: '产业项目选择', text: '村里要上乡村产业项目，有人主张种药材，有人主张养牛，还有人想搞光伏。争论三天，意见还是"齐头并进"。', choices: [
+    { id: 'ent022', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '产业项目选择', text: '村里要上乡村产业项目，有人主张种药材，有人主张养牛，还有人想搞光伏。争论三天，意见还是"齐头并进"。', choices: [
       { text: '请农技专家实地论证后再定', effects: {workAbility: 3, iq: 2, desire: 2, mentalPressure: 2} },
       { text: '尊重村民意愿，民主决策', effects: {eq: 1, workAbility: 2, desire: 2} },
       { text: '跟风周边村搞相同项目', effects: {risk: 3, workAbility: 1, mentalPressure: 1, eq: -1} },
       { text: '自己拍板，追求"短平快"', effects: {risk: 4, integrity: -2, desire: 2} },
     ]},
-    { id: 'ent023', stage: 'career', eventType: 'choice', weight: 5, title: '农产品滞销（助农）', text: '村里蜜橘丰收却卖不动，果农急得直跺脚。你打开朋友圈，发现"助农"两个字特别好使。', choices: [
+    { id: 'ent023', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '农产品滞销（助农）', text: '村里蜜橘丰收却卖不动，果农急得直跺脚。你打开朋友圈，发现"助农"两个字特别好使。', choices: [
       { text: '对接机关食堂和工会集中采购', effects: {workAbility: 3, eq: 1, desire: 2} },
       { text: '发动朋友圈和电商渠道销售', effects: {workAbility: 2, iq: 2, desire: 2} },
       { text: '帮助建立稳定销售渠道', effects: {workAbility: 2, background: 1, mentalPressure: 2} },
       { text: '象征性买几箱自己吃', effects: {eq: -1, risk: 1, mentalPressure: 1} },
     ]},
-    { id: 'ent024', stage: 'career', eventType: 'choice', weight: 5, title: '控辍保学', text: '村里有个娃初中没念完就去打工了。家长说"读书无用，早点挣钱"。你看着孩子空荡荡的课桌，心里发堵。', choices: [
+    { id: 'ent024', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '控辍保学', text: '村里有个娃初中没念完就去打工了。家长说"读书无用，早点挣钱"。你看着孩子空荡荡的课桌，心里发堵。', choices: [
       { text: '上门劝说家长，联系学校复学', effects: {workAbility: 3, eq: 1, desire: 2, mentalPressure: 2} },
       { text: '申请教育补助减轻家庭负担', effects: {workAbility: 2, integrity: 2, mentalPressure: 1} },
       { text: '协调企业提供勤工俭学岗位', effects: {workAbility: 2, eq: 1, mentalPressure: 2} },
       { text: '尊重家长选择，不强行干预', effects: {eq: -2, risk: 1, integrity: -1} },
     ]},
-    { id: 'ent025', stage: 'career', eventType: 'choice', weight: 5, title: '大病救治', text: '一户脱贫户家中的顶梁柱查出重病，医药费像无底洞。村干部担心这户"因病返贫"，把求助信递到你面前。', choices: [
+    { id: 'ent025', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '大病救治', text: '一户脱贫户家中的顶梁柱查出重病，医药费像无底洞。村干部担心这户"因病返贫"，把求助信递到你面前。', choices: [
       { text: '协助申请大病救助和临时救助', effects: {workAbility: 3, integrity: 2, desire: 2, mentalPressure: 2} },
       { text: '发动社会力量众筹', effects: {eq: 1, workAbility: 2, desire: 2} },
       { text: '对接定点医院减免费用', effects: {workAbility: 2, background: 1, mentalPressure: 2} },
-      { text: '按政策办，能报多少算多少', effects: {eq: -2, risk: 1, integrity: -1} },
+      { text: '按政策办，能报多少算多少', effects: {workAbility: 1, integrity: 1, mentalPressure: 1} },
     ]},
-    { id: 'ent026', stage: 'career', eventType: 'choice', weight: 4, title: '危房鉴定', text: '一位老人住的土坯房墙裂了缝，下雨天往里灌水。危房鉴定却卡在"差一点点不符合标准"，你站在漏雨的屋檐下犯了难。', choices: [
+    { id: 'ent026', stage: 'career', eventType: 'choice', weight: 4, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '危房鉴定', text: '一位老人住的土坯房墙裂了缝，下雨天往里灌水。危房鉴定却卡在"差一点点不符合标准"，你站在漏雨的屋檐下犯了难。', choices: [
       { text: '申请复评，争取纳入改造', effects: {workAbility: 3, integrity: 2, desire: 2, mentalPressure: 2} },
       { text: '协调村集体帮助修缮', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
-      { text: '自掏腰包先帮老人修屋顶', effects: {integrity: 3, wealth: -60, desire: 2} },
+      { text: '自掏腰包先帮老人修屋顶', effects: {integrity: 2, wealth: -12, desire: 1, mentalPressure: 2} },
       { text: '等下批指标再说', effects: {mentalPressure: -1, risk: 2, integrity: -2, eq: -1} },
     ]},
-    { id: 'ent027', stage: 'career', eventType: 'choice', weight: 4, title: '山泉引水', text: '山上村民长期喝"望天水"，旱季要翻山去挑。引水管道要穿过两户人家的自留山，"过路费"成了卡脖子的难题。', choices: [
+    { id: 'ent027', stage: 'career', eventType: 'choice', weight: 4, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '山泉引水', text: '山上村民长期喝"望天水"，旱季要翻山去挑。引水管道要穿过两户人家的自留山，"过路费"成了卡脖子的难题。', choices: [
       { text: '反复做工作，讲清集体利益', effects: {eq: 2, workAbility: 2, desire: 2, mentalPressure: 3} },
       { text: '协调置换土地，妥善安置', effects: {workAbility: 2, eq: 1, mentalPressure: 2} },
       { text: '申请项目资金给予补偿', effects: {workAbility: 2, background: 1, mentalPressure: 1} },
-      { text: '绕道铺设，多花点钱', effects: {workAbility: 1, wealth: -50, mentalPressure: 1} },
+      { text: '按流程调整路线，但增加公共工程预算', effects: {workAbility: 1, risk: 2, positionWeight: -1, mentalPressure: 2} },
     ]},
-    { id: 'ent028', stage: 'career', eventType: 'choice', weight: 5, title: '通组路', text: '"最后一公里"通组路硬化项目卡在资金缺口上。村民天天问"啥时候动工"，你对着账本上的数字叹气。', choices: [
+    { id: 'ent028', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '通组路', text: '"最后一公里"通组路硬化项目卡在资金缺口上。村民天天问"啥时候动工"，你对着账本上的数字叹气。', choices: [
       { text: '申报涉农资金整合解决缺口', effects: {workAbility: 3, integrity: 2, desire: 2, mentalPressure: 2} },
       { text: '发动村民投工投劳降低成本', effects: {eq: 1, workAbility: 2, desire: 2} },
       { text: '争取社会捐资补充', effects: {background: 1, eq: 1, mentalPressure: 2} },
       { text: '等资金全部到位再开工', effects: {mentalPressure: -1, risk: 1, integrity: -1, eq: -1} },
     ]},
-    { id: 'ent029', stage: 'career', eventType: 'choice', weight: 5, title: '直播带货', text: '乡里鼓励村干部直播带货。你对着手机镜头，第一次发现"老干部"和"新农人"之间，隔着一道尴尬的屏幕。', choices: [
+    { id: 'ent029', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '直播带货', text: '乡里鼓励村干部直播带货。你对着手机镜头，第一次发现"老干部"和"新农人"之间，隔着一道尴尬的屏幕。', choices: [
       { text: '认真学习，亲自上阵直播', effects: {workAbility: 3, iq: 2, desire: 2, mentalPressure: 3} },
       { text: '培养返乡青年做主播', effects: {workAbility: 2, eq: 1, desire: 2} },
       { text: '委托第三方公司运营', effects: {workAbility: 1, risk: 2, mentalPressure: 1} },
       { text: '觉得"不务正业"，搁置不办', effects: {iq: -2, positionWeight: -2, mentalPressure: 1, eq: -1} },
     ]},
-    { id: 'ent030', stage: 'career', eventType: 'choice', weight: 4, title: '古村开发', text: '村里有片明清古建筑，开发商想搞旅游开发。可"修旧如旧"和"商业化"之间的平衡，比走钢丝还难。', choices: [
+    { id: 'ent030', stage: 'career', eventType: 'choice', weight: 4, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '古村开发', text: '村里有片明清古建筑，开发商想搞旅游开发。可"修旧如旧"和"商业化"之间的平衡，比走钢丝还难。', choices: [
       { text: '聘请专业团队编制保护性规划', effects: {workAbility: 3, iq: 2, desire: 2, mentalPressure: 2} },
       { text: '听取村民和专家双重意见', effects: {eq: 1, workAbility: 2, mentalPressure: 2} },
       { text: '全盘交给开发商运作', effects: {risk: 4, integrity: -2, desire: 2} },
       { text: '暂不开发，维持现状', effects: {integrity: 1, workAbility: 1, mentalPressure: 1} },
     ]},
-    { id: 'ent031', stage: 'career', eventType: 'choice', weight: 5, title: '集体资产盘活', text: '村集体有一片闲置厂房，长年"晒太阳"。有人提议低价租给关系户，"反正闲着也是闲着"。', choices: [
+    { id: 'ent031', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '集体资产盘活', text: '村集体有一片闲置厂房，长年"晒太阳"。有人提议低价租给关系户，"反正闲着也是闲着"。', choices: [
       { text: '公开招标出租，阳光运作', effects: {integrity: 3, workAbility: 2, desire: 2, mentalPressure: 2} },
       { text: '引入符合环保要求的产业', effects: {workAbility: 2, eq: 1, mentalPressure: 2} },
-      { text: '低价租给"熟人"，收点好处', effects: {risk: 5, integrity: -4, wealth: 50, desire: 2} },
+      { text: '低价租给"熟人"，收点好处', effects: {risk: 12, integrity: -10, heat: 6, wealth: 8, desire: 3, flag: 'tookBribe'} },
       { text: '维持闲置，避免麻烦', effects: {mentalPressure: -1, risk: 1, integrity: -1, eq: -1} },
     ]},
-    { id: 'ent032', stage: 'career', eventType: 'choice', weight: 5, title: '土地流转纠纷', text: '外来大户要连片流转土地种果蔬，可几户"钉子户"死活不签。流转合同摞成一摞，就差最后几个红手印。', choices: [
+    { id: 'ent032', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '土地流转纠纷', text: '外来大户要连片流转土地种果蔬，可几户"钉子户"死活不签。流转合同摞成一摞，就差最后几个红手印。', choices: [
       { text: '逐户走访，了解顾虑对症下药', effects: {workAbility: 3, eq: 1, desire: 2, mentalPressure: 3} },
       { text: '保障农户流转费和分红权益', effects: {workAbility: 2, integrity: 2, mentalPressure: 2} },
-      { text: '提高流转租金，促成签约', effects: {workAbility: 1, wealth: -50, mentalPressure: 1} },
+      { text: '建议协商更合理租金，再促成签约', effects: {workAbility: 1, risk: 1, mentalPressure: 2, eq: 1} },
       { text: '强行推进，"为大局着想"', effects: {risk: 4, integrity: -3, eq: -2} },
     ]},
-    { id: 'ent033', stage: 'career', eventType: 'choice', weight: 4, title: '合作社规范', text: '村里几家合作社"空壳化"严重，账目混乱，分红成了"糊涂账"。你翻开一本比菜谱还随意的记账本，眉头紧锁。', choices: [
+    { id: 'ent033', stage: 'career', eventType: 'choice', weight: 4, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '合作社规范', text: '村里几家合作社"空壳化"严重，账目混乱，分红成了"糊涂账"。你翻开一本比菜谱还随意的记账本，眉头紧锁。', choices: [
       { text: '开展专项审计，规范财务', effects: {workAbility: 3, integrity: 3, desire: 2, mentalPressure: 3} },
       { text: '建立统一财务管理平台', effects: {workAbility: 2, iq: 2, mentalPressure: 2} },
       { text: '培训合作社负责人', effects: {workAbility: 2, eq: 1, mentalPressure: 1} },
       { text: '睁一只眼闭一只眼', effects: {risk: 3, integrity: -3, mentalPressure: -1, eq: -1} },
     ]},
-    { id: 'ent034', stage: 'career', eventType: 'choice', weight: 5, title: '返贫预警', text: '一户脱贫户近期收入骤降，系统亮起"黄色预警"。入户一看，家里的境况比数据更让人揪心。', choices: [
+    { id: 'ent034', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '返贫预警', text: '一户脱贫户近期收入骤降，系统亮起"黄色预警"。入户一看，家里的境况比数据更让人揪心。', choices: [
       { text: '纳入重点监测，落实帮扶措施', effects: {workAbility: 3, integrity: 2, desire: 2, mentalPressure: 2} },
       { text: '分析返贫原因，精准施策', effects: {workAbility: 2, iq: 2, mentalPressure: 2} },
       { text: '安排公益岗位兜底', effects: {workAbility: 2, eq: 1, mentalPressure: 1} },
       { text: '等数据"转绿"再说', effects: {mentalPressure: -1, risk: 2, integrity: -2, eq: -1} },
     ]},
-    { id: 'ent035', stage: 'career', eventType: 'choice', weight: 5, title: '结对帮扶（脱贫户回访）', text: '你结对帮扶三户脱贫户。一户老人见你就抹眼泪，一户总提"再给点钱"，一户已经开始自己搞养殖。', choices: [
+    { id: 'ent035', stage: 'career', eventType: 'choice', weight: 5, requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, title: '结对帮扶（脱贫户回访）', text: '你结对帮扶三户脱贫户。一户老人见你就抹眼泪，一户总提"再给点钱"，一户已经开始自己搞养殖。', choices: [
       { text: '因户施策，分类帮扶', effects: {workAbility: 3, eq: 1, desire: 2, mentalPressure: 2} },
       { text: '重点扶持"想干"的那户', effects: {workAbility: 2, positionWeight: 1, mentalPressure: 1} },
       { text: '三户平均用力，雨露均沾', effects: {eq: 1, workAbility: 1, mentalPressure: 2} },
-      { text: '自掏腰包"解决问题"', effects: {integrity: 2, wealth: -100, mentalPressure: 1} },
+      { text: '自费购置少量物资，先解燃眉之急', effects: {integrity: 1, wealth: -15, mentalPressure: 2, eq: 1} },
     ]},
     // ---------- 数字经济主题（15个） ----------
     { id: 'ent036', stage: 'work', eventType: 'choice', weight: 6, title: '一网通办（数据打架）', text: '单位推行"一网通办"，可系统之间"数据打架"，同一个数据要填三遍。办事群众在窗口前等得直跺脚。', choices: [
@@ -577,7 +577,7 @@ const gd_events_new_theme = [
     // ================= v2.47 联系人链隐藏事件（高关系门槛解锁） =================
     // ---- 贵人链 noble → 中央捷径（centralCandidate 解锁中央遴选 e640） ----
     { id: 'ent155', stage: 'work', eventType: 'choice', weight: 6, requireContact: 'noble', requireContactMin: 80, requireUnitLevelMin: 3, requireUnitLevelMax: 3, requireRankMin: 6, title: '贵人举荐', text: '中组部来省里考察后备干部。一直提携你的老领导把你叫到办公室，问："如果中央要人，你敢不敢去？"窗外下着雨，他的茶凉了半杯。', choices: [
-      { text: '表态愿意，接受组织挑选', effects: {positionWeight: 3, reputation: 2, mentalPressure: 4, flag: 'centralCandidate', contactRelation: { id: 'noble', delta: -3} } },
+      { text: '表态愿意，接受组织挑选', effects: {positionWeight: 3, reputation: 2, mentalPressure: 4, flag: 'centralCandidate', contactRelation: { id: 'noble', delta: 2} } },
       { text: '感谢抬爱，想留在现岗深耕', effects: {integrity: 1, positionWeight: 1, reputation: 1, contactRelation: { id: 'noble', delta: 3} } },
       { text: '请示具体安排再定', effects: {iq: 1, eq: 1, mentalPressure: 2, flag: 'centralCandidate'} },
     ]},

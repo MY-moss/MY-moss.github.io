@@ -30,7 +30,8 @@ for (const [k, v] of Object.entries(eff)) {
         if (v === 'resigned') this.state.player.isEmployed = false; if (v === 'reformProposal' || v === 'reformDraft') this.state.player.flags.reformCount = (this.state.player.flags.reformCount || 0) + 1; if (v === 'helpedCitizen' || v === 'petitionWork') this.state.player.flags.peopleEventCount = (this.state.player.flags.peopleEventCount || 0) + 1; } continue; }
       // P3 剧本链：一次选择同时落下多个 flag（链推进 flag + 剧情风味 flag），各自记录 _since 供延迟链判定
       if (k === 'setFlags' && Array.isArray(v)) { v.forEach(f => { if (typeof f === 'string' && f) { this.state.player.flags[f] = true; this.state.player.flags[f + '_since'] = this.state.player.age; } }); continue; }
-      if (k === 'deleteFlag') { if (typeof v === 'string') { delete this.state.player.flags[v]; if (v === 'borrowed' || v === 'loanOnline') this.settleBorrowDebt(); } continue; }
+      if (k === 'deleteFlag') { if (typeof v === 'string') { delete this.state.player.flags[v]; delete this.state.player.flags[v + '_since']; if (v === 'borrowed') this.settleBorrowDebt('personal'); else if (v === 'loanOnline') this.settleBorrowDebt('online'); } continue; }
+      if (k === 'deleteFlags' && Array.isArray(v)) { const debtTypes=[]; v.forEach(flag => { if (typeof flag === 'string' && flag) { delete this.state.player.flags[flag]; delete this.state.player.flags[flag + '_since']; if (flag === 'borrowed') debtTypes.push('personal'); else if (flag === 'loanOnline') debtTypes.push('online'); } }); if (debtTypes.length) this.settleBorrowDebt(debtTypes); continue; }
       if (k === 'marry') { this.state.player.isMarried = true; delete this.state.player.flags.dating; delete this.state.player.flags.dating_since; continue; } // v2.66 结婚即恋爱终结（原 dating 残留导致婚后仍触发恋爱三年决断）
       if (k === 'child') { this.state.player.hasChildren = true; if (typeof this.state.player.childAge !== 'number') this.state.player.childAge = 0; continue; } // v2.58 生子同时初始化 childAge（此前永不初始化导致成才链/培养 UI 同局静默）
       if (k === 'contact') { this.addContact(v); continue; }
@@ -42,7 +43,8 @@ for (const [k, v] of Object.entries(eff)) {
       // 统一基层派驻：旧事件的“接受下基层”选项必须进入临时派驻状态，不能只留下叙事 flag。
       if (k === 'grassrootsDispatch') { if (this.beginGrassrootsAssignment) this.beginGrassrootsAssignment(v); continue; }
       // v2.1.5 H2 债务重组效果键：debtForgive 直接减免本金（payDebtDirect，不扣现金）；debtRateMul 全部债务利率乘数（0.5=半息）
-      if (k === 'debtForgive') { this.payDebtDirect(v); this.syncWealth(); continue; }
+      if (k === 'addDebt') { if (v && typeof v === 'object') this.addDebt(v.type || 'personal', v.amount || 0); continue; }
+      if (k === 'debtForgive') { this.payDebtByForgive(v); this.syncWealth(); continue; }
       if (k === 'debtRateMul') {
         const f2 = this.state.player.finance;
         if (f2 && Array.isArray(f2.debts)) {
@@ -168,8 +170,18 @@ GameEngine.prototype.handleEventChoice = function(ci) {
       if (!this.state.player.seenEvents.includes(e.id)) this.state.player.seenEvents.push(e.id);
       this.recordEventVisit(e.id);
     }
-    // v2.59 调查链断链修复：e237「调查组来了」触发即进入被调查状态（e646 结果事件需此 flag）
-    if (e.id === 'e237') this.state.player.flags.underInvestigation = true;
+    // 调查链按玩家选择分叉：主动交代直接进入纪律处理，逃亡进入追捕结局；
+    // 只有继续周旋/否认/推责的分支才进入下一年的调查结果，不再让已坦白或已逃亡者重复走 e646。
+    if (e.id === 'e237') {
+      const selectedFlag = c.effects && c.effects.flag;
+      if (selectedFlag === 'selfSurrender' || selectedFlag === 'fled') {
+        delete this.state.player.flags.underInvestigation;
+        delete this.state.player.flags.underInvestigation_since;
+      } else {
+        this.state.player.flags.underInvestigation = true;
+        this.state.player.flags.underInvestigation_since = this.state.player.age;
+      }
+    }
     // v2.66 恋爱重计时：ent263「认真谈一次」后从 seenEvents 移除自身——RIGID_CHAINS 依新 dating_since 重新注入（原实现重设计时但永不二次决断）
     if (e.id === 'ent263' && ci === 1) this.state.player.seenEvents = (this.state.player.seenEvents || []).filter(x => x !== 'ent263');
     // v2.22 晋升答辩留痕：选项可附带 careerLogNote 写入年鉴（卷宗感）
@@ -296,13 +308,13 @@ GameEngine.prototype.applyEventEffects = function(event) {
     this.clampAttrs();
   }
 // v2.66 刚性链 next 事件白名单：只由 RIGID_CHAINS 注入触发（从随机池排除，防 delay 被绕过/死链）
-const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'ent260', 'ent261', 'ent262', 'ent263',
+const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'ent260', 'ent261', 'ent262', 'ent263',
   // P3 剧本专属事件链：002/003 只由链注入触发，防随机池提前抽取破坏阶段节奏
   'scn_grassroots_002', 'scn_grassroots_003', 'scn_midcareer_002', 'scn_midcareer_003', 'scn_clean_002', 'scn_clean_003', 'scn_network_002', 'scn_network_003', 'scn_reform_002', 'scn_reform_003', 'scn_retired_002', 'scn_retired_003', 'scn_family_002', 'scn_family_003',
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入
   'e802', 'e803', 'e804', 'e806', 'e807', 'e808',
   // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链 next 节点只由 RIGID_CHAINS 注入
-  'ent294', 'ent295', 'ent297', 'ent298', 'ent300', 'ent301',
+  'ent294', 'ent295', 'ent297', 'ent298', 'ent299', 'ent300', 'ent301', 'enw126', 'e616', 'e617', 'e618', 'e728', 'e729', 'e730', 'e731', 'e743', 'e744', 'e747', 'e748', 'e756', 'e758', 'e765',
   'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3',
   'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3',
   'arc_family_present_2','arc_family_absent_2',
@@ -310,7 +322,7 @@ const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246'
   'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3',
   'arc_crossroads_1','arc_crossroads_open_2','arc_crossroads_phase_2','arc_crossroads_seal_2',
   'arc_crossroads_open_3','arc_crossroads_phase_3','arc_crossroads_seal_3','arc_crossroads_echo',
-  'arc_venture_disclosure_1','arc_venture_declared_2','arc_venture_exited_2','arc_venture_hidden_2']);
+  'arc_venture_disclosure_1','arc_venture_declared_2','arc_venture_exited_2','arc_venture_hidden_2','arc_life_career_2','arc_life_career_3','arc_life_integrity_2','arc_life_integrity_3','arc_life_family_2','arc_life_family_3','arc_life_network_2','arc_life_network_3','arc_life_confluence_1','arc_life_confluence_2']);
 
 // 生命周期旧标题门槛的唯一兼容实现。
 // 结构化字段是主规则，只有历史事件尚未迁移时才使用这里的标题兜底；
@@ -383,7 +395,7 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
       reputation: 'REPUTATION', yearsWorked: 'WORK_YEARS', ageWindow: 'YEAR_WINDOW', legacyTitleGate: 'TITLE_GATE',
       contact: 'CONTACT', contactRelation: 'CONTACT_RELATION', contactArchetype: 'CONTACT_ARCHETYPE', contactStatus: 'CONTACT_STATUS', contactTrust: 'CONTACT_TRUST',
       requireChild: 'CHILD', requireNoChild: 'NO_CHILD', requireMarried: 'MARRIED', requireSingle: 'SINGLE', requireGender: 'GENDER', requireTalent: 'TALENT', excludeTalent: 'EXCLUDE_TALENT', requireBackground: 'BACKGROUND', requirePolitical: 'POLITICAL', requireUnitSystem: 'UNIT_SYSTEM',
-      requireMentalPressure: 'MENTAL_PRESSURE', requireRisk: 'RISK', requireHeat: 'HEAT', requireBody: 'BODY', requireAppearance: 'APPEARANCE', requireFamily: 'FAMILY', requireLuck: 'LUCK', requirePositionWeight: 'POSITION_WEIGHT', requireWealth: 'WEALTH', requireDebt: 'DEBT', minBackground: 'BACKGROUND', maxBackground: 'BACKGROUND', requireUnitLevelMin: 'UNIT_LEVEL', requireRankMin: 'RANK', requireBodyMax: 'BODY_MAX', requireChildAgeMax: 'CHILD_AGE', requireRankMax: 'RANK_MAX', requireUnitLevelMax: 'UNIT_LEVEL_MAX', maxWealth: 'WEALTH_MAX', maxReputation: 'REPUTATION_MAX', requireChildAgeMin: 'CHILD_AGE', requirePeopleReputationMax: 'PEOPLE_REPUTATION', requireHeatOrRisk: 'HEAT_OR_RISK', pool: 'UNIT_POOL'
+      requireMentalPressure: 'MENTAL_PRESSURE', requireRisk: 'RISK', requireHeat: 'HEAT', requireBody: 'BODY', requireAppearance: 'APPEARANCE', requireFamily: 'FAMILY', requireLuck: 'LUCK', requirePositionWeight: 'POSITION_WEIGHT', requireWealth: 'WEALTH', requireDebt: 'DEBT', minBackground: 'BACKGROUND', maxBackground: 'BACKGROUND', requireUnitLevelMin: 'UNIT_LEVEL', requireRankMin: 'RANK', requireYearsWorkedMin: 'WORK_YEARS', requireBodyMax: 'BODY_MAX', requireChildAgeMax: 'CHILD_AGE', requireRankMax: 'RANK_MAX', requireUnitLevelMax: 'UNIT_LEVEL_MAX', maxWealth: 'WEALTH_MAX', maxReputation: 'REPUTATION_MAX', requireChildAgeMin: 'CHILD_AGE', requirePeopleReputationMax: 'PEOPLE_REPUTATION', requireHeatOrRisk: 'HEAT_OR_RISK', pool: 'UNIT_POOL'
     };
     const codesForGates = gates => gates.filter(gate => !gate.passed).map(gate => reasonCodeByGate[gate.key] || String(gate.key || 'GATE').toUpperCase());
 
@@ -463,9 +475,11 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
       if ((event.requireContactMin !== undefined || event.requireContactMax !== undefined)) {
         const contact = event.requireContact ? contacts.find(item => contactMatches(item, event.requireContact)) : contacts.find(item => item.archetype === event.requireContactArchetype || (item.roles || []).includes(event.requireContactArchetype));
         const relation = contact ? Number(contact.relation) || 0 : 0;
-        if (event.requireContactMin !== undefined && relation < Number(event.requireContactMin)) fail('contactRelation', '联系人关系值不足');
-        if (event.requireContactMax !== undefined && relation > Number(event.requireContactMax)) fail('contactRelation', '联系人关系值超过事件允许上限');
-        if (event.requireContactMin === undefined || relation >= Number(event.requireContactMin)) pass('contactRelation', '联系人关系值满足');
+        const meetsContactMin = event.requireContactMin === undefined || relation >= Number(event.requireContactMin);
+        const meetsContactMax = event.requireContactMax === undefined || relation <= Number(event.requireContactMax);
+        if (!meetsContactMin) fail('contactRelation', '联系人关系值不足');
+        if (!meetsContactMax) fail('contactRelation', '联系人关系值超过事件允许上限');
+        if (meetsContactMin && meetsContactMax) pass('contactRelation', '联系人关系值满足');
       }
       if (!hasContactArchetype(event)) fail('contactArchetype', '缺少指定类型联系人：' + event.requireContactArchetype);
       if (!hasContactStatus(event)) fail('contactStatus', '缺少指定状态联系人：' + event.requireContactStatus);
@@ -499,7 +513,8 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
         ['requireDebt', debt(), '负债未达到事件门槛'],
         ['minBackground', hidden.background, '背景资源不足'],
         ['requireUnitLevelMin', unitLevel, '单位层级不足'],
-        ['requireRankMin', p.leadershipRank, '职级不足']
+        ['requireRankMin', p.leadershipRank, '职级不足'],
+        ['requireYearsWorkedMin', p.yearsWorked, '工龄不足']
       ];
       numericGates.forEach(([key, value, message]) => {
         if (event[key] !== undefined && Number(value) < Number(event[key])) fail(key, message + '（需要 ' + event[key] + '）');
@@ -681,6 +696,7 @@ GameEngine.prototype.generateEvent = function(force) {
       // 职级条件（如中央遴选须厅级）
       if (e.requireRankMin !== undefined && p.leadershipRank < e.requireRankMin) return false;
       if (e.requireRankMax !== undefined && p.leadershipRank > e.requireRankMax) return false;
+      if (e.requireYearsWorkedMin !== undefined && p.yearsWorked < e.requireYearsWorkedMin) return false;
       // 政治面貌条件
       if (e.requirePolitical !== undefined && p.political !== e.requirePolitical) return false;
       // 财富条件（经济决策事件）

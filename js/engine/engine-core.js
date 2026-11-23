@@ -301,6 +301,11 @@ class GameEngine {
   syncWealth() { const f = this.state.player.finance; this.state.player.wealth = f.cash - this.debtTotal(); }
   debtTotal() { return (this.state.player.finance.debts || []).reduce((s, d) => s + d.principal, 0); }
   debtTypeTotal(type) { return (this.state.player.finance.debts || []).filter(d => d.type === type).reduce((s, d) => s + d.principal, 0); }
+  syncDebtFlags() {
+    const flags=this.state.player.flags||(this.state.player.flags={});
+    if (this.debtTypeTotal('personal') <= 0.5) { delete flags.borrowed; delete flags.borrowed_since; }
+    if (this.debtTypeTotal('online') <= 0.5) { delete flags.loanOnline; delete flags.loanOnline_since; }
+  }
   addDebt(type, amount) {
     if (!amount || amount <= 0) return;
     const f = this.state.player.finance;
@@ -322,6 +327,7 @@ class GameEngine {
     f.cash -= paid;
     f.debts = f.debts.filter(d => d.principal > 0.5);
     this.syncWealth();
+    this.syncDebtFlags();
     return paid;
   }
   // v2.1.5 H1 出坑通道：强制还本直接减本金（不扣现金——还本来自工资结余的"省吃俭用+外快"，避免还本抽干现金导致利息滚入本金的死亡螺旋）
@@ -336,6 +342,7 @@ class GameEngine {
     }
     f.debts = f.debts.filter(d => d.principal > 0.5);
     this.syncWealth();
+    this.syncDebtFlags();
     return paid;
   }
   cashIn(amount) { if (!this.state.player.finance) this.initFinance(); const f = this.state.player.finance; f.cash += Math.max(0, Math.floor(amount)); this.syncWealth(); }
@@ -347,6 +354,7 @@ class GameEngine {
     f.cash -= out;
     if (amt > out) {
       if (!this.state.player.flags) this.state.player.flags = {};
+      if (!this.state.player.flags.loanOnline) this.state.player.flags.loanOnline_since = this.state.player.age;
       this.state.player.flags.loanOnline = true; // v2.59 催收链接通：现金不足自动转高利贷时设 loanOnline flag（e746 债务危机事件原永不触发）
       this.addDebt('online', amt - out);
     } else this.syncWealth();
@@ -356,18 +364,23 @@ class GameEngine {
   inDebt() { return this.debtTotal() > 0.5; }
   // 借贷债务清偿（v2.13）：现金支付抵扣，现金不足部分豁免（如家人/组织帮还清），不凭空造钱
   // v2.44 豁免代价：未全额清偿靠人情/组织兜底，信誉受损并留档（真实感）
-  settleBorrowDebt() {
+  settleBorrowDebt(types) {
     const f = this.state.player.finance;
-    const total = this.debtTypeTotal('personal') + this.debtTypeTotal('online');
-    if (total <= 0) return;
+    const targetTypes = Array.isArray(types) ? types : (typeof types === 'string' ? [types] : ['personal', 'online']);
+    const total = targetTypes.reduce((sum, type) => sum + this.debtTypeTotal(type), 0);
+    if (total <= 0) { this.syncDebtFlags(); return; }
     const paid = Math.min(f.cash, total);
     f.cash -= paid;
     const shortfall = Math.round(total - paid);
-    f.debts = f.debts.filter(d => d.type !== 'personal' && d.type !== 'online');
+    f.debts = f.debts.filter(d => !targetTypes.includes(d.type));
     this.syncWealth();
+    const flags=this.state.player.flags||{};
+    if (targetTypes.includes('personal')) { delete flags.borrowed; delete flags.borrowed_since; }
+    if (targetTypes.includes('online')) { delete flags.loanOnline; delete flags.loanOnline_since; }
+    this.syncDebtFlags();
     if (shortfall > 0) {
       this.state.player.reputation = Math.max(0, (this.state.player.reputation || 50) - 2);
-      this.state.player.careerLog.push({ year: this.state.player.age, event: `⚠️ 负债 ${total} 只还上 ${paid}，剩余 ${shortfall} 靠人情/组织兜底——信誉受损` });
+      this.state.player.careerLog.push({ year: this.state.player.age, event: '⚠️ 负债 ' + total + ' 只还上 ' + paid + '，剩余 ' + shortfall + ' 靠人情/组织兜底——信誉受损' });
     }
   }
   // v2.15.1：债务豁免（家人/组织帮还，不扣现金，从利率最高的债务开始抵扣）
@@ -382,6 +395,7 @@ class GameEngine {
     }
     f.debts = f.debts.filter(d => d.principal > 0.5);
     this.syncWealth();
+    this.syncDebtFlags();
   }
   addAttr(attr) { if (this.state.attrPoints <= 0) return false; if (!(attr in this.state.attrs)) return false; this.state.attrs[attr]++; this.state.attrPoints--; return true; }
   removeAttr(attr) { if (this.state.attrs[attr] <= -5) return false; this.state.attrs[attr]--; this.state.attrPoints++; return true; }

@@ -122,6 +122,7 @@ renderCareer() {
          </div>
         </div>
         ${this.renderReceiptThread(p)}
+        ${this.renderLifePathProfile()}
         ${this.renderContinuingStories(p)}
         ${this.renderCausalInboxSummary()}
         <div class="life-map-entry"><button type="button" class="btn btn-secondary" onclick="App.showLifeMap()">🧭 查看人生线路图 · 选择与后果</button></div>
@@ -129,6 +130,14 @@ renderCareer() {
         ${this.renderPlanningBoard ? this.renderPlanningBoard(p, h) : '<div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.nextYear()">进入下一年</button></div>'}
       </div>
     `;
+  },
+  // 人生路线画像：四条路线同时成长，不把玩家锁死在单一流派。
+  renderLifePathProfile() {
+    const profile=engine.getLifePathProfile();
+    const labels={career:'仕途',integrity:'原则',family:'家庭',network:'人脉'};
+    const rows=profile.routes.map(r=>`<div class="life-path-row"><div class="life-path-copy"><div><strong>${r.name}</strong><span>${r.score}/100</span></div><small>${r.subtitle} · ${r.detail}</small></div><div class="life-path-track" role="progressbar" aria-label="${r.name}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${r.score}"><i style="width:${r.score}%"></i></div></div>`).join('');
+    const top=profile.routes.filter(r=>r.score>=Math.max(55,profile.routes[0].score-12)).map(r=>r.name);
+    return `<section class="life-path-panel"><div class="life-path-heading"><div><div class="thread-kicker">人生发展 · 动态画像</div><strong>你正在成为怎样的人</strong></div><span>${profile.balanced?'多线均衡':'优势路线：'+(profile.routes.find(r=>r.id===profile.dominant)?.name||'持续成长')}</span></div><div class="life-path-list">${rows}</div><p class="life-path-note">这些画像来自真实经历与当前状态，会随年龄、选择和关系变化。没有唯一正确路线，也不会因为某项分数低就失去其他人生可能。</p></section>`;
   },
   // 人物支线：只提示已知经历与等待时间，不提前泄露结局。
   renderReceiptThread(p) {
@@ -215,8 +224,14 @@ renderCareer() {
       {name:'档案柜里的回执',tag:f.receiptOpen?'公开复核':f.receiptQuiet?'内部协调':'未经历',active:!!(f.receiptOpen||f.receiptQuiet),finished:seen.includes(f.receiptOpen?'arc_receipt_open_3':'arc_receipt_quiet_3')},
       {name:'交接本上的空格',tag:f.teamShared?'共同承担':f.teamDeferred?'暂缓调休':'未经历',active:!!(f.teamShared||f.teamDeferred),finished:seen.includes(f.teamShared?'arc_team_shared_3':'arc_team_deferred_3')},
       {name:'老同学的申请书',tag:f.classmateOpen?'公开协助':f.classmateFavor?'私下请托':f.classmateBoundaries?'守住边界':'未经历',active:!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries),finished:seen.some(id=>id.startsWith('arc_classmate_')&&id.endsWith('_3'))},
-      {name:'冰箱上的蓝色便签',tag:f.familyClinicPresent?'陪伴家人':f.familyClinicAbsent?'投入事业':'未经历',active:!!(f.familyClinicPresent||f.familyClinicAbsent),finished:seen.includes(f.familyClinicPresent?'arc_family_present_2':'arc_family_absent_2')}
+      {name:'冰箱上的蓝色便签',tag:f.familyClinicPresent?'陪伴家人':f.familyClinicAbsent?'投入事业':'未经历',active:!!(f.familyClinicPresent||f.familyClinicAbsent),finished:seen.includes(f.familyClinicPresent?'arc_family_present_2':'arc_family_absent_2')},
+      {name:'岗位发展',tag:f.lifeCareerHandoff?'专班 · 已交接':f.lifeCareerContinued?'专班 · 继续负责':f.lifeCareerLead?'重点专班':f.lifeCareerExpert?'专业深耕':'未经历',active:!!(f.lifeCareerLead||f.lifeCareerExpert),finished:seen.includes('arc_life_career_3')},
+      {name:'原则与担当',tag:f.lifeIntegrityFullDisclosure?'完整披露':f.lifeIntegrityPending?'保留待核':f.lifeIntegrityOpen?'公开复核':f.lifeIntegrityQuiet?'程序补正':'未经历',active:!!(f.lifeIntegrityOpen||f.lifeIntegrityQuiet),finished:seen.includes('arc_life_integrity_3')},
+      {name:'家庭的约定',tag:f.lifeFamilySchedule?'固定陪伴':f.lifeFamilyShared?'共同分工':f.lifeFamilyPresent?'守住约定':f.lifeFamilyCareer?'承担任务':'未经历',active:!!(f.lifeFamilyPresent||f.lifeFamilyCareer),finished:seen.includes('arc_life_family_3')},
+      {name:'社会连接',tag:f.lifeNetworkPublished?'公开台账':f.lifeNetworkTransferred?'正式移交':f.lifeNetworkPublic?'公开答疑':f.lifeNetworkSelective?'联络机制':'未经历',active:!!(f.lifeNetworkPublic||f.lifeNetworkSelective),finished:seen.includes('arc_life_network_3')}
     ];
+    const lifeCross=!!(f.lifeConfluenceOpen||f.lifeConfluenceFamily||f.lifeConfluenceDeferred);
+    const lifeCrossDone=seen.includes('arc_life_confluence_2');
     const branch=f.crossOpen?'公开核验':f.crossPhase?'分批推进':f.crossSeal?'按期封档':'尚未触发';
     const active=!!(f.crossOpen||f.crossPhase||f.crossSeal), reviewed=!!(f.crossOpenReviewed||f.crossPhaseReviewed||f.crossSealReviewed);
     const endings=['arc_crossroads_open_3','arc_crossroads_phase_3','arc_crossroads_seal_3'];
@@ -234,6 +249,7 @@ renderCareer() {
       <p class="life-map-note">${App.escapeHtml(next)}</p></div>
       <div class="life-map-link" aria-hidden="true">↓ 两年后的复核 → 五年后的回响</div>
       <div class="life-map-group"><div class="thread-kicker">时间留下的后果</div>${node('两年后的旧事',reviewed?'已发生':active?'等待兑现':'尚未开启',reviewed,false)}${node('五年后的余波',resolved?'已经历':reviewed?'等待兑现':'尚未开启',resolved,resolved)}${node('制度的回声',seen.includes('arc_crossroads_echo')?'新一代接过了旧问题':resolved?'等待新的选择':'尚未开启',seen.includes('arc_crossroads_echo'),seen.includes('arc_crossroads_echo'))}</div>
+      <div class="life-map-group"><div class="thread-kicker">四线交汇 · 共同承担的责任</div>${node('同一张桌上的四种责任',lifeCross?'已作出交汇选择':'等待至少两条路线完成阶段复盘',lifeCross,lifeCrossDone)}<p class="life-map-note">${lifeCrossDone?(f.lifeConfluenceLegacy?'你选择把经验交给后来者。':f.lifeConfluenceUnresolved?'你选择保留未决事项，允许后来者重新判断。':'多条路线的责任已完成一次复盘。'):lifeCross?'三年后的共同后果仍在发展。':'不同人生路线完成两条阶段复盘后，才有机会相遇。'}</p></div>
       <div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.returnToCurrentFlow()">返回游戏</button></div></div>`);
   },
   // v2.48 档案全程回看：生涯留痕全量列表（按年倒序，滚动容器）
@@ -477,6 +493,7 @@ renderCareer() {
       borrow: { cost: 0, fn: () => { // v2.44 额度递增：借得越多、欠得越多，额度越高
         const bc = (p.flags.borrowCount || 0);
         const amt = 20 + bc * 8 + Math.min(15, Math.floor(engine.debtTotal() / 20));
+        if (!p.flags.borrowed) p.flags.borrowed_since = p.age;
         p.flags.borrowed = true; p.flags.borrowCount = bc + 1;
         engine.addDebt('personal', amt); engine.cashIn(amt);
         h.mentalPressure = Math.max(0, h.mentalPressure - 10); h.familyPressure = Math.max(0, h.familyPressure - 5);
@@ -484,11 +501,12 @@ renderCareer() {
       loanOnline: { cost: 0, fn: () => { // v2.44 额度递增：网贷平台按信用与欠款额度爬升
         const lc = (p.flags.loanCount || 0);
         const amt = 35 + lc * 12 + Math.min(20, Math.floor(engine.debtTotal() / 15));
+        if (!p.flags.loanOnline) p.flags.loanOnline_since = p.age;
         p.flags.loanOnline = true; p.flags.loanCount = lc + 1;
         engine.addDebt('online', amt); engine.cashIn(amt);
         h.mentalPressure = Math.max(0, h.mentalPressure - 15);
         p.careerLog.push({ year: p.age, event: '📲 网贷秒到账（现金+' + amt + ' / 负债+' + amt + '）——额度越滚越高，利息也会咬人' }); } },
-      gamble: { cost: 10, fn: () => { const r = engine.randf(); if (r < 0.10) { engine.cashIn(30); p.careerLog.push({ year: p.age, event: '🎲 博彩中了！一夜回本（+30）' }); } else if (r < 0.70) { engine.cashOut(10); p.careerLog.push({ year: p.age, event: '🎲 博彩又输了（-10）' }); } else { p.flags.gamblingAddict = true; engine.cashOut(20); p.careerLog.push({ year: p.age, event: '🎲 博彩上头，越陷越深（-20，已上瘾）' }); } if (!p.flags.gambleStreak) { p.flags.gambleStreak = 1; p.flags.gambleLastYear = p.yearsWorked || 0; p.flags.gambleMiss = 0; p.careerLog.push({ year: p.age, event: '⚠️ 你染上了赌瘾——此后每隔几年，牌局都会找上你' }); } } },
+      gamble: { cost: 10, fn: () => { const r = engine.randf(); if (r < 0.10) { engine.cashIn(30); p.careerLog.push({ year: p.age, event: '🎲 博彩中了！一夜回本（+30）' }); } else if (r < 0.70) { engine.cashOut(10); p.careerLog.push({ year: p.age, event: '🎲 博彩又输了（-10）' }); } else { if (!p.flags.gamblingAddict) p.flags.gamblingAddict_since = p.age; p.flags.gamblingAddict = true; engine.cashOut(20); p.careerLog.push({ year: p.age, event: '🎲 博彩上头，越陷越深（-20，已上瘾）' }); } if (!p.flags.gambleStreak) { p.flags.gambleStreak = 1; p.flags.gambleLastYear = p.yearsWorked || 0; p.flags.gambleMiss = 0; p.careerLog.push({ year: p.age, event: '⚠️ 你染上了赌瘾——此后每隔几年，牌局都会找上你' }); } } },
       smartHome: { cost: 30, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 5); h.mentalPressure = Math.max(0, h.mentalPressure - 3); p.careerLog.push({ year: p.age, event: '🏠 全屋智能升级，回家就是享受' }); } },
       gym: { cost: 45, fn: () => { engine.gainAttr('body', 2, 10); h.mentalPressure = Math.max(0, h.mentalPressure - 4); p.careerLog.push({ year: p.age, event: '🏋️ 私教一对一，身材和精力都回来了（体质+2）' }); } },
       therapy: { cost: 35, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 8); p.careerLog.push({ year: p.age, event: '🛋️ 心理咨询师帮你理清了心结（压力-8）' }); } },
@@ -843,7 +861,12 @@ renderCareer() {
   },
   handleEventChoice(idx) {
     this.safeProcess(() => {
-      engine.handleEventChoice(idx);
+      const activeEvent = engine.getState().currentEvent;
+      const selectedChoice = activeEvent && activeEvent.choices ? activeEvent.choices[idx] : null;
+      const resolved = engine.handleEventChoice(idx);
+      if (resolved !== false && selectedChoice && selectedChoice.result && typeof this.showToast === 'function') {
+        this.showToast(selectedChoice.result, 'info', 4200);
+      }
       if (typeof this.saveCheckpoint === 'function') this.saveCheckpoint('event-choice'); else engine.saveState();
       const p = engine.getPlayer();
       if (p.ending) {

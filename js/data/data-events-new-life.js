@@ -3,38 +3,38 @@
 // 定位：家庭/社交/健康等生活类事件
 const gd_events_new_life = [
   // ====== 家庭生活类（25个） ======
-  { id: 'enl001', stage: 'life', eventType: 'choice', weight: 5, title: '催婚', text: '周末回家吃饭，老妈端上一锅汤后突然叹气："隔壁王阿姨家闺女都生二胎了，你啥时候带个对象回来？"老爸在旁边默默拨弄着遥控器，假装没听见。', choices: [
+  { id: 'enl001', stage: 'life', eventType: 'choice', weight: 5, requireSingle: true, year: [22, 45], title: '催婚', text: '周末回家吃饭，老妈端上一锅汤后突然叹气："隔壁王阿姨家闺女都生二胎了，你啥时候带个对象回来？"老爸在旁边默默拨弄着遥控器，假装没听见。', choices: [
     { text: '笑着答应明天就去相亲', effects: {eq: 1, familyPressure: -2, mentalPressure: 1} },
     { text: '认真解释自己想先立业', effects: {iq: 1, familyPressure: 2, mentalPressure: 2} },
     { text: '岔开话题聊老爸的钓鱼', effects: {eq: 1, mentalPressure: -1, familyPressure: 1} },
     { text: '低头喝汤装作没听见', effects: {mentalPressure: -2, familyPressure: 2, eq: -1} }
   ]},
-  { id: 'enl002', stage: 'life', eventType: 'choice', weight: 4, title: '催生', text: '结婚两年，婆婆突然寄来一箱婴儿用品，还附了张纸条："趁年轻身体好，赶紧要个孩子。"你看着那堆小衣服，表情复杂。', choices: [ // v2.67 人称修复（原'老婆看着'——男女性别通用视角矛盾）
-    { text: '和老婆商量顺其自然', effects: {eq: 2, familyPressure: -1, mentalPressure: -1} },
+  { id: 'enl002', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, requireNoChild: true, year: [24, 45], title: '催生', text: '结婚两年，家里长辈突然寄来一箱婴儿用品，还附了张纸条："趁年轻身体好，赶紧要个孩子。"你看着那堆小衣服，表情复杂。', choices: [ // v2.67 人称修复（原'老婆看着'——男女性别通用视角矛盾）
+    { text: '和伴侣商量顺其自然', effects: {eq: 2, familyPressure: -1, mentalPressure: -1} },
     { text: '决定开始备孕计划', effects: {familyPressure: -3, mentalPressure: 2, wealth: -20, desire: 1} },
-    { text: '委婉告诉婆婆还要再等等', effects: {familyPressure: 2, mentalPressure: 2, integrity: 1} },
+    { text: '委婉告诉家里长辈还要再等等', effects: {familyPressure: 2, mentalPressure: 2, integrity: 1} },
     { text: '把婴儿用品先收进柜子', effects: {mentalPressure: 2, familyPressure: 1, eq: -1} }
   ]},
-  { id: 'enl003', stage: 'life', eventType: 'choice', weight: 6, title: '加班抱怨', text: '连续加班一周，今晚回家发现老婆已经睡了，餐桌上留着一张便条："又加班？我和孩子都快忘了你长啥样了。"旁边是一盘凉透的菜。', choices: [
+  { id: 'enl003', stage: 'life', eventType: 'choice', weight: 6, requireMarried: true, requireChild: true, title: '加班抱怨', text: '连续加班一周，今晚回家发现伴侣已经睡了，餐桌上留着一张便条："又加班？我和孩子都快忘了你长啥样了。"旁边是一盘凉透的菜。', choices: [
     { text: '热热菜默默吃完洗好碗', effects: {eq: 1, familyPressure: -2, mentalPressure: 1, integrity: 1} },
     { text: '第二天请假陪家人一天', effects: {eq: 2, familyPressure: -3, workAbility: -1, mentalPressure: -1} },
     { text: '写张回条道歉并承诺补偿', effects: {eq: 1, familyPressure: -1, mentalPressure: -1} },
     { text: '叹口气把便条收进抽屉', effects: {familyPressure: 3, mentalPressure: -1, eq: -2} }
   ]},
-  { id: 'enl004', stage: 'life', eventType: 'choice', weight: 5, title: '择校焦虑', text: '孩子马上要上小学了，老婆研究了一圈学校排名，焦虑得睡不着觉："好学校要户籍、要社保、要积分，咱们一样都不占优势。"', choices: [
+  { id: 'enl004', stage: 'life', eventType: 'choice', weight: 5, requireMarried: true, requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 7, title: '择校焦虑', text: '孩子马上要上小学了，伴侣研究了一圈学校排名，焦虑得睡不着觉："好学校要户籍、要社保、要积分，咱们一样都不占优势。"', choices: [
     { text: '找中介咨询择校方案', effects: {iq: 2, wealth: -30, mentalPressure: 2, familyPressure: -1} },
     { text: '就近入学不折腾孩子', effects: {familyPressure: -2, mentalPressure: -1, integrity: 1, eq: 1} },
     { text: '托朋友打听民办学校', effects: {background: 2, wealth: -50, familyPressure: -1, mentalPressure: 2} },
     { text: '自己研究政策尽力而为', effects: {iq: 2, workAbility: 1, mentalPressure: 3, familyPressure: 1} }
   ]},
-  { id: 'enl005', stage: 'life', eventType: 'choice', weight: 4, title: '学区房急售', text: '中介打来电话，说有一套学区房急售，价格比市场低两成，但要求三天内全款。这套房子对应的是全市排名前三的小学。', choices: [
+  { id: 'enl005', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 7, title: '学区房急售', text: '中介打来电话，说有一套学区房急售，价格比市场低两成，但要求三天内全款。这套房子对应的是全市排名前三的小学。', choices: [
     { text: '东拼西凑也要拿下', effects: {wealth: -100, familyPressure: 3, mentalPressure: 3, desire: 2, eq: 1} },
     { text: '果断放弃超出能力范围', effects: {integrity: 2, mentalPressure: -1, familyPressure: 2, wealth: 0} },
     { text: '找人合伙投资这套房', effects: {background: 2, wealth: -100, risk: 3, mentalPressure: 2} },
     { text: '先付定金拖延时间凑钱', effects: {risk: 4, mentalPressure: -2, wealth: -10, familyPressure: 2} }
   ]},
-  { id: 'enl006', stage: 'life', eventType: 'choice', weight: 3, title: '二胎之争', text: '老妈突然提出想让你再生一个，理由是"独生子女太孤单，将来养老压力也大"。老婆听完后默默把电视音量调大了一格。', choices: [
-    { text: '认真和老婆讨论二胎利弊', effects: {eq: 2, iq: 2, familyPressure: 1, mentalPressure: 1} },
+  { id: 'enl006', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, requireChild: true, title: '二胎之争', text: '老妈突然提出想让你再生一个，理由是"独生子女太孤单，将来养老压力也大"。伴侣听完后默默把电视音量调大了一格。', choices: [
+    { text: '认真和伴侣讨论二胎利弊', effects: {eq: 2, iq: 2, familyPressure: 1, mentalPressure: 1} },
     { text: '婉拒老妈说经济不允许', effects: {familyPressure: 2, mentalPressure: 1, integrity: 1, wealth: 0} },
     { text: '敷衍说再考虑考虑', effects: {familyPressure: 1, mentalPressure: 0, eq: -1} },
     { text: '支持老妈的想法开始准备', effects: {familyPressure: -2, mentalPressure: 3, wealth: -30, desire: 1} }
@@ -45,13 +45,13 @@ const gd_events_new_life = [
     { text: '几兄妹凑钱送养老院', effects: {familyPressure: 2, mentalPressure: 2, wealth: -20, integrity: -1} },
     { text: '轮流回家照顾老人', effects: {integrity: 2, workAbility: -2, mentalPressure: 3, eq: 1} }
   ]},
-  { id: 'enl008', stage: 'life', eventType: 'choice', weight: 4, title: '岳父母来访', text: '岳父母说要来住半个月，老婆高兴地开始收拾客房。你想起上次他们来时，岳母对你做饭手艺的评价——"还不如食堂师傅"。', choices: [
+  { id: 'enl008', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '伴侣父母来访', text: '伴侣的父母说要来住半个月，伴侣高兴地开始收拾客房。你想起上次他们来时，伴侣的母亲对你做饭手艺的评价——"还不如食堂师傅"。', choices: [
     { text: '热情欢迎并提前学几道菜', effects: {eq: 2, mentalPressure: 2, familyPressure: -2, iq: 1} },
     { text: '订个好酒店让他们住得舒服', effects: {wealth: -30, eq: 1, familyPressure: -3, mentalPressure: -1} },
     { text: '主动申请出差避开锋芒', effects: {workAbility: 1, familyPressure: 2, eq: -2, mentalPressure: 1} },
     { text: '硬着头皮接待保持微笑', effects: {eq: 1, mentalPressure: 3, familyPressure: 1, integrity: 1} }
   ]},
-  { id: 'enl009', stage: 'life', eventType: 'choice', weight: 4, title: '装修超预算', text: '装修队报价超预算五万，包工头拍着胸脯说"材料都升级了，保你用二十年"。老婆看着银行余额，眼神里写满了怀疑。', choices: [
+  { id: 'enl009', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '装修超预算', text: '装修队报价超预算五万，包工头拍着胸脯说"材料都升级了，保你用二十年"。伴侣看着银行余额，眼神里写满了怀疑。', choices: [
     { text: '咬牙追加预算保证质量', effects: {wealth: -50, familyPressure: 2, mentalPressure: 2, desire: 1} },
     { text: '坚持按原预算砍掉部分项目', effects: {integrity: 2, wealth: -10, mentalPressure: 2, familyPressure: 1} },
     { text: '换一家装修公司比价', effects: {iq: 2, mentalPressure: 3, wealth: -20} },
@@ -69,7 +69,7 @@ const gd_events_new_life = [
     { text: '自己上网买配件动手修', effects: {iq: 2, workAbility: 1, wealth: -5, mentalPressure: 3, body: -1} },
     { text: '先凑合用电风扇顶一阵', effects: {wealth: 0, mentalPressure: 2, body: -1, familyPressure: 1} }
   ]},
-  { id: 'enl012', stage: 'life', eventType: 'choice', weight: 4, title: '邻居投诉孩子', text: '楼下邻居投诉你家孩子晚上跑跳影响休息，态度强硬地说"再这样我就报警了"。孩子委屈地说自己只是在玩玩具。', choices: [
+  { id: 'enl012', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 3, requireChildAgeMax: 17, title: '邻居投诉孩子', text: '楼下邻居投诉你家孩子晚上跑跳影响休息，态度强硬地说"再这样我就报警了"。孩子委屈地说自己只是在玩玩具。', choices: [
     { text: '上门道歉并买点水果表示歉意', effects: {eq: 2, wealth: -10, mentalPressure: -1, reputation: 1} },
     { text: '在家里铺上隔音地垫', effects: {wealth: -20, mentalPressure: 1, familyPressure: -1, eq: 1} },
     { text: '解释孩子小难免有动静', effects: {eq: -1, mentalPressure: 2, risk: 1} },
@@ -93,20 +93,20 @@ const gd_events_new_life = [
     { text: '赔偿楼下邻居损失息事宁人', effects: {wealth: -40, eq: 1, reputation: 1, mentalPressure: 2} },
     { text: '报保险走家财险理赔', effects: {iq: 1, wealth: -5, mentalPressure: 2} }
   ]},
-  { id: 'enl016', stage: 'life', eventType: 'choice', weight: 4, title: '收养流浪猫', text: '孩子放学带回一只流浪猫，眼巴巴地看着你："它好可怜，我们能收养它吗？"老婆在旁边使劲朝你使眼色。', choices: [
+  { id: 'enl016', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 17, title: '收养流浪猫', text: '孩子放学带回一只流浪猫，眼巴巴地看着你："它好可怜，我们能收养它吗？"伴侣在旁边使劲朝你使眼色。', choices: [
     { text: '同意收养并教会孩子负责', effects: {eq: 2, familyPressure: -1, mentalPressure: -1, wealth: -10, desire: 1} },
     { text: '送到动物收容所', effects: {integrity: 2, mentalPressure: 1, familyPressure: 1} },
     { text: '帮它找领养家庭', effects: {eq: 1, background: 1, mentalPressure: 1, integrity: 1} },
     { text: '坚决不同意送走', effects: {familyPressure: 2, mentalPressure: -1, eq: -2, integrity: -1} }
   ]},
-  { id: 'enl017', stage: 'life', eventType: 'choice', weight: 4, title: '家庭旅行', text: '难得全家都有空，计划一次家庭旅行。孩子想去迪士尼，老婆想去三亚，你想回老家看父母。', choices: [
+  { id: 'enl017', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, requireChild: true, title: '家庭旅行', text: '难得全家都有空，计划一次家庭旅行。孩子想去迪士尼，伴侣想去三亚，你想回老家看父母。', choices: [
     { text: '尊重孩子意愿去迪士尼', effects: {wealth: -50, eq: 1, familyPressure: -2, mentalPressure: -1, desire: 1} },
     { text: '去三亚全家放松', effects: {wealth: -40, eq: 1, body: 1, mentalPressure: -2, familyPressure: -1} },
     { text: '回老家陪伴父母', effects: {eq: 1, familyPressure: -3, integrity: 2, mentalPressure: -1} },
     { text: '折中方案周边自驾游', effects: {wealth: -20, eq: 1, mentalPressure: -1, familyPressure: -1, iq: 1} }
   ]},
-  { id: 'enl018', stage: 'life', eventType: 'choice', weight: 5, title: '过年回谁家', text: '过年回谁家又成了话题。老婆说去年去了你家，今年该去她家；老妈打电话说准备了你要吃的菜；丈母娘发来视频说外孙想姥姥了。', choices: [
-    { text: '轮流制今年去老婆家', effects: {eq: 2, familyPressure: -2, mentalPressure: 1, integrity: 1} },
+  { id: 'enl018', stage: 'life', eventType: 'choice', weight: 5, requireMarried: true, requireChild: true, title: '过年回谁家', text: '过年回谁家又成了话题。伴侣说去年去了你家，今年该去对方家；老妈打电话说准备了你要吃的菜；伴侣的母亲发来视频，说孩子想她了。', choices: [
+    { text: '轮流制今年去伴侣家', effects: {eq: 2, familyPressure: -2, mentalPressure: 1, integrity: 1} },
     { text: '两边都去赶场过年', effects: {mentalPressure: 4, body: -1, wealth: -20, eq: 1, familyPressure: -1} },
     { text: '接双方父母来自己家', effects: {wealth: -30, eq: 1, mentalPressure: 3, familyPressure: -2} },
     { text: '各回各家各找各妈', effects: {eq: -1, mentalPressure: -1, familyPressure: 2, integrity: -1} }
@@ -129,7 +129,7 @@ const gd_events_new_life = [
     { text: '带父母出去旅游过生日', effects: {wealth: -40, eq: 1, familyPressure: -2, body: 1, mentalPressure: -1} },
     { text: '买个金镯子作为寿礼', effects: {wealth: -30, eq: 1, familyPressure: -2, desire: 1} }
   ]},
-  { id: 'enl022', stage: 'life', eventType: 'choice', weight: 3, title: '纪念日', text: '结婚纪念日快到了，老婆"无意中"提起同事收到了99朵玫瑰。你看了眼银行卡余额，又看了眼日历。', choices: [
+  { id: 'enl022', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '纪念日', text: '结婚纪念日快到了，伴侣"无意中"提起同事收到了99朵玫瑰。你看了眼银行卡余额，又看了眼日历。', choices: [
     { text: '订99朵玫瑰制造浪漫', effects: {wealth: -20, eq: 2, familyPressure: -2, desire: 1, mentalPressure: -1} },
     { text: '亲手做一顿烛光晚餐', effects: {eq: 2, wealth: -10, mentalPressure: 1, integrity: 1, familyPressure: -1} },
     { text: '买个小礼物表达心意', effects: {wealth: -15, eq: 1, familyPressure: -1, mentalPressure: -1} },
@@ -147,10 +147,10 @@ const gd_events_new_life = [
     { text: '多方咨询专家意见', effects: {iq: 2, mentalPressure: 3, background: 1, familyPressure: 1} },
     { text: '用医保范围内最优方案', effects: {iq: 2, wealth: -20, mentalPressure: 2, integrity: 1} }
   ]},
-  { id: 'enl025', stage: 'life', eventType: 'choice', weight: 3, title: '请钟点工', text: '工作和家务压得喘不过气，朋友建议请个钟点工阿姨。老婆担心"陌生人进家不安全"，又觉得"花钱请人不如自己干"。', choices: [
+  { id: 'enl025', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '请钟点工', text: '工作和家务压得喘不过气，朋友建议请个钟点工阿姨。伴侣担心"陌生人进家不安全"，又觉得"花钱请人不如自己干"。', choices: [
     { text: '通过正规公司请阿姨', effects: {wealth: -20, mentalPressure: -3, familyPressure: -2, eq: 1} },
     { text: '请老乡介绍的保姆', effects: {wealth: -15, mentalPressure: -2, risk: 1, background: 1} },
-    { text: '和老婆分工做家务', effects: {eq: 1, mentalPressure: 1, familyPressure: -1, integrity: 1} },
+    { text: '和伴侣分工做家务', effects: {eq: 1, mentalPressure: 1, familyPressure: -1, integrity: 1} },
     { text: '咬牙自己撑着不请人', effects: {mentalPressure: 3, body: -1, familyPressure: 2, wealth: 0} }
   ]},
 
@@ -179,7 +179,7 @@ const gd_events_new_life = [
     { text: '参与集体请客吃饭', effects: {wealth: -15, eq: 1, background: 1, mentalPressure: -1} },
     { text: '写封感谢信表达心意', effects: {integrity: 2, eq: 1, mentalPressure: 1, wealth: 0} }
   ]},
-  { id: 'enl030', stage: 'life', eventType: 'choice', weight: 5, title: '饭局应酬', text: '今晚有饭局，据说是为了"协调"某个项目。你不想去但又怕得罪人，老婆也抱怨"又喝酒，肝还要不要了"。', choices: [
+  { id: 'enl030', stage: 'life', eventType: 'choice', weight: 5, requireMarried: true, title: '饭局应酬', text: '今晚有饭局，据说是为了"协调"某个项目。你不想去但又怕得罪人，伴侣也抱怨"又喝酒，肝还要不要了"。', choices: [
     { text: '硬着头皮去应酬', effects: {background: 2, body: -1, mentalPressure: 2, eq: 1, familyPressure: 2} },
     { text: '借口身体不适推掉', effects: {familyPressure: -1, mentalPressure: 1, background: -1, integrity: 1} },
     { text: '去但不喝酒以茶代酒', effects: {eq: 1, body: 1, background: 1, mentalPressure: 1} },
@@ -203,7 +203,7 @@ const gd_events_new_life = [
     { text: '发个表情包糊弄过去', effects: {eq: 1, mentalPressure: 1, reputation: -1} },
     { text: '潜水装作没看见', effects: {eq: -1, mentalPressure: -2, reputation: -1} }
   ]},
-  { id: 'enl034', stage: 'life', eventType: 'choice', weight: 3, title: '人情往来（随礼）', text: '翻开人情往来本，发现今年光随礼就花了小一万。中秋国庆还有三场婚礼，老婆看完直摇头。', choices: [
+  { id: 'enl034', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '人情往来（随礼）', text: '翻开人情往来本，发现今年光随礼就花了小一万。中秋国庆还有三场婚礼，伴侣看完直摇头。', choices: [
     { text: '该随的还得随保住人情', effects: {wealth: -30, eq: 1, mentalPressure: 2, familyPressure: 2} },
     { text: '远的关系适当降低标准', effects: {wealth: -15, eq: 1, mentalPressure: 1, integrity: 1} },
     { text: '只随近亲好友的礼', effects: {wealth: -10, eq: -1, mentalPressure: 2, reputation: -1} },
@@ -217,21 +217,21 @@ const gd_events_new_life = [
   ]},
   { id: 'enl036', stage: 'life', eventType: 'choice', weight: 3, title: '收礼难题', text: '合作方送来一盒高档茶叶，价值不菲。你想拒绝又怕伤了和气，收下又觉得有违纪之嫌。', choices: [
     { text: '当面婉拒说明纪律', effects: {integrity: 3, mentalPressure: 2, risk: -2, reputation: 1} },
-    { text: '收下但回赠等价礼物', effects: {wealth: -20, eq: 1, integrity: 1, mentalPressure: 1} },
+    { text: '暂时代为保管并登记，按程序移交', effects: {eq: 1, integrity: 3, mentalPressure: 3, risk: -2} },
     { text: '上交纪检备案', effects: {integrity: 3, mentalPressure: 3, risk: -1, reputation: 1} },
-    { text: '转送给其他同事', effects: {eq: 1, integrity: -1, mentalPressure: 1, risk: 1} }
+    { text: '转送给其他同事', effects: {eq: 1, integrity: -2, mentalPressure: 1, risk: 3} }
   ]},
-  { id: 'enl037', stage: 'life', eventType: 'choice', weight: 3, title: '下属送礼', text: '下属送来两瓶茅台，说是"家乡特产表表心意"。你知道这酒不便宜，收了怕欠人情，不收又怕下属难堪。', choices: [
+  { id: 'enl037', stage: 'life', eventType: 'choice', weight: 3, requireContact: 'subordinate', title: '下属送礼', text: '下属送来两瓶茅台，说是"家乡特产表表心意"。你知道这酒不便宜，收了怕欠人情，不收又怕下属难堪。', choices: [
     { text: '婉拒并感谢其心意', effects: {integrity: 2, eq: 1, mentalPressure: 1, risk: -1} },
-    { text: '收下后找机会回礼', effects: {wealth: -15, eq: 1, mentalPressure: 1, risk: 1} },
-    { text: '收下后分给办公室同事', effects: {eq: 1, integrity: -1, mentalPressure: 1} },
+    { text: '收下后找机会回礼', effects: {wealth: -15, eq: 1, mentalPressure: 1, risk: 3, integrity: -3} },
+    { text: '收下后分给办公室同事', effects: {eq: 1, integrity: -3, mentalPressure: 1, risk: 2} },
     { text: '退回并严肃谈话', effects: {integrity: 3, mentalPressure: 3, reputation: 1, eq: -1} }
   ]},
   { id: 'enl038', stage: 'life', eventType: 'choice', weight: 2, title: '退礼技巧', text: '收到一份贵重礼物想退回去，但直接退又显得生分。你搜了一下"退礼技巧"，发现这是一门学问。', choices: [
     { text: '以家人不同意为由退回', effects: {eq: 1, integrity: 2, mentalPressure: 1, risk: -1} },
-    { text: '找机会回赠等价礼物', effects: {wealth: -20, eq: 1, mentalPressure: 1, integrity: 1} },
+    { text: '找合适时机原样退回并说明原则', effects: {eq: 2, mentalPressure: 1, integrity: 3, risk: -2} },
     { text: '用工作理由婉拒', effects: {integrity: 2, mentalPressure: 2, eq: 1} },
-    { text: '收下后捐给慈善机构', effects: {integrity: 3, reputation: 1, mentalPressure: 1, eq: 1} }
+    { text: '按规定登记后交组织统一处置', effects: {integrity: 3, reputation: 1, mentalPressure: 1, eq: 1, risk: -1} }
   ]},
   { id: 'enl039', stage: 'life', eventType: 'choice', weight: 4, title: '同事借钱', text: '同事小赵红着脸找你借三千块应急，说发工资就还。你知道他最近刚被催债，心里有点打鼓。', choices: [
     { text: '借给他不收利息', effects: {wealth: -30, eq: 1, mentalPressure: 2, risk: 2} },
@@ -251,7 +251,7 @@ const gd_events_new_life = [
     { text: '借口工作忙不参加', effects: {mentalPressure: -1, eq: -1, wealth: 0} },
     { text: '参加并主动张罗组织', effects: {wealth: -5, eq: 2, background: 2, mentalPressure: 2, reputation: 1} }
   ]},
-  { id: 'enl042', stage: 'life', eventType: 'choice', weight: 3, title: '老乡聚会', text: '老乡群组织年度聚会，群主说"咱们老乡要常走动"。你跟这些老乡其实不太熟，但老婆说"多认识人有好处"。', choices: [
+  { id: 'enl042', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '老乡聚会', text: '老乡群组织年度聚会，群主说"咱们老乡要常走动"。你跟这些老乡其实不太熟，但伴侣说"多认识人有好处"。', choices: [
     { text: '参加聚会被动社交', effects: {wealth: -3, eq: 1, background: 1, mentalPressure: 2} },
     { text: '积极发言融入圈子', effects: {eq: 1, background: 2, mentalPressure: 1, wealth: -3} },
     { text: '只交份子钱不参加', effects: {wealth: -2, eq: 0, mentalPressure: 1, background: 1} },
@@ -293,7 +293,7 @@ const gd_events_new_life = [
     { text: '口头上谢谢就好', effects: {eq: 1, mentalPressure: 1, reputation: 0} },
     { text: '也帮对方代收快递', effects: {eq: 1, integrity: 1, mentalPressure: 1} }
   ]},
-  { id: 'enl049', stage: 'life', eventType: 'choice', weight: 3, title: '邻里节', text: '社区组织"邻里节"活动，邀请各家做拿手菜分享。老婆说这种活动"又累又没意思"，但你刚搬来不久。', choices: [
+  { id: 'enl049', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '邻里节', text: '社区组织"邻里节"活动，邀请各家做拿手菜分享。伴侣觉得这种活动"又累又没意思"，但你刚搬来不久。', choices: [
     { text: '积极参加融入社区', effects: {eq: 1, background: 2, mentalPressure: 1, reputation: 1} },
     { text: '做道菜意思一下', effects: {eq: 1, mentalPressure: 1, background: 1} },
     { text: '只去品尝不带菜', effects: {eq: 1, mentalPressure: 1, reputation: -1} },
@@ -307,25 +307,25 @@ const gd_events_new_life = [
   ]},
 
   // ====== 情感心理类（25个） ======
-  { id: 'enl051', stage: 'life', eventType: 'choice', weight: 5, title: '相亲见面', text: '老妈安排的相亲对象约你在咖啡厅见面。你到早了，紧张得手心冒汗，不知道见面第一句话该说什么。', choices: [
-    { text: '主动打招呼展现风度', effects: {eq: 2, mentalPressure: 2, desire: 1} },
-    { text: '等对方先开口观察一下', effects: {iq: 1, mentalPressure: 2, eq: 1} },
-    { text: '聊聊咖啡和环境缓解尴尬', effects: {eq: 1, mentalPressure: 1, iq: 1} },
-    { text: '直接问对方基本情况', effects: {iq: 1, mentalPressure: 2, eq: -1} }
+  { id: 'enl051', stage: 'life', eventType: 'choice', weight: 5, requireSingle: true, year: [22, 45], title: '相亲见面', text: '老妈安排的相亲对象约你在咖啡厅见面。你到早了，紧张得手心冒汗，不知道见面第一句话该说什么。', choices: [
+    { text: '主动打招呼展现风度', effects: {eq: 2, mentalPressure: 2, desire: 1, flag: 'dating'} },
+    { text: '等对方先开口观察一下', effects: {iq: 1, mentalPressure: 2, eq: 1, flag: 'dating'} },
+    { text: '聊聊咖啡和环境缓解尴尬', effects: {eq: 1, mentalPressure: 1, iq: 1, flag: 'dating'} },
+    { text: '直接问对方基本情况', effects: {iq: 1, mentalPressure: 2, eq: -1, flag: 'dating'} }
   ]},
-  { id: 'enl052', stage: 'life', eventType: 'choice', weight: 3, title: '网友见面', text: '交友软件上聊了三个月的网友提出见面。照片很甜美，但你总觉得哪里不对劲——对方从不开视频。', choices: [
-    { text: '见面但选在公共场所', effects: {eq: 1, mentalPressure: 2, risk: 2, desire: 1} },
-    { text: '坚持视频通话再决定', effects: {iq: 2, mentalPressure: 1, risk: -1, integrity: 1} },
+  { id: 'enl052', stage: 'life', eventType: 'choice', weight: 3, year: [22, 45], requireSingle: true, title: '网友见面', text: '交友软件上聊了三个月的网友提出见面。照片很甜美，但你总觉得哪里不对劲——对方从不开视频。', choices: [
+    { text: '见面但选在公共场所', effects: {eq: 1, mentalPressure: 2, risk: 2, desire: 1, flag: 'dating'} },
+    { text: '坚持视频通话再决定', effects: {iq: 2, mentalPressure: 1, risk: -1, integrity: 1, flag: 'dating'} },
     { text: '直接拉黑避免风险', effects: {integrity: 1, mentalPressure: 1, risk: -3, eq: -1} },
-    { text: '继续聊着观察一段时间', effects: {mentalPressure: 1, eq: 1, risk: 1} }
+    { text: '继续聊着观察一段时间', effects: {mentalPressure: 1, eq: 1, risk: 1, flag: 'dating'} }
   ]},
-  { id: 'enl053', stage: 'life', eventType: 'choice', weight: 4, requireSingle: true, title: '异地恋', text: '异地恋半年了，对象抱怨"你最近不主动联系"。你确实忙，但心里也有点动摇——这样下去能修成正果吗？', choices: [
+  { id: 'enl053', stage: 'life', eventType: 'choice', weight: 4, requireFlag: 'dating', requireSingle: true, title: '异地恋', text: '异地恋半年了，对象抱怨"你最近不主动联系"。你确实忙，但心里也有点动摇——这样下去能修成正果吗？', choices: [
     { text: '每周末固定视频陪伴', effects: {eq: 2, mentalPressure: 1, familyPressure: -1, desire: 1} },
     { text: '抽空去对方城市看望', effects: {wealth: -30, eq: 2, mentalPressure: -1, body: -1, desire: 1} },
     { text: '认真讨论未来规划', effects: {iq: 2, eq: 1, mentalPressure: 2, familyPressure: 1} },
     { text: '渐渐冷淡让对方主动', effects: {eq: -2, mentalPressure: 2, integrity: -1, familyPressure: 1} }
   ]},
-  { id: 'enl054', stage: 'life', eventType: 'choice', weight: 3, requireSingle: true, title: '突然分手', text: '谈了三年的对象提出分手，理由是"性格不合"。你莫名其妙——上周还好好的，怎么突然就"不合"了？', choices: [
+  { id: 'enl054', stage: 'life', eventType: 'choice', weight: 3, requireFlag: 'dating', requireSingle: true, title: '突然分手', text: '谈了三年的对象提出分手，理由是"性格不合"。你莫名其妙——上周还好好的，怎么突然就"不合"了？', choices: [
     { text: '冷静沟通问清原因', effects: {eq: 1, iq: 2, mentalPressure: 3, integrity: 1, deleteFlag: 'dating'} },
     { text: '体面放手不纠缠', effects: {integrity: 3, mentalPressure: 3, eq: 1, desire: -2, deleteFlag: 'dating'} },
     { text: '极力挽留给对方承诺', effects: {eq: 1, mentalPressure: 4, familyPressure: 2, desire: 1} },
@@ -339,7 +339,7 @@ const gd_events_new_life = [
   ]},
   { id: 'enl056', stage: 'life', eventType: 'choice', weight: 3, requireSingle: true, title: '办公室暧昧', text: '办公室新来的同事对你格外关心，每天帮你带咖啡。你知道办公室恋情的风险，但对方确实很迷人。', choices: [
     { text: '保持距离只谈工作', effects: {integrity: 2, mentalPressure: 1, workAbility: 1, risk: -2} },
-    { text: '低调发展秘密交往', effects: {eq: 1, mentalPressure: 3, risk: 3, desire: 1} },
+    { text: '低调发展秘密交往', effects: {eq: 1, mentalPressure: 3, risk: 3, desire: 1, flag: 'dating'} },
     { text: '明确表态不发展关系', effects: {integrity: 2, eq: 1, mentalPressure: 2, risk: -1} },
     { text: '调岗避免接触', effects: {workAbility: -1, mentalPressure: 2, risk: -2, integrity: 1} }
   ]},
@@ -355,43 +355,43 @@ const gd_events_new_life = [
     { text: '找朋友复盘相亲过程', effects: {eq: 1, mentalPressure: 1, iq: 1, background: 1} },
     { text: '暂时放弃专心工作', effects: {workAbility: 2, mentalPressure: 1, desire: -2} }
   ]},
-  { id: 'enl059', stage: 'life', eventType: 'choice', weight: 4, title: '相亲再见', text: '相亲对象约你再见一面，对方说"想多了解你"。上次聊得确实投机，你心里有点小期待。', choices: [
+  { id: 'enl059', stage: 'life', eventType: 'choice', weight: 4, requireFlag: 'dating', requireSingle: true, year: [22, 45], title: '相亲再见', text: '相亲对象约你再见一面，对方说"想多了解你"。上次聊得确实投机，你心里有点小期待。', choices: [
     { text: '爽快答应好好准备', effects: {eq: 2, mentalPressure: -1, desire: 2, body: 1} },
     { text: '答应但保持理性节奏', effects: {iq: 2, eq: 1, mentalPressure: 1, integrity: 1} },
     { text: '提议换个活动方式约会', effects: {eq: 1, mentalPressure: 1, wealth: -10, desire: 1} },
     { text: '故意推迟几天保持神秘', effects: {mentalPressure: 2, eq: 1, desire: 1, risk: 1} }
   ]},
-  { id: 'enl060', stage: 'life', eventType: 'choice', weight: 4, title: '见父母', text: '对象带你回家见父母。准岳母问了一堆问题："工资多少、房子多大、父母干嘛的"，像在面试。', choices: [
+  { id: 'enl060', stage: 'life', eventType: 'choice', weight: 4, requireSingle: true, requireFlag: 'dating', year: [22, 40], title: '见父母', text: '对象带你回家见父母。伴侣的母亲问了一堆问题："工资多少、房子多大、父母干嘛的"，像在面试。', choices: [
     { text: '诚实回答展现真诚', effects: {integrity: 3, eq: 1, mentalPressure: 2, background: 1} },
     { text: '巧妙回避敏感问题', effects: {eq: 1, mentalPressure: 2, iq: 1, integrity: -1} },
     { text: '适当美化自己的情况', effects: {eq: 1, mentalPressure: 2, risk: 2, integrity: -2} },
     { text: '反问对方家庭情况', effects: {iq: 1, eq: -1, mentalPressure: 2, integrity: 1} }
   ]},
-  { id: 'enl061', stage: 'life', eventType: 'choice', weight: 3, title: '求婚（钻戒预算）', requireSingle: true, year: [22, 50], text: '恋爱两年，对象暗示"该定下来了"。你想求婚又怕仪式不够隆重，买钻戒又怕超预算。', choices: [
-    { text: '精心策划正式求婚', effects: {wealth: -30, eq: 2, desire: 2, mentalPressure: 2, familyPressure: -1} },
-    { text: '简单求婚重在心意', effects: {wealth: -10, eq: 2, integrity: 1, mentalPressure: 1} },
-    { text: '先订婚再慢慢筹备', effects: {wealth: -20, eq: 1, mentalPressure: 1, familyPressure: -1} },
-    { text: '商量后跳过求婚直接登记', effects: {wealth: -5, eq: 1, integrity: 1, mentalPressure: 1} }
+  { id: 'enl061', stage: 'life', eventType: 'choice', weight: 3, title: '求婚（钻戒预算）', requireSingle: true, requireFlag: 'dating', year: [22, 50], text: '恋爱两年，对象暗示"该定下来了"。你想求婚又怕仪式不够隆重，买钻戒又怕超预算。', choices: [
+    { text: '精心策划正式求婚', effects: {wealth: -30, eq: 2, desire: 2, mentalPressure: 2, familyPressure: -1, flag: 'engaged'} },
+    { text: '简单求婚重在心意', effects: {wealth: -10, eq: 2, integrity: 1, mentalPressure: 1, flag: 'engaged'} },
+    { text: '先订婚再慢慢筹备', effects: {wealth: -20, eq: 1, mentalPressure: 1, familyPressure: -1, flag: 'engaged'} },
+    { text: '商量后跳过求婚直接登记', effects: {wealth: -5, eq: 1, integrity: 1, mentalPressure: 1, marry: true} }
   ]},
-  { id: 'enl062', stage: 'life', eventType: 'choice', weight: 4, title: '婚庆预算', text: '婚期将近，婚庆公司报了个"豪华套餐"，比预算贵一倍。丈母娘说"闺女就结这一次，要风光"。', choices: [
+  { id: 'enl062', stage: 'life', eventType: 'choice', weight: 4, requireSingle: true, requireFlag: 'engaged', year: [22, 40], title: '婚庆预算', text: '婚期将近，婚庆公司报了个"豪华套餐"，比预算贵一倍。伴侣的母亲说"婚礼一辈子就这一次，要办得体面"。', choices: [
     { text: '咬牙办豪华婚礼', effects: {wealth: -100, eq: 1, familyPressure: 2, desire: 2, reputation: 2} },
     { text: '简约婚礼省钱过日子', effects: {wealth: -30, integrity: 2, mentalPressure: 2, familyPressure: 1} },
     { text: '旅行结婚另办答谢宴', effects: {wealth: -40, eq: 1, body: 1, mentalPressure: -1, desire: 1} },
     { text: '和双方父母协商折中', effects: {eq: 1, mentalPressure: 2, wealth: -50, familyPressure: -1} }
   ]},
-  { id: 'enl063', stage: 'life', eventType: 'choice', weight: 4, title: '新婚磨合', text: '新婚三个月，老婆抱怨你"袜子乱扔、马桶圈不放下来"。你嫌她"事多、爱唠叨"。蜜月期好像过去了。', choices: [
+  { id: 'enl063', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, year: [22, 38], title: '新婚磨合', text: '新婚三个月，伴侣抱怨你"袜子乱扔、马桶圈不放下来"。你嫌对方"事多、爱唠叨"。蜜月期好像过去了。', choices: [
     { text: '主动改掉坏习惯', effects: {eq: 2, familyPressure: -2, integrity: 2, mentalPressure: 1} },
     { text: '坐下来好好沟通分工', effects: {iq: 2, eq: 1, mentalPressure: 1, familyPressure: -1} },
     { text: '各退一步互相包容', effects: {eq: 1, familyPressure: -1, mentalPressure: 1, integrity: 1} },
     { text: '继续我行我素', effects: {familyPressure: 3, mentalPressure: 2, eq: -2, integrity: -1} }
   ]},
-  { id: 'enl064', stage: 'life', eventType: 'choice', weight: 3, title: '七年之痒', text: '结婚七年，你和爱人越来越像室友。下班各刷各的手机，话越来越少。朋友提醒"小心七年之痒"。', choices: [
+  { id: 'enl064', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '七年之痒', text: '结婚七年，你和爱人越来越像室友。下班各刷各的手机，话越来越少。朋友提醒"小心七年之痒"。', choices: [
     { text: '策划一次二人世界旅行', effects: {wealth: -30, eq: 2, mentalPressure: -2, body: 1, desire: 1} },
     { text: '每周固定约会时间', effects: {eq: 2, mentalPressure: 1, wealth: -10, familyPressure: -1} },
     { text: '一起培养共同爱好', effects: {eq: 1, mentalPressure: -1, body: 1, integrity: 1} },
     { text: '各自保持独立空间', effects: {mentalPressure: -1, eq: 1, familyPressure: 1, desire: -1} }
   ]},
-  { id: 'enl065', stage: 'life', eventType: 'choice', weight: 3, title: '中年危机（深夜）', year: [35, 55], text: '四十岁了，半夜醒来盯着天花板发呆。事业不上不下，房贷还没还完，孩子还要养——这就是中年吗？', choices: [
+  { id: 'enl065', stage: 'life', eventType: 'choice', weight: 3, requireChild: true, title: '中年危机（深夜）', year: [35, 55], text: '四十岁了，半夜醒来盯着天花板发呆。事业不上不下，房贷还没还完，孩子还要养——这就是中年吗？', choices: [
     { text: '重新规划人生目标', effects: {iq: 2, mentalPressure: 2, desire: 2, integrity: 1} },
     { text: '培养新爱好寻找意义', effects: {mentalPressure: -2, eq: 1, body: 1, desire: 1} },
     { text: '接受平凡学会知足', effects: {mentalPressure: -2, integrity: 2, eq: 1, desire: -1} },
@@ -415,7 +415,7 @@ const gd_events_new_life = [
     { text: '看到自己的优势不比较', effects: {mentalPressure: -2, eq: 1, integrity: 2, desire: -1} },
     { text: '向成功同学请教经验', effects: {background: 1, mentalPressure: 2, eq: 1, iq: 1} }
   ]},
-  { id: 'enl069', stage: 'life', eventType: 'choice', weight: 4, title: '过年攀比', text: '过年回老家，七大姑八大姨轮番比较："你看人家小谁……"。从工资比到房子，从孩子比到老公，你应付得心力交瘁。', choices: [
+  { id: 'enl069', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, requireChild: true, title: '过年攀比', text: '过年回老家，七大姑八大姨轮番比较："你看人家小谁……"。从工资比到房子，从孩子比到伴侣，你应付得心力交瘁。', choices: [
     { text: '笑而不语不参与攀比', effects: {integrity: 2, mentalPressure: 1, eq: 1, desire: -1} },
     { text: '找借口提前回家', effects: {mentalPressure: -1, eq: -1, familyPressure: 2} },
     { text: '巧妙转移话题', effects: {eq: 1, iq: 1, mentalPressure: 1, integrity: 1} },
@@ -427,7 +427,7 @@ const gd_events_new_life = [
     { text: '考虑买小户型过渡', effects: {wealth: -80, mentalPressure: 2, familyPressure: 1, desire: 1} },
     { text: '到郊区买大房子', effects: {wealth: -100, body: -1, mentalPressure: 2, familyPressure: -1} }
   ]},
-  { id: 'enl071', stage: 'life', eventType: 'choice', weight: 3, title: '换车面子', text: '同事都开上了BBA，你还开着五年前的国产车。接送孩子时，孩子问"爸爸咱家为什么不换好车？"', choices: [
+  { id: 'enl071', stage: 'life', eventType: 'choice', weight: 3, requireChild: true, title: '换车面子', text: '同事都开上了BBA，你还开着五年前的国产车。接送孩子时，孩子问"咱家为什么不换好车？"', choices: [
     { text: '换辆好车撑场面', effects: {wealth: -100, desire: 2, eq: 1, mentalPressure: 2, familyPressure: 2} },
     { text: '教育孩子实用就好', effects: {integrity: 2, eq: 1, mentalPressure: 1, familyPressure: -1} },
     { text: '换辆性价比高的代步车', effects: {wealth: -50, mentalPressure: -1, desire: 1, familyPressure: -1} },
@@ -445,7 +445,7 @@ const gd_events_new_life = [
     { text: '买份重疾险以防万一', effects: {wealth: -30, mentalPressure: -1, risk: -2, iq: 1} },
     { text: '担心也没用顺其自然', effects: {mentalPressure: -2, body: -1, risk: 2, integrity: -1} }
   ]},
-  { id: 'enl074', stage: 'life', eventType: 'choice', weight: 4, title: '失眠困扰', text: '连续两周失眠，凌晨三四点还睁着眼。白天昏昏沉沉，工作效率直线下降，老婆说你"再这样要猝死了"。', choices: [
+  { id: 'enl074', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '失眠困扰', text: '连续两周失眠，凌晨三四点还睁着眼。白天昏昏沉沉，工作效率直线下降，伴侣说你"再这样要累垮了"。', choices: [
     { text: '去医院开助眠药物', effects: {wealth: -10, body: 1, mentalPressure: 1, risk: 1} },
     { text: '调整作息戒掉熬夜习惯', effects: {body: 2, mentalPressure: -1, integrity: 2, desire: -1} },
     { text: '运动锻炼改善睡眠', effects: {body: 2, mentalPressure: -2, wealth: -5} },
@@ -489,7 +489,7 @@ const gd_events_new_life = [
     { text: '提前还款减轻利息', effects: {wealth: -30, mentalPressure: -2, familyPressure: -1, iq: 1} },
     { text: '卖旧车全款买二手车', effects: {wealth: -10, mentalPressure: 2, iq: 1, risk: 2} }
   ]},
-  { id: 'enl081', stage: 'life', eventType: 'choice', weight: 3, title: '老车维修', text: '开了八年的车开始频繁出问题，维修费都快赶上月供了。老婆说"换辆新的吧"，你看着存款余额心疼。', choices: [
+  { id: 'enl081', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '老车维修', text: '开了八年的车开始频繁出问题，维修费都快赶上月供了。伴侣说"换辆新的吧"，你看着存款余额心疼。', choices: [
     { text: '贷款换辆新车省心', effects: {wealth: -80, mentalPressure: 2, desire: 2, familyPressure: 1} },
     { text: '买辆可靠的中古车', effects: {wealth: -40, mentalPressure: 1, iq: 1, risk: 1} },
     { text: '继续维修凑合开', effects: {wealth: -15, mentalPressure: 2, body: -1, risk: 2} },
@@ -501,13 +501,13 @@ const gd_events_new_life = [
     { text: '租指标给别人赚差价', effects: {risk: 4, wealth: 10, integrity: -2, mentalPressure: 2} },
     { text: '放弃指标继续等下次', effects: {mentalPressure: 1, integrity: 1, wealth: 0, desire: -1} }
   ]},
-  { id: 'enl083', stage: 'life', eventType: 'choice', weight: 3, title: '装修超支', text: '装修预算一超再超，木工说要加钱才能用更好的板材，瓦工说要加钱才能贴异形砖。老婆的眉头越皱越紧。', choices: [
+  { id: 'enl083', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '装修超支', text: '装修预算一超再超，木工说要加钱才能用更好的板材，瓦工说要加钱才能贴异形砖。伴侣的眉头越皱越紧。', choices: [
     { text: '关键项目追加预算', effects: {wealth: -30, mentalPressure: 2, desire: 1, familyPressure: 1} },
     { text: '坚持预算砍掉次要项目', effects: {integrity: 2, mentalPressure: 2, familyPressure: 1, wealth: -5} },
     { text: '换便宜材料凑合用', effects: {wealth: 10, mentalPressure: 1, risk: 2, desire: -1} },
     { text: '自己动手做部分项目', effects: {body: -1, mentalPressure: 3, wealth: -10, iq: 1} }
   ]},
-  { id: 'enl084', stage: 'life', eventType: 'choice', weight: 3, title: '买家具', text: '家具城搞活动，看中一套实木沙发，原价两万现价一万二。老婆说"打折也要一万多啊"，但你确实心动。', choices: [
+  { id: 'enl084', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '买家具', text: '家具城搞活动，看中一套实木沙发，原价两万现价一万二。伴侣说"打折也要一万多啊"，但你确实心动。', choices: [
     { text: '果断下单趁活动省钱', effects: {wealth: -12, desire: 1, mentalPressure: 1, eq: 1} },
     { text: '再比比价不急一时', effects: {iq: 2, mentalPressure: 1, wealth: 0, integrity: 1} },
     { text: '买便宜点的布艺沙发', effects: {wealth: -5, mentalPressure: -1, desire: -1, integrity: 1} },
@@ -585,8 +585,8 @@ const gd_events_new_life = [
     { text: '捐赠给有需要的人', effects: {integrity: 3, reputation: 1, mentalPressure: -1, wealth: -5} },
     { text: '只是想想该买还买', effects: {mentalPressure: 1, integrity: -1, desire: 1} }
   ]},
-  { id: 'enl097', stage: 'life', eventType: 'choice', weight: 3, title: '名牌包', text: '老婆看中一个名牌包，标价两万。她说"攒了这么久总该犒劳自己一次"，你看着存款数字有些心疼。', choices: [
-    { text: '咬牙买下满足老婆心愿', effects: {wealth: -20, eq: 2, familyPressure: -2, desire: 1, mentalPressure: 2} },
+  { id: 'enl097', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '名牌包', text: '伴侣看中一个名牌包，标价两万。对方说"攒了这么久总该犒劳自己一次"，你看着存款数字有些心疼。', choices: [
+    { text: '咬牙买下满足伴侣心愿', effects: {wealth: -20, eq: 2, familyPressure: -2, desire: 1, mentalPressure: 2} },
     { text: '买A货样子差不多', effects: {wealth: -2, risk: 2, integrity: -2, eq: 1} },
     { text: '建议买轻奢品牌替代', effects: {wealth: -8, eq: 1, iq: 1, mentalPressure: 1} },
     { text: '等纪念日再买作礼物', effects: {mentalPressure: 1, eq: 1, integrity: 1, desire: 1} }
@@ -603,7 +603,7 @@ const gd_events_new_life = [
     { text: '同城面交验货再付款', effects: {wealth: -30, risk: -1, body: -1, iq: 1, integrity: 1} },
     { text: '放弃买新的更安心', effects: {wealth: -50, mentalPressure: -1, integrity: 1, desire: 1} }
   ]},
-  { id: 'enl100', stage: 'life', eventType: 'choice', weight: 3, title: '奶粉到货', text: '海外代购的奶粉到货了，但包装有挤压痕迹。孩子等着喝，退换货又要等半个月，你左右为难。', choices: [
+  { id: 'enl100', stage: 'life', eventType: 'choice', weight: 3, requireChild: true, requireChildAgeMax: 3, title: '奶粉到货', text: '海外代购的奶粉到货了，但包装有挤压痕迹。孩子等着喝，退换货又要等半个月，你左右为难。', choices: [
     { text: '检查无破损继续使用', effects: {wealth: -15, mentalPressure: 1, risk: 1, integrity: 1} },
     { text: '坚决退换货保安全', effects: {wealth: -15, mentalPressure: 2, risk: -2, iq: 1} },
     { text: '找代购理论要求补偿', effects: {eq: 1, mentalPressure: 2, wealth: -10, risk: 1} },
@@ -611,7 +611,7 @@ const gd_events_new_life = [
   ]}
 ,
 // ================= v2.1.9 内容扩充（enl101-enl114）：生活场景 + 联系人深度 =================
-  { id: 'enl101', stage: 'life', eventType: 'choice', weight: 4, title: '学区房抉择', text: '孩子到了上学年龄，学区房的事被正式提上议程。中介推荐的房子比预算贵四十万，不买又怕耽误孩子。夜里你和伴侣把账算到凌晨。', choices: [
+  { id: 'enl101', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 7, title: '学区房抉择', text: '孩子到了上学年龄，学区房的事被正式提上议程。中介推荐的房子比预算贵四十万，不买又怕耽误孩子。夜里你和伴侣把账算到凌晨。', choices: [
     { text: '咬牙凑首付买下', effects: {wealth: -80, familyPressure: -4, mentalPressure: 3, background: 1} },
     { text: '选择公办学校就近入学', effects: {wealth: -10, mentalPressure: 1, familyPressure: 1} },
     { text: '先租房过渡再观望', effects: {wealth: -20, mentalPressure: 2, familyPressure: 1} },
@@ -661,8 +661,8 @@ const gd_events_new_life = [
     { text: '请懂行的朋友把关', effects: {eq: 1, iq: 1, wealth: -5} },
   ]},
   { id: 'enl110', stage: 'life', eventType: 'auto', weight: 3, title: '小区里的温暖', text: '楼下的快递驿站老板认出了你，每次取件都多聊两句。有天他塞给你一把自家种的青菜："看你总加班，年轻人要按时吃饭。"你愣在原地，点了点头。', effects: {mentalPressure: -2, eq: 1, peopleReputation: 1} },
-  { id: 'enl111', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '纪念日计划', text: '结婚纪念日快到了，伴侣嘴上说"都老夫老妻了"，可你翻到她收藏夹里那条项链的链接——在购物车里躺了半年。', choices: [
-    { text: '悄悄买下项链给她惊喜', effects: {wealth: -20, familyPressure: -3, eq: 2} },
+  { id: 'enl111', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '纪念日计划', text: '结婚纪念日快到了，伴侣嘴上说"都老夫老妻了"，可你翻到伴侣的收藏夹里那条项链的链接——在购物车里躺了半年。', choices: [
+    { text: '悄悄买下项链给对方惊喜', effects: {wealth: -20, familyPressure: -3, eq: 2} },
     { text: '订一家好的餐厅重温约会', effects: {wealth: -10, familyPressure: -2, eq: 2} },
     { text: '亲手做一顿饭写封信', effects: {wealth: -3, familyPressure: -2, eq: 2, integrity: 1} },
     { text: '加班太忙，改天补过', effects: {familyPressure: 3, mentalPressure: 1, eq: -1} },
@@ -687,7 +687,7 @@ const gd_events_new_life = [
     { text: '拍下占位照片发业主群', effects: {eq: -1, mentalPressure: 1, reputation: -1} },
     { text: '建议物业加装道闸管理', effects: {workAbility: 1, iq: 1, mentalPressure: 1} },
   ]},
-  { id: 'enl116', stage: 'life', eventType: 'choice', weight: 3, title: '深夜的便利店', text: '加班到深夜，楼下便利店是你唯一的夜宵据点。店员小哥已经认识你了，今天多问了一句："哥，又加班啊？"你看着货架上的泡面，忽然不知道选哪个口味。', choices: [
+  { id: 'enl116', stage: 'life', eventType: 'choice', weight: 3, title: '深夜的便利店', text: '加班到深夜，楼下便利店是你唯一的夜宵据点。店员小哥已经认识你了，今天多问了一句："又加班啊？"你看着货架上的泡面，忽然不知道选哪个口味。', choices: [
     { text: '买份关东煮，暖胃也暖心', effects: {body: 1, mentalPressure: -2, eq: 1} },
     { text: '随便拿桶泡面回去', effects: {body: -1, mentalPressure: 1} },
     { text: '和他聊两句再走', effects: {eq: 1, mentalPressure: -2} },
@@ -718,7 +718,7 @@ const gd_events_new_life = [
     { text: '忙完这阵子再说', effects: {familyPressure: 2, mentalPressure: 1} },
   ]},
   { id: 'enl121', stage: 'life', eventType: 'auto', weight: 3, title: '菜市场的熟人', text: '菜市场卖菜的大姐认出了你，多塞了两根葱："当干部的也吃人间烟火。"你拎着菜回家，觉得这话比很多讲话稿都实在。', effects: {mentalPressure: -2, eq: 1, peopleReputation: 1} },
-  { id: 'enl122', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '二胎的再讨论', text: '父母又提起二胎："一个孩子太孤单了，趁年轻再生一个。"伴侣低头没说话，你们的经济账和精力账都在心里翻涌。', choices: [
+  { id: 'enl122', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, requireMarried: true, title: '二胎的再讨论', text: '父母又提起二胎："一个孩子太孤单了，趁年轻再生一个。"伴侣低头没说话，你们的经济账和精力账都在心里翻涌。', choices: [
     { text: '和父母坦诚沟通现实压力', effects: {eq: 2, familyPressure: -2, integrity: 1} },
     { text: '顺其自然，不设限', effects: {familyPressure: -1, mentalPressure: 1} },
     { text: '明确表示暂不考虑', effects: {familyPressure: 2, mentalPressure: 1, eq: -1} },
@@ -735,11 +735,11 @@ const gd_events_new_life = [
     { text: '幽默回应，约线下见面', effects: {eq: 2, desire: 1, flag: 'dating', mentalPressure: 1} },
     { text: '认真解释体制内的工作强度', effects: {integrity: 2, eq: 1} },
     { text: '觉得对方不了解你，作罢', effects: {mentalPressure: -1, desire: -1} },
-    { text: '慢慢聊，不急着见面', effects: {eq: 1, mentalPressure: -1} },
+    { text: '慢慢聊，不急着见面', effects: {eq: 1, mentalPressure: -1, flag: 'dating'} },
   ]},
-  { id: 'enl126', stage: 'life', eventType: 'auto', weight: 3, title: '孩子的作文', text: '孩子写了篇作文《我的爸爸》：爸爸很忙，但他答应我的事都会做到。你翻到结尾，看到一行小字："虽然爸爸很少接我放学，但我还是最喜欢爸爸。"', effects: {familyPressure: -3, mentalPressure: -2, eq: 2, integrity: 1} },
+  { id: 'enl126', stage: 'life', eventType: 'auto', weight: 3, requireChild: true, title: '孩子的作文', text: '孩子写了篇作文《我最熟悉的人》：家里人很忙，但答应我的事都会做到。你翻到结尾，看到一行小字："虽然你很少接我放学，但我还是最喜欢你。"', effects: {familyPressure: -3, mentalPressure: -2, eq: 2, integrity: 1} },
   // ================= v2.1.11 内容扩充（enl127-enl142）：生活主题 + 联系人深度 =================
-  { id: 'enl127', stage: 'life', eventType: 'choice', weight: 4, title: '房贷利率调整', text: '房贷利率又要调整的消息传得沸沸扬扬。你查了银行公告，发现可以申请转贷省一笔利息，但手续麻烦、还可能耽误几个月。你算了三遍，发现省下的钱够孩子一年补习费。', choices: [
+  { id: 'enl127', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, title: '房贷利率调整', text: '房贷利率又要调整的消息传得沸沸扬扬。你查了银行公告，发现可以申请转贷省一笔利息，但手续麻烦、还可能耽误几个月。你算了三遍，发现省下的钱够孩子一年补习费。', choices: [
     { text: '认真办理转贷，能省则省', effects: {wealth: 15, mentalPressure: 2, iq: 1} },
     { text: '嫌麻烦，维持现状', effects: {mentalPressure: -1, wealth: -5} },
     { text: '咨询理财顾问再决定', effects: {iq: 1, wealth: 5, mentalPressure: 1} },
@@ -751,8 +751,8 @@ const gd_events_new_life = [
     { text: '让父母搬来城里住', effects: {familyPressure: -2, mentalPressure: 2, wealth: -10} },
     { text: '建议村里统一改造政策', effects: {iq: 1, familyPressure: 1} },
   ]},
-  { id: 'enl129', stage: 'life', eventType: 'auto', weight: 3, title: '超市的巧遇', text: '超市结账时，前面的大爷掏出一叠皱巴巴的零钱数了半天。收银员不耐烦地啧了一声，你默默把自己的购物车让到一边，帮他数完硬币。他回头朝你笑："小伙子，心善。"', effects: {eq: 2, mentalPressure: -1, peopleReputation: 1} },
-  { id: 'enl130', stage: 'life', eventType: 'choice', weight: 3, title: '孩子的兴趣班', text: '孩子说想学编程，你说"以后考个公务员多稳定"。孩子反问："那你自己怎么不去学编程？"你愣住了——是啊，凭什么孩子要替你圆梦。', choices: [
+  { id: 'enl129', stage: 'life', eventType: 'auto', weight: 3, title: '超市的巧遇', text: '超市结账时，前面的大爷掏出一叠皱巴巴的零钱数了半天。收银员不耐烦地啧了一声，你默默把自己的购物车让到一边，帮他数完硬币。他回头朝你笑："年轻人，心善。"', effects: {eq: 2, mentalPressure: -1, peopleReputation: 1} },
+  { id: 'enl130', stage: 'life', eventType: 'choice', weight: 3, requireChild: true, title: '孩子的兴趣班', text: '孩子说想学编程，你说"以后考个公务员多稳定"。孩子反问："那你自己怎么不去学编程？"你愣住了——是啊，凭什么孩子要替你圆梦。', choices: [
     { text: '支持他报兴趣班', effects: {wealth: -15, familyPressure: -2, eq: 1} },
     { text: '先试听再决定', effects: {wealth: -5, familyPressure: -1, eq: 1} },
     { text: '坚持让他学传统科目', effects: {familyPressure: 2, eq: -1, mentalPressure: 1} },
@@ -776,20 +776,20 @@ const gd_events_new_life = [
     { text: '借机聊合作机会', effects: {background: 1, risk: 2, contactRelation: { id: 'business', delta: 10 } } },
     { text: '给他讲体制内的稳定性', effects: {eq: 1, integrity: 1} },
   ]},
-  { id: 'enl134', stage: 'life', eventType: 'auto', weight: 3, title: '电梯里的问候', text: '电梯里遇到楼下阿姨，她拎着菜篮子问："小X，好久没见你妈了，她身体还好吧？"你想起上周视频里母亲说膝盖疼，声音忽然有点哽："挺好，谢谢您惦记。"', effects: {familyPressure: 1, eq: 1, mentalPressure: -1} },
+  { id: 'enl134', stage: 'life', eventType: 'auto', weight: 3, title: '电梯里的问候', text: '电梯里遇到楼下阿姨，她拎着菜篮子问："好久没见你母亲了，她身体还好吧？"你想起上周视频里母亲说膝盖疼，声音忽然有点哽："挺好，谢谢您惦记。"', effects: {familyPressure: 1, eq: 1, mentalPressure: -1} },
   { id: 'enl135', stage: 'life', eventType: 'choice', weight: 3, requireSingle: true, year: [26, 50], title: '健身房的搭讪', text: '健身房更衣室，一位大哥看你练完，递来毛巾："兄弟练得不错，加个微信？我开私教工作室的。"你犹豫了一下——不是每条人脉都该收。', choices: [
     { text: '加微信，多个朋友', effects: {eq: 1, background: 1, body: 1} },
     { text: '婉拒，说不太用社交软件', effects: {eq: -1, mentalPressure: -1} },
     { text: '问问价格，顺便请教动作', effects: {iq: 1, body: 1, wealth: -5} },
     { text: '只当普通聊天的朋友', effects: {eq: 1} },
   ]},
-  { id: 'enl136', stage: 'life', eventType: 'choice', weight: 4, title: '小区的宠物', text: '邻居家的狗半夜叫个不停，妻子翻来覆去睡不着。你敲开邻居家门，对方是个独居老人，狗是去世的儿子留下的。他说"对不起，明天就送走"，眼神里满是不舍。', choices: [
+  { id: 'enl136', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '小区的宠物', text: '邻居家的狗半夜叫个不停，伴侣翻来覆去睡不着。你敲开邻居家门，对方是个独居老人，狗是去世的儿子留下的。他说"对不起，明天就送走"，眼神里满是不舍。', choices: [
     { text: '理解他，建议白天多遛狗', effects: {eq: 2, familyPressure: -2, mentalPressure: -1} },
     { text: '坚持要求解决噪音', effects: {eq: -1, familyPressure: -2} },
     { text: '提议和物业协商养犬规范', effects: {workAbility: 1, eq: 1} },
     { text: '送他一些隔音耳塞应急', effects: {wealth: -2, eq: 2, familyPressure: -1} },
   ]},
-  { id: 'enl137', stage: 'life', eventType: 'auto', weight: 3, title: '地铁口的老人', text: '地铁口，一位老人拿着手机拦住你："小伙子，能帮我看看怎么用这个码吗？"你帮他弄好，他连声道谢，说女儿总没时间教他。你想起自己爸妈，教了三遍还是忘。', effects: {eq: 2, mentalPressure: -1, familyPressure: 1} },
+  { id: 'enl137', stage: 'life', eventType: 'auto', weight: 3, title: '地铁口的老人', text: '地铁口，一位老人拿着手机拦住你："年轻人，能帮我看看怎么用这个码吗？"你帮他弄好，他连声道谢，说女儿总没时间教他。你想起自己爸妈，教了三遍还是忘。', effects: {eq: 2, mentalPressure: -1, familyPressure: 1} },
   { id: 'enl138', stage: 'life', eventType: 'choice', weight: 3, requireContact: 'petitioner', requireContactMin: 30, year: [28, 58], title: '老上访户的转变', text: '那位你接待过多次的老上访户，今天没带材料来，而是提了一袋自家种的橘子："领导，我那事办下来了，谢谢你一直没躲着我。"你接过橘子，忽然觉得信访工作也不是白干。', choices: [
     { text: '收下橘子，聊几句近况', effects: {eq: 2, peopleReputation: 2, integrity: 1, contactRelation: { id: 'petitioner', delta: 15 } } },
     { text: '婉拒礼物，说这是分内事', effects: {integrity: 2, eq: 1, contactRelation: { id: 'petitioner', delta: 5 } } },
@@ -803,11 +803,11 @@ const gd_events_new_life = [
     { text: '提议请派出所民警来讲', effects: {workAbility: 1, eq: 1} },
   ]},
   { id: 'enl140', stage: 'life', eventType: 'auto', weight: 3, title: '菜市场的行情', text: '周末逛菜市场，发现白菜从三块涨到五块。卖菜大姐说："今年雨水多，地里减产。"你掂了掂手里的袋子，觉得生活就像这菜价，起起伏伏，但总有口热饭吃。', effects: {mentalPressure: 1, familyPressure: 1, eq: 1} },
-  { id: 'enl141', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '体检报告（伴侣）', text: '伴侣的体检报告出来了，甲状腺结节需要复查。她嘴上说"没事"，晚上却翻来覆去。你握着报告，手心微微出汗。', choices: [
-    { text: '立即预约专家号陪她复查', effects: {familyPressure: -3, mentalPressure: 2, wealth: -10, eq: 2} },
-    { text: '安慰她，观察一段时间', effects: {familyPressure: -1, mentalPressure: 1} },
+  { id: 'enl141', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '体检报告（伴侣）', text: '伴侣的体检报告出来了，甲状腺结节需要复查。对方嘴上说"没事"，晚上却翻来覆去。你握着报告，手心微微出汗。', choices: [
+    { text: '立即预约专家号陪对方复查', effects: {familyPressure: -3, mentalPressure: 2, wealth: -10, eq: 2} },
+    { text: '安慰对方，观察一段时间', effects: {familyPressure: -1, mentalPressure: 1} },
     { text: '查资料了解风险再决定', effects: {iq: 1, mentalPressure: 1} },
-    { text: '瞒着孩子，先自己扛着', effects: {mentalPressure: 3, eq: -1} },
+    { text: '先不告诉家人，自己扛着', effects: {mentalPressure: 3, eq: -1} },
   ]},
   { id: 'enl142', stage: 'life', eventType: 'auto', weight: 6, contentTier: 'everyday', title: '窗外的晚霞', text: '难得准时下班，走出办公楼时正赶上晚霞。你把照片发到家庭群里，母亲秒回："下班啦？吃饭了没？"你回了个笑脸，忽然觉得这一天的疲惫都值了。', effects: {mentalPressure: -2, eq: 1, familyPressure: -1} },
   // ================= v2.1.12 内容扩充（enl143-enl160）：晚年/家庭/联系人深度 =================
@@ -842,7 +842,7 @@ const gd_events_new_life = [
     { text: '借机提醒他孩子注意纪律', effects: {integrity: 2, eq: 1, contactRelation: { id: 'hometown', delta: 5 } } },
   ]},
   { id: 'enl148', stage: 'life', eventType: 'auto', weight: 3, title: '合唱团的周三', text: '周三晚上是你参加单位合唱团的固定时间。今天排练《歌唱祖国》，你唱到"从此走向繁荣富强"时忽然眼眶发热——不是矫情，是想起父亲年轻时唱这首歌的样子。', effects: {mentalPressure: -3, eq: 2, body: 1} },
-  { id: 'enl149', stage: 'life', eventType: 'choice', weight: 3, title: '跑步的清晨', text: '五点半的闹钟响了第三遍。你在"再睡十分钟"和"起床跑五公里"之间挣扎。楼下已经有跑友在喊："老张，就差你了！"', choices: [
+  { id: 'enl149', stage: 'life', eventType: 'choice', weight: 3, title: '跑步的清晨', text: '五点半的闹钟响了第三遍。你在"再睡十分钟"和"起床跑五公里"之间挣扎。楼下已经有跑友在喊："就差你了，快来！"', choices: [
     { text: '起床跑步，坚持打卡', effects: {body: 2, mentalPressure: -2, eq: 1} },
     { text: '再睡一会，改晚上跑', effects: {body: -1, mentalPressure: 1} },
     { text: '跑完买早餐犒劳自己', effects: {body: 1, wealth: -3, mentalPressure: -1} },
@@ -862,7 +862,7 @@ const gd_events_new_life = [
     { text: '婉拒这次采访，避免牵连单位与同事', effects: {contactRelation: { id: 'journalist', delta: -10 }, mentalPressure: -1} },
   ]},
   { id: 'enl153', stage: 'life', eventType: 'auto', weight: 3, title: '楼下的修鞋摊', text: '楼下修鞋师傅的手艺远近闻名，一双鞋他能修出花来。今天你去取鞋，他没收钱："上次你帮我儿子看了公务员报考指南，这鞋算谢礼。"你想起那是三个月前的事了。', effects: {eq: 2, peopleReputation: 1, mentalPressure: -1} },
-  { id: 'enl154', stage: 'life', eventType: 'choice', weight: 4, title: '孩子的家长会', text: '家长会上，老师表扬了孩子，也委婉提醒："家长要多陪陪孩子，他现在话越来越少了。"你坐在小椅子上，忽然想起上次和孩子完整说话，好像是上个月。', choices: [
+  { id: 'enl154', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, title: '孩子的家长会', text: '家长会上，老师表扬了孩子，也委婉提醒："家长要多陪陪孩子，他现在话越来越少了。"你坐在小椅子上，忽然想起上次和孩子完整说话，好像是上个月。', choices: [
     { text: '调整作息，保证每周陪伴', effects: {familyPressure: -3, workAbility: -1, eq: 2} },
     { text: '周末带孩子出去玩', effects: {familyPressure: -2, eq: 2, wealth: -5} },
     { text: '每天晚饭后聊十分钟', effects: {familyPressure: -2, eq: 1, workAbility: -1} },
@@ -875,22 +875,22 @@ const gd_events_new_life = [
     { text: '婉拒，说最近忙', effects: {familyPressure: 1, mentalPressure: -1} },
     { text: '让姑姑先了解一下对方', effects: {eq: 1, familyPressure: -1} },
   ]},
-  { id: 'enl157', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '周末的分工', text: '周末家务分工又起了摩擦：你说"我上周擦了窗户"，她说"我天天做饭"。孩子在一旁看你们拌嘴，忽然说："你们别吵了，我来扫地。"两人都愣住了。', choices: [
+  { id: 'enl157', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, requireMarried: true, title: '周末的分工', text: '周末家务分工又起了摩擦：你说"我上周擦了窗户"，伴侣说"我天天做饭"。孩子在一旁看你们拌嘴，忽然说："你们别吵了，我来扫地。"两人都愣住了。', choices: [
     { text: '借台阶和解，全家一起干', effects: {eq: 2, familyPressure: -3, mentalPressure: -1} },
     { text: '制定家务分工表', effects: {workAbility: 1, familyPressure: -2, eq: 1} },
     { text: '请钟点工分担', effects: {wealth: -10, familyPressure: -2} },
     { text: '谁也不让步，各自生闷气', effects: {familyPressure: 3, mentalPressure: 2, eq: -2} },
   ]},
-  { id: 'enl158', stage: 'life', eventType: 'auto', weight: 3, title: '晚风里的遛弯', text: '晚饭后和伴侣遛弯，她忽然说："等退休了，咱们去南方住几年吧。"你愣了一下，说"好"。晚风吹过，你忽然觉得，日子这样过着也不错。', effects: {familyPressure: -2, mentalPressure: -2, eq: 2} },
-  { id: 'enl159', stage: 'life', eventType: 'choice', weight: 3, title: '阳台上的菜园', text: '妻子在阳台种的小番茄结了果。她摘了半盆，红艳艳的。你忽然想起她说过"以后想有个小院子"，当时你笑她"做梦"，现在你看着这半盆番茄，觉得梦好像也不远。', choices: [
-    { text: '帮她买点好土好盆', effects: {wealth: -3, familyPressure: -2, eq: 2} },
+  { id: 'enl158', stage: 'life', eventType: 'auto', weight: 3, requireMarried: true, title: '晚风里的遛弯', text: '晚饭后和伴侣遛弯，对方忽然说："等退休了，咱们去南方住几年吧。"你愣了一下，说"好"。晚风吹过，你忽然觉得，日子这样过着也不错。', effects: {familyPressure: -2, mentalPressure: -2, eq: 2} },
+  { id: 'enl159', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '阳台上的菜园', text: '伴侣在阳台种的小番茄结了果。对方摘了半盆，红艳艳的。你忽然想起对方说过"以后想有个小院子"，当时你笑对方"做梦"，现在你看着这半盆番茄，觉得梦好像也不远。', choices: [
+    { text: '帮伴侣买点好土好盆', effects: {wealth: -3, familyPressure: -2, eq: 2} },
     { text: '一起规划个阳台花园', effects: {familyPressure: -2, eq: 2, wealth: -5} },
     { text: '拍照片发朋友圈', effects: {eq: 1, familyPressure: -1} },
     { text: '说还不如买着吃省事', effects: {eq: -1, familyPressure: 1} },
   ]},
   { id: 'enl160', stage: 'life', eventType: 'auto', weight: 3, title: '故乡的月亮', text: '中秋加班，你站在办公室窗前看月亮。家乡的月亮应该也是这么圆。手机亮了，是母亲发来的语音："给你留了月饼，双黄的。"你回了个"好"，把手机贴在心口。', effects: {familyPressure: 1, mentalPressure: -1, eq: 1} },
   // ================= v2.1.12 冲刺 1500（enl161-enl168） =================
-  { id: 'enl161', stage: 'life', eventType: 'choice', weight: 3, title: '家里的电话粥', text: '母亲打来电话，聊了四十分钟：邻居家的狗、老家的天气、她新学的广场舞。你一边"嗯嗯"一边看文件，挂电话时她忽然说："儿子，你是不是很忙？那妈挂了。"', choices: [
+  { id: 'enl161', stage: 'life', eventType: 'choice', weight: 3, title: '家里的电话粥', text: '母亲打来电话，聊了四十分钟：邻居家的狗、老家的天气、她新学的广场舞。你一边"嗯嗯"一边看文件，挂电话时她忽然说："孩子，你是不是很忙？那妈挂了。"', choices: [
     { text: '回电话，好好听她说完', effects: {familyPressure: -2, eq: 2, workAbility: -1} },
     { text: '周末回去陪她', effects: {familyPressure: -3, eq: 2, mentalPressure: -2} },
     { text: '教她视频通话，随时见', effects: {familyPressure: -2, eq: 1} },
@@ -899,7 +899,7 @@ const gd_events_new_life = [
   { id: 'enl162', stage: 'life', eventType: 'auto', weight: 6, contentTier: 'everyday', title: '街角的修车铺', text: '电动车链条掉了，街角修车铺的老师傅三分钟修好，只收两块钱。你多给了五块，他追出来塞回来："该多少就多少。"你忽然觉得，这城市里有很多人，活得很有规矩。', effects: {eq: 2, mentalPressure: -1} },
   { id: 'enl163', stage: 'life', eventType: 'choice', weight: 3, requireSingle: true, year: [26, 50], title: '同事的介绍', text: '隔壁科室的同事要给你介绍对象："我表妹，老师，性格好。"你想起上次相亲的尴尬，又想起母亲的电话。你点了点头："行，见一面。"', choices: [
     { text: '认真赴约，坦诚相待', effects: {eq: 2, desire: 1, flag: 'dating'} },
-    { text: '先加微信聊聊', effects: {eq: 1, mentalPressure: -1} },
+    { text: '先加微信聊聊', effects: {eq: 1, mentalPressure: -1, flag: 'dating'} },
     { text: '约周末咖啡见面', effects: {eq: 1, desire: 1, wealth: -3, flag: 'dating'} },
     { text: '推说最近忙，改天再说', effects: {familyPressure: 1, mentalPressure: -1} },
   ]},
@@ -910,7 +910,7 @@ const gd_events_new_life = [
     { text: '报个写作班系统学', effects: {iq: 2, wealth: -10, mentalPressure: 1} },
   ]},
   { id: 'enl165', stage: 'life', eventType: 'auto', weight: 3, title: '雨后的彩虹', text: '下班时雨刚停，天边挂了一道彩虹。你举起手机拍照，发现好几个人都在拍。大家默契地笑了笑——原来疲惫的人，都会抬头看看天。', effects: {mentalPressure: -2, eq: 1} },
-  { id: 'enl166', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '纪念日补过', text: '结婚纪念日因为加班错过了。妻子说"没关系"，但你在她朋友圈看到别人晒的纪念日照片，配文"他记得"。你关掉手机，订了周末的餐厅。', choices: [
+  { id: 'enl166', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '纪念日补过', text: '结婚纪念日因为加班错过了。伴侣说"没关系"，但你在伴侣的朋友圈看到别人晒的纪念日照片，配文"有人记得"。你关掉手机，订了周末的餐厅。', choices: [
     { text: '周末补办纪念日', effects: {familyPressure: -3, eq: 2, wealth: -15} },
     { text: '买份礼物道歉', effects: {wealth: -10, familyPressure: -2, eq: 1} },
     { text: '写一封解释失约原因的手写信', effects: {eq: 2, integrity: 1, familyPressure: -2} },

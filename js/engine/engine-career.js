@@ -572,6 +572,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'healthCare', next: 'ent246', delay: 1 },
         { flag: 'healthTreated', next: 'ent247', delay: 1 },
         { flag: 'underInvestigation', next: 'e646', delay: 1 },
+        { flag: 'fled', next: 'e649', delay: 1 }, // 逃离调查后，追逃与身份核查在下一年兑现
         { flag: 'defied', next: 'e648', delay: 2 }, // 死扛后组织核实、移送司法需时 2 年
         { flag: 'selfSurrender', next: 'e647', delay: 1 }, // 自首后纪律处分流程 1 年
         { flag: 'appliedParty', next: 'e043', delay: 1 }, // 预备党员 1 年预备期后必然转正讨论
@@ -614,8 +615,8 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'probeCorruption', next: 'e803', delay: 1 },
         { flag: 'antiCorrStorm', next: 'e804', delay: 1 },
         { flag: 'serveVillage', next: 'e806', delay: 1 },
-        { flag: 'villageDoorToDoor', next: 'e807', delay: 1 },
-        { flag: 'villageSolid', next: 'e808', delay: 1 },
+        { flag: 'villageFirstDone', next: 'e807', delay: 1 },
+        { flag: 'villageProjectDone', next: 'e808', delay: 1 },
         // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链（入口在下方概率注入）
         { flag: 'parentIllness', next: 'ent294', delay: 1 },
         { flag: 'parentCaring', next: 'ent295', delay: 2 },
@@ -623,6 +624,23 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'investCrash', next: 'ent298', delay: 1 },
         { flag: 'seconded', next: 'ent300', delay: 1 },
         { flag: 'secondReview', next: 'ent301', delay: 1 },
+        { flag: 'secondDone', next: 'enw126', delay: 1 },
+        // 财务与廉政风险：接受不当利益、挪用公款和灰色理财均兑现延迟后果。
+        { flag: 'bg_tempt_1', next: 'e743', delay: 1 },
+        { flag: 'bg_tempt_2', next: 'e744', delay: 1 },
+        { flag: 'borrowed', next: 'e748', delay: 2 },
+        { flag: 'embezzle', next: 'e756', delay: 1 },
+        { flag: 'grayFinance', next: 'e758', delay: 1 },
+        { flag: 'tookBribe', next: 'e616', delay: 1 },
+        { flag: 'tookKickback', next: 'e617', delay: 1 },
+        { flag: 'tookShares', next: 'e618', delay: 1 },
+        { flag: 'gamblingAddict', next: 'e747', delay: 1 },
+        { flag: 'gamblingRelapse', next: 'e765', delay: 1 },
+        // 中间人路线：牵线→调解→举荐→口碑扩散→枢纽取舍。
+        { flag: 'hub_bridge', next: 'e728', delay: 1 },
+        { flag: 'hub_mediator', next: 'e729', delay: 1 },
+        { flag: 'hub_recommend', next: 'e730', delay: 1 },
+        { flag: 'hub_spread', next: 'e731', delay: 1 },
         { flag: 'receiptOpen', next: 'arc_receipt_open_2', delay: 2 },
         { flag: 'receiptQuiet', next: 'arc_receipt_quiet_2', delay: 2 },
         { flag: 'receiptOpenReviewed', next: 'arc_receipt_open_3', delay: 3 },
@@ -651,6 +669,21 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'ventureDeclared', next: 'arc_venture_declared_2', delay: 2 },
         { flag: 'ventureExited', next: 'arc_venture_exited_2', delay: 2 },
         { flag: 'ventureHidden', next: 'arc_venture_hidden_2', delay: 2 },
+        { flag: 'lifeCareerLead', next: 'arc_life_career_2', delay: 2 },
+        { flag: 'lifeCareerExpert', next: 'arc_life_career_2', delay: 2 },
+        { flag: 'lifeCareerReviewed', next: 'arc_life_career_3', delay: 3 },
+        { flag: 'lifeIntegrityOpen', next: 'arc_life_integrity_2', delay: 2 },
+        { flag: 'lifeIntegrityQuiet', next: 'arc_life_integrity_2', delay: 2 },
+        { flag: 'lifeIntegrityReviewed', next: 'arc_life_integrity_3', delay: 3 },
+        { flag: 'lifeFamilyPresent', next: 'arc_life_family_2', delay: 2 },
+        { flag: 'lifeFamilyCareer', next: 'arc_life_family_2', delay: 2 },
+        { flag: 'lifeFamilyReviewed', next: 'arc_life_family_3', delay: 3 },
+        { flag: 'lifeNetworkPublic', next: 'arc_life_network_2', delay: 2 },
+        { flag: 'lifeNetworkSelective', next: 'arc_life_network_2', delay: 2 },
+        { flag: 'lifeNetworkReviewed', next: 'arc_life_network_3', delay: 3 },
+        { flag: 'lifeConfluenceOpen', next: 'arc_life_confluence_2', delay: 3 },
+        { flag: 'lifeConfluenceFamily', next: 'arc_life_confluence_2', delay: 3 },
+        { flag: 'lifeConfluenceDeferred', next: 'arc_life_confluence_2', delay: 3 },
     ];
 };
 // 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
@@ -662,9 +695,10 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
       [/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
+      [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
       [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$/,'父母照护'],
       [/^ent2(96|97|98)$/,'资产与风险'],[/^ent(299|300|301)$/,'借调与考察'],
-      [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648)$/,'调查与责任'],
+      [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648|649)$/,'调查与责任'],[/^e(805|806|807|808)$/,'基层挂职'],[/^enw126$/,'借调与考察'],[/^e(728|729|730|731)$/,'人脉枢纽'],[/^e(616|617|618|743|744|747|748|756|758|765)$/,'财务与廉政后果'],
       [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$/,'房贷与家庭财务']
     ];
     this.getCausalChainSteps().forEach((step,index)=>{
@@ -696,6 +730,86 @@ GameEngine.prototype.getVentureReviewEvent = function() {
       event.choices[2].effects.risk+=5;
     }
     return event;
+};
+// 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
+GameEngine.prototype.getLifePathEvent = function(event) {
+  if (!event || !/^arc_life_/.test(event.id || '')) return event;
+  const f=this.state.player.flags||{};
+  const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
+  const add=(text)=>{out.text=(out.text||'')+' '+text;};
+  const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
+  const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
+  switch(out.id){
+    case 'arc_life_career_2':
+      if(f.lifeCareerLead){add('你当年从重点专班带回来的不只是项目结果，还有一套跨部门协作的办法。新负责人最关心的是：这套办法能不能离开你继续运转。');result(0,'你把专班的协作机制和风险清单一起交给接班人，项目不再只靠你一个人维持。');result(1,'你决定继续盯住最关键的项目节点，但同时明确哪些协调工作必须由团队共同承担。');bump(0,{peopleReputation:1});bump(1,{mentalPressure:1,workAbility:1});}
+      else if(f.lifeCareerExpert){add('你留在专业岗位后积累的标准和流程，已经被几个业务科室沿用。新负责人希望知道，哪些判断必须由专业人员把关。');result(0,'你把关键判断标准和常见错误写进交接手册，让后来者能够独立处理大部分业务。');result(1,'你继续把关最复杂的专业问题，同时培养一名能够接手核心工作的同事。');bump(0,{integrity:1,workAbility:1});bump(1,{workAbility:1,mentalPressure:1});}
+      break;
+    case 'arc_life_career_3':
+      if(f.lifeCareerHandoff){add('两年前你选择把方法和风险完整交出去。如今新团队已经能够独立运转，你终于有机会判断：自己的下一段价值是否还必须来自亲自负责。');result(0,'手册经过几轮修订，后来者保留了你的方法，也改掉了其中不再适用的部分。');result(1,'你把更多时间交还给生活，不再把团队的每一个问题都当成自己的责任。');bump(0,{peopleReputation:1});}
+      else if(f.lifeCareerContinued){add('两年前你选择继续负责核心部分。项目确实走得更稳，但团队也逐渐习惯了遇到难题就等你拍板。');result(0,'你把多年经验拆成可传授的判断方法，开始让团队在没有你时也能作出决定。');result(1,'你主动退出部分日常决策，把精力留给真正需要专业判断的难题。');bump(0,{workAbility:1});bump(1,{familyPressure:-1,mentalPressure:-1});}
+      break;
+    case 'arc_life_integrity_2':
+      if(f.lifeIntegrityOpen){add('当年的原始材料和差异说明一直在案。审查人员已经看过你当时主动披露的记录，现在更想知道你是否愿意说明决策过程中的不足。');result(0,'你把当时的依据、后续修正和仍未解决的问题放在同一份说明里。');result(1,'你按程序提交完整材料，对暂时无法核实的部分明确保留意见。');bump(0,{peopleReputation:1});}
+      else if(f.lifeIntegrityQuiet){add('你当年保留了原始材料，却没有把差异主动推到台前。如今审查人员重新找到那一页，决定从头核对。');result(0,'你不再沿用当年的简略说明，把差异、原始材料和判断过程一并交出。');result(1,'你提交原始记录，并明确说明当年哪些判断尚缺乏充分依据。');bump(0,{mentalPressure:1,integrity:1});}
+      break;
+    case 'arc_life_integrity_3':
+      if(f.lifeIntegrityFullDisclosure){add('两年前你完整解释了判断依据，也承认当时的不足。档案整理人员希望把这段经历作为一次可供后来者复盘的案例。');result(0,'案例同时保留了原始错误、修正过程和责任边界，没有把复盘包装成个人功劳。');result(1,'你把档案交给新团队，并提醒他们可以用新的标准重新审视旧结论。');bump(0,{integrity:1});}
+      else if(f.lifeIntegrityPending){add('两年前仍有几项材料没有核清。五年后的档案整理要求你说明：哪些问题已经解决，哪些只是被暂时搁置。');result(0,'你补齐能够核实的证据，并把仍未解决的事项单独列入后续清单。');result(1,'你将未核实事项连同原始材料完整移交，不用一个仓促结论替代事实。');bump(1,{integrity:1});}
+      break;
+    case 'arc_life_family_2':
+      if(f.lifeFamilyPresent){add('你当年守住了那次重要约定。家人记得你确实到场，但也希望这种陪伴不必每次都靠临时协调和同事替班。');result(0,'你们把固定陪伴时间写进日历，并提前安排工作交接，不再等冲突发生后才补救。');result(1,'你们重新分配家务和照护责任，让每个人都有能够兑现的时间。');bump(0,{familyPressure:-1});}
+      else if(f.lifeFamilyCareer){add('你当年接受了临时重点任务。任务后来有了结果，但家人更在意的是：下一次冲突出现时，你是否仍然只能说“忙完这一阵”。');result(0,'你与家人重新约定固定时间，并把工作交接提前纳入安排。');result(1,'你们重新分配家庭责任，不再把缺席后的补偿当作长期办法。');bump(0,{familyPressure:-1,mentalPressure:-1});}
+      break;
+    case 'arc_life_family_3':
+      if(f.lifeFamilySchedule){add('两年前你们约定了固定的共同时间。五年后，家人的生活各自展开，真正重要的是这份约定能否随着每个人的变化继续调整。');result(0,'你们保留共同时间，也允许彼此有独立安排，家庭不再依靠某一个人单方面牺牲。');result(1,'你把这些年的变化写下来，提醒自己持续沟通比事后补偿更重要。');bump(0,{eq:1});}
+      else if(f.lifeFamilyShared){add('两年前你们重新分配了家庭责任。五年后，分工已经不再是表格上的名字，而是每个人都知道何时该主动补位。');result(0,'你们继续共同安排时间，也尊重彼此的独立生活。');result(1,'你把家庭分工的变化记下来，准备在下一次生活节奏改变时重新协商。');bump(1,{familyPressure:-1});}
+      break;
+    case 'arc_life_network_2':
+      if(f.lifeNetworkPublic){add('你当年组织的公开答疑留下了可查阅的问题清单。基层联络员这次带来的不是一封求助信，而是一份已经尝试过、仍然卡在责任交界处的办理记录。');result(0,'你逐项核对政策变化，公开更新责任窗口和答复时限。');result(1,'你把问题转入正式窗口，并确认后续答复不再依赖私人联系。');bump(0,{peopleReputation:1});}
+      else if(f.lifeNetworkSelective){add('你当年建立了部门联络清单。两年后，对方带来的问题显示：知道找谁还不够，还需要知道谁负责答复、多久能够得到结果。');result(0,'你为联络清单增加更新时间、责任人和反馈入口。');result(1,'你把联络机制交给正式窗口，避免一个私人号码成为所有问题的唯一入口。');bump(1,{mentalPressure:-1});}
+      break;
+    case 'arc_life_network_3':
+      if(f.lifeNetworkPublished){add('两年前更新的公开台账已经被多个窗口使用。五年后，新同事接手时，最有价值的不是名单本身，而是每条问题都能找到处理过程。');result(0,'新团队沿用公开反馈机制，并把长期未解决的问题保留在台账中。');result(1,'你保留必要的私人联系，但明确私人关系不能替代公开办理机制。');bump(0,{peopleReputation:1});}
+      else if(f.lifeNetworkTransferred){add('两年前你把联络机制交给正式窗口。五年后，名单上的名字换了几轮，问题仍然能够沿着公开流程找到负责人。');result(0,'你把制度移交记录和常见问题一并交给新团队。');result(1,'你保留真诚的私人联系，同时不再替正式制度承担全部责任。');bump(1,{familyPressure:-1});}
+      break;
+    case 'arc_life_confluence_1': {
+      const notes=[];
+      if(f.lifeCareerLead)notes.push('你曾在重点专班承担跨部门责任');else if(f.lifeCareerExpert)notes.push('你曾选择深耕专业岗位');
+      if(f.lifeIntegrityOpen)notes.push('旧项目的差异曾被你主动公开');else if(f.lifeIntegrityQuiet)notes.push('旧项目的差异曾被暂时留在程序内部');
+      if(f.lifeFamilyPresent)notes.push('你曾为家人的重要约定安排工作交接');else if(f.lifeFamilyCareer)notes.push('你曾为临时任务缺席家庭约定');
+      if(f.lifeNetworkPublic)notes.push('你曾把基层问题整理成公开答疑');else if(f.lifeNetworkSelective)notes.push('你曾建立跨部门联络清单');
+      if(notes.length)add('桌上的材料让你想起此前几次选择：'+notes.join('；')+'。这一次，任何一项责任都不能只靠个人记忆维持。');
+      if(f.lifeIntegrityQuiet)bump(0,{mentalPressure:1});
+      if(f.lifeFamilyCareer)bump(1,{familyPressure:-1});
+      if(f.lifeNetworkSelective)bump(0,{peopleReputation:1});
+      break;
+    }
+    case 'arc_life_confluence_2':
+      if(f.lifeConfluenceLegacy){add('你当年选择把分工和复盘方法交给后来者。新团队没有照抄你的结论，而是沿着留下的证据继续推进。');result(0,'清单被归档前，后来者补上了新的责任人和复核日期，旧问题终于不再只属于某一个人。');result(1,'你保留未解决事项的记录，也允许新团队根据新情况重新作出判断。');}
+      else if(f.lifeConfluenceUnresolved){add('你当年选择保留未解决事项，没有把暂缓写成结案。三年后，新的负责人带着补充材料回来，要求把旧判断重新放到桌面上。');result(0,'你把复盘方法交给新团队，连同当年没有解决的部分一起说明。');result(1,'你保留证据和未决事项，允许后来者重新判断，而不是替未来写下结论。');}
+      break;
+  }
+  return out;
+};
+// 四条人生路线画像：只根据已有真实状态计算，不写入存档、不强迫玩家选职业流派。
+GameEngine.prototype.getLifePathProfile = function() {
+  const p=this.state.player,h=this.state.hidden,a=this.state.attrs,f=p.flags||{};
+  const contacts=Array.isArray(p.contacts)?p.contacts:[];
+  const trusted=contacts.filter(c=>!c.enemy&&c.status!=='rival'&&Number(c.trust||c.relation||0)>=65).length;
+  const bounded = value => Math.round(Math.max(0, Math.min(100, value)));
+  const scores={
+    career:bounded((p.leadershipRank||0)*5+(p.promotions||0)*4+(p.unitLevel||0)*8+(h.workAbility||0)*0.22+(p.unitUpgrades||0)*3+(f.lifeCareerReviewed?6:0)),
+    integrity:bounded((h.integrity||0)*0.55+Math.max(0,80-(h.risk||0))*0.25+(f.refusedBribe?8:0)+(f.reportedOthers?4:0)+(f.tookResponsibility?4:0)+(f.lifeIntegrityReviewed?8:0)+(f.lifeIntegrityOpen?3:0)-(this.hasCorruptFlag(f)?18:0)),
+    family:bounded((a.family||0)*3.2+Math.max(0,75-(h.familyPressure||0))*0.48+(p.childEducation||0)*2+(p.childCompany||0)*2+(p.isMarried?8:0)+(p.hasChildren?6:0)+(f.lifeFamilyReviewed?10:0)+(f.lifeFamilyPresent?4:0)-(f.lifeFamilyCareer?3:0)),
+    network:bounded(trusted*8+(p.peopleReputation||50)*0.32+(p.reputation||50)*0.12+(f.peopleEventCount||0)*2+(f.lifeNetworkReviewed?8:0)+(f.lifeNetworkPublic?4:0))
+  };
+  const routes=[
+    {id:'career',name:'仕途发展',subtitle:'晋升、历练与组织信任',score:scores.career,detail:scores.career>=70?'已形成持续的职业积累':scores.career>=40?'正在积累岗位经验':'仍有较大的成长空间'},
+    {id:'integrity',name:'原则与担当',subtitle:'廉洁、责任与长期声誉',score:scores.integrity,detail:scores.integrity>=70?'原则已成为重要的人生底色':scores.integrity>=40?'仍在关键选择中建立边界':'过去的选择留下了需要面对的代价'},
+    {id:'family',name:'家庭经营',subtitle:'陪伴、亲情与共同成长',score:scores.family,detail:scores.family>=70?'家庭关系形成了稳定支撑':scores.family>=40?'家庭与事业仍在寻找平衡':'需要为重要关系留出更多时间'},
+    {id:'network',name:'人脉与社会连接',subtitle:'互信、互惠与群众口碑',score:scores.network,detail:scores.network>=70?'已经建立较稳固的社会连接':scores.network>=40?'关系网络正在逐步形成':'值得投入时间建立可靠的关系'}
+  ];
+  return {scores,routes,dominant:routes.slice().sort((a,b)=>b.score-a.score)[0].id,balanced:Math.max(...Object.values(scores))-Math.min(...Object.values(scores))<=18};
 };
 // 人生交汇：不是独立随机抽奖，必须由至少两条已走过的人物线共同触发。
 GameEngine.prototype.getCrossroadsEvent = function() {
@@ -767,7 +881,7 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         const due=this.getPendingCausalConsequences().find(x=>x.overdue);
         if(due) {
           const next=GameData.events.find(x=>x.id===due.id);
-          const ev=due.id==='arc_venture_disclosure_1'?this.getVentureReviewEvent():next;
+          const ev=due.id==='arc_venture_disclosure_1'?this.getVentureReviewEvent():this.getLifePathEvent(next);
           if(ev){
             if(ev.eventType==='auto'||ev.eventType==='sudden')p.seenEvents.push(due.id);
             event=ev;
@@ -795,6 +909,14 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
           && this.randf() < 0.36) {
         event=this.getCrossroadsEvent();
       }
+      // 四条人生路线：仅在年度槽空闲时播种一次，后续由刚性链按年龄推进。
+      const lifeSeen=p.seenEvents||[], lifeFlags=p.flags||{};
+      if (!event && p.yearsWorked>=3 && p.yearsWorked<=16 && !lifeSeen.includes('arc_life_career_1') && this.randf()<0.09) event=GameData.events.find(x=>x.id==='arc_life_career_1')||null;
+      if (!event && p.yearsWorked>=4 && p.yearsWorked<=18 && !lifeSeen.includes('arc_life_integrity_1') && this.randf()<0.09) event=GameData.events.find(x=>x.id==='arc_life_integrity_1')||null;
+      if (!event && p.isMarried && p.age>=28 && p.age<=48 && !lifeSeen.includes('arc_life_family_1') && this.randf()<0.10) event=GameData.events.find(x=>x.id==='arc_life_family_1')||null;
+      if (!event && p.yearsWorked>=3 && p.yearsWorked<=20 && !lifeSeen.includes('arc_life_network_1') && this.randf()<0.09) event=GameData.events.find(x=>x.id==='arc_life_network_1')||null;
+      const completedLifeRoutes=['lifeCareerReviewed','lifeIntegrityReviewed','lifeFamilyReviewed','lifeNetworkReviewed'].filter(k=>lifeFlags[k]).length;
+      if (!event && completedLifeRoutes>=2 && p.age>=32 && p.age<=58 && !lifeSeen.includes('arc_life_confluence_1')) event=this.getLifePathEvent(GameData.events.find(x=>x.id==='arc_life_confluence_1'))||null;
       // 档案柜里的回执：基层服务的长期抉择，前 12 年每年有一次进入机会。
       // 同一决策槽不覆盖政策项目/其他刚性事件；开始后结局由 flag 延迟确定。
       if (!event && !p.flags.receiptOpen && !p.flags.receiptQuiet && !(p.seenEvents || []).includes('arc_receipt_1')

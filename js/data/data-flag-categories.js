@@ -109,6 +109,7 @@ const FLAG_CATEGORIES = {
   },
   赌瘾沉迷: {
     gamblingAddict: '赌瘾缠身',
+    gamblingRelapse: '赌博复发',
     gambleStreak: '赌欲升级',
     gambleQuit: '戒赌成功'
   },

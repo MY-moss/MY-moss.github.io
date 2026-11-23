@@ -7,19 +7,19 @@
 const gd_events_new_career = [
 
   // ========== 晋升发展类（enc001 ~ enc020） ==========
-  { id: 'enc001', stage: 'career', eventType: 'choice', weight: 6, title: '科长空缺', text: '科长调走了，位置空了出来。论资历论能力，你都是热门人选。但有两位同事也虎视眈眈，还有人说上面已经有人打了招呼。', choices: [
+  { id: 'enc001', stage: 'career', eventType: 'choice', weight: 6, requireRankMin: 3, title: '科长空缺', text: '科长调走了，位置空了出来。论资历论能力，你都是热门人选。但有两位同事也虎视眈眈，还有人说上面已经有人打了招呼。', choices: [
     { text: '主动找领导汇报思想表达意愿', effects: {positionWeight: 3, desire: 2, mentalPressure: 2, eq: 1} },
     { text: '埋头干好本职用业绩说话', effects: {workAbility: 3, integrity: 2, mentalPressure: 1, positionWeight: 2} },
     { text: '请老领导帮忙美言几句', effects: {background: 3, positionWeight: 2, risk: 2, mentalPressure: 2} },
     { text: '佛系应对顺其自然', effects: {mentalPressure: -2, desire: -2, positionWeight: -1} },
   ]},
-  { id: 'enc002', stage: 'career', eventType: 'choice', weight: 4, title: '副处竞争', text: '单位推荐副处级人选，你和另外两位科长是候选人。考察组已经进驻，气氛紧张。有人说"这次不拼能力拼关系"。', choices: [
+  { id: 'enc002', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 4, title: '副处竞争', text: '单位推荐副处级人选，你和另外两位科长是候选人。考察组已经进驻，气氛紧张。有人说"这次不拼能力拼关系"。', choices: [
     { text: '认真准备述职报告展示实绩', effects: {workAbility: 3, positionWeight: 3, mentalPressure: 3, integrity: 1} },
     { text: '四处活动打通关节', effects: {background: 4, positionWeight: 3, risk: 5, integrity: -4, desire: 2} },
     { text: '正常工作不参与拉票', effects: {integrity: 3, mentalPressure: 1, positionWeight: 1, eq: 1} },
     { text: '主动退出竞争成人之美', effects: {eq: 2, integrity: 2, positionWeight: -2, mentalPressure: -1} },
   ]},
-  { id: 'enc003', stage: 'career', eventType: 'choice', weight: 5, title: '正科晋升', text: '任职年限够了，组织部门启动正科级晋升程序。你的档案材料需要补充完善，述职报告也要认真打磨。', choices: [
+  { id: 'enc003', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 3, title: '正科晋升', text: '任职年限够了，组织部门启动正科级晋升程序。你的档案材料需要补充完善，述职报告也要认真打磨。', choices: [
     { text: '加班加点完善材料力求完美', effects: {workAbility: 2, positionWeight: 3, mentalPressure: 4, integrity: 1} },
     { text: '请人事科同志帮忙把关', effects: {eq: 1, background: 1, positionWeight: 2, mentalPressure: 1} },
     { text: '按部就班准备不急不躁', effects: {mentalPressure: -1, positionWeight: 1, integrity: 1} },
@@ -29,22 +29,22 @@ const gd_events_new_career = [
     { text: '服从组织安排相信公平', effects: {integrity: 2, mentalPressure: -1, positionWeight: 1} },
     { text: '找分管领导表达诉求', effects: {background: 2, positionWeight: 2, desire: 1, mentalPressure: 1} },
   ]},
-  { id: 'enc005', stage: 'career', eventType: 'choice', weight: 4, title: '挂职机会', text: '组织部门选派干部到沿海发达地区挂职锻炼两年。这是个开阔眼界的好机会，但意味着离开家人和熟悉的岗位。', choices: [
-    { text: '积极申请把握难得机会', effects: {workAbility: 3, background: 3, positionWeight: 2, mentalPressure: 3, political: 2} },
+  { id: 'enc005', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 2, year: [25, 45], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '挂职机会', text: '组织部门选派干部到沿海发达地区挂职锻炼两年。这是个开阔眼界的好机会，但意味着离开家人和熟悉的岗位。', choices: [
+    { text: '积极申请把握难得机会', effects: {workAbility: 3, background: 3, positionWeight: 2, mentalPressure: 3, political: 2, flag: 'seconded'}, result: '你通过组织选派赴沿海地区挂职，原单位保留关系，一年后将进入阶段考核。' },
     { text: '考虑到家庭因素放弃机会', effects: {mentalPressure: -2, desire: -1, eq: 1} },
     { text: '和家人商量后再做决定', effects: {eq: 1, mentalPressure: 1, integrity: 1} },
   ]},
-  { id: 'enc006', stage: 'career', eventType: 'choice', weight: 5, title: '借调上级', text: '市里一个重要处室借调你去帮忙，时间半年起。借调期间表现好有可能正式留下，但也可能白忙一场回到原单位。', choices: [
-    { text: '抓住机会去上级部门锻炼', effects: {background: 3, positionWeight: 2, workAbility: 2, mentalPressure: 3, political: 1} },
+  { id: 'enc006', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 2, year: [25, 50], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '借调上级', text: '市里一个重要处室借调你去帮忙，时间半年起。借调期间表现好有可能正式留下，但也可能白忙一场回到原单位。', choices: [
+    { text: '抓住机会去上级部门锻炼', effects: {background: 3, positionWeight: 2, workAbility: 2, mentalPressure: 3, political: 1, flag: 'seconded'}, result: '你办理好工作交接，正式到上级处室报到，一年后将接受借调考核。' },
     { text: '婉拒借调留在原岗位', effects: {mentalPressure: -1, workAbility: 1, positionWeight: -1} },
-    { text: '去借调但保留原单位退路', effects: {background: 2, eq: 1, mentalPressure: 2, desire: 1} },
+    { text: '去借调但保留原单位退路', effects: {background: 2, eq: 1, mentalPressure: 2, desire: 1, flag: 'seconded'}, result: '你与两边单位明确交接和返岗安排，正式开始借调。' },
   ]},
-  { id: 'enc007', stage: 'career', eventType: 'choice', weight: 6, title: '跟班学习（省厅进修）', text: '省厅举办为期三个月的业务骨干跟班学习班，单位推荐你参加。学习期间能接触到省级层面的工作流程和人脉。', choices: [
+  { id: 'enc007', stage: 'career', eventType: 'choice', weight: 6, requireRankMin: 2, year: [25, 45], title: '跟班学习（省厅进修）', text: '省厅举办为期三个月的业务骨干跟班学习班，单位推荐你参加。学习期间能接触到省级层面的工作流程和人脉。', choices: [
     { text: '珍惜机会虚心学习', effects: {workAbility: 3, iq: 2, background: 2, mentalPressure: 2, political: 1} },
     { text: '借机拓展人脉关系', effects: {eq: 2, background: 3, mentalPressure: 1, desire: 2} },
     { text: '走个形式回去还是老样子', effects: {mentalPressure: -1, workAbility: -1, desire: -1} },
   ]},
-  { id: 'enc008', stage: 'career', eventType: 'choice', weight: 5, title: '轮岗交流（组织安排）', text: '单位内部轮岗，领导找你谈话，想把你从熟悉的业务科室交流到另一个相对陌生的科室任科长。', choices: [
+  { id: 'enc008', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 4, year: [28, 55], title: '轮岗交流（组织安排）', text: '单位内部轮岗，领导找你谈话，想把你从熟悉的业务科室交流到另一个相对陌生的科室任科长。', choices: [
     { text: '服从安排迎接新挑战', effects: {workAbility: 2, eq: 1, positionWeight: 2, mentalPressure: 3, political: 1} },
     { text: '表达希望留在原科室', effects: {mentalPressure: -1, workAbility: 1, positionWeight: -1, eq: -1} },
     { text: '提出轮岗条件争取资源', effects: {background: 2, desire: 2, positionWeight: 1, mentalPressure: 1} },
@@ -54,12 +54,12 @@ const gd_events_new_career = [
     { text: '找理由推脱留在机关', effects: {mentalPressure: -2, positionWeight: -2, desire: -1, integrity: -1} },
     { text: '接受安排但要解决后顾之忧', effects: {eq: 1, background: 1, mentalPressure: 2, positionWeight: 1, flag: 'grassrootsWork', grassrootsDispatch: { duration: 1, reason: '下沉基层锻炼' }} },
   ]},
-  { id: 'enc010', stage: 'career', eventType: 'choice', weight: 3, title: '援疆援藏', text: '组织动员干部报名援疆援藏，为期三年。这是政治任务也是个人机遇，回来后提拔概率很大，但条件艰苦、家庭分离。', choices: [
+  { id: 'enc010', stage: 'career', eventType: 'choice', weight: 3, requireRankMin: 2, year: [25, 50], title: '援疆援藏', text: '组织动员干部报名援疆援藏，为期三年。这是政治任务也是个人机遇，回来后提拔概率很大，但条件艰苦、家庭分离。', choices: [
     { text: '主动报名响应组织号召', effects: {political: 5, positionWeight: 4, mentalPressure: 5, workAbility: 2, integrity: 3, background: 3} },
     { text: '家庭困难大委婉拒绝', effects: {mentalPressure: -1, political: -2, positionWeight: -1, desire: -1} },
     { text: '报名但要先和家人商量', effects: {eq: 1, mentalPressure: 2, political: 1, integrity: 1} },
   ]},
-  { id: 'enc011', stage: 'career', eventType: 'choice', weight: 4, title: '驻村第一书记', requireUnitLevelMin: 2, requireUnitLevelMax: 3, excludeFlags: ['grassrootsActive', 'grassrootsDone'], text: '组织选派你到后进村（重点村）担任驻村第一书记，任期两年。村里的烂摊子等着你，但干好了是响当当的政绩。接受后保留原单位关系，任期结束根据考核决定去向。', choices: [
+  { id: 'enc011', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 3, year: [25, 55], title: '驻村第一书记', requireUnitLevelMin: 2, requireUnitLevelMax: 3, excludeFlags: ['grassrootsActive', 'grassrootsDone'], text: '组织选派你到后进村（重点村）担任驻村第一书记，任期两年。村里的烂摊子等着你，但干好了是响当当的政绩。接受后保留原单位关系，任期结束根据考核决定去向。', choices: [
     { text: '扛起担子立志改变村貌', effects: {workAbility: 3, reputation: 3, positionWeight: 3, mentalPressure: 4, integrity: 2, eq: 1, flag: 'grassrootsWork', grassrootsDispatch: { duration: 2, reason: '驻村第一书记' }} },
     { text: '想办法调整其他人去', effects: {positionWeight: -2, reputation: -2, mentalPressure: -1, desire: -1} },
     { text: '接受任务但要求配套支持', effects: {background: 2, workAbility: 2, mentalPressure: 2, reputation: 2, flag: 'grassrootsWork', grassrootsDispatch: { duration: 2, reason: '驻村第一书记' }} },
@@ -69,22 +69,22 @@ const gd_events_new_career = [
     { text: '完成规定动作即可', effects: {mentalPressure: 1, workAbility: 1, integrity: -1, political: 0} },
     { text: '想办法帮他们发展产业', effects: {workAbility: 3, iq: 2, mentalPressure: 3, political: 2, positionWeight: 2} },
   ]},
-  { id: 'enc013', stage: 'career', eventType: 'choice', weight: 5, title: '专班抽调', text: '市里成立重大项目工作专班，点名抽调你参加。专班工作节奏快、压力大，但能直接对接市领导。', choices: [
+  { id: 'enc013', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 2, year: [25, 55], title: '专班抽调', text: '市里成立重大项目工作专班，点名抽调你参加。专班工作节奏快、压力大，但能直接对接市领导。', choices: [
     { text: '全力以赴投入专班工作', effects: {workAbility: 3, background: 3, positionWeight: 2, mentalPressure: 4, political: 2} },
     { text: '兼顾原单位和专班工作', effects: {workAbility: 2, mentalPressure: 3, eq: 1, positionWeight: 1} },
     { text: '以原单位工作忙为由推脱', effects: {mentalPressure: -1, positionWeight: -2, background: -1, desire: -1} },
   ]},
-  { id: 'enc014', stage: 'career', eventType: 'choice', weight: 3, title: '巡视抽调', text: '省委巡视组抽调你参加为期半年的巡视工作。巡视工作保密性强、要求高，是难得的政治历练。', choices: [
+  { id: 'enc014', stage: 'career', eventType: 'choice', weight: 3, requireRankMin: 3, year: [25, 55], title: '巡视抽调', text: '省委巡视组抽调你参加为期半年的巡视工作。巡视工作保密性强、要求高，是难得的政治历练。', choices: [
     { text: '认真履职锻炼政治能力', effects: {political: 4, integrity: 3, workAbility: 2, mentalPressure: 4, background: 3, positionWeight: 2} },
     { text: '担心得罪人想推掉', effects: {mentalPressure: -1, positionWeight: -1, political: -2, desire: -1} },
     { text: '接受抽调但保留原职务', effects: {political: 2, positionWeight: 1, mentalPressure: 2, background: 2} },
   ]},
-  { id: 'enc015', stage: 'career', eventType: 'choice', weight: 4, title: '巡察抽调', text: '市委巡察组抽调你参与本轮巡察工作，要下沉到县区开展巡察。时间紧任务重，还要抽调期间脱离原岗位。', choices: [
+  { id: 'enc015', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 2, year: [25, 55], title: '巡察抽调', text: '市委巡察组抽调你参与本轮巡察工作，要下沉到县区开展巡察。时间紧任务重，还要抽调期间脱离原岗位。', choices: [
     { text: '积极投身巡察锤炼党性', effects: {political: 3, integrity: 2, workAbility: 2, mentalPressure: 3, positionWeight: 2} },
     { text: '认真但求稳怕出错', effects: {workAbility: 1, mentalPressure: 1, positionWeight: 1, integrity: 1} },
     { text: '找借口不参加', effects: {mentalPressure: -1, political: -2, positionWeight: -1} },
   ]},
-  { id: 'enc016', stage: 'career', eventType: 'choice', weight: 5, title: '督查抽调', text: '国务院督查组来本市督查，市里抽调你作为联络员配合工作。这是展示能力的舞台，也是巨大的压力。', choices: [
+  { id: 'enc016', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 2, year: [25, 55], title: '督查抽调', text: '国务院督查组来本市督查，市里抽调你作为联络员配合工作。这是展示能力的舞台，也是巨大的压力。', choices: [
     { text: '精心准备确保万无一失', effects: {workAbility: 3, background: 3, positionWeight: 3, mentalPressure: 4, political: 2} },
     { text: '按程序办事不出风头', effects: {workAbility: 1, mentalPressure: 1, integrity: 1, positionWeight: 1} },
     { text: '趁机向督查组反映单位困难', effects: {eq: 1, positionWeight: -1, risk: 2, background: 1} },
@@ -172,7 +172,7 @@ const gd_events_new_career = [
     { text: '等有闲钱了再买', effects: {wealth: 1, risk: 2, mentalPressure: 1} },
     { text: '给全家都配置重疾保障', effects: {wealth: -3, mentalPressure: -3, eq: 1, risk: -2} },
   ]},
-  { id: 'enc036', stage: 'career', eventType: 'choice', weight: 5, title: '子女教育金', text: '孩子要上小学了，教育支出逐年增加。银行推荐一款教育金产品，强制储蓄专款专用。', choices: [
+  { id: 'enc036', stage: 'career', eventType: 'choice', weight: 5, requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 7, title: '子女教育金', text: '孩子要上小学了，教育支出逐年增加。银行推荐一款教育金产品，强制储蓄专款专用。', choices: [
     { text: '开户定投为孩子未来储备', effects: {wealth: -2, mentalPressure: -2, iq: 1, eq: 1} },
     { text: '自己理财收益更高', effects: {wealth: 1, iq: 2, risk: 2, mentalPressure: 1} },
     { text: '走一步看一步不规划', effects: {mentalPressure: 2, wealth: 0, desire: -1} },
@@ -221,12 +221,12 @@ const gd_events_new_career = [
   ]},
   { id: 'enc047', stage: 'career', eventType: 'choice', weight: 6, title: '土特产', text: '下乡调研结束，乡镇同志塞给你一后备箱土特产，有土鸡、腊肉、山货，价值不菲。', choices: [
     { text: '婉拒不拿群众一针一线', effects: {integrity: 3, risk: -2, mentalPressure: 1, eq: 1} },
-    { text: '象征性拿一点其余退回', effects: {integrity: 1, risk: 1, mentalPressure: 1, eq: 1} },
+    { text: '象征性拿一点其余退回', effects: {integrity: -1, risk: 2, mentalPressure: 1, eq: 1} },
     { text: '全部带回分给同事', effects: {wealth: 1, risk: 3, integrity: -2, eq: 1, mentalPressure: 1} },
   ]},
   { id: 'enc048', stage: 'career', eventType: 'choice', weight: 5, title: '礼品卡', text: '年底了，一个长期合作供应商送来一张面值5000元的礼品卡，说是"感谢一年来的支持"。', choices: [
     { text: '当面退回表明立场', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -1} },
-    { text: '收下但退还等值现金', effects: {integrity: 1, risk: 1, mentalPressure: 2, eq: 1} },
+    { text: '收下但退还等值现金', effects: {integrity: -2, risk: 3, mentalPressure: 2, eq: 1} },
     { text: '收下心安理得', effects: {wealth: 2, risk: 6, integrity: -5, mentalPressure: 3, desire: 2} },
   ]},
   { id: 'enc049', stage: 'career', eventType: 'choice', weight: 5, title: '购物券', text: '单位发福利，有人提议用公款购买购物券发放给职工，每人500元。"反正是大家的福利，不会有人查。"', choices: [
@@ -236,10 +236,10 @@ const gd_events_new_career = [
   ]},
   { id: 'enc050', stage: 'career', eventType: 'choice', weight: 5, title: '节礼', text: '中秋节，一位企业老板登门拜访，带来一盒高档月饼和两条中华烟，价值数千元。', choices: [
     { text: '拒收节礼守住底线', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -1} },
-    { text: '收下月饼退回烟', effects: {integrity: -1, risk: 2, mentalPressure: 1, eq: 1} },
+    { text: '收下月饼退回烟', effects: {integrity: -2, risk: 3, mentalPressure: 1, eq: 1} },
     { text: '热情收下留老板吃饭', effects: {wealth: 1, risk: 6, integrity: -5, mentalPressure: 3, eq: 1} },
   ]},
-  { id: 'enc051', stage: 'career', eventType: 'choice', weight: 4, title: '谢师宴', text: '孩子高考考上重点大学，亲戚朋友张罗着要办谢师宴，还要请孩子的老师们。现在明令禁止办谢师宴。', choices: [
+  { id: 'enc051', stage: 'career', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 16, requireChildAgeMax: 19, title: '谢师宴', text: '孩子高考考上重点大学，亲戚朋友张罗着要办谢师宴，还要请孩子的老师们。现在明令禁止办谢师宴。', choices: [
     { text: '不办谢师宴遵守规定', effects: {integrity: 3, risk: -2, mentalPressure: 1, political: 1} },
     { text: '小范围家庭聚餐', effects: {integrity: 1, risk: 1, mentalPressure: 1, eq: 1} },
     { text: '大办特办收份子钱', effects: {wealth: 3, risk: 6, integrity: -5, mentalPressure: 2, desire: 3} },
@@ -254,47 +254,47 @@ const gd_events_new_career = [
     { text: '不报告悄悄办', effects: {risk: 5, integrity: -3, mentalPressure: 3, eq: 1} },
     { text: '不办寿宴简简单单', effects: {integrity: 3, mentalPressure: -1, eq: -1} },
   ]},
-  { id: 'enc054', stage: 'career', eventType: 'choice', weight: 5, title: '违规收礼', text: '手中有点审批权后，逢年过节总有人以"看望"为名送来红包礼金。今年春节你收到了不下十个小红包。', choices: [
+  { id: 'enc054', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 3, title: '违规收礼', text: '手中有点审批权后，逢年过节总有人以"看望"为名送来红包礼金。今年春节你收到了不下十个小红包。', choices: [
     { text: '全部退回不留情面', effects: {integrity: 5, risk: -4, mentalPressure: 3, eq: -2, addEnemy: { id: 'enemy_054', name: '周老板', position: '辖区商人', description: '给你送礼被当众退回，面子上过不去，心里记恨' }} },
     { text: '登记上交廉政账户', effects: {integrity: 3, risk: -2, mentalPressure: 2} },
     { text: '收下认为人之常情', effects: {wealth: 4, risk: 7, integrity: -6, mentalPressure: 4, desire: 3} },
   ]},
-  { id: 'enc055', stage: 'career', eventType: 'choice', weight: 4, title: '违规送礼', text: '为了孩子入学，你想给校长送个红包"意思一下"。周围有人说"现在都这样，不送办不成事"。', choices: [
+  { id: 'enc055', stage: 'career', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 5, requireChildAgeMax: 7, title: '违规送礼', text: '为了孩子入学，你想给校长送个红包"意思一下"。周围有人说"现在都这样，不送办不成事"。', choices: [
     { text: '不送靠正当途径入学', effects: {integrity: 3, risk: -2, mentalPressure: 2, eq: -1} },
     { text: '送点土特产表达心意', effects: {integrity: -1, risk: 2, mentalPressure: 1, eq: 1} },
     { text: '送红包务必办成', effects: {wealth: -3, risk: 5, integrity: -4, mentalPressure: 2, desire: 2} },
   ]},
-  { id: 'enc056', stage: 'career', eventType: 'choice', weight: 5, title: '违规吃喝', text: '一个企业老板邀请你去高档会所吃饭，说"就咱们几个朋友，私密性好，不会被发现的"。', choices: [
+  { id: 'enc056', stage: 'career', eventType: 'choice', weight: 5, requireRankMin: 3, title: '违规吃喝', text: '一个企业老板邀请你去高档会所吃饭，说"就咱们几个朋友，私密性好，不会被发现的"。', choices: [
     { text: '拒绝不去高档场所消费', effects: {integrity: 4, risk: -3, mentalPressure: 1, eq: -1} },
     { text: '去普通餐厅简餐', effects: {integrity: 1, risk: 1, mentalPressure: 1, eq: 1} },
     { text: '欣然前往享受一番', effects: {wealth: 1, risk: 6, integrity: -5, mentalPressure: 3, desire: 3} },
   ]},
-  { id: 'enc057', stage: 'career', eventType: 'choice', weight: 4, title: '公车私用', text: '周末要送家人去机场，单位的车就停在那里。司机说"领导都出差了，用一下没事的"。', choices: [
+  { id: 'enc057', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 3, title: '公车私用', text: '周末要送家人去机场，单位的车就停在那里。司机说"领导都出差了，用一下没事的"。', choices: [
     { text: '叫网约车不碰公车', effects: {integrity: 3, risk: -2, mentalPressure: -1, wealth: -1} },
     { text: '用公车就这一次', effects: {risk: 5, integrity: -4, mentalPressure: 3, wealth: 1, desire: 1} },
     { text: '让司机顺便送一下', effects: {risk: 3, integrity: -2, mentalPressure: 1, eq: 1} },
   ]},
-  { id: 'enc058', stage: 'career', eventType: 'choice', weight: 3, title: '公款旅游', text: '有人提议以"学习考察"名义组织科室同志去旅游胜地走一趟，费用从培训费里列支。', choices: [
+  { id: 'enc058', stage: 'career', eventType: 'choice', weight: 3, requireRankMin: 3, title: '公款旅游', text: '有人提议以"学习考察"名义组织科室同志去旅游胜地走一趟，费用从培训费里列支。', choices: [
     { text: '坚决反对公款旅游', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -2} },
     { text: '不反对也不参与', effects: {integrity: 1, risk: 1, mentalPressure: 0, eq: -1} },
     { text: '积极组织大家高兴', effects: {wealth: 1, risk: 7, integrity: -6, mentalPressure: 2, eq: 2, desire: 2} },
   ]},
-  { id: 'enc059', stage: 'career', eventType: 'choice', weight: 4, title: '违规发放津补贴', text: '年底经费有结余，有人提议以"加班费""值班费"名义给职工发点钱，否则经费被收回。', choices: [
+  { id: 'enc059', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 3, title: '违规发放津补贴', text: '年底经费有结余，有人提议以"加班费""值班费"名义给职工发点钱，否则经费被收回。', choices: [
     { text: '按规定不能违规发放', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -2} },
     { text: '换个名目发放', effects: {risk: 5, integrity: -3, mentalPressure: 2, eq: 1, wealth: 1} },
     { text: '据实列支合规使用', effects: {integrity: 2, workAbility: 2, mentalPressure: 1, risk: -1} },
   ]},
-  { id: 'enc060', stage: 'career', eventType: 'choice', weight: 4, title: '超标准接待', text: '上级来检查，接待规格是四菜一汤工作餐。但有人提议"加点菜上点酒，别太寒酸了，领导会不高兴"。', choices: [
+  { id: 'enc060', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 3, title: '超标准接待', text: '上级来检查，接待规格是四菜一汤工作餐。但有人提议"加点菜上点酒，别太寒酸了，领导会不高兴"。', choices: [
     { text: '严格执行接待标准', effects: {integrity: 4, risk: -2, mentalPressure: 2, eq: -1} },
     { text: '超标一点但不上烟酒', effects: {integrity: -1, risk: 2, mentalPressure: 1, eq: 1} },
     { text: '上好菜好酒隆重接待', effects: {risk: 6, integrity: -5, mentalPressure: 2, eq: 1, desire: 2} },
   ]},
-  { id: 'enc061', stage: 'career', eventType: 'choice', weight: 4, title: '办公用房', text: '你提拔后分到了独立办公室，面积超标了几平米。有人提醒你"超标要整改，但你这个级别查得不严"。', choices: [
+  { id: 'enc061', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 5, title: '办公用房', text: '你提拔后分到了独立办公室，面积超标了几平米。有人提醒你"超标要整改，但你这个级别查得不严"。', choices: [
     { text: '主动腾退调整到合规面积', effects: {integrity: 4, risk: -3, mentalPressure: 1, political: 1} },
     { text: '等检查时再说', effects: {risk: 3, integrity: -2, mentalPressure: 1, desire: 1} },
     { text: '不管它先享受着', effects: {risk: 4, integrity: -3, mentalPressure: -1, desire: 2} },
   ]},
-  { id: 'enc062', stage: 'career', eventType: 'choice', weight: 4, title: '配备公车', text: '你提拔后符合配车标准，车管科问你选什么车。有人暗示可以"超标配一辆，大家都不说就没事"。', choices: [
+  { id: 'enc062', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 5, title: '配备公车', text: '你提拔后符合配车标准，车管科问你选什么车。有人暗示可以"超标配一辆，大家都不说就没事"。', choices: [
     { text: '严格按标准选车', effects: {integrity: 3, risk: -2, mentalPressure: 1, political: 1} },
     { text: '选标准内最好的', effects: {integrity: 1, risk: 1, mentalPressure: 1, desire: 1} },
     { text: '超标配车显身份', effects: {risk: 6, integrity: -5, mentalPressure: 2, desire: 3} },
@@ -304,12 +304,12 @@ const gd_events_new_career = [
     { text: '办了但很少用', effects: {integrity: 0, risk: 1, mentalPressure: 0} },
     { text: '坚持用现金便于操作', effects: {risk: 4, integrity: -3, mentalPressure: 1, desire: 1} },
   ]},
-  { id: 'enc064', stage: 'career', eventType: 'choice', weight: 4, title: '虚开发票', text: '科室经费快被收回，有人提议找几张发票"做一下账"，把经费套出来发给大家。', choices: [
+  { id: 'enc064', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 3, title: '虚开发票', text: '科室经费快被收回，有人提议找几张发票"做一下账"，把经费套出来发给大家。', choices: [
     { text: '坚决反对虚开发票', effects: {integrity: 5, risk: -4, mentalPressure: 2, eq: -2} },
     { text: '不参与也不举报', effects: {integrity: 0, risk: 2, mentalPressure: 1, eq: -1} },
     { text: '配合操作大家都受益', effects: {wealth: 1, risk: 8, integrity: -7, mentalPressure: 4, eq: 1, desire: 2} },
   ]},
-  { id: 'enc065', stage: 'career', eventType: 'choice', weight: 3, title: '套取资金', text: '一个项目经费有结余，领导暗示你"想办法处理一下，给科室同志发点福利"。这是严重的违纪行为。', choices: [
+  { id: 'enc065', stage: 'career', eventType: 'choice', weight: 3, requireRankMin: 3, title: '套取资金', text: '一个项目经费有结余，领导暗示你"想办法处理一下，给科室同志发点福利"。这是严重的违纪行为。', choices: [
     { text: '拒绝并说明严重后果', effects: {integrity: 5, risk: -3, mentalPressure: 3, eq: -2, positionWeight: -1} },
     { text: '装作没听见不执行', effects: {integrity: 2, risk: 1, mentalPressure: 2, eq: -1} },
     { text: '按要求套取资金', effects: {wealth: 2, risk: 9, integrity: -8, mentalPressure: 5, eq: 1, desire: 3} },
@@ -336,7 +336,7 @@ const gd_events_new_career = [
     { text: '不参与投资保本为上', effects: {integrity: 2, mentalPressure: -1, wealth: 0} },
     { text: '小额投资试水', effects: {wealth: -1, risk: 2, mentalPressure: 1, eq: 1} },
   ]},
-  { id: 'enc070', stage: 'career', eventType: 'choice', weight: 4, title: '开店', text: '配偶想开个小店做生意，让你帮忙张罗。公务员本人不能经商办企业，但配偶可以。', choices: [
+  { id: 'enc070', stage: 'career', eventType: 'choice', weight: 4, requireMarried: true, title: '开店', text: '配偶想开个小店做生意，让你帮忙张罗。你知道，公职人员本人不得违规参与经营，也不能利用职权或影响力为亲属生意提供便利；配偶是否适合经营，还要核对具体岗位和相关管理规定。', choices: [
     { text: '配偶开店你不参与经营', effects: {wealth: 1, mentalPressure: 2, eq: 1, risk: 1} },
     { text: '暗中帮忙打擦边球', effects: {wealth: 2, risk: 5, integrity: -3, mentalPressure: 3, desire: 2} },
     { text: '劝配偶不要开店', effects: {integrity: 2, mentalPressure: -1, eq: -1, wealth: 0} },
@@ -368,42 +368,42 @@ const gd_events_new_career = [
   ]},
 
   // ========== 职场危机类（enc076 ~ enc090） ==========
-  { id: 'enc076', stage: 'career', eventType: 'choice', weight: 4, title: '被举报', text: '纪检部门收到匿名举报信，反映你在项目审批中存在问题。纪检组找你谈话了解情况，你心里一惊。', choices: [
+  { id: 'enc076', stage: 'career', eventType: 'choice', weight: 4, requireRisk: 25, title: '被举报', text: '纪检部门收到匿名举报信，反映你在项目审批中存在问题。纪检组找你谈话了解情况，你心里一惊。', choices: [
     { text: '如实说明情况配合调查', effects: {integrity: 3, mentalPressure: 4, risk: -1, background: -1} },
     { text: '紧张失态支支吾吾', effects: {mentalPressure: 5, risk: 2, integrity: -1, eq: -1} },
     { text: '找关系打听举报人是谁', effects: {risk: 4, integrity: -3, mentalPressure: 3, background: 1} },
   ]},
-  { id: 'enc077', stage: 'career', eventType: 'choice', weight: 3, title: '被调查', text: '你被立案调查，纪检部门通知你接受组织审查。你清楚自己确实有问题，但心存侥幸。', choices: [
+  { id: 'enc077', stage: 'career', eventType: 'choice', weight: 3, requireRisk: 55, title: '被调查', text: '你被立案调查，纪检部门通知你接受组织审查。你清楚自己确实有问题，但心存侥幸。', choices: [
     { text: '主动交代争取宽大处理', effects: {integrity: 3, risk: -3, mentalPressure: 5, positionWeight: -3} },
     { text: '避重就轻交代小问题', effects: {risk: 3, integrity: -2, mentalPressure: 4, positionWeight: -2} },
     { text: '顽抗到底拒不交代', effects: {risk: 9, integrity: -7, mentalPressure: 6, positionWeight: -5} },
   ]},
-  { id: 'enc078', stage: 'career', eventType: 'choice', weight: 5, title: '谈话提醒', text: '组织上找你谈话提醒，说接到反映你的一些苗头性问题。这是"红脸出汗"的提醒，也是警示。', choices: [
+  { id: 'enc078', stage: 'career', eventType: 'choice', weight: 5, requireRisk: 20, title: '谈话提醒', text: '组织上找你谈话提醒，说接到反映你的一些苗头性问题。这是"红脸出汗"的提醒，也是警示。', choices: [
     { text: '虚心接受有则改之', effects: {integrity: 3, mentalPressure: 3, risk: -2, political: 1} },
     { text: '据理力争辩解', effects: {mentalPressure: 3, risk: 2, integrity: -1, eq: -1} },
     { text: '表面接受心里不服', effects: {integrity: -1, risk: 2, mentalPressure: 2, desire: 1} },
   ]},
-  { id: 'enc079', stage: 'career', eventType: 'choice', weight: 4, title: '诫勉谈话', text: '你因工作中存在不当行为被诫勉谈话，影响期为半年。这次谈话记录会装入个人档案。', choices: [
+  { id: 'enc079', stage: 'career', eventType: 'choice', weight: 4, requireRisk: 40, title: '诫勉谈话', text: '你因工作中存在不当行为被诫勉谈话，影响期为半年。这次谈话记录会装入个人档案。', choices: [
     { text: '深刻反省认真整改', effects: {integrity: 3, mentalPressure: 4, positionWeight: -2, political: 1, workAbility: 1} },
     { text: '消沉一段时间', effects: {mentalPressure: 5, workAbility: -2, desire: -2, positionWeight: -1} },
     { text: '把情绪带到工作中', effects: {mentalPressure: 4, workAbility: -2, eq: -2, risk: 1} },
   ]},
-  { id: 'enc080', stage: 'career', eventType: 'choice', weight: 4, title: '通报批评（记档）', text: '你因工作失误被全市通报批评，名字和事迹都上了文件。同事们看你的眼神都变了。', choices: [
+  { id: 'enc080', stage: 'career', eventType: 'choice', weight: 4, requireRisk: 35, title: '通报批评（记档）', text: '你因工作失误被全市通报批评，名字和事迹都上了文件。同事们看你的眼神都变了。', choices: [
     { text: '诚恳接受教训努力改正', effects: {integrity: 2, mentalPressure: 4, workAbility: 1, positionWeight: -2} },
     { text: '觉得丢人想调走', effects: {mentalPressure: 5, positionWeight: -3, eq: -1, desire: -1} },
     { text: '索性不再认真改正，逃避通报后的压力', effects: {mentalPressure: 3, workAbility: -3, integrity: -2, risk: 2} },
   ]},
-  { id: 'enc081', stage: 'career', eventType: 'choice', weight: 3, title: '停职检查', text: '因反映的问题较严重，组织决定让你停职检查。你的工作暂时移交给副手，等待进一步调查。', choices: [
+  { id: 'enc081', stage: 'career', eventType: 'choice', weight: 3, requireRisk: 55, title: '停职检查', text: '因反映的问题较严重，组织决定让你停职检查。你的工作暂时移交给副手，等待进一步调查。', choices: [
     { text: '认真反思配合组织调查', effects: {integrity: 2, mentalPressure: 5, positionWeight: -3, risk: -1} },
     { text: '四处活动试图摆平', effects: {risk: 5, integrity: -4, mentalPressure: 4, background: 1} },
     { text: '情绪低落消极等待', effects: {mentalPressure: 6, workAbility: -3, desire: -3, positionWeight: -2} },
   ]},
-  { id: 'enc082', stage: 'career', eventType: 'choice', weight: 3, title: '调离岗位', text: '组织决定将你调离原岗位，安排到一个边缘科室。明升暗降，你的权力和影响力大不如前。', choices: [
+  { id: 'enc082', stage: 'career', eventType: 'choice', weight: 3, requireRisk: 50, title: '调离岗位', text: '组织决定将你调离原岗位，安排到一个边缘科室。明升暗降，你的权力和影响力大不如前。', choices: [
     { text: '服从安排在新岗位努力', effects: {integrity: 2, workAbility: 2, mentalPressure: 3, eq: 1, positionWeight: -2} },
     { text: '怨天尤人消极怠工', effects: {mentalPressure: 4, workAbility: -3, integrity: -2, eq: -2} },
     { text: '找关系想调回原岗位', effects: {background: 2, mentalPressure: 3, risk: 2, positionWeight: -1} },
   ]},
-  { id: 'enc083', stage: 'career', eventType: 'choice', weight: 2, title: '降职免职', text: '因严重违纪，你被免去科长职务，降为科员。多年努力付诸东流，办公室也要搬了。', choices: [
+  { id: 'enc083', stage: 'career', eventType: 'choice', weight: 2, requireRisk: 65, title: '降职免职', text: '因严重违纪，你被免去科长职务，降为科员。多年努力付诸东流，办公室也要搬了。', choices: [
     { text: '接受处分重新开始', effects: {integrity: 2, mentalPressure: 6, positionWeight: -5, workAbility: 1} },
     { text: '申诉要求复查', effects: {mentalPressure: 5, positionWeight: -3, risk: 2, integrity: 1} },
     { text: '一蹶不振自暴自弃', effects: {mentalPressure: 7, workAbility: -4, desire: -4, integrity: -2} },
@@ -423,25 +423,25 @@ const gd_events_new_career = [
     { text: '返聘继续发挥余热', effects: {wealth: 2, workAbility: 1, mentalPressure: 2, eq: 1} },
     { text: '不舍失落情绪低落', effects: {mentalPressure: 4, desire: -2, eq: -1, workAbility: -1} },
   ]},
-  { id: 'enc087', stage: 'career', eventType: 'choice', weight: 4, title: '提前退休', year: [45, 60], text: '工龄满三十年可以申请提前退休。你才五十出头，是退下来享清福，还是继续干几年？', choices: [
+  { id: 'enc087', stage: 'career', eventType: 'choice', weight: 4, requireYearsWorkedMin: 30, title: '提前退休', year: [45, 60], text: '工龄满三十年可以申请提前退休。你才五十出头，是退下来享清福，还是继续干几年？', choices: [
     { text: '提前退休开启新生活', effects: {mentalPressure: -3, wealth: -1, desire: 2, eq: 1, workAbility: -1} },
     { text: '继续工作发挥价值', effects: {workAbility: 1, mentalPressure: 1, positionWeight: 1, integrity: 1} },
     { text: '退休后做点小生意', effects: {wealth: 2, risk: 2, mentalPressure: 2, desire: 3} },
   ]},
-  { id: 'enc088', stage: 'career', eventType: 'choice', weight: 4, title: '病退', text: '你身体出了状况，医生建议长期休养。可以申请病退，但病退工资比正常退休低不少。', choices: [
+  { id: 'enc088', stage: 'career', eventType: 'choice', weight: 4, requireBodyMax: 3, year: [40, 65], title: '病退', text: '你身体出了状况，医生建议长期休养。可以申请病退，但病退工资比正常退休低不少。', choices: [
     { text: '申请病退保重身体', effects: {mentalPressure: -2, wealth: -2, desire: -1, workAbility: -2} },
     { text: '边治疗边工作不退', effects: {mentalPressure: 4, workAbility: -1, wealth: 1, integrity: 1} },
     { text: '请长假治疗再决定', effects: {mentalPressure: 2, wealth: -1, workAbility: -1, eq: 1} },
   ]},
-  { id: 'enc089', stage: 'career', eventType: 'choice', weight: 3, title: '内退', text: '单位精简人员，推出内退政策：距退休不足五年的可以内部退养，发基本工资。', choices: [
+  { id: 'enc089', stage: 'career', eventType: 'choice', weight: 3, year: [55, 65], title: '内退', text: '单位精简人员，推出内退政策：距退休不足五年的可以内部退养，发基本工资。', choices: [
     { text: '申请内退回家享福', effects: {mentalPressure: -3, wealth: -1, desire: 2, workAbility: -2, positionWeight: -2} },
     { text: '不内退坚持到退休', effects: {workAbility: 1, mentalPressure: 1, integrity: 1, positionWeight: 1} },
     { text: '内退后另找一份工作', effects: {wealth: 2, risk: 2, mentalPressure: 2, desire: 2} },
   ]},
-  { id: 'enc090', stage: 'career', eventType: 'choice', weight: 3, title: '买断工龄', text: '单位改制，提出买断工龄方案：一次性给一笔钱，解除劳动关系。你犹豫要不要接受。', choices: [
-    { text: '接受买断自谋职业', effects: {wealth: 5, risk: 3, mentalPressure: 4, desire: 2, eq: -1} },
-    { text: '不接受买断留下', effects: {wealth: -1, mentalPressure: 2, integrity: 1, workAbility: 1} },
-    { text: '接受买断后创业', effects: {wealth: 3, risk: 6, mentalPressure: 5, desire: 4, iq: 1} },
+  { id: 'enc090', stage: 'career', eventType: 'choice', weight: 3, title: '机构改革分流', requireRankMin: 2, year: [35, 60], text: '机构改革启动，原科室撤并，组织提出岗位分流方案：有人竞聘新岗位，有人交流到基层，也有人选择提前离岗。你需要决定下一步怎么走。', choices: [
+    { text: '参加竞聘，争取留在核心岗位', effects: {workAbility: 2, positionWeight: 2, mentalPressure: 3, background: 1} },
+    { text: '服从组织安排，接受平级调整', effects: {integrity: 2, mentalPressure: 1, positionWeight: -1, eq: 1} },
+    { text: '申请提前离岗，规划退休生活', effects: {wealth: -1, mentalPressure: -2, desire: 2, workAbility: -1} },
   ]},
 
 
@@ -532,7 +532,7 @@ const gd_events_new_career = [
       { text: '推脱难啃的硬骨头', effects: {positionWeight: -1, eq: -1, mentalPressure: -1} },
       { text: '向主要领导表达意愿争取有利分工', effects: {background: 2, desire: 1, risk: 1} },
     ]},
-    { id: 'e702', stage: 'career', eventType: 'choice', title: '节假日值班', weight: 3, year: [22, 58], requireRankMin: 2, pools: ['public'], text: '国庆值班表排出来了。你排在中间，但家里早就计划好全家出游——孩子盼了半年。', choices: [
+    { id: 'e702', stage: 'career', eventType: 'choice', title: '节假日值班', weight: 3, year: [22, 58], requireRankMin: 2, requireChild: true, pools: ['public'], text: '国庆值班表排出来了。你排在中间，但家里早就计划好全家出游——孩子盼了半年。', choices: [
       { text: '主动承担值班任务', effects: {integrity: 1, reputation: 1, workAbility: 1, familyPressure: 1} },
       { text: '按排班执行，不主动揽活', effects: {mentalPressure: -1, familyPressure: -1} },
       { text: '想办法和同事调班', effects: {eq: 1, familyPressure: -1, reputation: -1} },
@@ -556,11 +556,11 @@ const gd_events_new_career = [
       { text: '提前准备，脱稿汇报', effects: {workAbility: 2, eq: 1, reputation: 1} },
       { text: '借述职向领导表功', effects: {background: 1, desire: 1, eq: -1} },
     ]},
-    { id: 'e706', stage: 'career', eventType: 'choice', title: '挂职锻炼机会', weight: 3, year: [24, 45], requireRankMin: 2, requireUnitLevelMin: 2, requireUnitLevelMax: 3, excludeFlags: ['grassrootsActive', 'grassrootsDone'], pools: ['public'], text: '组织部门下发挂职锻炼通知：有去基层乡镇的，有去上级机关的。名额有限，要各单位推荐。选择基层挂职后保留原单位关系，期满根据考核决定去向。', choices: [
+    { id: 'e706', stage: 'career', eventType: 'choice', title: '挂职锻炼机会', weight: 3, year: [24, 45], requireRankMin: 2, requireUnitLevelMin: 2, requireUnitLevelMax: 3, excludeFlags: ['grassrootsActive', 'grassrootsDone', 'seconded', 'secondReview', 'secondDone'], pools: ['public'], text: '组织部门下发挂职锻炼通知：有去基层乡镇的，有去上级机关的。名额有限，要各单位推荐。选择基层挂职后保留原单位关系，期满根据考核决定去向。', choices: [
       { text: '报名去基层挂职', effects: {workAbility: 2, background: 1, familyPressure: 2, positionWeight: 1, flag: 'grassrootsWork', grassrootsDispatch: { duration: 1, reason: '挂职基层锻炼' }} },
-      { text: '报名去上级机关挂职', effects: {positionWeight: 2, desire: 1, mentalPressure: 2} },
+      { text: '报名去上级机关挂职', effects: {positionWeight: 2, desire: 1, mentalPressure: 2, flag: 'seconded'}, result: '你通过推荐到上级机关挂职，正式报到后开始接受岗位考核。' },
       { text: '放弃机会，安心现职', effects: {mentalPressure: -1, positionWeight: -1} },
-      { text: '争取去沿海发达地区交流', effects: {background: 2, desire: 1, risk: 1} },
+      { text: '争取去沿海发达地区交流', effects: {background: 2, desire: 1, risk: 1, flag: 'seconded'}, result: '你争取到跨地区交流名额，办理交接后开始挂职。' },
     ]},
     { id: 'e707', stage: 'career', eventType: 'choice', title: '党校学习名额', weight: 3, year: [26, 55], requireRankMin: 2, pools: ['public'], text: '市委党校中青班报名开始了，每单位一个名额。单位里符合条件的人不少，有人已经私下活动起来。', choices: [
       { text: '主动争取这个名额', effects: {desire: 1, positionWeight: 1, background: 1, mentalPressure: 1} },

@@ -28,7 +28,7 @@ const gd_events_basic_1 = [
     ]},
     { id: 'e012', stage: 'work', eventType: 'choice', title: '晋升机会', weight: 4, text: '人事调整的消息传了半个月。老科长散会后留住你，说“有想法得自己说”。你知道组织还要看资历、考核和岗位空缺，但如果一句话都不说，恐怕很难让人注意到你。', choices: [
       { text: '主动争取，让领导知道你的想法', effects: {desire: 2, positionWeight: 2, workAbility: 2, risk: 1, mentalPressure: 2} },
-      { text: '保持观望，不急于表态', effects: {desire: 5, positionWeight: 2, risk: 3, mentalPressure: 2} },
+      { text: '保持观望，先观察岗位和考核安排', effects: {desire: 3, positionWeight: 1, risk: 1, mentalPressure: 1} },
       { text: '托人打听内部消息', effects: {background: 2, risk: 2, mentalPressure: 1} },
       { text: '专注做好本职工作，顺其自然', effects: {workAbility: 3, mentalPressure: -2, desire: -2, risk: -1} },
       { text: '主动找领导汇报近期工作成果', effects: {eq: 1, positionWeight: 3, workAbility: 1, risk: 1} },
