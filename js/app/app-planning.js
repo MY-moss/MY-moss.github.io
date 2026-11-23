@@ -57,6 +57,7 @@ Object.assign(App, {
         ${hasContacts ? btn('🤝 人脉经营', 'App.showNetworkPanel()', { cost: 1, disabled: !this._hasAP(1), reason: '精力不足（需要 1 点）' }) : ''}
         ${btn('💰 财务规划', 'App.showFinancePanel()', { cost: 1, disabled: !this._hasAP(1) || financeUsed > 0, reason: financeUsed ? '本年度财务规划已使用' : '精力不足（需要 1 点）' })}
         ${showChild ? btn('👨‍👩‍👧 子女培养', 'App.showChildPanel()', { cost: 1, disabled: !this._hasAP(1) || childUsed > 0, reason: childUsed ? '今年已经安排过孩子的事了' : '精力不足（需要 1 点）' }) : ''}
+        <button type="button" class="btn btn-secondary" onclick="App.showCausalInbox()" style="margin-top:6px">🗃️ 旧事待办</button>
         <button type="button" class="btn btn-secondary" onclick="App.showLifeChart()" style="margin-top:6px">📊 人生数据</button>
         <button type="button" class="btn btn-secondary" onclick="App.showArchiveFull()" style="margin-top:6px">📂 档案回看（${(p.careerLog || []).length} 条留痕）</button>
         <button type="button" class="btn btn-secondary" onclick="App.showExperience()" style="margin-top:6px">📜 人生经历（分类留痕）</button>

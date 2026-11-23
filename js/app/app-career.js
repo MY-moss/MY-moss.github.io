@@ -29,7 +29,7 @@ const FINANCE_POOL = [
   { id: 'seniorCheckup', icon: '🏥', label: '高端体检套餐', cost: 60, desc: '深度体检，全身养护（体质+3，消隐患）' },
   { id: 'familyTourPlus', icon: '✈️', label: '豪华家庭游', cost: 70, desc: '五星级假期，全家尽兴（家压-10，压力-10）' },
   { id: 'housekeeper', icon: '🧹', label: '家政服务', cost: 35, desc: '请人打理家务（家压-6，压力-3）' },
-  { id: 'venture', icon: '🚀', label: '副业投资', cost: 80, desc: '高波动：可能净赚+60/+16，或亏-30' },
+  { id: 'venture', icon: '🚀', label: '私人项目投资', cost: 80, desc: '投资回款有波动（净赚+60/+16，或亏-30）；涉及熟人及公职可能有后续申报与利益冲突风险', need: 'ventureOpen' },
 ];
 Object.assign(App, {
   _pickRotate(pool, min, max) {
@@ -123,6 +123,7 @@ renderCareer() {
         </div>
         ${this.renderReceiptThread(p)}
         ${this.renderContinuingStories(p)}
+        ${this.renderCausalInboxSummary()}
         <div class="life-map-entry"><button type="button" class="btn btn-secondary" onclick="App.showLifeMap()">🧭 查看人生线路图 · 选择与后果</button></div>
         ${this.renderPolicyProjectPanel ? this.renderPolicyProjectPanel(p) : ''}
         ${this.renderPlanningBoard ? this.renderPlanningBoard(p, h) : '<div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.nextYear()">进入下一年</button></div>'}
@@ -183,6 +184,29 @@ renderCareer() {
       <div class="thread-title">${App.escapeHtml(arc.title)}</div>
       <p>${App.escapeHtml(arc.detail)}</p>
     </section>`).join('');
+  },
+  // 只展示真实已播种、尚未兑现的因果；排序与年度实际调度共用引擎数据。
+  renderCausalInboxSummary() {
+    const items=typeof engine.getPendingCausalConsequences==='function' ? engine.getPendingCausalConsequences() : [];
+    if(!items.length)return '';
+    const due=items.filter(x=>x.overdue).length;
+    return `<section class="causal-inbox" aria-label="旧事待办摘要">
+      <div><div class="thread-kicker">旧事待办 · ${items.length} 条</div>
+      <p>${due ? `有 ${due} 条已到期，正等待下一次合适的年度机会` : '过去的决定仍在生长，未来会有后续'}</p></div>
+      <button type="button" class="btn btn-secondary" onclick="App.showCausalInbox()">查看待兑现事项</button>
+    </section>`;
+  },
+  showCausalInbox() {
+    const items=engine.getPendingCausalConsequences();
+    const rows=items.map((x,i)=>`<article class="causal-inbox-row" aria-label="${App.escapeHtml(x.label)}">
+      <span class="causal-inbox-number">${String(i+1).padStart(2,'0')}</span>
+      <div><strong>${App.escapeHtml(x.label)}</strong>
+      <p>${x.overdue?'已到期 · 等待事件槽空闲':`预计约 ${x.waitingYears} 年后再有回响`}</p></div>
+      <span class="causal-inbox-age">${x.dueAge}岁起</span></article>`).join('');
+    this.renderContent(`<div class="stage fade-in"><div class="lead"><span class="lead-badge">🗃️</span><p>旧事待办 · ${items.length} 条</p></div>
+      <p class="causal-inbox-help">这里只记录你已经作出选择、并且尚未兑现的后续。多件旧事同时到期时按原定年份排队；现有政策、里程碑及尚未完成的事件依旧优先。未来事件的具体情节不会提前剧透。</p>
+      <div class="causal-inbox-items">${rows||'<p class="causal-inbox-help">目前没有尚未兑现的旧事。人生并不是没有新故事，只是暂时没有已承诺的后果等待你。</p>'}</div>
+      <div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.returnToCurrentFlow()">返回当前人生</button></div></div>`);
   },
   // 线路图由真实的 seenEvents/flags 生成；只展示已有因果，不把未触发分支伪装成已达成。
   showLifeMap() {
@@ -370,6 +394,7 @@ renderCareer() {
     if (o.need === 'debt' && !engine.inDebt()) return false;
     if (o.need === 'age35' && p.age < 35) return false;
     if (o.need === 'bg30' && h.background < 30) return false;
+    if (o.need === 'ventureOpen' && (p.flags.ventureStake || p.flags.ventureDeclared || p.flags.ventureExited || p.flags.ventureHidden)) return false;
     if (o.need === 'boughtStock' && !(p.flags && p.flags.boughtStock)) return false;
     return true;
   },
@@ -473,7 +498,7 @@ renderCareer() {
       seniorCheckup: { cost: 60, fn: () => { engine.gainAttr('body', 3, 10); if (p.flags.chronicIllness) { p.flags.chronicIllness = false; } p.careerLog.push({ year: p.age, event: '🏥 高端深度体检，身体隐患无处遁形（体质+3）' }); } },
       familyTourPlus: { cost: 70, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 10); h.mentalPressure = Math.max(0, h.mentalPressure - 10); p.careerLog.push({ year: p.age, event: '✈️ 豪华家庭游，全家人尽兴而归' }); } },
       housekeeper: { cost: 35, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 6); h.mentalPressure = Math.max(0, h.mentalPressure - 3); p.careerLog.push({ year: p.age, event: '🧹 请了家政，家务不再缠身' }); } },
-      venture: { cost: 80, fn: () => { const r = engine.randf(); if (r < 0.30) { engine.cashIn(140); p.careerLog.push({ year: p.age, event: '🚀 副业项目成了，大赚一笔（净赚+60）' }); } else if (r < 0.70) { engine.cashIn(96); p.careerLog.push({ year: p.age, event: '🚀 副业小有回报（净赚+16）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '🚀 副业项目折了，亏了不少（净亏-30）' }); } } } // v2.1.6 本金返还修复（同基金/定投）：到账=本金+净收益（140/96/50），净期望 +15.4
+      venture: { cost: 80, fn: () => { p.flags.ventureStake=true; p.flags.ventureStake_since=p.age; const r = engine.randf(); if (r < 0.30) { engine.cashIn(140); p.careerLog.push({ year: p.age, event: '🚀 副业项目成了，大赚一笔（净赚+60）' }); } else if (r < 0.70) { engine.cashIn(96); p.careerLog.push({ year: p.age, event: '🚀 副业小有回报（净赚+16）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '🚀 副业项目折了，亏了不少（净亏-30）' }); } } } // v2.1.6 本金返还修复（同基金/定投）：到账=本金+净收益（140/96/50），净期望 +15.4
     };
     const act = acts[id];
     if (!act) return;
