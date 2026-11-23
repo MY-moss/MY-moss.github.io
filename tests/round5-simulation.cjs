@@ -7,7 +7,7 @@ const local=new Map();const ctx={console,Date,Math,Map,Set,JSON,Number,String,Ar
 for(const f of files)runInNewContext(readFileSync(f,'utf8'),ctx,{filename:f});
 runInNewContext('globalThis.Ctor=GameEngine;globalThis.Data=GameData',ctx);
 const e=new ctx.Ctor();const data=ctx.Data;
-const N=500;let crossing={start:0,review:0,final:0,echo:0,options:{open:0,phase:0,seal:0}};let entered=0,second=0,third=0,ended=0,years=0,earned=0,net=0,pressure=0,invalid=0;let family=0,team=0,teamLast=0,familyLast=0,teamRoute={shared:0,deferred:0},familyRoute={present:0,absent:0},classmate={entered:0,second:0,finale:0,branches:{open:0,favor:0,boundary:0}};
+const N=500;let crossing={start:0,review:0,final:0,echo:0,options:{open:0,phase:0,seal:0}};let entered=0,second=0,third=0,ended=0,years=0,earned=0,net=0,pressure=0,invalid=0;let family=0,team=0,teamLast=0,familySecond=0,familyLast=0,teamRoute={shared:0,deferred:0},familyRoute={present:0,absent:0},classmate={entered:0,second:0,finale:0,branches:{open:0,favor:0,boundary:0}};
 const stages={},outcomes={},routes={open:0,quiet:0};
 for(let seed=1;seed<=N;seed++){
  e.reset();
@@ -35,7 +35,8 @@ for(let seed=1;seed<=N;seed++){
     if(id==='arc_team_1'){team++;teamRoute[pick===0?'shared':'deferred']++}
     if(id==='arc_family_1'){family++;familyRoute[pick===0?'present':'absent']++}
     if(id==='arc_team_shared_3'||id==='arc_team_deferred_3')teamLast++;
-    if(id==='arc_family_present_2'||id==='arc_family_absent_2')familyLast++;
+    if(id==='arc_family_present_2'||id==='arc_family_absent_2')familySecond++;
+    if(id==='arc_family_clinic_3')familyLast++;
     if(id?.startsWith('arc_receipt_') && id?.endsWith('_2'))second++;
     if(id?.startsWith('arc_receipt_') && id?.endsWith('_3'))third++;
     if(!e.isChoiceEnabled(e.state.currentEvent.choices[pick])){const choices=e.state.currentEvent.choices;const i=choices.findIndex(c=>e.isChoiceEnabled(c));if(i>=0)e.handleEventChoice(i);else {invalid++;e.state.currentEvent=null;}}
@@ -51,5 +52,5 @@ for(let seed=1;seed<=N;seed++){
  if(p.ending){ended++;outcomes[p.ending]=(outcomes[p.ending]||0)+1}
  earned+=p.promotions;net+=p.wealth;pressure+=h.mentalPressure;
 }
-const summary={seeds:N,years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,finale:familyLast,branches:familyRoute},classmate,crossing,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&id.startsWith('arc_')))};
+const summary={seeds:N,years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,second:familySecond,finale:familyLast,branches:familyRoute},classmate,crossing,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&id.startsWith('arc_')))};
 console.log(JSON.stringify(summary,null,2));assert.equal(invalid,0,'unexpected unresolvable choice');

@@ -317,7 +317,7 @@ const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246'
   'ent294', 'ent295', 'ent297', 'ent298', 'ent299', 'ent300', 'ent301', 'enw126', 'e616', 'e617', 'e618', 'e728', 'e729', 'e730', 'e731', 'e743', 'e744', 'e747', 'e748', 'e756', 'e758', 'e765',
   'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3',
   'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3',
-  'arc_family_present_2','arc_family_absent_2',
+  'arc_family_present_2','arc_family_absent_2','arc_family_clinic_3',
   'arc_classmate_open_2','arc_classmate_favor_2','arc_classmate_boundary_2',
   'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3',
   'arc_crossroads_1','arc_crossroads_open_2','arc_crossroads_phase_2','arc_crossroads_seal_2',

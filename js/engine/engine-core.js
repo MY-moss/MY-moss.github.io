@@ -506,8 +506,13 @@ class GameEngine {
       'grassrootsBreakthrough', 'grassrootsCautious', 'grassrootsStep2', 'midcareerRebuild', 'midcareerHold', 'midcareerStep2', 'cleanRecord', 'cleanCompromise', 'cleanStep2', 'networkBoundary', 'networkFavor', 'networkStep2', 'reformPilot', 'reformCautious', 'reformStep2', 'retiredMentor', 'retiredLegacy', 'retiredStep2', 'familyBalance', 'familyCareer', 'familyStep2',
       // v2.1.66 赡养链 / 理财暴雷链 / 借调链中间 flag
       'parentIllness', 'parentCaring', 'leveragedInvest', 'investCrash', 'seconded', 'secondReview', 'receiptOpen', 'receiptQuiet', 'receiptOpenReviewed', 'receiptQuietReviewed', 'teamShared', 'teamDeferred', 'teamSharedFollowed', 'teamDeferredFollowed', 'familyClinicPresent', 'familyClinicAbsent', 'classmateOpen', 'classmateFavor', 'classmateBoundaries', 'classmateOpenReviewed', 'classmateFavorReviewed', 'classmateBoundaryReviewed', 'crossOpen', 'crossPhase', 'crossSeal', 'crossOpenReviewed', 'crossPhaseReviewed', 'crossSealReviewed', 'crossResolved', 'crossLegacyTeaching', 'crossLegacyHanded', 'crossLegacyShortcut', 'ventureStake', 'ventureDeclared', 'ventureExited', 'ventureHidden'];
-    for (const _cf of _chainFlags) {
-      if (p.flags[_cf] && typeof p.flags[_cf + '_since'] !== 'number') p.flags[_cf + '_since'] = p.age;
+    // v2.1.97: 刚性链会继续新增人物/考察/家庭分支，不能再依赖手工维护的旧 flag 列表。
+    // 只在缺失时补记录，不改写已有年份；旧档的下一次年度推进可正常兑现实质后果。
+    const causalFlags = typeof this.getCausalChainSteps === 'function'
+      ? this.getCausalChainSteps().map(step => step.flag)
+      : [];
+    for (const _cf of new Set([..._chainFlags, ...causalFlags])) {
+      if (p.flags[_cf] && !(Number.isFinite(Number(p.flags[_cf + '_since'])) && Number(p.flags[_cf + '_since']) > 0)) p.flags[_cf + '_since'] = p.age;
     }
     p.careerLog = p.careerLog || [];
     p.eventCounts = (p.eventCounts && typeof p.eventCounts === 'object' && !Array.isArray(p.eventCounts)) ? p.eventCounts : {};

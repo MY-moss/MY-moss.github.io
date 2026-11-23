@@ -52,16 +52,28 @@ const gd_events_arc_revision = [
     id:'arc_family_present_2',stage:'life',eventType:'choice',title:'两年后的日历',
     text:'两年后，伴侣换了一本纸质日历。过去那些没有人赴约的日子被划成黑色，如今上面多了几次一起走过的复诊日期。伴侣问你：“以后忙起来，我们怎么约定？”',
     choices:[
-      {text:'固定一个每月不安排公务的共同时间，并主动向同事提前说明',effects:{flag:'familyClinicResolved',familyPressure:-5,mentalPressure:-3,positionWeight:-2,careerLogNote:'与伴侣约定固定时间，开始主动管理工作与家庭的边界。'},result:'新的日历上第一次出现了两个人一起写的字。'},
-      {text:'不作固定承诺，但每次冲突提前一起商量',effects:{flag:'familyClinicResolved',eq:1,familyPressure:-2,mentalPressure:-1,careerLogNote:'与伴侣商量弹性的复诊与工作安排，双方都保留调整余地。'},result:'这次没有人把话说满，讨论反而进行得很久。'}
+      {text:'固定一个每月不安排公务的共同时间，并主动向同事提前说明',effects:{setFlags:['familyClinicResolved','familyClinicRoutine'],familyPressure:-5,mentalPressure:-3,positionWeight:-2,careerLogNote:'与伴侣约定固定时间，开始主动管理工作与家庭的边界。'},result:'新的日历上第一次出现了两个人一起写的字。'},
+      {text:'不作固定承诺，但每次冲突提前一起商量',effects:{setFlags:['familyClinicResolved','familyClinicNegotiated'],eq:1,familyPressure:-2,mentalPressure:-1,careerLogNote:'与伴侣商量弹性的复诊与工作安排，双方都保留调整余地。'},result:'这次没有人把话说满，讨论反而进行得很久。'}
     ]
   },
   {
     id:'arc_family_absent_2',stage:'life',eventType:'choice',title:'两年后缺席的座位',
     text:'两年后，你发现伴侣已经不再把复诊时间写给你。家里的日历贴在厨房侧墙，你得侧着身子才能看清。一次夜里收拾碗筷，伴侣说：“我不是希望你每次都来，只是想知道你会不会记得。”',
     choices:[
-      {text:'承认长期失约，重新安排下一次复诊，承担必要的请假代价',effects:{flag:'familyClinicResolved',familyPressure:-6,mentalPressure:3,positionWeight:-2,careerLogNote:'承认多年的缺席，从一次真实的陪诊开始修复家庭关系。'},result:'你把日期记进自己的本子，而不是再请对方提醒。'},
-      {text:'说明岗位的限制，先改善在家时的分工与沟通',effects:{flag:'familyClinicResolved',familyPressure:-2,workAbility:1,mentalPressure:1,careerLogNote:'没有承诺每次陪诊，但开始承担更多日常家务并固定沟通时间。'},result:'争论没有消失，但晚饭后的洗碗声不再只来自一个人。'}
+      {text:'承认长期失约，重新安排下一次复诊，承担必要的请假代价',effects:{setFlags:['familyClinicResolved','familyClinicRepair'],familyPressure:-6,mentalPressure:3,positionWeight:-2,careerLogNote:'承认多年的缺席，从一次真实的陪诊开始修复家庭关系。'},result:'你把日期记进自己的本子，而不是再请对方提醒。'},
+      {text:'说明岗位的限制，先改善在家时的分工与沟通',effects:{setFlags:['familyClinicResolved','familyClinicRebalanced'],familyPressure:-2,workAbility:1,mentalPressure:1,careerLogNote:'没有承诺每次陪诊，但开始承担更多日常家务并固定沟通时间。'},result:'争论没有消失，但晚饭后的洗碗声不再只来自一个人。'}
+    ]
+  },
+  {
+    id:'arc_family_clinic_3',stage:'life',eventType:'choice',title:'五年后，日历上的空白处',
+    text:'五年过去，冰箱上的便签换了几轮。伴侣这次把一张新日历摊在桌上，上面没有谁必须让步的标记，只有下一次复诊、双方的工作安排和几个空白的周末。你们终于有机会讨论：当生活再次临时变动，谁来承担那些看不见的协调？',
+    choices:[
+      {text:'与同事交接可替代的工作，和伴侣一起定下长期照护与休息安排',
+        effects:{familyPressure:-5,mentalPressure:2,positionWeight:-2,integrity:2,careerLogNote:'五年后，把可靠的工作交接和共同照护写成可执行的安排。'},
+        result:'你提前把手头的协调事项分给能够独立处理的同事。日历上多了两个人共同确认的日期，也留下了随时调整的空白。'},
+      {text:'不再靠一张固定日历解决所有冲突，每次重要变动都共同商量',
+        effects:{familyPressure:-3,mentalPressure:-3,eq:1,careerLogNote:'五年后，开始以共同协商而非单方面承诺处理家务与工作变化。'},
+        result:'你们没有保证再不失约，只约定遇到突发情况先把真实困难说出来。日历的空白处终于不再像未完成的任务。'}
     ]
   }
 ];

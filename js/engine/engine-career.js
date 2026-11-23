@@ -678,6 +678,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'teamDeferredFollowed', next: 'arc_team_deferred_3', delay: 3 },
         { flag: 'familyClinicPresent', next: 'arc_family_present_2', delay: 2 },
         { flag: 'familyClinicAbsent', next: 'arc_family_absent_2', delay: 2 },
+        { flag: 'familyClinicResolved', next: 'arc_family_clinic_3', delay: 3 },
         { flag: 'classmateOpen', next: 'arc_classmate_open_2', delay: 2 },
         { flag: 'classmateFavor', next: 'arc_classmate_favor_2', delay: 2 },
         { flag: 'classmateBoundaries', next: 'arc_classmate_boundary_2', delay: 2 },
@@ -760,13 +761,39 @@ GameEngine.prototype.getVentureReviewEvent = function() {
 };
 // 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
 GameEngine.prototype.getLifePathEvent = function(event) {
-  if (!event || !/^(arc_life_|ent30[67])/.test(event.id || '')) return event;
+  if (!event || !/^(arc_life_|arc_family_clinic_3|ent30[67])/.test(event.id || '')) return event;
   const f=this.state.player.flags||{};
   const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
   const add=(text)=>{out.text=(out.text||'')+' '+text;};
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'arc_family_clinic_3':
+      if(f.familyClinicRoutine){
+        add('两年前你们选择把共同时间固定下来。多数约定终于兑现，但有时为了守住日程，你也不得不请团队替你承担临时任务。');
+        result(0,'你们留下稳定的共同时间，也把可交接的事项真正交给团队，不再临时把重担转嫁给某一个人。');
+        bump(0,{workAbility:1,mentalPressure:1});
+      }else if(f.familyClinicNegotiated){
+        add('两年前你们决定保留弹性。很多时候商量的确奏效，但也有几次事情临头，谁都不愿先提出自己的困难。');
+        result(1,'你们约好每次变动都主动确认彼此的安排，不把“弹性”变成由一个人默默承担。');
+        bump(1,{familyPressure:-1});
+      }else if(f.familyClinicRepair){
+        add('你曾连续错过复诊，后来第一次认真请假陪伴。伴侣记得那个转折，也记得修复信任不能靠一次补偿。');
+        result(0,'你把持续陪伴和交接工作做到实处，伴侣终于不必通过一张检查单来提醒你记住约定。');
+        bump(0,{familyPressure:-1,positionWeight:-1});
+      }else if(f.familyClinicRebalanced){
+        add('你当年没答应每次陪诊，却开始主动做家务、安排时间。几年下来，分担并不总是对半，但两人都看得见对方的努力。');
+        result(1,'你们继续用具体分工讨论生活：有人负责复诊，有人负责接送，也允许必要时交换。');
+        bump(1,{eq:1});
+      }
+      if(f.teamDeferred && !f.teamSharedFollowed && !f.teamDeferredFollowed){
+        add('与此同时，科室的值班表仍有空缺；如果你把家庭压力全推给年轻同事，旧矛盾也不会凭空消失。');
+        bump(0,{positionWeight:-1,mentalPressure:2});
+      }else if(f.teamShared || f.teamSharedFollowed){
+        add('你想起当年与许砚一起重排值班表的经历。可靠的交接原来既能保护团队，也能让家里不必一遍遍等你。');
+        bump(0,{workAbility:1});
+      }
+      break;
     case 'ent306':
       if(f.mentorVisited) add('你想起当年赶去病房时，郑教授从枕头下拿出一张写满笔记的纸。你并不知道他后来又读过多少遍。');
       else if(f.mentorCalled) add('你想起那通仓促的电话。虽然没有赶去病房，你还是把当时没能说完的问题记在本子上。');

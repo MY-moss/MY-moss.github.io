@@ -16,7 +16,7 @@ function hired(e,data,age=30){const p=e.getPlayer();p.name='测试';p.unit=data.
 const removed=['e275','e276','e278','e279','e282','e283','enc026','enc027','enc033','enc039','enc040','enl173','enl174','enl186','enl191','enl192','enl193','enl196','enl200','enl206'];
 test('pruned low-value and unanchored historical events are absent and referenced anchors retained',()=>{
  const {data}=setup(),map=new Map(data.events.map(x=>[x.id,x]));
- assert.equal(data.events.length,1834);
+ assert.equal(data.events.length,1835);
  assert.equal(new Set(map.keys()).size,data.events.length);
  for(const id of removed)assert.equal(map.has(id),false,id);
  for(const id of ['e051','e071','e110','e237','ent293','ent299','arc_receipt_1','arc_team_1','arc_family_1'])assert.equal(map.has(id),true,id);
