@@ -21,7 +21,7 @@ const gd_events_new_v2178 = [
     { text: '等抽奖环节，中个安慰奖也好', effects: { luck: 1, eq: -1 }, result: '中了个电饭煲，年前饭后半场缺席' },
     { text: '提前离场，陪家人吃晚饭', effects: { familyPressure: -1, background: -1 }, result: '家人高兴，单位少了你一个背影' }
   ] },
-  { id: 'enl210', stage: 'life', eventType: 'choice', weight: 3, era: ['stable'], year: [26, 52], title: '孩子的转学手续', text: '因工作调动孩子要转学，平稳年代的转学手续按部就班：户口、学籍、接收函，一样不能少，一样不着急。', choices: [
+  { id: 'enl210', stage: 'life', eventType: 'choice', weight: 3, requireChild: true, era: ['stable'], year: [26, 52], title: '孩子的转学手续', text: '因工作调动孩子要转学，平稳年代的转学手续按部就班：户口、学籍、接收函，一样不能少，一样不着急。', choices: [
     { text: '提前两周把材料备齐', effects: { iq: 1, workAbility: 1, familyPressure: -1 }, result: '材料一次过审，孩子无缝衔接' },
     { text: '先和新学校班主任见一面', effects: { eq: 2, familyPressure: -1 }, result: '班主任了解孩子情况，接得顺' },
     { text: '托熟人加快办理', effects: { background: 1, eq: -1 }, result: '快了两天，欠下人情' },

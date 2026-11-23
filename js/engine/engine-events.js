@@ -161,6 +161,8 @@ GameEngine.prototype.recordEventVisit = function(eventId) {
 };
 GameEngine.prototype.handleEventChoice = function(ci) {
     const e = this.state.currentEvent; if (!e || !e.choices) return;
+    const c = e.choices[ci];
+    if (!c || !this.isChoiceEnabled(c)) return false;
     if (e.id) {
       this.state.player.seenEvents = this.state.player.seenEvents || [];
       if (!this.state.player.seenEvents.includes(e.id)) this.state.player.seenEvents.push(e.id);
@@ -170,7 +172,6 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     if (e.id === 'e237') this.state.player.flags.underInvestigation = true;
     // v2.66 恋爱重计时：ent263「认真谈一次」后从 seenEvents 移除自身——RIGID_CHAINS 依新 dating_since 重新注入（原实现重设计时但永不二次决断）
     if (e.id === 'ent263' && ci === 1) this.state.player.seenEvents = (this.state.player.seenEvents || []).filter(x => x !== 'ent263');
-    const c = e.choices[ci]; if (!c) return;
     // v2.22 晋升答辩留痕：选项可附带 careerLogNote 写入年鉴（卷宗感）
     if (c.effects && c.effects.careerLogNote) {
       this.state.player.careerLog.push({ year: this.state.player.age, event: c.effects.careerLogNote });
@@ -218,8 +219,15 @@ GameEngine.prototype.handleEventChoice = function(ci) {
       return;
     }
     // 选项条件门槛：不满足条件的选项（背景/财富/flag）直接拦截，防止绕过UI触发
-    if (!this.isChoiceEnabled(c)) return;
     this.applyEffects(c.effects);
+    // 已有大量事件写有 c.result，但此前游戏完全不消费这个字段；
+    // 将明确的近期结果写进履历，供下一屏和存档回顾。剧情延迟结果仍由独立事件负责。
+    if (typeof c.result === 'string' && c.result.trim()) {
+      this.state.player.careerLog.push({
+        year: this.state.player.age,
+        event: `${String(e.title || '事件').slice(0, 45)}：${c.result.trim().slice(0, 155)}`
+      });
+    }
     this.clampAttrs();
     this.state.currentEvent = null; this.checkEndings();
     // 赌博戒断（e747）：选择"戒赌"选项后彻底清除赌瘾状态（streak/连续未赌计数）
@@ -294,7 +302,12 @@ const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246'
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入
   'e802', 'e803', 'e804', 'e806', 'e807', 'e808',
   // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链 next 节点只由 RIGID_CHAINS 注入
-  'ent294', 'ent295', 'ent297', 'ent298', 'ent300', 'ent301']);
+  'ent294', 'ent295', 'ent297', 'ent298', 'ent300', 'ent301',
+  'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3',
+  'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3',
+  'arc_family_present_2','arc_family_absent_2',
+  'arc_classmate_open_2','arc_classmate_favor_2','arc_classmate_boundary_2',
+  'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3']);
 
 // 生命周期旧标题门槛的唯一兼容实现。
 // 结构化字段是主规则，只有历史事件尚未迁移时才使用这里的标题兜底；
@@ -928,7 +941,7 @@ GameEngine.prototype.generateEvent = function(force) {
       if (e.id === 'ent236' && !p.contacts.some(c => c.id === 'cousin')) w *= 12;
       // 趣味/低权重事件可见性：weight 3-4、public 池、无门槛的事件不能长期埋在 1500+ 事件池里。
       // 历史名单保留 ×3 兼容补偿；新增日常内容统一使用 contentTier，避免继续堆叠事件 ID 特判。
-      if (e.id && ['e161','e168','e169','e170','e174','e175','e101','e130','e131','e132','e134','e135','e138','e141','e164','e166','e364','enl044','enl083','enl089','enl097'].includes(e.id)) w *= 3;
+      if (e.id && ['e161','e168','e169','e170','e174','e175','e101','e130','e131','e132','e135','e138','e141','e164','e166','e364','enl044','enl083','enl089','enl097'].includes(e.id)) w *= 3;
       // 结构化内容层级：日常生活片段需要稳定露出，但不应为某三个事件继续堆叠 ID 特判。
       // 只对已满足资格、且明确标记为 everyday 的事件加权，不绕过年龄、单位或前置条件。
       if (e.contentTier === 'everyday') w *= 6;

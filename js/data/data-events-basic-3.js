@@ -108,13 +108,6 @@ const gd_events_basic_3 = [
       { text: '换乘地铁避免堵车', effects: {iq: 2, body: 1, mentalPressure: -1, familyPressure: 1} },
       { text: '住得离单位近一点', effects: {familyPressure: 2, mentalPressure: -1, body: 1, workAbility: 1} },
     ]},
-    { pools: ['public'], id: 'e176', stage: 'life', eventType: 'choice', title: '网红餐厅', weight: 3, text: '新开了一家网红餐厅，同事们约你一起去打卡。你去了发现价格贵、分量少、味道一般，但大家都在拍照发朋友圈。', choices: [
-      { text: '配合大家拍照发圈', effects: {eq: 1, background: 1, reputation: 1, mentalPressure: -1, luck: -1} },
-      { text: '实话实说味道一般', effects: {integrity: 2, eq: 1, reputation: 1, mentalPressure: 1} },
-      { text: '默默吃饭不参与评价', effects: {eq: 1, mentalPressure: -1, integrity: 1} },
-      { text: '推荐其他更好吃的餐厅', effects: {eq: 2, background: 1, reputation: 1, mentalPressure: -1} },
-      { text: '以后不来了', effects: {mentalPressure: -1, desire: -1, familyPressure: -1, reputation: 1} },
-    ]},
     { pools: ['public'], id: 'e177', stage: 'life', eventType: 'choice', title: '手机升级', weight: 3, text: '你的手机用了三年了，越来越卡。新手机出了，你很想买，但价格不便宜。现在的手机还能用，就是体验不太好。', choices: [
       { text: '咬咬牙买新手机', effects: {mentalPressure: -2, familyPressure: 2, desire: 1, reputation: 1, iq: 1} },
       { text: '再等一年等降价', effects: {iq: 2, familyPressure: -1, mentalPressure: 1, desire: -1} },
@@ -126,7 +119,7 @@ const gd_events_basic_3 = [
       { text: '起来喝杯温牛奶放松', effects: {body: 1, mentalPressure: -1, iq: 1, workAbility: 1} },
       { text: '听冥想音乐帮助入睡', effects: {mentalPressure: -2, body: 1, iq: 1} },
       { text: '起来写工作清单减轻焦虑', effects: {workAbility: 2, mentalPressure: -1, iq: 1, body: -1} },
-      { text: '数羊硬睡', effects: {risk: -2, mentalPressure: -1, body: -1, workAbility: -1, reputation: 1} },
+      { text: '关掉手机，躺着调整呼吸等待睡意', effects: {risk: -2, mentalPressure: -1, body: -1, workAbility: -1, reputation: 1} },
       { text: '吃助眠药保证休息', effects: {body: 1, mentalPressure: -1, risk: 1, familyPressure: 1} },
     ]},
     { pools: ['public'], id: 'e179', stage: 'life', eventType: 'choice', title: '理发店办卡', weight: 3, text: '理发店的Tony老师热情推荐你办一张会员卡，充2000送500，看起来挺划算的。但你上次办的健身卡还没用完。', choices: [
@@ -397,7 +390,7 @@ const gd_events_basic_3 = [
     ]},
     { id: 'e231', requireRisk: 20, stage: 'work', eventType: 'choice', title: '找替罪羊', weight: 4, text: '事情快要包不住了，你需要找一个替罪羊。你手下有个老实人不怎么合群，把责任推给他似乎是个不错的选择。', pools: ['public'], choices: [
       { text: '把责任推给下属', effects: {risk: 4, heat: -5, mentalPressure: 4, integrity: -6, reputation: -2, flag: 'scapegoat'} },
-      { text: '自己扛下来', effects: {integrity: 4, heat: 2, mentalPressure: 5, positionWeight: -2, reputation: 1} },
+      { text: '承认自己经手的决定，不再牵连下属', effects: {integrity: 4, heat: 2, mentalPressure: 5, positionWeight: -2, reputation: 1} },
       { text: '和下属商量分摊责任', effects: {eq: 1, heat: -2, mentalPressure: 3, integrity: 1, reputation: 1} },
       { text: '说是集体决策', effects: {risk: 2, heat: -3, mentalPressure: 3, integrity: -2, reputation: -1} },
       { text: '主动承担责任换取从轻处理', effects: {integrity: 3, heat: -2, mentalPressure: 4, positionWeight: -2, reputation: 1} },
@@ -438,16 +431,15 @@ const gd_events_basic_3 = [
       { text: '主动投案自首', effects: {integrity: 4, heat: -8, mentalPressure: 3, positionWeight: -2, reputation: 1} },
     ]},
     { id: 'e237', requireRisk: 12, requireHeat: 40, stage: 'work', eventType: 'choice', title: '调查组来了', weight: 5, text: '调查组终于来了！他们要找你先谈谈话。你知道这是最后的机会——坦白还是继续隐瞒？', pools: ['public'], choices: [
-      { text: '主动坦白全部问题', effects: {integrity: 4, heat: -10, mentalPressure: 3, positionWeight: -3, reputation: 1, risk: -3, flag: 'selfSurrender'} }, // v2.59 统一坦白标准：设 selfSurrender → 衔接 e647 纪律处分链（原与 e646 自首分支两套标准）
-      { text: '只交代部分问题', effects: {risk: 2, heat: -3, mentalPressure: 3, integrity: -1, reputation: -1} },
-      { text: '坚称自己没有问题', effects: {risk: 5, heat: 3, mentalPressure: 4, integrity: -2, reputation: -1, flag: 'deniedAll'} },
-      { text: '把责任推给别人', effects: {risk: 3, heat: -2, mentalPressure: 3, integrity: -3, reputation: -2, flag: 'blamedOthers'} },
-      { text: '沉默以对不回答', effects: {risk: 4, heat: 2, mentalPressure: -1, integrity: -1, reputation: -1} },
-      { text: '安排后路，准备跑路', effects: {wealth: 25, risk: 8, heat: 8, mentalPressure: 8, reputation: -5, integrity: -5, flag: 'fled'} },
+      { text: '逐项交代真实问题，提交能够核对的原始记录', effects: { integrity: 4, heat: -10, mentalPressure: 3, positionWeight: -3, reputation: 1, risk: -3, flag: 'selfSurrender' }, result: '谈话做了完整记录，你知道接下来仍要承担相应责任。' },
+      { text: '承认一部分事实，仍试图隐瞒关键签字', effects: { risk: 3, heat: -2, mentalPressure: 4, integrity: -2, reputation: -1 }, result: '调查人员翻开另一册档案，要求你重新核对时间。' },
+      { text: '否认所有问题，坚持经办程序没有瑕疵', effects: { risk: 5, heat: 3, mentalPressure: 4, integrity: -2, reputation: -1, flag: 'deniedAll' }, result: '笔录最后一页，你签字时手心都是汗。' },
+      { text: '把关键决定推给同事，要求调查组先找对方', effects: { risk: 3, heat: -2, mentalPressure: 3, integrity: -3, reputation: -2, flag: 'blamedOthers' }, result: '经办同事被叫去核实，你们之间再没有说过一句闲话。' },
+      { text: '提前转移资产并逃离调查，把问题拖得更严重', effects: { wealth: 25, risk: 8, heat: 8, mentalPressure: 8, reputation: -5, integrity: -5, flag: 'fled' }, result: '手机屏幕上只剩下一张没来得及删除的车票。' },
     ]},
     // ====== 热度相关事件 ======
     { id: 'e241', requireHeat: 12, stage: 'work', eventType: 'auto', title: '举报信', weight: 4, text: '有人向纪委写了一封举报信，虽然没有点名道姓，但描述的情况和你做的事情很像。你开始紧张了。', pools: ['public'], effects: {heat: 8, mentalPressure: 5, risk: 3} },
-    { id: 'e242', requireHeatOrRisk: 12, stage: 'work', eventType: 'auto', title: '纪委谈话', weight: 4, text: '纪委找你谈话了，虽然只是例行询问，但你心里有鬼，说话都结巴了。', pools: ['public'], effects: {heat: 5, mentalPressure: 6, risk: 2} }, // v2.59 接入 requireHeatOrRisk（原 requireRisk 12 单门槛：纯热度玩家触达不了纪委谈话；OR 门槛让"任一达标"机制生效）
+    { id: 'e242', requireHeatOrRisk: 12, stage: 'work', eventType: 'auto', title: '纪委谈话', weight: 4, text: '纪检工作人员打电话请你到谈话室核实一份项目材料。桌上摆着旧合同与几张打印的审批流程图，对方先问的是经办程序。虽然尚未认定你有问题，你却清楚有一处签字至今解释不清。', pools: ['public'], effects: {heat: 5, mentalPressure: 6, risk: 2} }, // v2.59 接入 requireHeatOrRisk（原 requireRisk 12 单门槛：纯热度玩家触达不了纪委谈话；OR 门槛让"任一达标"机制生效）
     { id: 'e243', stage: 'work', eventType: 'auto', title: '审计进驻', weight: 4, text: '审计组进驻单位，要开展为期一个月的财务审计。你经手的项目都在审计范围内。', pools: ['public'], effects: {heat: 6, mentalPressure: 5, workAbility: 2} },
     { id: 'e244', requireRisk: 20, stage: 'work', eventType: 'choice', title: '自查自纠', weight: 4, text: '上级要求各单位开展自查自纠，主动发现问题可以从轻处理。你知道这是一个机会，但主动坦白需要勇气。', pools: ['public'], choices: [
       { text: '主动自查自纠上报问题', effects: {integrity: 4, heat: -8, mentalPressure: 3, reputation: 2, risk: -2} },

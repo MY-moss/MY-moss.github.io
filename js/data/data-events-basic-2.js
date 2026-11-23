@@ -4,26 +4,16 @@
 // 注：e086~e092 为预留空号（见 DEVELOPMENT-ROADMAP D3）。
 const gd_events_basic_2 = [
     // ====== NPC关系网事件 ======
-    { id: 'e093', stage: 'work', eventType: 'choice', title: '结识贵人', weight: 5, text: '在一次行业交流会上，你认识了一位上级单位的关键人物。对方对你的见解很感兴趣，主动交换了联系方式。', choices: [
-      { text: '积极保持联系定期汇报工作', effects: {contact: { id: 'noble', name: '上级贵人', relation: 30, position: '上级领导', description: '行业交流会认识', family: 1}, background: 3, positionWeight: 2, mentalPressure: 2, reputation: 1 } },
-      { text: '礼貌交换名片后续再联系', effects: {mentalPressure: -2, contact: { id: 'noble', name: '上级贵人', relation: 10, position: '上级领导', description: '行业交流会认识'}, eq: 1, background: 1 } },
-      { text: '借机请教行业问题加深印象', effects: {contact: { id: 'noble', name: '上级贵人', relation: 20, position: '上级领导', description: '行业交流会认识'}, iq: 2, workAbility: 2, reputation: 1 } },
-      { text: '只是客气应付不太在意', effects: {eq: 1, background: 1, mentalPressure: -1} },
-      { text: '邀请对方来单位指导工作', effects: {contact: { id: 'noble', name: '上级贵人', relation: 25, position: '上级领导', description: '行业交流会认识'}, background: 3, positionWeight: 2, eq: 1, reputation: 2 }, minBackground: 40 },
-      { text: '当场敲定饭局，趁热加深关系', effects: {contact: { id: 'noble', name: '上级贵人', relation: 15, position: '上级领导', description: '行业交流会认识'}, background: 3, eq: 1, risk: 1, desire: 1 }, minBackground: 71 },
-      { text: '互留联系方式，日后常走动', effects: {contact: { id: 'noble', name: '上级贵人', relation: 5, position: '上级领导', description: '行业交流会认识'}, background: 2, eq: 1, reputation: 1 }, minBackground: 40, maxBackground: 70 },
-      { text: '鼓起勇气请教问题，留个好印象', effects: {contact: { id: 'noble', name: '上级贵人', relation: 10, position: '上级领导', description: '行业交流会认识'}, background: 1, workAbility: 1, mentalPressure: 1 }, maxBackground: 39 },
+    { id: 'e093', stage: 'work', eventType: 'choice', title: '结识贵人', weight: 5, text: '行业交流会结束时，一位上级部门的业务负责人留在展板前，问起你报告里一项不太好看的试点数据。你把原始记录拿出来，对方看了很久，说“这些细节比结论重要”，然后递上了名片。', choices: [
+      { text: '带着项目记录请教专业问题，保持正式联系', effects: { contact: { id: 'noble', name: '上级业务前辈', relation: 25, trust: 32, position: '上级单位业务负责人', description: '行业交流会认识，重视有数据的讨论' }, workAbility: 2, eq: 1, reputation: 1, mentalPressure: 1 }, result: '谈话从寒暄变成了具体工作，对方主动提议以后交换项目经验。' },
+      { text: '邀请对方参加单位公开研讨，留下一份正式协作记录', effects: { contact: { id: 'noble', name: '上级业务前辈', relation: 30, trust: 24, position: '上级单位业务负责人', description: '行业交流会认识，交流渠道正式透明' }, background: 2, positionWeight: 1, workAbility: 1, mentalPressure: 2 }, result: '活动筹备花了一周，会上讨论的问题终于有人愿意继续追踪。' },
+      { text: '通过私人饭局拉近关系，寄望以后得到照顾', effects: { contact: { id: 'noble', name: '上级业务前辈', relation: 22, trust: 16, position: '上级单位业务负责人', description: '行业交流会认识，关系里有额外期待' }, background: 3, risk: 3, integrity: -1, desire: 2 }, result: '饭局很热闹，回来后你却不确定对方记住的是哪句话。' },
+      { text: '礼貌交换联系方式，不主动维系这段上级关系', effects: { contact: { id: 'noble', name: '上级业务前辈', relation: 6, trust: 12, position: '上级单位业务负责人', description: '行业交流会偶遇' }, integrity: 1, mentalPressure: -1 }, result: '名片收进抽屉，这段关系暂时只停留在那次研讨会上。' },
     ]},
-    { pools: ['public'], id: 'e094', stage: 'life', eventType: 'choice', title: '老同学求助', weight: 5, text: '多年不见的老同学突然联系你，说他在创业过程中遇到了困难，想托你帮忙对接一些政府资源。', choices: [
-      { text: '在合规范围内尽力帮忙', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 20, position: '创业者', description: '多年老友'}, background: 2, eq: 1, reputation: 1, risk: 1 } },
-      { text: '婉拒但请他吃饭叙旧', effects: {eq: 1, reputation: 1, mentalPressure: -1, familyPressure: -1} },
-      { text: '介绍其他朋友给他认识', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 15, position: '创业者', description: '多年老友'}, background: 2, eq: 2, reputation: 1 }, minBackground: 40 },
-      { text: '直接拒绝避免惹麻烦', effects: {mentalPressure: -1, risk: -2, eq: -1, reputation: -1, desire: 1} },
-      { text: '帮他写一份商业计划书', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 25, position: '创业者', description: '多年老友'}, workAbility: 2, iq: 2, eq: 1, mentalPressure: 2 } },
-      { text: '动用圈子里的关系帮他搭桥', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 25, position: '创业者', description: '多年老友'}, background: 3, risk: 4, reputation: 1, eq: 1, desire: 1 }, minBackground: 71 },
-      { text: '帮他物色合适的对接人', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 15, position: '创业者', description: '多年老友'}, background: 2, eq: 1, reputation: 1 }, minBackground: 40, maxBackground: 70 },
-      { text: '坦诚说自己也没多少人脉', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 5, position: '创业者', description: '多年老友'}, integrity: 2, eq: 1, mentalPressure: 1 }, maxBackground: 39 },
-      { text: '借一笔钱帮他周转', effects: {contact: { id: 'oldClassmate', name: '老同学', relation: 15, position: '创业者', description: '多年老友'}, wealth: -40, reputation: 1, risk: 1, familyPressure: 1 }, minWealth: 50 },
+    { pools: ['public'], id: 'e094', stage: 'life', eventType: 'choice', title: '老同学求助', weight: 5, year: [26, 55], text: '多年不见的大学同学林默带来一叠创业项目申请材料。他的小厂账上只剩三个月工资，公开申报的截止日期就在下周。临走前，他压低声音问你：“你在机关工作，能不能帮我找个内部路子？”', choices: [
+      { text: '帮林默整理申报材料，约他参加公开创业服务说明会', effects: { flag: 'classmateOpen', contact: { id: 'oldClassmate', name: '林默', relation: 26, trust: 30, archetype: 'business', position: '创业者', description: '大学同学，在创业困难时求助' }, workAbility: 2, mentalPressure: 3, integrity: 2, background: -1 }, result: '那天你只陪他核对政策，没有给任何一个审批人打电话。' },
+      { text: '私下向熟悉的部门负责人打招呼，换取林默一份人情', effects: { flag: 'classmateFavor', contact: { id: 'oldClassmate', name: '林默', relation: 34, trust: 18, archetype: 'business', position: '创业者', description: '大学同学，期待获得特殊照顾' }, background: 4, risk: 8, heat: 3, integrity: -4, desire: 2 }, minBackground: 40, result: '事情似乎顺利了，林默请你喝酒时却第一次问起你的职务。' },
+      { text: '拒绝介入业务资源，但陪他重新算账、找商业上的出路', effects: { flag: 'classmateBoundaries', contact: { id: 'oldClassmate', name: '林默', relation: 14, trust: 33, archetype: 'business', position: '创业者', description: '大学同学，在拒绝越界后仍保持友谊' }, iq: 1, workAbility: 1, mentalPressure: 2, integrity: 2 }, result: '聊到深夜，林默终于把最难看的账单也拿出来给你看。' },
     ]},
     { id: 'e095', stage: 'work', eventType: 'choice', title: '贵人提拔', weight: 6, text: '你之前结识的那位上级领导现在有了一个举荐名额。他在几个候选人中想到了你，想听听你的想法。', requireContact: 'noble', choices: [
       { text: '积极争取感谢领导栽培', effects: {positionWeight: 4, background: 3, desire: 3, mentalPressure: 3, reputation: 2} },
@@ -268,13 +258,6 @@ const gd_events_basic_2 = [
       { text: '加入讨论分享自己知道的信息', effects: {eq: 1, background: 1, risk: 1, reputation: -1} },
       { text: '借机了解单位内部动态', effects: {background: 2, iq: 1, mentalPressure: 1, risk: 1} },
       { text: '转移话题聊点轻松的事', effects: {eq: 2, mentalPressure: -1, reputation: 1, background: 1} },
-    ]},
-    { pools: ['public'], id: 'e134', stage: 'life', eventType: 'choice', title: '网购纠纷', weight: 3, text: '你在网上买了一件贵重物品，收到后发现是假货。商家拒不退款，还拉黑了你。你气得一晚上没睡好。', choices: [
-      { text: '向平台投诉要求退款', effects: {iq: 2, mentalPressure: 2, integrity: 1, eq: 1} },
-      { text: '向消费者协会投诉', effects: {integrity: 2, mentalPressure: 2, workAbility: 1, reputation: 1} },
-      { text: '自认倒霉下次注意', effects: {mentalPressure: -1, iq: 1, desire: -1, familyPressure: 1} },
-      { text: '给商家差评提醒其他买家', effects: {eq: 1, mentalPressure: 1, integrity: 1} },
-      { text: '报警处理', effects: {integrity: 2, mentalPressure: 3, risk: 1, reputation: 1} },
     ]},
     { pools: ['public'], id: 'e135', stage: 'life', eventType: 'choice', title: '健身计划', weight: 4, text: '体检报告显示你体重超标、血脂偏高。医生建议你开始锻炼。你办了张健身卡，但去了两次就不想去了。', choices: [
       { text: '坚持每周去三次健身房', effects: {body: 3, mentalPressure: -2, workAbility: 1, desire: 1, reputation: 1} },

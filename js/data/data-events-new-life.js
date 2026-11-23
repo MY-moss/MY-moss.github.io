@@ -691,7 +691,7 @@ const gd_events_new_life = [
     { text: '买份关东煮，暖胃也暖心', effects: {body: 1, mentalPressure: -2, eq: 1} },
     { text: '随便拿桶泡面回去', effects: {body: -1, mentalPressure: 1} },
     { text: '和他聊两句再走', effects: {eq: 1, mentalPressure: -2} },
-    { text: '什么都不买，直接回家', effects: {body: -1, mentalPressure: 1} },
+    { text: '回家热一碗剩粥，今晚不再打开电脑', effects: {body: 1, mentalPressure: -2, workAbility: -1} },
   ]},
   { id: 'enl117', stage: 'life', eventType: 'choice', weight: 3, requireContact: 'chamber', requireContactMin: 40, year: [28, 55], title: '商会会长的邀约', text: '商会孙会长打来电话，说周末有个"老乡企业家联谊"，想请你出席。"都是家乡人，帮衬帮衬。"他语气热情，你想起他递名片时那副黑白通吃的做派。', choices: [
     { text: '出席，但只寒暄不谈事', effects: {eq: 1, background: 1, risk: 1, contactRelation: { id: 'chamber', delta: 5 } } },
@@ -859,7 +859,7 @@ const gd_events_new_life = [
     { text: '坦诚回答，接受刊发', effects: {integrity: 2, reputation: 1, risk: 1, contactRelation: { id: 'journalist', delta: 10 } } },
     { text: '要求审稿后再刊发', effects: {eq: 1, workAbility: 1, contactRelation: { id: 'journalist', delta: 5 } } },
     { text: '只说官方口径', effects: {eq: -1, integrity: -1, contactRelation: { id: 'journalist', delta: -5 } } },
-    { text: '婉拒采访', effects: {contactRelation: { id: 'journalist', delta: -10 }, mentalPressure: -1} },
+    { text: '婉拒这次采访，避免牵连单位与同事', effects: {contactRelation: { id: 'journalist', delta: -10 }, mentalPressure: -1} },
   ]},
   { id: 'enl153', stage: 'life', eventType: 'auto', weight: 3, title: '楼下的修鞋摊', text: '楼下修鞋师傅的手艺远近闻名，一双鞋他能修出花来。今天你去取鞋，他没收钱："上次你帮我儿子看了公务员报考指南，这鞋算谢礼。"你想起那是三个月前的事了。', effects: {eq: 2, peopleReputation: 1, mentalPressure: -1} },
   { id: 'enl154', stage: 'life', eventType: 'choice', weight: 4, title: '孩子的家长会', text: '家长会上，老师表扬了孩子，也委婉提醒："家长要多陪陪孩子，他现在话越来越少了。"你坐在小椅子上，忽然想起上次和孩子完整说话，好像是上个月。', choices: [
@@ -913,7 +913,7 @@ const gd_events_new_life = [
   { id: 'enl166', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '纪念日补过', text: '结婚纪念日因为加班错过了。妻子说"没关系"，但你在她朋友圈看到别人晒的纪念日照片，配文"他记得"。你关掉手机，订了周末的餐厅。', choices: [
     { text: '周末补办纪念日', effects: {familyPressure: -3, eq: 2, wealth: -15} },
     { text: '买份礼物道歉', effects: {wealth: -10, familyPressure: -2, eq: 1} },
-    { text: '写封手写信', effects: {eq: 2, integrity: 1, familyPressure: -2} },
+    { text: '写一封解释失约原因的手写信', effects: {eq: 2, integrity: 1, familyPressure: -2} },
     { text: '下次一定记住', effects: {familyPressure: 1, eq: -1} },
   ]},
   { id: 'enl167', stage: 'life', eventType: 'auto', weight: 3, title: '阳台的鸟鸣', text: '周末清晨，阳台上的麻雀叽叽喳喳。你搬了把椅子坐着听，忽然想起小时候外婆家也是这样。你发了会呆，觉得这个周末格外长。', effects: {mentalPressure: -2, eq: 1, body: 1} },

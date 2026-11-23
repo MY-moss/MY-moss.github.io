@@ -187,7 +187,7 @@ const gd_events_new_work = [
     { id: 'enw036', stage: 'work', eventType: 'choice', weight: 4, title: '明察暗访', text: '有消息说明察暗访组要来。办公室的零食和躺椅被紧急转移，像一场小型搬家。', choices: [
       { text: '该怎样还怎样，不搞突击', effects: {integrity: 2, mentalPressure: -1, risk: -1} },
       { text: '配合氛围，临时规整一下', effects: {eq: 1, mentalPressure: 1, workAbility: 1} },
-      { text: '提醒同事注意纪律', effects: {eq: 1, workAbility: 1, mentalPressure: 1} },
+      { text: '提醒同事按平日纪律执行，不要临时摆样子', effects: {integrity: 2, workAbility: 1, mentalPressure: 2, background: -1} },
     ]},
     { id: 'enw037', stage: 'work', eventType: 'choice', weight: 5, title: '交叉检查', text: '兄弟单位来交叉检查，你既不能太严得罪人，也不能太松显得敷衍。这把尺子的刻度，全靠手感。', choices: [
       { text: '按标准来，问题如实记录', effects: {workAbility: 3, integrity: 2, eq: -1, mentalPressure: 2} },
@@ -271,7 +271,7 @@ const gd_events_new_work = [
       { text: '制定分步解决计划再答复', effects: {workAbility: 3, mentalPressure: 3, positionWeight: 1} },
       { text: '按模板答复，态度诚恳', effects: {mentalPressure: -1, risk: 2, workAbility: 1} },
     ]},
-    { id: 'enw053', stage: 'work', eventType: 'choice', weight: 4, title: '政协委员提案', text: '一件政协提案涉及你分管领域。委员的调研很扎实，你的压力也很扎实。', choices: [
+    { id: 'enw053', stage: 'work', eventType: 'choice', weight: 4, title: '政协委员提案', text: '市政协委员递来一份民生服务调研报告：几个乡镇的办事材料有重复提交的问题。报告附着居民签名与现场照片，办理期限只剩十天。领导让你起草正式答复，委员说还想来现场核对。', choices: [
       { text: '逐条回应，能办的列时间表', effects: {workAbility: 3, eq: 1, mentalPressure: 3} },
       { text: '邀请委员现场调研再答复', effects: {eq: 1, workAbility: 2, mentalPressure: 2} },
       { text: '按惯例格式答复', effects: {mentalPressure: -1, risk: 2, workAbility: 1} },
@@ -804,7 +804,7 @@ const gd_events_new_work = [
       { text: '虚心接受，明年争取亮点', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
       { text: '请领导指出改进方向', effects: {eq: 2, workAbility: 1} },
       { text: '心里不服，但表面平静', effects: {mentalPressure: 2, desire: 1} },
-      { text: '找小李请教评优经验', effects: {eq: 2, workAbility: 1} },
+      { text: '找小李复盘实绩，主动补上自己薄弱的项目环节', effects: {eq: 1, workAbility: 2, desire: -1, mentalPressure: 1} },
     ]},
     { id: 'enw158', stage: 'work', eventType: 'choice', weight: 4, title: '借阅档案', text: '你申请借阅一份三年前的档案，档案员犹豫了一下："按规定要领导签字。"你想起那份档案里有你当年的签字，忽然有点明白她为什么犹豫。', choices: [
       { text: '按流程找领导签字', effects: {workAbility: 1, integrity: 1, mentalPressure: 1} },
@@ -845,7 +845,7 @@ const gd_events_new_work = [
       { text: '主动上交纸条，如实说明', effects: {integrity: 3, reputation: 1, risk: -2} },
       { text: '装作无事发生', effects: {risk: 3, integrity: -2} },
       { text: '考后找老科长解释', effects: {eq: 1, integrity: 1} },
-      { text: '帮同事说情', effects: {eq: 1, risk: 2, integrity: -1} },
+      { text: '请老科长从轻处理同事的违规行为', effects: {eq: 1, risk: 2, integrity: -1} },
     ]},
     { id: 'enw167', stage: 'work', eventType: 'auto', weight: 3, title: '督查通报', text: '你牵头的一项工作被省督查组通报表扬。办公室的同事们说"都是你的功劳"，你笑着摆手。晚上你翻了翻督查报告，发现被表扬的那几页，确实是加班熬出来的。', effects: {reputation: 3, positionWeight: 2, mentalPressure: -1} },
     { id: 'enw168', stage: 'work', eventType: 'choice', weight: 4, title: '值班电话', text: '周末值班，一通电话打进来："我孩子发烧，社区医院不开门，你们管不管？"你一边安抚对方，一边快速翻找应急预案——社区卫生服务中心的值班电话就在第一页。', choices: [

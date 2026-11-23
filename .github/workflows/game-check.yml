@@ -1,14 +1,14 @@
 name: Game smoke checks
 on:
   push:
-    branches: [main]
+    branches: [main, 'development/**']
     paths:
       - 'index.html'
       - 'js/**'
       - 'css/**'
       - 'sw.js'
       - 'manifest.json'
-      - 'tests/game-smoke.test.mjs'
+      - 'tests/**'
       - '.github/workflows/game-check.yml'
   pull_request:
     paths:
@@ -17,7 +17,7 @@ on:
       - 'css/**'
       - 'sw.js'
       - 'manifest.json'
-      - 'tests/game-smoke.test.mjs'
+      - 'tests/**'
       - '.github/workflows/game-check.yml'
   workflow_dispatch:
 permissions:
@@ -31,4 +31,8 @@ jobs:
         with:
           node-version: 22
       - name: Check game assets, JavaScript and offline cache
-        run: node --test tests/game-smoke.test.mjs
+        run: |
+          node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs tests/round2-content.test.mjs tests/round3-content.test.mjs
+          node tests/round1-simulation.cjs
+          node tests/round2-simulation.cjs
+          node tests/round3-simulation.cjs

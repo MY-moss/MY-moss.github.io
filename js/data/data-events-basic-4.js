@@ -27,7 +27,7 @@ const gd_events_basic_4 = [
     { id: 'e250', stage: 'life', eventType: 'choice', title: '租房搬家', weight: 4, text: '你租的房子到期了，新找的房子离单位更远但更便宜。每天通勤时间翻倍，你开始考虑要不要买辆车。', pools: ['public'], choices: [
       { text: '租离单位近的房子', effects: {familyPressure: 2, mentalPressure: -2, workAbility: 1, body: 1, reputation: 1} },
       { text: '租便宜但远的房子', effects: {familyPressure: -1, mentalPressure: 2, body: -1, workAbility: -1} },
-      { text: '买辆代步车', effects: {familyPressure: 2, mentalPressure: -1, body: 1, workAbility: 1, desire: 1} },
+      { text: '购买一辆通勤用车，承担后续开销', effects: {familyPressure: 2, mentalPressure: -1, body: 1, workAbility: 1, desire: 1} },
       { text: '申请单位宿舍', effects: {background: 1, familyPressure: -2, mentalPressure: -1, reputation: 1, positionWeight: 1} },
       { text: '和同事合租分摊房租', effects: {eq: 1, familyPressure: -2, mentalPressure: 1, background: 1, reputation: 1} },
     ]},
@@ -65,7 +65,7 @@ const gd_events_basic_4 = [
       { text: '简单真诚地表达心意', effects: {eq: 1, marry: true, familyPressure: -1, mentalPressure: 1, integrity: 2} },
       { text: '和对方商量结婚计划', effects: {eq: 1, marry: true, familyPressure: -2, mentalPressure: 1, background: 1} },
       { text: '先见双方父母再做决定', effects: {eq: 1, familyPressure: 1, mentalPressure: 1, background: 2, reputation: 1} },
-      { text: '再等等看', effects: {mentalPressure: -1, familyPressure: 1, desire: -1, eq: -1} },
+      { text: '再花一段时间讨论共同生活的目标', effects: {mentalPressure: -1, familyPressure: 1, desire: -1, eq: -1} },
     ]},
     { id: 'e256', stage: 'life', eventType: 'choice', title: '家庭生活', weight: 3, text: '婚后生活平淡而幸福。每天下班回家有人等你吃饭，周末一起做做家务、看看电视。', pools: ['public'], requireMarried: true, choices: [
       { text: '多花时间陪伴家人', effects: {familyPressure: -3, mentalPressure: -2, eq: 1, reputation: 1, workAbility: -1} },
@@ -76,15 +76,10 @@ const gd_events_basic_4 = [
     ]},
     // ====== 联系人互动增强 ======
     { id: 'e257', stage: 'work', eventType: 'choice', title: '贵人求助', weight: 6, text: '你之前结识的那位领导突然联系你，说他现在遇到了一些困难需要帮助。你想起他当初帮过你。', requireContact: 'noble', pools: ['public'], choices: [
-      { text: '全力帮助贵人渡难关', effects: {contactRelation: { id: 'noble', delta: 20}, background: 3, reputation: 2, mentalPressure: 3, eq: 1 }, minBackground: 40 },
-      { text: '在能力范围内帮忙', effects: {contactRelation: { id: 'noble', delta: 10}, background: 2, reputation: 1, mentalPressure: 2, workAbility: 1 } },
-      { text: '委婉说自己也帮不上忙', effects: {mentalPressure: -1, contactRelation: { id: 'noble', delta: -10}, reputation: -1, background: -1 } },
-      { text: '介绍其他人帮他', effects: {contactRelation: { id: 'noble', delta: 5}, background: 2, eq: 1, reputation: 1, mentalPressure: 1 } },
-      { text: '帮他分析问题出主意', effects: {contactRelation: { id: 'noble', delta: 15}, iq: 2, workAbility: 2, reputation: 1, mentalPressure: 2 } },
-      { text: '动用全部人脉帮贵人摆平', effects: {contactRelation: { id: 'noble', delta: 25}, background: 3, reputation: 2, risk: 4, heat: 2, mentalPressure: 3 }, minBackground: 71 },
-      { text: '居中联络各方资源帮他', effects: {contactRelation: { id: 'noble', delta: 15}, background: 2, eq: 1, risk: 1 }, minBackground: 40, maxBackground: 70 },
-      { text: '坦诚相告，量力而行', effects: {contactRelation: { id: 'noble', delta: -5}, integrity: 2, mentalPressure: 1 }, maxBackground: 39 },
-      { text: '出钱帮贵人渡过难关', effects: {contactRelation: { id: 'noble', delta: 20}, wealth: -40, reputation: 2, familyPressure: 2, mentalPressure: 2 }, minWealth: 60 },
+      { text: '核实他的实际困难，公开渠道内提供专业意见', effects: { contactRelation: { id: 'noble', delta: 9 }, workAbility: 2, integrity: 2, mentalPressure: 3 }, result: '对方发来一份情况说明，你划掉了其中几处含糊说法。' },
+      { text: '联系可能帮忙的业务人员，先不确认相关回避要求', effects: { contactRelation: { id: 'noble', delta: 16 }, background: 3, risk: 5, mentalPressure: 2 }, minBackground: 40, result: '关系帮你找到了人，却也让别人在会议里提起了你的名字。' },
+      { text: '明确可能存在利益冲突，建议对方走正式申请程序', effects: { contactRelation: { id: 'noble', delta: -5 }, integrity: 4, risk: -2, positionWeight: -1 }, result: '他停了一会儿，还是说了声谢谢。' },
+      { text: '在权限范围内协助整理资料，不承担超出职务的担保', effects: { contactRelation: { id: 'noble', delta: 5 }, workAbility: 1, iq: 1, mentalPressure: 2 }, result: '材料送出去时，每一处经办签名都清清楚楚。' },
     ]},
     { id: 'e258', stage: 'work', eventType: 'choice', title: '同学聚会（职场）', weight: 4, text: '老同学组织聚会，你见到了多年不见的同学。有人已经当上了处长，有人还在基层打拼。', pools: ['public'], choices: [
       { text: '和当处长的同学多交流', effects: {background: 3, desire: 2, reputation: 1, mentalPressure: 1, eq: 1} },
@@ -167,20 +162,6 @@ const gd_events_basic_4 = [
       { text: '在家做一顿大餐', effects: {eq: 1, mentalPressure: -2, familyPressure: -1, body: 1} },
       { text: '去健身房锻炼', effects: {body: 2, mentalPressure: -2, desire: 1, eq: 1} },
     ]},
-    { id: 'e275', stage: 'life', eventType: 'choice', title: '换手机', weight: 3, text: '你的手机用了好几年了，电池越来越不耐用。你犹豫要不要换新手机。', pools: ['public'], choices: [
-      { text: '买最新款旗舰机', effects: {iq: 1, mentalPressure: -1, familyPressure: 2, desire: 1, reputation: 1} },
-      { text: '买个中端性价比高的', effects: {iq: 2, familyPressure: -1, mentalPressure: -1, workAbility: 1} },
-      { text: '换个电池继续用', effects: {iq: 1, familyPressure: -1, mentalPressure: 1} },
-      { text: '等双十一再买', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, desire: -1} },
-      { text: '买二手旗舰机', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, reputation: -1} },
-    ]},
-    { id: 'e276', stage: 'life', eventType: 'choice', title: '超市购物', weight: 3, text: '周末去超市采购，你发现物价又涨了。你看着购物车里的东西，感觉钱越来越不经花了。', pools: ['public'], choices: [
-      { text: '精打细算只买必需品', effects: {familyPressure: -1, mentalPressure: 1, iq: 1, integrity: 1} },
-      { text: '想吃什么就买什么', effects: {familyPressure: 2, mentalPressure: -1, desire: 1, body: 1} },
-      { text: '囤一些打折商品', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, desire: -1} },
-      { text: '货比三家看哪家便宜', effects: {iq: 2, body: 1, mentalPressure: 1, familyPressure: -1} },
-      { text: '网上买更便宜', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, workAbility: 1} },
-    ]},
     { id: 'e277', stage: 'life', eventType: 'choice', title: '看电影', weight: 3, text: '一部你期待已久的电影上映了。你买了票准备去看，但单位突然通知要加班。', pools: ['public'], choices: [
       { text: '去加班改天再看', effects: {positionWeight: 1, reputation: 1, workAbility: 1, mentalPressure: 2, desire: -1} },
       { text: '请个假去看电影', effects: {mentalPressure: -2, desire: 1, eq: 1, reputation: -1, positionWeight: -1} },
@@ -188,21 +169,7 @@ const gd_events_basic_4 = [
       { text: '把电影票送给同事', effects: {eq: 1, reputation: 1, background: 1, mentalPressure: 1} },
       { text: '和领导说明情况', effects: {eq: 1, integrity: 1, mentalPressure: 1, workAbility: 1, positionWeight: 1} },
     ]},
-    { id: 'e278', stage: 'life', eventType: 'choice', title: '理发', weight: 3, text: '你常去的理发店涨价了，而且涨价幅度不小。你犹豫要不要换一家便宜的。', pools: ['public'], choices: [
-      { text: '继续在这家剪', effects: {familyPressure: 1, mentalPressure: 1, reputation: 1, eq: 1} },
-      { text: '换一家便宜的试试', effects: {familyPressure: -1, mentalPressure: 1, risk: 1, eq: 1} },
-      { text: '自己学着剪', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, body: 1} },
-      { text: '和老板讨价还价', effects: {eq: 1, familyPressure: -1, mentalPressure: 1, integrity: 1} },
-      { text: '剪更便宜的简单发型', effects: {familyPressure: -1, mentalPressure: -1, reputation: -1, iq: 1} },
-    ]},
-    { id: 'e279', stage: 'life', eventType: 'choice', title: '下雨天', weight: 3, text: '早上出门时下着大雨，你忘记带伞了。打卡还有5分钟，你是冲过去还是等雨停？', pools: ['public'], choices: [
-      { text: '冲过去打卡再说', effects: {body: -1, mentalPressure: 1, positionWeight: 1, workAbility: 1, appearance: 1} },
-      { text: '等雨小了再走', effects: {body: 1, mentalPressure: 1, positionWeight: -1, reputation: -1} },
-      { text: '向同事借伞', effects: {eq: 1, background: 1, mentalPressure: -1, reputation: 1} },
-      { text: '打车去单位', effects: {familyPressure: 1, mentalPressure: -1, body: 1, positionWeight: 1} },
-      { text: '和领导说一声晚点到', effects: {eq: 1, integrity: 1, mentalPressure: -1, positionWeight: -1} },
-    ]},
-    { id: 'e280', stage: 'life', eventType: 'choice', title: '请客吃饭', weight: 3, text: '你升职了，同事们起哄让你请客。你算了算，请全科室吃饭要花不少钱。', pools: ['public'], choices: [
+    { id: 'e280', stage: 'life', eventType: 'choice', title: '请客吃饭', weight: 3, text: '干部调整名单公布后，办公室同事围着你说要庆祝。老同事提议去饭店包一桌，许砚笑着问“算谁的账”。家里刚交过一笔房贷，你知道今晚的热闹也会变成下月预算的一部分。', pools: ['public'], choices: [
       { text: '大方请客感谢大家', effects: {eq: 2, background: 2, reputation: 2, mentalPressure: 1, familyPressure: 2, luck: -1} },
       { text: '请简单的工作餐', effects: {eq: 1, reputation: 1, familyPressure: -1, mentalPressure: -1, background: 1, integrity: 1} },
       { text: '请大家喝奶茶', effects: {eq: 2, reputation: 1, familyPressure: -1, mentalPressure: -1, background: 1} },
@@ -215,20 +182,6 @@ const gd_events_basic_4 = [
       { text: '增加几个自费项目', effects: {familyPressure: 1, body: 2, mentalPressure: 1, iq: 1} },
       { text: '找熟人医生仔细看看', effects: {background: 1, body: 2, mentalPressure: -1, familyPressure: 1} },
       { text: '拿到报告后认真解读', effects: {iq: 2, body: 1, mentalPressure: 1, workAbility: 1} },
-    ]},
-    { id: 'e282', stage: 'life', eventType: 'choice', title: '快递丢失', weight: 3, text: '你的快递显示已签收，但你并没有收到。联系快递员，他说放在门口了，但门口什么都没有。', pools: ['public'], choices: [
-      { text: '联系快递公司索赔', effects: {iq: 2, mentalPressure: 2, integrity: 1, workAbility: 1} },
-      { text: '查监控录像', effects: {iq: 2, mentalPressure: 2, workAbility: 1, risk: 1} },
-      { text: '自认倒霉再买一个', effects: {familyPressure: 1, mentalPressure: 1, desire: -1} },
-      { text: '投诉快递员', effects: {eq: 1, mentalPressure: 2, integrity: 1, reputation: 1} },
-      { text: '联系卖家退款', effects: {iq: 1, mentalPressure: 1, integrity: 1, workAbility: 1} },
-    ]},
-    { id: 'e283', stage: 'life', eventType: 'choice', title: '天气异常', weight: 3, text: '今年夏天特别热，连续高温让你受不了。空调每天开十几个小时，电费涨了不少。', pools: ['public'], choices: [
-      { text: '开空调注意节约用电', effects: {familyPressure: -1, body: 1, mentalPressure: 1, iq: 1, luck: -1} },
-      { text: '去图书馆蹭空调', effects: {body: 1, mentalPressure: -1, iq: 1, workAbility: 1} },
-      { text: '买台电风扇凑合', effects: {familyPressure: -1, body: 1, mentalPressure: -1} },
-      { text: '去单位加班蹭空调', effects: {workAbility: 2, body: 1, mentalPressure: 1, positionWeight: 1} },
-      { text: '装遮阳帘减少日晒', effects: {iq: 1, familyPressure: -1, body: 1, mentalPressure: 1} },
     ]},
     // ====== 补全缺失事件 ======
     { id: 'e284', stage: 'life', eventType: 'choice', title: '相亲风云', weight: 6, requireSingle: true, year: [22, 45], text: '家里给你安排了一次相亲，对方听说你是体制内的，表现得很热情。但你目前全身心扑在工作上。', pools: ['public'], choices: [

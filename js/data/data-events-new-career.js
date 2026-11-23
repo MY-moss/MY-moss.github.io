@@ -137,16 +137,6 @@ const gd_events_new_career = [
     { text: '用闲钱小仓位买蓝筹股', effects: {wealth: 2, risk: 2, iq: 1, mentalPressure: 2} },
     { text: '听消息重仓买入内幕股', effects: {wealth: 4, risk: 6, integrity: -3, mentalPressure: 4, desire: 3} },
   ]},
-  { id: 'enc026', stage: 'career', eventType: 'choice', weight: 4, title: '国债逆回购', text: '月末资金紧张，国债逆回购年化收益率飙升到8%以上。你账户里有几万块闲钱，可以做一天期逆回购。', choices: [
-    { text: '抓住高收益时机操作', effects: {wealth: 1, iq: 2, mentalPressure: -1} },
-    { text: '嫌麻烦懒得操作', effects: {mentalPressure: -2, wealth: -1} },
-    { text: '学习后操作并教同事', effects: {wealth: 1, eq: 1, iq: 2, workAbility: 1} },
-  ]},
-  { id: 'enc027', stage: 'career', eventType: 'choice', weight: 7, title: '银行存款', text: '一笔定期存款到期了，现在利率又下调了。你要考虑怎么处置这笔钱。', choices: [
-    { text: '继续存定期求稳', effects: {wealth: 1, mentalPressure: -2, integrity: 1} },
-    { text: '转存大额存单锁定利率', effects: {wealth: 2, iq: 1, mentalPressure: -1} },
-    { text: '购买结构性存款', effects: {wealth: 2, risk: 2, iq: 1, mentalPressure: 1} },
-  ]},
   { id: 'enc028', stage: 'career', eventType: 'choice', weight: 5, title: '保险购买', text: '一位做保险的老同学极力推荐你买一份"全能保障"产品，年缴保费两万，缴十年。你不确定是否划算。', choices: [
     { text: '仔细研究条款后决定', effects: {iq: 2, wealth: -1, mentalPressure: 1, integrity: 1} },
     { text: '看在同学情面买一份', effects: {wealth: -2, eq: 1, mentalPressure: 1, risk: -1} },
@@ -172,11 +162,6 @@ const gd_events_new_career = [
     { text: '相信代理人直接投保', effects: {wealth: -2, risk: -1, mentalPressure: 1, eq: 1} },
     { text: '暂不投保再比较比较', effects: {mentalPressure: 0, iq: 1, wealth: 0} },
   ]},
-  { id: 'enc033', stage: 'career', eventType: 'choice', weight: 6, title: '车险续保', text: '车险快到期了，几家保险公司都打来电话报价。有送的、有返现的、有送保养的，价格也各不相同。', choices: [
-    { text: '比价后选择大公司理赔好', effects: {wealth: -1, mentalPressure: -1, iq: 1, risk: -1} },
-    { text: '选最便宜的省钱', effects: {wealth: 2, risk: 2, mentalPressure: 1} },
-    { text: '通过熟人买有返现', effects: {wealth: 1, eq: 1, risk: 1, mentalPressure: 0} },
-  ]},
   { id: 'enc034', stage: 'career', eventType: 'choice', weight: 6, title: '意外险', text: '出差途中目睹一起交通事故，你意识到意外险的重要性。回来后想给自己买一份意外险。', choices: [
     { text: '购买综合意外险保全年', effects: {wealth: -1, mentalPressure: -2, risk: -2, integrity: 1} },
     { text: '只买短期出行意外险', effects: {wealth: 0, mentalPressure: -1, risk: -1} },
@@ -201,16 +186,6 @@ const gd_events_new_career = [
     { text: '不贷款量入为出', effects: {integrity: 2, mentalPressure: -1, wealth: 0} },
     { text: '贷一笔投资赚利差', effects: {wealth: 2, risk: 4, mentalPressure: 3, desire: 2} },
     { text: '贷一小笔应急周转', effects: {wealth: 1, mentalPressure: 1, risk: 1} },
-  ]},
-  { id: 'enc039', stage: 'career', eventType: 'choice', weight: 6, title: '信用卡积分', text: '信用卡积分年底清零，你的积分够兑换一个小家电或者航空里程。', choices: [
-    { text: '兑换实用家电', effects: {wealth: 1, mentalPressure: -1, iq: 1} },
-    { text: '兑换航空里程出行用', effects: {wealth: 1, desire: 1, mentalPressure: -1, eq: 1} },
-    { text: '积分太少懒得兑换', effects: {mentalPressure: -2, wealth: -1} },
-  ]},
-  { id: 'enc040', stage: 'career', eventType: 'choice', weight: 6, title: '返现优惠', text: '电商平台大促，信用卡有满减返现活动。你看中一件商品，正好可以用优惠。', choices: [
-    { text: '需要才买用上优惠', effects: {wealth: 1, mentalPressure: -1, iq: 1} },
-    { text: '为了优惠凑单买一堆', effects: {wealth: -2, desire: 2, mentalPressure: 1} },
-    { text: '不凑热闹不冲动消费', effects: {integrity: 1, mentalPressure: -1, wealth: 0} },
   ]},
   { id: 'enc041', stage: 'career', eventType: 'choice', weight: 5, title: '团购优惠', text: '单位同事组织团购某种保健品，说团购价便宜一半。但产品你没听过，效果存疑。', choices: [
     { text: '不跟风不买不熟悉产品', effects: {integrity: 1, mentalPressure: -1, wealth: 1, eq: -1} },
@@ -416,7 +391,7 @@ const gd_events_new_career = [
   { id: 'enc080', stage: 'career', eventType: 'choice', weight: 4, title: '通报批评（记档）', text: '你因工作失误被全市通报批评，名字和事迹都上了文件。同事们看你的眼神都变了。', choices: [
     { text: '诚恳接受教训努力改正', effects: {integrity: 2, mentalPressure: 4, workAbility: 1, positionWeight: -2} },
     { text: '觉得丢人想调走', effects: {mentalPressure: 5, positionWeight: -3, eq: -1, desire: -1} },
-    { text: '破罐子破摔', effects: {mentalPressure: 3, workAbility: -3, integrity: -2, risk: 2} },
+    { text: '索性不再认真改正，逃避通报后的压力', effects: {mentalPressure: 3, workAbility: -3, integrity: -2, risk: 2} },
   ]},
   { id: 'enc081', stage: 'career', eventType: 'choice', weight: 3, title: '停职检查', text: '因反映的问题较严重，组织决定让你停职检查。你的工作暂时移交给副手，等待进一步调查。', choices: [
     { text: '认真反思配合组织调查', effects: {integrity: 2, mentalPressure: 5, positionWeight: -3, risk: -1} },

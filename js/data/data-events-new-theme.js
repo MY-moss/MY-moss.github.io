@@ -109,7 +109,7 @@ const gd_events_new_theme = [
       { text: '提出调整培训地点和内容', effects: {integrity: 3, workAbility: 1, mentalPressure: 2} },
       { text: '参加培训但自费额外消费', effects: {integrity: 2, wealth: -50, eq: 1} },
       { text: '全程参与"现场教学"，心安理得', effects: {risk: 4, integrity: -3, desire: 2} },
-      { text: '借故不参加', effects: {integrity: 2, eq: -1, mentalPressure: 1} },
+      { text: '以工作安排为由拒绝这次不合规培训', effects: {integrity: 2, eq: -1, mentalPressure: 1} },
     ]},
     { id: 'ent019', stage: 'work', eventType: 'choice', weight: 4, title: '同学聚会（高档局）', text: '老同学组织聚会，定在高档会所。有人说"你现在是领导，这单得你签"，包厢里灯光晃得人发懵。', choices: [
       { text: '婉拒参加，建议换个地方', effects: {integrity: 3, eq: 1, mentalPressure: 1} },
@@ -744,7 +744,7 @@ const gd_events_new_theme = [
     choices: [
       { text: '主动约个时间聚一聚', effects: { contactRelation: { id: 'auto', delta: 3 }, mentalPressure: -3 } },
       { text: '发条消息问候一下就好', effects: { contactRelation: { id: 'auto', delta: 1 } } },
-      { text: '各人有各人的路，不打扰了', effects: {} }
+      { text: '不强求维系，承认有些关系只能留在记忆里', effects: { mentalPressure: -2, contactRelation: { id: 'auto', delta: -1 } } }
     ] },
   // ========== v2.60 联系人专属互动（内容扩充：青梅/战友/商会/老书记/记者/医生/下属/处长） ==========
   { id: 'ent200', eventType: 'choice', weight: 3, year: [2, 60], stage: 'life', requireContact: 'qingmei', title: '🏘️ 旧城往事',
