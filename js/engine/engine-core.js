@@ -419,7 +419,7 @@ class GameEngine {
   saveState(slot) {
     try {
       const s2 = (slot !== undefined && slot !== null) ? slot : (this.currentSaveSlot || 0);
-      const state = { ...this.state, currentEvent: null }; // v2.59 性能：去掉双重序列化（原 JSON.parse(JSON.stringify()) 深拷贝后再 stringify）
+      const state = this.state; // 保留未完成的选择；JSON 序列化会复制快照，不污染运行状态
       localStorage.setItem(this.getSaveKey(s2), JSON.stringify(state));
       localStorage.setItem(this.getSaveTimeKey(s2), Date.now().toString());
       this.lastPersistenceError = null;
@@ -444,6 +444,7 @@ class GameEngine {
     };
   }
   loadState(slot) {
+    const previous = this.state;
     try {
       const s2 = (slot !== undefined && slot !== null) ? slot : (this.currentSaveSlot || 0);
       this.currentSaveSlot = s2;
@@ -451,13 +452,13 @@ class GameEngine {
       if (!saved) return false;
       this.state = JSON.parse(saved);
       // v2.16 修复：与 importSave 共用字段补齐/迁移，旧版存档（无 finance/contacts/reputation 等）不再崩溃
-      if (!this.migrateState(this.state)) return false;
+      if (!this.migrateState(this.state)) { this.state = previous; return false; }
       this._codexEventCache = null;
       this.initFinance();
       this.scoreCalculated = false;
       this.isProcessing = false;
       return true;
-    } catch(e) { return false; }
+    } catch(e) { this.state = previous; return false; }
   }
   // 旧档字段补齐与迁移（loadState/importSave 共用）
   migrateState(st) {
@@ -490,7 +491,7 @@ class GameEngine {
       // P3 剧本专属事件链根/中间 flag
       'grassrootsBreakthrough', 'grassrootsCautious', 'grassrootsStep2', 'midcareerRebuild', 'midcareerHold', 'midcareerStep2', 'cleanRecord', 'cleanCompromise', 'cleanStep2', 'networkBoundary', 'networkFavor', 'networkStep2', 'reformPilot', 'reformCautious', 'reformStep2', 'retiredMentor', 'retiredLegacy', 'retiredStep2', 'familyBalance', 'familyCareer', 'familyStep2',
       // v2.1.66 赡养链 / 理财暴雷链 / 借调链中间 flag
-      'parentIllness', 'parentCaring', 'leveragedInvest', 'investCrash', 'seconded', 'secondReview'];
+      'parentIllness', 'parentCaring', 'leveragedInvest', 'investCrash', 'seconded', 'secondReview', 'receiptOpen', 'receiptQuiet', 'receiptOpenReviewed', 'receiptQuietReviewed'];
     for (const _cf of _chainFlags) {
       if (p.flags[_cf] && typeof p.flags[_cf + '_since'] !== 'number') p.flags[_cf + '_since'] = p.age;
     }
@@ -581,7 +582,8 @@ class GameEngine {
     }
     // 人脉分层迁移由可选的 engine-network 提供；旧测试/旧入口未加载该模块时也保持可运行。
     if (typeof this.ensureNetworkState === 'function') this.ensureNetworkState();
-    st.currentEvent = null;
+    // 旧版存档没有待选事件时继续保持空值；有效选择事件必须原样恢复，避免刷新跳过抉择。
+    if (st.currentEvent && (!Array.isArray(st.currentEvent.choices) || !['choice'].includes(st.currentEvent.eventType || st.currentEvent.type))) st.currentEvent = null;
     return true;
   }
   // 存档导出：当前存档转 Base64 字符串（跨设备备份）

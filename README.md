@@ -16,3 +16,7 @@
 - 填写完整 `https://...` 地址：本地生成海报时也会指向线上游戏。
 
 海报包含游戏二维码和 `reward-qrcode.png` 赞赏码。海报数据只在本地 Canvas 中生成，不会上传存档。
+
+## 第一轮升级（未正式发布）
+
+参见 [审计与测试报告](docs/ROUND1_AUDIT_2026-11-23.md)。运行 `node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs` 与 `node tests/round1-simulation.cjs` 可以在无服务端的环境下验证核心脚本和剧情模拟。浏览器交互测试需单独安装 Playwright。此次修改不包含任何 ATLAS 或日报系统。

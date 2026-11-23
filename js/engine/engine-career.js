@@ -658,8 +658,19 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         { flag: 'leveragedInvest', next: 'ent297', delay: 2 },
         { flag: 'investCrash', next: 'ent298', delay: 1 },
         { flag: 'seconded', next: 'ent300', delay: 1 },
-        { flag: 'secondReview', next: 'ent301', delay: 1 }
+        { flag: 'secondReview', next: 'ent301', delay: 1 },
+        { flag: 'receiptOpen', next: 'arc_receipt_open_2', delay: 2 },
+        { flag: 'receiptQuiet', next: 'arc_receipt_quiet_2', delay: 2 },
+        { flag: 'receiptOpenReviewed', next: 'arc_receipt_open_3', delay: 3 },
+        { flag: 'receiptQuietReviewed', next: 'arc_receipt_quiet_3', delay: 3 }
       ];
+      // 档案柜里的回执：基层服务的长期抉择，前 12 年每年有一次进入机会。
+      // 同一决策槽不覆盖政策项目/其他刚性事件；开始后结局由 flag 延迟确定。
+      if (!event && !p.flags.receiptOpen && !p.flags.receiptQuiet && !(p.seenEvents || []).includes('arc_receipt_1')
+          && p.yearsWorked >= 2 && p.yearsWorked <= 12 && this.randf() < 0.15) {
+        const first = GameData.events.find(x => x.id === 'arc_receipt_1');
+        if (first) event = first;
+      }
       // v2.66 买房入口注入：28-45 岁每年 2%（买房是重要人生节点——原 weight 8 在 1265 事件池里生涯触发率仅 ~2%）
       if (!event && !p.flags.mortgage && !(p.seenEvents || []).includes('ent257') && p.age >= 28 && p.age <= 45 && this.randf() < 0.02) {
         const evB = (GameData.events || []).find(x => x && x.id === 'ent257');

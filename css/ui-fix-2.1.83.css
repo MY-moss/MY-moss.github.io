@@ -45,3 +45,11 @@ html {
   }
 }
 
+
+/* 2.1.84: 长期人物纪事，兼容已有浅/深色令牌。 */
+.thread-card { padding: 16px 18px; margin: 14px 0; border: 1px solid var(--parchment-dark); border-left: 3px solid var(--vermilion); border-radius: 10px; background: var(--parchment); }
+.thread-kicker { font-size: 11px; letter-spacing: .08em; font-weight: 700; color: var(--vermilion); }
+.thread-title { font-size: 17px; line-height: 1.55; font-weight: 750; color: var(--ink); margin-top: 4px; }
+.thread-card p { font-size: 13px; line-height: 1.85; color: var(--ink-light); margin: 7px 0; }
+.thread-foot { font-size: 12px; line-height: 1.7; color: var(--ink-lighter); }
+@media (max-width: 480px) { .thread-card { padding: 13px 14px; } .thread-title { font-size: 16px; } }

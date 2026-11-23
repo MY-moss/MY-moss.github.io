@@ -161,6 +161,8 @@ GameEngine.prototype.recordEventVisit = function(eventId) {
 };
 GameEngine.prototype.handleEventChoice = function(ci) {
     const e = this.state.currentEvent; if (!e || !e.choices) return;
+    const c = e.choices[ci];
+    if (!c || !this.isChoiceEnabled(c)) return false;
     if (e.id) {
       this.state.player.seenEvents = this.state.player.seenEvents || [];
       if (!this.state.player.seenEvents.includes(e.id)) this.state.player.seenEvents.push(e.id);
@@ -170,7 +172,6 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     if (e.id === 'e237') this.state.player.flags.underInvestigation = true;
     // v2.66 恋爱重计时：ent263「认真谈一次」后从 seenEvents 移除自身——RIGID_CHAINS 依新 dating_since 重新注入（原实现重设计时但永不二次决断）
     if (e.id === 'ent263' && ci === 1) this.state.player.seenEvents = (this.state.player.seenEvents || []).filter(x => x !== 'ent263');
-    const c = e.choices[ci]; if (!c) return;
     // v2.22 晋升答辩留痕：选项可附带 careerLogNote 写入年鉴（卷宗感）
     if (c.effects && c.effects.careerLogNote) {
       this.state.player.careerLog.push({ year: this.state.player.age, event: c.effects.careerLogNote });
@@ -218,7 +219,6 @@ GameEngine.prototype.handleEventChoice = function(ci) {
       return;
     }
     // 选项条件门槛：不满足条件的选项（背景/财富/flag）直接拦截，防止绕过UI触发
-    if (!this.isChoiceEnabled(c)) return;
     this.applyEffects(c.effects);
     this.clampAttrs();
     this.state.currentEvent = null; this.checkEndings();
@@ -294,7 +294,8 @@ const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246'
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入
   'e802', 'e803', 'e804', 'e806', 'e807', 'e808',
   // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链 next 节点只由 RIGID_CHAINS 注入
-  'ent294', 'ent295', 'ent297', 'ent298', 'ent300', 'ent301']);
+  'ent294', 'ent295', 'ent297', 'ent298', 'ent300', 'ent301',
+  'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3']);
 
 // 生命周期旧标题门槛的唯一兼容实现。
 // 结构化字段是主规则，只有历史事件尚未迁移时才使用这里的标题兜底；
