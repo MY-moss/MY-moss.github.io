@@ -561,69 +561,10 @@ GameEngine.prototype._rcy_deadFlagConsumption = function() {
       }
     }
   }
-// 人生交汇：不是独立随机抽奖，必须由至少两条已走过的人物线共同触发。
-GameEngine.prototype.getCrossroadsEvent = function() {
-    const p=this.state.player, f=p.flags||{};
-    const hasReceipt=!!(f.receiptOpen||f.receiptQuiet);
-    const hasTeam=!!(f.teamShared||f.teamDeferred);
-    const hasClassmate=!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries);
-    if (!hasReceipt || !(hasTeam || hasClassmate)) return null;
-    const origin=GameData.events.find(e=>e.id==='arc_crossroads_1');
-    if (!origin) return null;
-    const note=[];
-    if (f.receiptOpen) note.push('你当年选择公开复核旧回执，其中几页材料至今保留着你的批注');
-    else note.push('你当年让旧回执通过内部协调处理，如今有些细节还需要重新解释');
-    if (hasTeam) note.push(f.teamShared ? '许砚记得你主动分担值班的那一年' : '许砚记得那份一直拖到很晚才批准的调休单');
-    if (hasClassmate) note.push(f.classmateFavor ? '林默曾得到过你的私下关照，你知道这次必须慎重处理关系' : '林默的创业申请也曾让你思考公务与私人友情的界限');
-    if (f.familyClinicAbsent) note.push('今晚伴侣还在等你回家，电话屏幕亮了两次');
-    else if (f.familyClinicPresent) note.push('你答应过伴侣，不会再让每一次重要约定都让位于加班');
-    const records=hasTeam?'许砚交接过的值班记录':'几份跨部门移交记录';
-    const project=hasClassmate?'与林默那批企业申报同期的项目材料':'新一轮政策项目的申请材料';
-    const scene=origin.text.replace('后来调整的科室值班表和社会机构的申请材料',records+'和'+project);
-    const event={...origin,text:scene+' '+note.join('；')+'。',choices:origin.choices.map(c=>({...c,effects:{...c.effects}}))};
-    // 上一幕不是装饰：既往隐瞒的旧回执，再次公开承担更高的职业代价；
-    // 借私人关系获利的玩家继续遮掩时，调查风险更高。
-    if (f.receiptQuiet) {
-      Object.assign(event.choices[0].effects,{mentalPressure:9,reputation:-2,risk:-4});
-    }
-    if (f.classmateFavor) {
-      event.choices[2].effects.risk+=5;
-      event.choices[2].effects.heat=4;
-    }
-    if (f.teamShared) {
-      event.choices[1].effects.contactDelta={target:'arc_xuyan',trust:4,relation:2};
-    }
-    if (f.familyClinicAbsent) event.choices[0].effects.familyPressure+=4;
-    return event;
-};
-// 子方法 9：年度事件选择（里程碑/政策项目/入口注入/刚性链/随机池）+ 赌博年分支。
-// 返回 { event, aborted }：aborted=true 表示 e761 逮捕/出逃接管，编排主体须立即终止年度。
-GameEngine.prototype._rcy_annualEventSelection = function() {
-    const s = this.state; const p = s.player;
-    // 年度事件（随机事件池抽取，auto/sudden 立即结算）
-    // 平静年限流控制：最多连续两年"平静的一年"，第三年强制触发事件
-    const quietStreak = (p.flags.quietStreak || 0);
-    let event = null;
-    // v2.59 里程碑强制触发：工作满 5/10/15/20/25/30 年必达（原靠事件池 1-2% 概率抽奖，多数玩家错过成长节点）
-    const MILESTONE_IDS = { 5: 'e087', 10: 'e088', 15: 'e089', 20: 'e090', 25: 'e091', 30: 'e092' };
-    const mid = MILESTONE_IDS[p.yearsWorked];
-    if (mid && !this.state.currentEvent && !(p.seenEvents || []).includes(mid)) {
-      const me = (GameData.events || []).find(ev => ev && ev.id === mid);
-      if (me) { p.seenEvents = p.seenEvents || []; p.seenEvents.push(mid); event = me; }
-    }
-    // v2.63 刚性因果链：flag 存在 → 次年必然触发 next（非概率——触发即因果，玩家选择推进/终止）
-    // 覆盖：学历链（mbaApply→ent233→mbaActive→ent234→mbaDegree→ent235）、健康链（healthRisk→ent245→healthCare→ent246→healthTreated→ent247）、调查链（underInvestigation→e646→defied→e648 / selfSurrender→e647）
-    // v2.66 修复：赌博年（currentEvent 被赌博事件占用）跳过全部链注入——原实现注入即 push seenEvents 但不展示，链被永久卡死
-    if (!event && !this.state.currentEvent) {
-      // 主动承接的政策项目优先占用年度决策槽；项目中的高热度舆情危机优先级更高。
-      const policyEvent = (typeof this.preparePolicyOpinionCrisisEvent === 'function' ? this.preparePolicyOpinionCrisisEvent() : null)
-        || (typeof this.getPolicyProjectDecisionEvent === 'function' ? this.getPolicyProjectDecisionEvent() : null);
-      if (policyEvent) event = policyEvent;
-    }
-    if (!event && !this.state.currentEvent) {
-      // 刚性推进：flag 在且延迟到期 → 必然触发下一步（seenEvents 去重保证每步只触发一次）
-      // v2.64 延迟机制：delay=N 表示 flag 设置后第 N 年才必然触发（事件更合理：预备期 1 年转正、专案每年推进、调查需要时间）
-      const RIGID_CHAINS = [
+// 单一因果来源：年度调度与玩家的「旧事待办」共用同一组阶段条件，
+// 无需复制另一份年度链表（避免显示将要触发但引擎根本不会触发的事件）。
+GameEngine.prototype.getCausalChainSteps = function() {
+    return [
         { flag: 'mbaApply', next: 'ent233', delay: 1 },
         { flag: 'mbaActive', next: 'ent234', delay: 1 },
         { flag: 'mbaDegree', next: 'ent235', delay: 1 },
@@ -704,17 +645,133 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         { flag: 'crossOpenReviewed', next: 'arc_crossroads_open_3', delay: 3 },
         { flag: 'crossPhaseReviewed', next: 'arc_crossroads_phase_3', delay: 3 },
         { flag: 'crossSealReviewed', next: 'arc_crossroads_seal_3', delay: 3 },
-        { flag: 'crossResolved', next: 'arc_crossroads_echo', delay: 2 }
-      ];
+        { flag: 'crossResolved', next: 'arc_crossroads_echo', delay: 2 },
+        // 私人投资风险后续：当年盈亏已结算，职业合规问题两年后仍需面对。
+        { flag: 'ventureStake', next: 'arc_venture_disclosure_1', delay: 2 },
+        { flag: 'ventureDeclared', next: 'arc_venture_declared_2', delay: 2 },
+        { flag: 'ventureExited', next: 'arc_venture_exited_2', delay: 2 },
+        { flag: 'ventureHidden', next: 'arc_venture_hidden_2', delay: 2 },
+    ];
+};
+// 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
+GameEngine.prototype.getPendingCausalConsequences = function() {
+    const p=this.state.player, flags=p.flags||{}, seen=new Set(p.seenEvents||[]);
+    const known=new Set((GameData.events||[]).map(e=>e.id));
+    const unique=new Set(), queue=[];
+    const labels=[
+      [/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
+      [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
+      [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
+      [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$/,'父母照护'],
+      [/^ent2(96|97|98)$/,'资产与风险'],[/^ent(299|300|301)$/,'借调与考察'],
+      [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648)$/,'调查与责任'],
+      [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$/,'房贷与家庭财务']
+    ];
+    this.getCausalChainSteps().forEach((step,index)=>{
+      if(!flags[step.flag]||seen.has(step.next)||!known.has(step.next)||unique.has(step.next))return;
+      unique.add(step.next);
+      const since=Number(flags[step.flag+'_since']);
+      const dueAge=Number.isFinite(since)&&since>0 ? since+(step.delay||1) : p.age+(step.delay||1);
+      const label=labels.find(([re])=>re.test(step.next))?.[1]||'职业与人生旧事';
+      queue.push({id:step.next,flag:step.flag,label,dueAge,waitingYears:Math.max(0,dueAge-p.age),overdue:dueAge<=p.age,index});
+    });
+    return queue.sort((a,b)=>a.dueAge-b.dueAge||a.index-b.index);
+};
+// 与此前决定交错：财务结算是即时的，私人投资是否合规要在两年后检查。
+GameEngine.prototype.getVentureReviewEvent = function() {
+    const e=GameData.events.find(x=>x.id==='arc_venture_disclosure_1');
+    if(!e)return null;
+    const f=this.state.player.flags||{};
+    const event={...e,choices:e.choices.map(c=>({...c,effects:{...c.effects}}))};
+    if(f.classmateFavor){
+      event.text+=' 你想起林默当年托你打过的那通电话；同一个名字又出现在关联企业的说明材料里。';
+      event.choices[2].effects.risk+=5;
+      event.choices[2].effects.contactDelta={target:'oldClassmate',trust:-6,relation:-4};
+    } else if(f.classmateBoundaries){
+      event.text+=' 林默曾劝你把私人往来和工作审批分开，你在档案袋上看见自己手写的那句提醒。';
+      event.choices[0].effects.integrity+=2;
+    }
+    if(f.crossSeal){
+      event.text+=' 旧城项目未经充分复核的事情还未完全过去，这份投资说明更难轻描淡写。';
+      event.choices[2].effects.risk+=5;
+    }
+    return event;
+};
+// 人生交汇：不是独立随机抽奖，必须由至少两条已走过的人物线共同触发。
+GameEngine.prototype.getCrossroadsEvent = function() {
+    const p=this.state.player, f=p.flags||{};
+    const hasReceipt=!!(f.receiptOpen||f.receiptQuiet);
+    const hasTeam=!!(f.teamShared||f.teamDeferred);
+    const hasClassmate=!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries);
+    if (!hasReceipt || !(hasTeam || hasClassmate)) return null;
+    const origin=GameData.events.find(e=>e.id==='arc_crossroads_1');
+    if (!origin) return null;
+    const note=[];
+    if (f.receiptOpen) note.push('你当年选择公开复核旧回执，其中几页材料至今保留着你的批注');
+    else note.push('你当年让旧回执通过内部协调处理，如今有些细节还需要重新解释');
+    if (hasTeam) note.push(f.teamShared ? '许砚记得你主动分担值班的那一年' : '许砚记得那份一直拖到很晚才批准的调休单');
+    if (hasClassmate) note.push(f.classmateFavor ? '林默曾得到过你的私下关照，你知道这次必须慎重处理关系' : '林默的创业申请也曾让你思考公务与私人友情的界限');
+    if (f.familyClinicAbsent) note.push('今晚伴侣还在等你回家，电话屏幕亮了两次');
+    else if (f.familyClinicPresent) note.push('你答应过伴侣，不会再让每一次重要约定都让位于加班');
+    const records=hasTeam?'许砚交接过的值班记录':'几份跨部门移交记录';
+    const project=hasClassmate?'与林默那批企业申报同期的项目材料':'新一轮政策项目的申请材料';
+    const scene=origin.text.replace('后来调整的科室值班表和社会机构的申请材料',records+'和'+project);
+    const event={...origin,text:scene+' '+note.join('；')+'。',choices:origin.choices.map(c=>({...c,effects:{...c.effects}}))};
+    // 上一幕不是装饰：既往隐瞒的旧回执，再次公开承担更高的职业代价；
+    // 借私人关系获利的玩家继续遮掩时，调查风险更高。
+    if (f.receiptQuiet) {
+      Object.assign(event.choices[0].effects,{mentalPressure:9,reputation:-2,risk:-4});
+    }
+    if (f.classmateFavor) {
+      event.choices[2].effects.risk+=5;
+      event.choices[2].effects.heat=4;
+    }
+    if (f.teamShared) {
+      event.choices[1].effects.contactDelta={target:'arc_xuyan',trust:4,relation:2};
+    }
+    if (f.familyClinicAbsent) event.choices[0].effects.familyPressure+=4;
+    return event;
+};
+// 子方法 9：年度事件选择（里程碑/政策项目/入口注入/刚性链/随机池）+ 赌博年分支。
+// 返回 { event, aborted }：aborted=true 表示 e761 逮捕/出逃接管，编排主体须立即终止年度。
+GameEngine.prototype._rcy_annualEventSelection = function() {
+    const s = this.state; const p = s.player;
+    // 年度事件（随机事件池抽取，auto/sudden 立即结算）
+    // 平静年限流控制：最多连续两年"平静的一年"，第三年强制触发事件
+    const quietStreak = (p.flags.quietStreak || 0);
+    let event = null;
+    // v2.59 里程碑强制触发：工作满 5/10/15/20/25/30 年必达（原靠事件池 1-2% 概率抽奖，多数玩家错过成长节点）
+    const MILESTONE_IDS = { 5: 'e087', 10: 'e088', 15: 'e089', 20: 'e090', 25: 'e091', 30: 'e092' };
+    const mid = MILESTONE_IDS[p.yearsWorked];
+    if (mid && !this.state.currentEvent && !(p.seenEvents || []).includes(mid)) {
+      const me = (GameData.events || []).find(ev => ev && ev.id === mid);
+      if (me) { p.seenEvents = p.seenEvents || []; p.seenEvents.push(mid); event = me; }
+    }
+    // v2.63 刚性因果链：flag 存在 → 次年必然触发 next（非概率——触发即因果，玩家选择推进/终止）
+    // 覆盖：学历链（mbaApply→ent233→mbaActive→ent234→mbaDegree→ent235）、健康链（healthRisk→ent245→healthCare→ent246→healthTreated→ent247）、调查链（underInvestigation→e646→defied→e648 / selfSurrender→e647）
+    // v2.66 修复：赌博年（currentEvent 被赌博事件占用）跳过全部链注入——原实现注入即 push seenEvents 但不展示，链被永久卡死
+    if (!event && !this.state.currentEvent) {
+      // 主动承接的政策项目优先占用年度决策槽；项目中的高热度舆情危机优先级更高。
+      const policyEvent = (typeof this.preparePolicyOpinionCrisisEvent === 'function' ? this.preparePolicyOpinionCrisisEvent() : null)
+        || (typeof this.getPolicyProjectDecisionEvent === 'function' ? this.getPolicyProjectDecisionEvent() : null);
+      if (policyEvent) event = policyEvent;
+    }
+    if (!event && !this.state.currentEvent) {
+      // 刚性推进：flag 在且延迟到期 → 必然触发下一步（seenEvents 去重保证每步只触发一次）
+      // v2.64 延迟机制：delay=N 表示 flag 设置后第 N 年才必然触发（事件更合理：预备期 1 年转正、专案每年推进、调查需要时间）
+      const RIGID_CHAINS = this.getCausalChainSteps();
       // 完成待兑现的旧选择后，才抽取今年新的故事入口；避免多年后果被覆盖。
-      if (!event) for (const step of RIGID_CHAINS) {
-        if (p.flags[step.flag] && !(p.seenEvents || []).includes(step.next)) {
-          const since = p.flags[step.flag + '_since'] || 0;
-          const delay = step.delay || 1;
-          if (p.age < since + delay) continue; // 延迟未到期：等一等（该年不触发，也跳过后续匹配）
-          const ev2 = (GameData.events || []).find(x => x && x.id === step.next);
-          if (ev2) { p.seenEvents = p.seenEvents || []; if (ev2.eventType === 'auto' || ev2.eventType === 'sudden') p.seenEvents.push(step.next); event = ev2; } // v2.67 修复刷新丢档：choice 不预 push seen（由 handleEventChoice 完成时 push）——事件年刷新后链可重新注入
-          break;
+      // 逾期最久的旧后果先兑现，同年待办按已承诺的时间顺序排队；
+      // 不抢占此前已经创建的政策/里程碑/当前选择事件。
+      if (!event) {
+        const due=this.getPendingCausalConsequences().find(x=>x.overdue);
+        if(due) {
+          const next=GameData.events.find(x=>x.id===due.id);
+          const ev=due.id==='arc_venture_disclosure_1'?this.getVentureReviewEvent():next;
+          if(ev){
+            if(ev.eventType==='auto'||ev.eventType==='sudden')p.seenEvents.push(due.id);
+            event=ev;
+          }
         }
       }
       // 仅在历史后果兑现后抽取新健康/学历故事，避免覆盖已到期剧情。
