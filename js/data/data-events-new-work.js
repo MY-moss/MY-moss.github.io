@@ -271,7 +271,7 @@ const gd_events_new_work = [
       { text: '制定分步解决计划再答复', effects: {workAbility: 3, mentalPressure: 3, positionWeight: 1} },
       { text: '按模板答复，态度诚恳', effects: {mentalPressure: -1, risk: 2, workAbility: 1} },
     ]},
-    { id: 'enw053', stage: 'work', eventType: 'choice', weight: 4, title: '政协委员提案', text: '一件政协提案涉及你分管领域。委员的调研很扎实，你的压力也很扎实。', choices: [
+    { id: 'enw053', stage: 'work', eventType: 'choice', weight: 4, title: '政协委员提案', text: '市政协委员递来一份民生服务调研报告：几个乡镇的办事材料有重复提交的问题。报告附着居民签名与现场照片，办理期限只剩十天。领导让你起草正式答复，委员说还想来现场核对。', choices: [
       { text: '逐条回应，能办的列时间表', effects: {workAbility: 3, eq: 1, mentalPressure: 3} },
       { text: '邀请委员现场调研再答复', effects: {eq: 1, workAbility: 2, mentalPressure: 2} },
       { text: '按惯例格式答复', effects: {mentalPressure: -1, risk: 2, workAbility: 1} },
@@ -845,7 +845,7 @@ const gd_events_new_work = [
       { text: '主动上交纸条，如实说明', effects: {integrity: 3, reputation: 1, risk: -2} },
       { text: '装作无事发生', effects: {risk: 3, integrity: -2} },
       { text: '考后找老科长解释', effects: {eq: 1, integrity: 1} },
-      { text: '帮同事说情', effects: {eq: 1, risk: 2, integrity: -1} },
+      { text: '请老科长从轻处理同事的违规行为', effects: {eq: 1, risk: 2, integrity: -1} },
     ]},
     { id: 'enw167', stage: 'work', eventType: 'auto', weight: 3, title: '督查通报', text: '你牵头的一项工作被省督查组通报表扬。办公室的同事们说"都是你的功劳"，你笑着摆手。晚上你翻了翻督查报告，发现被表扬的那几页，确实是加班熬出来的。', effects: {reputation: 3, positionWeight: 2, mentalPressure: -1} },
     { id: 'enw168', stage: 'work', eventType: 'choice', weight: 4, title: '值班电话', text: '周末值班，一通电话打进来："我孩子发烧，社区医院不开门，你们管不管？"你一边安抚对方，一边快速翻找应急预案——社区卫生服务中心的值班电话就在第一页。', choices: [

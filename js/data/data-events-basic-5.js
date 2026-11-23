@@ -151,7 +151,7 @@ const gd_events_basic_5 = [
       { text: '当场制止，维护群众权益', effects: {integrity: 4, eq: 1, risk: 2, mentalPressure: 3, reputation: 2, flag: 'stoodUpJustice'} },
       { text: '事后私下提醒同事', effects: {eq: 2, background: 1, mentalPressure: 1, integrity: 2} },
       { text: '向领导反映情况', effects: {integrity: 3, background: 1, risk: 2, mentalPressure: 2, positionWeight: 1} },
-      { text: '装作没看见', effects: {integrity: -2, mentalPressure: 2, reputation: -1, risk: -1} },
+      { text: '暂时保持沉默，避免正面冲突', effects: {integrity: -2, mentalPressure: 2, reputation: -1, risk: -1} },
       { text: '主动帮群众把事情办了', effects: {workAbility: 2, eq: 1, reputation: 2, mentalPressure: 2, integrity: 2} },
     ]},
     { id: 'e365', stage: 'work', eventType: 'auto', title: '公正表彰', weight: 4, text: '你坚持原则的事迹被群众写在了感谢信里。领导在大会上表扬你"敢于坚持原则，维护群众利益"，号召大家向你学习。', requireFlag: 'stoodUpJustice', effects: {reputation: 5, positionWeight: 2, integrity: 3, mentalPressure: -2, background: 2} },
@@ -205,7 +205,7 @@ const gd_events_basic_5 = [
       { text: '假装考虑，拖时间', effects: {risk: 3, mentalPressure: 2, integrity: -1, flag: 'consideredBribe'} },
       { text: '接受干股，享受分红', effects: {wealth: 30, desire: 4, risk: 8, heat: 8, integrity: -5, mentalPressure: 3, flag: 'tookShares'} }, // v2.59 补 heat（原收干股无热度）
       { text: '录音取证，向纪委举报', effects: {integrity: 4, risk: -2, mentalPressure: 3, reputation: 3, workAbility: 2} },
-      { text: '让亲属代持', effects: {wealth: 30, risk: 6, integrity: -3, desire: 3, mentalPressure: 2, familyPressure: 2, flag: 'tookShares'} },
+      { text: '让亲属代持股份，试图掩盖利益关系', effects: {wealth: 30, risk: 6, integrity: -3, desire: 3, mentalPressure: 2, familyPressure: 2, flag: 'tookShares'} },
     ]},
     { id: 'e376', stage: 'work', eventType: 'choice', title: '审计风暴', weight: 4, text: '上级审计组进驻单位进行为期一个月的全面审计。你经手的项目很多，虽然自认为没问题，但审计组的气氛让人紧张。', pools: ['public'], choices: [
       { text: '积极配合审计，主动提供资料', effects: {integrity: 3, workAbility: 2, mentalPressure: 3, reputation: 2, background: 1} },

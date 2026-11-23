@@ -80,6 +80,12 @@ const FLAG_CATEGORIES = {
     engaged: '已订婚',
     marriageFix: '婚姻修复',
     hasMentor: '遇贵人',
+    classmateOpen: '老同学 · 公开协助',
+    classmateFavor: '老同学 · 私下请托',
+    classmateBoundaries: '老同学 · 守住边界',
+    classmateOpenReviewed: '同学创业规范复核',
+    classmateFavorReviewed: '同学请托接受调查',
+    classmateBoundaryReviewed: '同学关系重新厘清',
     tookMentorOffer: '拜师入门',
     socialCircle: '圈子经营',
     gaveGift: '人情往来'

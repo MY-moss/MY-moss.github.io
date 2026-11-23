@@ -177,6 +177,17 @@ renderCareer() {
       const remain = Math.max(0, (since || p.age) + 2 - p.age);
       arcs.push({ title: '冰箱上的蓝色便签', detail: `${good ? '选择陪诊' : '选择参加汇报'} · ${complete ? '故事已完结' : remain ? '约 ' + remain + ' 年后会有回响' : '等待后续机会'}`, person: '家人' });
     }
+    if (f.classmateOpen || f.classmateFavor || f.classmateBoundaries) {
+      const route = f.classmateOpen ? 'open' : f.classmateFavor ? 'favor' : 'boundary';
+      const intro = f.classmateOpen ? '公开协助' : f.classmateFavor ? '私下请托' : '守住边界';
+      const reviewedFlag = route === 'boundary' ? 'classmateBoundaryReviewed' : `classmate${route[0].toUpperCase() + route.slice(1)}Reviewed`;
+      const initialFlag = route === 'boundary' ? 'classmateBoundaries' : `classmate${route[0].toUpperCase() + route.slice(1)}`;
+      const completed = seen.includes(`arc_classmate_${route}_3`);
+      const reviewed = !!f[reviewedFlag];
+      const since = reviewed ? f[reviewedFlag + '_since'] : f[initialFlag + '_since'];
+      const remaining = Math.max(0, (since || p.age) + (reviewed ? 3 : 2) - p.age);
+      arcs.push({ title: '老同学的申请书', detail: `${intro} · ${completed ? '故事已完结' : remaining ? '约 ' + remaining + ' 年后还有回响' : '等待后续机会'}`, person: '林默' });
+    }
     return arcs.map(arc => `<section class="thread-card" aria-label="持续故事进度">
       <div class="thread-kicker">人生纪事 · ${App.escapeHtml(arc.person)}</div>
       <div class="thread-title">${App.escapeHtml(arc.title)}</div>

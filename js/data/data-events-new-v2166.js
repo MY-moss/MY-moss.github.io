@@ -66,7 +66,7 @@ const gd_events_new_v2166 = [
     { text: '委托表妹陪去，你报销费用', effects: { wealth: -5, familyPressure: 1 }, result: '体检做了，老人念叨你没露面' },
     { text: '过期就过期吧，太忙了', effects: { familyPressure: 3, mentalPressure: 1 }, result: '卡过期那天，母亲说"不查更好"' }
   ] },
-  { id: 'enl171', stage: 'life', eventType: 'choice', weight: 5, year: [30, 65], title: '老宅漏水风波', text: '老家来电话：连日暴雨，老屋房顶漏了，父母的卧室摆满了接水的脸盆。', choices: [
+  { id: 'enl171', stage: 'life', eventType: 'choice', weight: 5, year: [30, 65], title: '老宅漏水风波', text: '老家来电话，说连续暴雨把屋顶掀起一角，父母卧室里放了三个接水的盆。父亲坚持先拿塑料布盖住，母亲却担心下一场雨会泡坏电线。你在单位查看天气预报时，伴侣已经替你查好了回乡车票。', choices: [
     { text: '出钱请人全面翻修', effects: { wealth: -20, familyPressure: -3, eq: 2 }, result: '翻新后的老屋，父母睡了个踏实觉' },
     { text: '先应急补漏，缓一缓再大修', effects: { wealth: -6, familyPressure: 1 }, result: '补漏管了一时，心里记着这笔账' },
     { text: '接父母进城同住', effects: { familyPressure: 2, eq: 2, mentalPressure: 2 }, result: '一家三代挤但热乎，老屋先空着' },

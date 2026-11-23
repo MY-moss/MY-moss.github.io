@@ -69,15 +69,10 @@ const gd_events_basic_1 = [
       { text: '接下来但明确需要资源支持', effects: {workAbility: 2, positionWeight: 1, mentalPressure: 2, background: 1} },
     ]},
     { pools: ['public'], id: 'e018', stage: 'life', eventType: 'choice', title: '熟人请托', weight: 4, text: '多年没联系的熟人带着材料找到你，说孩子申请的事项“你帮着打个招呼就行”。材料看上去齐全，但负责审批的恰好是你所在部门，你知道一句话也会被人当成暗示。', choices: [
-      { text: '礼貌拒绝，说明依规办事', effects: {integrity: 4, risk: -3, mentalPressure: 2, positionWeight: -1} },
-      { text: '在不违规前提下帮忙引路', effects: {background: 2, eq: 1, risk: 2, mentalPressure: 1} },
-      { text: '热心帮忙，积累人情', effects: {background: 3, risk: 5, integrity: -3, desire: 2}, minBackground: 40 },
-      { text: '转给其他同事处理', effects: {risk: 1, mentalPressure: -1, eq: 1} },
-      { text: '教对方正规办理流程', effects: {workAbility: 2, integrity: 2, eq: 1, mentalPressure: 1} },
-      { text: '动用关系，一次性把事情办妥', effects: {background: 3, risk: 6, heat: 3, integrity: -4, desire: 3, positionWeight: 1}, minBackground: 71 },
-      { text: '居中牵线，帮对方对接对的人', effects: {eq: 1, background: 2, reputation: 1, risk: 1}, minBackground: 40, maxBackground: 70 },
-      { text: '如实说明自己帮不上忙', effects: {integrity: 2, eq: 1, mentalPressure: 1}, maxBackground: 39 },
-      { text: '花点钱打点，把事情办利索', effects: {wealth: -20, background: 2, risk: 3, heat: 2, integrity: -2}, minWealth: 50 },
+      { text: '告知正规申请渠道，并主动回避审批流程', effects: { integrity: 3, risk: -3, mentalPressure: 2 }, result: '你把办事指南发给对方，书面说明了自己与申请人的关系。' },
+      { text: '带他去公开服务窗口问清补件要求', effects: { workAbility: 2, eq: 1, integrity: 1, mentalPressure: 2 }, result: '材料补齐了，决定由不认识你的人按流程作出。' },
+      { text: '私下催熟人加快审核，欠下一份人情', effects: { background: 3, risk: 6, heat: 3, integrity: -4, mentalPressure: 1 }, minBackground: 40, result: '事情很快办了下来，但你知道对方可能还会来找你。' },
+      { text: '明确不能经手，拒绝帮忙也不转介绍', effects: { integrity: 2, risk: -2, eq: -1, mentalPressure: -1 }, result: '电话那头沉默了一会儿；这次关系可能就到此为止。' },
     ]},
     { id: 'e019', stage: 'work', eventType: 'choice', title: '业务创新', weight: 4, text: '窗口流程里有一项材料每年都让群众来回跑两趟。你提出改用部门间核验，老同事提醒系统改动牵涉好几个负责人；领导希望月底能交出可执行而非漂亮的方案。', choices: [
       { text: '先调研痛点，用数据说话', effects: {workAbility: 3, iq: 1, risk: -1, mentalPressure: 2} },
@@ -194,7 +189,7 @@ const gd_events_basic_1 = [
       { text: '保持中立专注本职工作', effects: {integrity: 4, risk: -2, mentalPressure: 3, positionWeight: -2} },
       { text: '靠向实力更强的一方', effects: { flag: 'faction_lean', background: 4, positionWeight: 3, risk: 5, desire: 3, mentalPressure: 4} },
       { text: '两边都不得罪', effects: {eq: 2, background: 2, risk: 3, mentalPressure: 4, integrity: -2} },
-      { text: '找机会调离', effects: {risk: -3, mentalPressure: -1, positionWeight: -1, background: 1} },
+      { text: '主动申请跨部门交流，远离内耗', effects: {risk: -3, mentalPressure: -1, positionWeight: -1, background: 1} },
       { text: '向主要领导汇报请示', effects: {integrity: 3, background: 2, risk: -1, mentalPressure: 2, positionWeight: 1} },
     ]},
     // 健康亮红灯
@@ -425,7 +420,7 @@ const gd_events_basic_1 = [
       { text: '先事业后家庭再等两年', effects: {workAbility: 2, desire: 2, mentalPressure: 1, familyPressure: 1} },
       { text: '和对方商量未来规划后结婚', effects: {marry: true, eq: 2, reputation: 1, mentalPressure: -1, familyPressure: 1} },
       { text: '低调领证不办婚礼', effects: {marry: true, familyPressure: 1, mentalPressure: 1, reputation: -1, integrity: 1} },
-      { text: '先同居试婚', effects: {risk: 1, eq: 1, mentalPressure: 1, reputation: -1} },
+      { text: '暂缓领证，先约定家务与生活安排', effects: {risk: 1, eq: 1, mentalPressure: 1, reputation: -1} },
     ]},
     { pools: ['public'], id: 'e085', stage: 'life', eventType: 'choice', title: '喜得麟儿', weight: 8, year: [22, 45], text: '你惊喜地发现伴侣怀孕了！初为人父/人母的期待与忐忑一起涌上心头——孩子的到来意味着更多的责任和开销，但也是人生最踏实的幸福。', requireMarried: true, requireNoChild: true, requireGender: '男', choices: [
       { text: '请产假/陪产假全心照顾', effects: {body: 1, eq: 1, child: true, familyPressure: 3, mentalPressure: 3, workAbility: -2, positionWeight: -1, family: 1} },

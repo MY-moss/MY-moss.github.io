@@ -58,7 +58,8 @@ if(process.argv.includes('--write-catalog')){
    return [e.id,e.title,owner(e.id),e.stage,e.eventType,e.choices?.length||0,status,found.join(';'),gates,e.text?.length||0];
  });
  const csv=[header,...rows].map(r=>r.map(esc).join(',')).join('\n')+'\n';
- writeFileSync(resolve(root,'docs/EVENT_CONTENT_AUDIT_ROUND2.csv'),'\uFEFF'+csv);
+ const catalog = process.argv.find(arg=>arg.startsWith('--catalog='))?.slice('--catalog='.length) || 'docs/EVENT_CONTENT_AUDIT_ROUND2.csv';
+ writeFileSync(resolve(root,catalog),'\uFEFF'+csv);
  console.log('WROTE_CATALOG',rows.length);
 }
 console.log('STATS',JSON.stringify(stats,null,2));

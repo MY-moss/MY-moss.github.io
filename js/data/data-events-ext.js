@@ -473,7 +473,7 @@ const gd_events_ext = [
       { text: '找心理咨询师聊聊', effects: {mentalPressure: -5, eq: 1, integrity: 1, workAbility: 1} },
       { text: '休个年假出去走走', effects: {mentalPressure: -5, body: 1, familyPressure: -1, reputation: 1} },
       { text: '用运动发泄情绪', effects: {body: 2, mentalPressure: -3, workAbility: 1, eq: 1} },
-      { text: '借酒浇愁', effects: {mentalPressure: -2, body: -2, risk: 2, integrity: -2, flag: 'alcoholDependence'} },
+      { text: '靠喝酒暂时逃避压力，牺牲身体与判断', effects: {mentalPressure: -2, body: -2, risk: 2, integrity: -2, flag: 'alcoholDependence'} },
     ]},
     { id: 'e525', stage: 'life', eventType: 'auto', title: '压力缓解', weight: 5, text: '经过一段时间的调整，你的压力得到了有效缓解。你学会了更好地管理自己的情绪和时间，工作生活也更加平衡了。', requireFlag: 'stressRelief', pools: ['public'], effects: {mentalPressure: -4, workAbility: 1, eq: 1, body: 1, reputation: 1} },
 

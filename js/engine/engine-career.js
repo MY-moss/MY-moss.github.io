@@ -586,18 +586,6 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
       if (policyEvent) event = policyEvent;
     }
     if (!event && !this.state.currentEvent) {
-      // 健康链入口注入：38 岁后每年 4% 查出体检异常（'遇到'是概率，查出后后续必然）
-      // 不当回事/硬扛（healthHardhead）玩家：42 岁后 8%/年身体再次报警（身体会找你算账）
-      const hardhead = !!p.flags.healthHardhead;
-      if (!p.flags.healthRisk && !p.flags.healthCare && !p.flags.healthTreated && !p.flags.healthStable && p.age >= (hardhead ? 42 : 38) && this.randf() < (hardhead ? 0.08 : 0.04) && (hardhead || !(p.seenEvents || []).includes('ent244'))) {
-        const evH = (GameData.events || []).find(x => x && x.id === 'ent244');
-        if (evH) { p.seenEvents = p.seenEvents || []; if (evH.eventType === 'auto' || evH.eventType === 'sudden') p.seenEvents.push('ent244'); event = evH; } // v2.67 choice 不预 push（由 handleEventChoice 完成时 push）——刷新后入口可重新注入
-      }
-      // 学历链入口注入：35 岁前每年 3% 遇到报考念头（约 1/3 玩家会遇见，选择权在玩家）
-      if (!event && !p.flags.mbaApply && !p.flags.mbaActive && !p.flags.mbaDegree && !(p.seenEvents || []).includes('ent232') && p.age < 35 && this.randf() < 0.03) {
-        const ev0 = (GameData.events || []).find(x => x && x.id === 'ent232');
-        if (ev0) { p.seenEvents = p.seenEvents || []; if (ev0.eventType === 'auto' || ev0.eventType === 'sudden') p.seenEvents.push('ent232'); event = ev0; }
-      }
       // 刚性推进：flag 在且延迟到期 → 必然触发下一步（seenEvents 去重保证每步只触发一次）
       // v2.64 延迟机制：delay=N 表示 flag 设置后第 N 年才必然触发（事件更合理：预备期 1 年转正、专案每年推进、调查需要时间）
       const RIGID_CHAINS = [
@@ -668,8 +656,38 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         { flag: 'teamSharedFollowed', next: 'arc_team_shared_3', delay: 3 },
         { flag: 'teamDeferredFollowed', next: 'arc_team_deferred_3', delay: 3 },
         { flag: 'familyClinicPresent', next: 'arc_family_present_2', delay: 2 },
-        { flag: 'familyClinicAbsent', next: 'arc_family_absent_2', delay: 2 }
+        { flag: 'familyClinicAbsent', next: 'arc_family_absent_2', delay: 2 },
+        { flag: 'classmateOpen', next: 'arc_classmate_open_2', delay: 2 },
+        { flag: 'classmateFavor', next: 'arc_classmate_favor_2', delay: 2 },
+        { flag: 'classmateBoundaries', next: 'arc_classmate_boundary_2', delay: 2 },
+        { flag: 'classmateOpenReviewed', next: 'arc_classmate_open_3', delay: 3 },
+        { flag: 'classmateFavorReviewed', next: 'arc_classmate_favor_3', delay: 3 },
+        { flag: 'classmateBoundaryReviewed', next: 'arc_classmate_boundary_3', delay: 3 }
       ];
+      // 完成待兑现的旧选择后，才抽取今年新的故事入口；避免多年后果被覆盖。
+      if (!event) for (const step of RIGID_CHAINS) {
+        if (p.flags[step.flag] && !(p.seenEvents || []).includes(step.next)) {
+          const since = p.flags[step.flag + '_since'] || 0;
+          const delay = step.delay || 1;
+          if (p.age < since + delay) continue; // 延迟未到期：等一等（该年不触发，也跳过后续匹配）
+          const ev2 = (GameData.events || []).find(x => x && x.id === step.next);
+          if (ev2) { p.seenEvents = p.seenEvents || []; if (ev2.eventType === 'auto' || ev2.eventType === 'sudden') p.seenEvents.push(step.next); event = ev2; } // v2.67 修复刷新丢档：choice 不预 push seen（由 handleEventChoice 完成时 push）——事件年刷新后链可重新注入
+          break;
+        }
+      }
+      // 仅在历史后果兑现后抽取新健康/学历故事，避免覆盖已到期剧情。
+      // 健康链入口注入：38 岁后每年 4% 查出体检异常（'遇到'是概率，查出后后续必然）
+      // 不当回事/硬扛（healthHardhead）玩家：42 岁后 8%/年身体再次报警（身体会找你算账）
+      const hardhead = !!p.flags.healthHardhead;
+      if (!event && !p.flags.healthRisk && !p.flags.healthCare && !p.flags.healthTreated && !p.flags.healthStable && p.age >= (hardhead ? 42 : 38) && this.randf() < (hardhead ? 0.08 : 0.04) && (hardhead || !(p.seenEvents || []).includes('ent244'))) {
+        const evH = (GameData.events || []).find(x => x && x.id === 'ent244');
+        if (evH) { p.seenEvents = p.seenEvents || []; if (evH.eventType === 'auto' || evH.eventType === 'sudden') p.seenEvents.push('ent244'); event = evH; } // v2.67 choice 不预 push（由 handleEventChoice 完成时 push）——刷新后入口可重新注入
+      }
+      // 学历链入口注入：35 岁前每年 3% 遇到报考念头（约 1/3 玩家会遇见，选择权在玩家）
+      if (!event && !p.flags.mbaApply && !p.flags.mbaActive && !p.flags.mbaDegree && !(p.seenEvents || []).includes('ent232') && p.age < 35 && this.randf() < 0.03) {
+        const ev0 = (GameData.events || []).find(x => x && x.id === 'ent232');
+        if (ev0) { p.seenEvents = p.seenEvents || []; if (ev0.eventType === 'auto' || ev0.eventType === 'sudden') p.seenEvents.push('ent232'); event = ev0; }
+      }
       // 档案柜里的回执：基层服务的长期抉择，前 12 年每年有一次进入机会。
       // 同一决策槽不覆盖政策项目/其他刚性事件；开始后结局由 flag 延迟确定。
       if (!event && !p.flags.receiptOpen && !p.flags.receiptQuiet && !(p.seenEvents || []).includes('arc_receipt_1')
@@ -687,6 +705,12 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
           && !(p.seenEvents || []).includes('arc_family_1') && p.age >= 32 && p.age <= 49
           && this.randf() < 0.10) {
         event = GameData.events.find(x => x.id === 'arc_family_1') || null;
+      }
+      // 林默线：只为尚未遇见的角色增加一次真实机会，不重复刷同一段旧情。
+      if (!event && !(p.seenEvents || []).includes('e094') && !p.flags.classmateOpen
+          && !p.flags.classmateFavor && !p.flags.classmateBoundaries && p.yearsWorked >= 3
+          && p.age >= 26 && p.age <= 45 && this.randf() < 0.08) {
+        event = GameData.events.find(x => x.id === 'e094') || null;
       }
       // v2.66 买房入口注入：28-45 岁每年 2%（买房是重要人生节点——原 weight 8 在 1265 事件池里生涯触发率仅 ~2%）
       if (!event && !p.flags.mortgage && !(p.seenEvents || []).includes('ent257') && p.age >= 28 && p.age <= 45 && this.randf() < 0.02) {
@@ -708,16 +732,7 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         const evS = (GameData.events || []).find(x => x && x.id === 'ent299');
         if (evS) { p.seenEvents = p.seenEvents || []; if (evS.eventType === 'auto' || evS.eventType === 'sudden') p.seenEvents.push('ent299'); event = evS; }
       }
-      for (const step of RIGID_CHAINS) {
-        if (p.flags[step.flag] && !(p.seenEvents || []).includes(step.next)) {
-          const since = p.flags[step.flag + '_since'] || 0;
-          const delay = step.delay || 1;
-          if (p.age < since + delay) continue; // 延迟未到期：等一等（该年不触发，也跳过后续匹配）
-          const ev2 = (GameData.events || []).find(x => x && x.id === step.next);
-          if (ev2) { p.seenEvents = p.seenEvents || []; if (ev2.eventType === 'auto' || ev2.eventType === 'sudden') p.seenEvents.push(step.next); event = ev2; } // v2.67 修复刷新丢档：choice 不预 push seen（由 handleEventChoice 完成时 push）——事件年刷新后链可重新注入
-          break;
-        }
-      }
+
     }
     if (this.state.currentEvent) {
       // 赌博年：choice 槽已被赌博事件占用——普通 auto/sudden 事件照常抽取并立即结算（影响照常发生，不弹窗），

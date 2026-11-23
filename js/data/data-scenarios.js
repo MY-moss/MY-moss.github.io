@@ -128,7 +128,7 @@
       { text: '整理一份带教手册', effects: { workAbility: 3, reputation: 4, setFlags: ['retiredStep2', 'retiredManual'] } },
       { text: '陪着新班子复盘每一次硬仗', effects: { eq: 2, peopleReputation: 4, setFlags: ['retiredStep2', 'retiredCoach'] } }
     ] },
-    { id: 'scn_retired_003', scenario: 'retired', stage: 'life', eventType: 'choice', title: '退休返聘·谢幕', weight: 10, year: [51, 65], text: '真正离开的时间定了。最后这段日子，你想怎么收尾？', choices: [
+    { id: 'scn_retired_003', scenario: 'retired', stage: 'life', eventType: 'choice', title: '退休返聘·谢幕', weight: 10, year: [51, 65], text: '返聘结束的时间已经写进组织通知。办公室门后的旧工作服还没收起，年轻同事在门口等着接钥匙。最后一次交接会上，大家问你还有什么想说，你翻开那本被划满红线的工作笔记。', choices: [
       { text: '给单位留下一封长信', effects: { reputation: 4, integrity: 2, setFlags: ['retiredArc', 'retiredLetter'] } },
       { text: '悄悄把印章交出去，转身离开', effects: { mentalPressure: -4, peopleReputation: 3, setFlags: ['retiredArc', 'retiredQuietExit'] } }
     ] },

@@ -530,12 +530,10 @@ const gd_events_spec = [
     // ==================== 财富支出事件（v2.3 财富系统平衡） ====================
     // e663 突发医疗支出：有积蓄玩家可能遭遇意外支出，让财富有意外压力
     { id: 'e663', stage: 'life', eventType: 'choice', title: '突发医疗', weight: 4, text: '家里有人突然住院，医保报销后仍需自付一笔不小的费用。医生说情况不严重，但钱的事让人发愁——积蓄见底的感觉，比生病本身更难受。', pools: ['public'], requireWealth: 40, choices: [
-      { text: '全额支付，钱没了可以再挣', effects: {wealth: -45, familyPressure: -3, mentalPressure: 3, reputation: 1, integrity: 1} },
-      { text: '动用定期存款和应急金', effects: {wealth: -35, familyPressure: -2, mentalPressure: 2} },
-      { text: '向亲友先借一部分', effects: {wealth: -20, familyPressure: 3, mentalPressure: 4, background: 1} },
-      { text: '申请医疗救助和慈善援助', effects: {wealth: -25, familyPressure: -1, mentalPressure: 2, integrity: 2, eq: 1} },
-      { text: '拖一拖，等凑齐了再交', effects: {familyPressure: 5, mentalPressure: 6, body: -1, risk: 2} },
-      { text: '办信用卡透支垫付', effects: {wealth: -20, mentalPressure: 2, flag: 'borrowed'}, maxWealth: 40 },
+      { text: '动用应急金支付，并重新规划接下来半年的家庭开支', effects: { wealth: -38, familyPressure: -3, mentalPressure: 4, integrity: 1 }, result: '住院手续办好了，回家后你们把家庭预算重新写了一遍。' },
+      { text: '向亲友说明困难，分几次借钱安排住院', effects: { wealth: -20, familyPressure: 4, mentalPressure: 5, background: 1 }, result: '手术没有耽搁，但还款的日子写满了日历。' },
+      { text: '咨询医保与合法救助渠道，先核对可以报销的部分', effects: { wealth: -25, familyPressure: -1, mentalPressure: 3, workAbility: 1, integrity: 2 }, result: '窗口工作人员把可申请的材料列成一张清单，结余虽不多，心里却有底了。' },
+      { text: '拖延付款并推迟治疗，希望再攒些钱', effects: { familyPressure: 6, mentalPressure: 7, body: -2, risk: 3 }, result: '院方再次催办，你发现要面对的代价不仅是费用。' },
     ]},
 
     // =====================================================================
@@ -662,7 +660,7 @@ const gd_events_spec = [
     { id: 'e739', stage: 'life', eventType: 'choice', title: '利益诱惑（牵线费）', weight: 4, minBackground: 71, text: '一位老板请你"帮忙牵个线"，报酬是一笔你几年工资都挣不来的"介绍费"。他笑着说这只是"辛苦费"，你心里清楚这叫什么。', pools: ['public'], choices: [
       { text: '拒绝，介绍他走正规渠道', effects: {integrity: 3, risk: -2, reputation: 1} },
       { text: '帮忙牵线但不收钱', effects: {background: 2, risk: 2, integrity: 1, eq: 1, flag: 'bg_tempt_2'} },
-      { text: '收下介绍费', effects: {wealth: 40, background: 2, risk: 8, heat: 8, integrity: -5, desire: 4, flag: 'bg_tempt_2'} },
+      { text: '收下介绍费，承担被调查与处分的风险', effects: {wealth: 40, background: 2, risk: 8, heat: 8, integrity: -5, desire: 4, flag: 'bg_tempt_2'} },
     ]},
     { id: 'e740', stage: 'life', eventType: 'auto', title: '圈子饭局', weight: 3, minBackground: 71, text: '你的名字开始出现在一些"高端圈子"的饭局名单上。桌上的人非富即贵，每个人都递给你一张名片——你知道这些人能捧你，也能摔你。', pools: ['public'], effects: {background: 5, reputation: 2, risk: 3, mentalPressure: 3, desire: 3} },
     { id: 'e741', stage: 'work', eventType: 'choice', title: '托付办事', weight: 3, minBackground: 71, text: '一位老领导托你照顾他的亲戚——不算违规，但属于"灰色地带"。办成了，你在他那里记一分；办砸了，你也在他那里记一分。', pools: ['public'], choices: [

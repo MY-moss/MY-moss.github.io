@@ -109,7 +109,7 @@ const gd_events_new_theme = [
       { text: '提出调整培训地点和内容', effects: {integrity: 3, workAbility: 1, mentalPressure: 2} },
       { text: '参加培训但自费额外消费', effects: {integrity: 2, wealth: -50, eq: 1} },
       { text: '全程参与"现场教学"，心安理得', effects: {risk: 4, integrity: -3, desire: 2} },
-      { text: '借故不参加', effects: {integrity: 2, eq: -1, mentalPressure: 1} },
+      { text: '以工作安排为由拒绝这次不合规培训', effects: {integrity: 2, eq: -1, mentalPressure: 1} },
     ]},
     { id: 'ent019', stage: 'work', eventType: 'choice', weight: 4, title: '同学聚会（高档局）', text: '老同学组织聚会，定在高档会所。有人说"你现在是领导，这单得你签"，包厢里灯光晃得人发懵。', choices: [
       { text: '婉拒参加，建议换个地方', effects: {integrity: 3, eq: 1, mentalPressure: 1} },

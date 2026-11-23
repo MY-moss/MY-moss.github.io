@@ -391,7 +391,7 @@ const gd_events_new_career = [
   { id: 'enc080', stage: 'career', eventType: 'choice', weight: 4, title: '通报批评（记档）', text: '你因工作失误被全市通报批评，名字和事迹都上了文件。同事们看你的眼神都变了。', choices: [
     { text: '诚恳接受教训努力改正', effects: {integrity: 2, mentalPressure: 4, workAbility: 1, positionWeight: -2} },
     { text: '觉得丢人想调走', effects: {mentalPressure: 5, positionWeight: -3, eq: -1, desire: -1} },
-    { text: '破罐子破摔', effects: {mentalPressure: 3, workAbility: -3, integrity: -2, risk: 2} },
+    { text: '索性不再认真改正，逃避通报后的压力', effects: {mentalPressure: 3, workAbility: -3, integrity: -2, risk: 2} },
   ]},
   { id: 'enc081', stage: 'career', eventType: 'choice', weight: 3, title: '停职检查', text: '因反映的问题较严重，组织决定让你停职检查。你的工作暂时移交给副手，等待进一步调查。', choices: [
     { text: '认真反思配合组织调查', effects: {integrity: 2, mentalPressure: 5, positionWeight: -3, risk: -1} },
