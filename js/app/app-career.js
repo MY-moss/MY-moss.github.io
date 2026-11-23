@@ -1,7 +1,7 @@
 const FINANCE_POOL = [
   { id: 'life', icon: '🍲', label: '改善生活', cost: 20, desc: '吃好穿好，压力大减（压力-12，家压-8）' },
   { id: 'parents', icon: '👴', label: '孝敬父母', cost: 15, desc: '给父母养老钱（家压-10，背景+3）' },
-  { id: 'save', icon: '🏦', label: '存定期', cost: 10, desc: '存一年期定期，明年本息+12' },
+  { id: 'save', icon: '🏦', label: '存定期', cost: 10, desc: '存一年期定期，明年本息+11（净收益+1）' },
   { id: 'edu', icon: '📚', label: '子女教育金', cost: 50, desc: '给孩子存教育基金（有子女时，家压-8，能力+1）', need: 'child' },
   { id: 'house', icon: '🏠', label: '购房置业', cost: 120, desc: '买下属于自己的房子（家压-15，声誉+2）', need: 'nohouse' },
   { id: 'charity', icon: '❤️', label: '慈善捐赠', cost: 25, desc: '资助贫困学生（声誉+4，廉洁+2）' },
@@ -11,7 +11,7 @@ const FINANCE_POOL = [
   { id: 'travel', icon: '🏝️', label: '全家旅游', cost: 45, desc: '带家人出去走走（压力-12，家压-6，热度-2）' },
   { id: 'renovate', icon: '🛠️', label: '装修老屋', cost: 50, desc: '翻新老房子（家压-8，压力-4）' },
   { id: 'car', icon: '🚗', label: '购车代步', cost: 60, desc: '买车改善通勤（压力-6，家压-8，声誉+1）' },
-  { id: 'gold', icon: '📿', label: '购置黄金', cost: 70, desc: '黄金保值，明年本息+80' },
+  { id: 'gold', icon: '📿', label: '购置黄金', cost: 70, desc: '持有一年后卖出，行情可能亏损；到期回款60/74/84（成本70）' },
   { id: 'investMore', icon: '📊', label: '定投加仓', cost: 60, desc: '行情波动大，收益看运气（需买过基金）', need: 'boughtStock' },
   { id: 'checkup', icon: '🩺', label: '健康体检', cost: 40, desc: '全面体检，早发现早安心（体质+2，消隐患）', need: 'age35' },
   { id: 'guanxi', icon: '🤝', label: '人情储蓄', cost: 25, desc: '平时多走动，朋友圈更广（背景+5）', need: 'bg30' },
@@ -29,7 +29,7 @@ const FINANCE_POOL = [
   { id: 'seniorCheckup', icon: '🏥', label: '高端体检套餐', cost: 60, desc: '深度体检，全身养护（体质+3，消隐患）' },
   { id: 'familyTourPlus', icon: '✈️', label: '豪华家庭游', cost: 70, desc: '五星级假期，全家尽兴（家压-10，压力-10）' },
   { id: 'housekeeper', icon: '🧹', label: '家政服务', cost: 35, desc: '请人打理家务（家压-6，压力-3）' },
-  { id: 'venture', icon: '🚀', label: '副业投资', cost: 80, desc: '入股朋友的项目，收益看运气' },
+  { id: 'venture', icon: '🚀', label: '副业投资', cost: 80, desc: '高波动：可能净赚+60/+16，或亏-30' },
 ];
 Object.assign(App, {
   _pickRotate(pool, min, max) {
@@ -38,22 +38,8 @@ Object.assign(App, {
     for (let i = copy.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = copy[i]; copy[i] = copy[j]; copy[j] = t; }
     return copy.slice(0, n);
   },
-  // 只展示正面：括号段内仅保留纯增益条目（能力/声誉等 +N），负面变化全部隐藏（含"压力+3"这类负向属性增高）
-  _posOnly(desc) {
-    if (!desc) return desc;
-    const negAttr = ['压力', '风险', '热度', '家压', '欲望'];
-    return String(desc).replace(/（[^）]*）/g, (seg) => {
-      const kept = seg.slice(1, -1).split(/[，,；;]/).map(s => s.trim()).filter(s => {
-        if (!/[+-]\d+/.test(s)) return false;
-        const m = s.match(/([^+-]*)([+-])(\d+)/);
-        if (!m) return false;
-        if (m[2] === '-') return false;                    // 负数字一律隐藏
-        if (negAttr.some(k => m[1].includes(k))) return false; // 负向属性增高也隐藏
-        return true;
-      });
-      return kept.length > 0 ? '（' + kept.join('，') + '）' : '';
-    });
-  },
+  // 财务规划必须展示收益和代价：不再把负面数值隐藏在选择面板中。
+  _posOnly(desc) { return String(desc || ''); },
   // v2.33 结局预兆：50 岁后（或近退休）显示「组织印象」动态提示，退休结算前给玩家调整空间
   renderOrgHint(p, h) {
     const retireAge = (p.retireAgeExt || (p.gender === '女' ? 55 : 60));
@@ -137,6 +123,7 @@ renderCareer() {
         </div>
         ${this.renderReceiptThread(p)}
         ${this.renderContinuingStories(p)}
+        <div class="life-map-entry"><button type="button" class="btn btn-secondary" onclick="App.showLifeMap()">🧭 查看人生线路图 · 选择与后果</button></div>
         ${this.renderPolicyProjectPanel ? this.renderPolicyProjectPanel(p) : ''}
         ${this.renderPlanningBoard ? this.renderPlanningBoard(p, h) : '<div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.nextYear()">进入下一年</button></div>'}
       </div>
@@ -196,6 +183,34 @@ renderCareer() {
       <div class="thread-title">${App.escapeHtml(arc.title)}</div>
       <p>${App.escapeHtml(arc.detail)}</p>
     </section>`).join('');
+  },
+  // 线路图由真实的 seenEvents/flags 生成；只展示已有因果，不把未触发分支伪装成已达成。
+  showLifeMap() {
+    const p=engine.getPlayer(), f=p.flags||{}, seen=p.seenEvents||[];
+    const source=[
+      {name:'档案柜里的回执',tag:f.receiptOpen?'公开复核':f.receiptQuiet?'内部协调':'未经历',active:!!(f.receiptOpen||f.receiptQuiet),finished:seen.includes(f.receiptOpen?'arc_receipt_open_3':'arc_receipt_quiet_3')},
+      {name:'交接本上的空格',tag:f.teamShared?'共同承担':f.teamDeferred?'暂缓调休':'未经历',active:!!(f.teamShared||f.teamDeferred),finished:seen.includes(f.teamShared?'arc_team_shared_3':'arc_team_deferred_3')},
+      {name:'老同学的申请书',tag:f.classmateOpen?'公开协助':f.classmateFavor?'私下请托':f.classmateBoundaries?'守住边界':'未经历',active:!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries),finished:seen.some(id=>id.startsWith('arc_classmate_')&&id.endsWith('_3'))},
+      {name:'冰箱上的蓝色便签',tag:f.familyClinicPresent?'陪伴家人':f.familyClinicAbsent?'投入事业':'未经历',active:!!(f.familyClinicPresent||f.familyClinicAbsent),finished:seen.includes(f.familyClinicPresent?'arc_family_present_2':'arc_family_absent_2')}
+    ];
+    const branch=f.crossOpen?'公开核验':f.crossPhase?'分批推进':f.crossSeal?'按期封档':'尚未触发';
+    const active=!!(f.crossOpen||f.crossPhase||f.crossSeal), reviewed=!!(f.crossOpenReviewed||f.crossPhaseReviewed||f.crossSealReviewed);
+    const endings=['arc_crossroads_open_3','arc_crossroads_phase_3','arc_crossroads_seal_3'];
+    const resolved=seen.some(id=>endings.includes(id));
+    const node=(title,note,active,done)=>`<div class="life-node ${active?'is-active':'is-unknown'}" aria-label="${App.escapeHtml(title)}：${App.escapeHtml(note)}"><strong>${App.escapeHtml(title)}</strong><span>${App.escapeHtml(note)}</span>${done?'<em>已收束</em>':''}</div>`;
+    const src=source.map(o=>node(o.name,o.tag,o.active,o.finished)).join('');
+    let next='需要经历旧回执，并与许砚或林默的一条人生线发生关联';
+    if(active)next=resolved?'留下了五年后的最终记录':reviewed?'两年后的核查已完成，往事尚有回响':'已作出第一阶段选择，旧事将继续发展';
+    else if((f.receiptOpen||f.receiptQuiet)&&(f.teamShared||f.teamDeferred||f.classmateOpen||f.classmateFavor||f.classmateBoundaries))next='旧线已交汇：留意未来的联合会商';
+    this.renderContent(`<div class="stage fade-in"><div class="lead"><span class="lead-badge">🧭</span><p>人生线路图 · ${p.age} 岁</p></div>
+      <p class="life-map-note">只有真实经历的节点才会点亮；分支的远期后果不会提前透露。相同角色和旧决策会在未来再次相遇。</p>
+      <div class="life-map-group"><div class="thread-kicker">曾经走过的路</div><div class="life-map-sources">${src}</div></div>
+      <div class="life-map-link" aria-hidden="true">↓ 多段经历在同一桩事里交汇 ↓</div>
+      <div class="life-map-group"><div class="thread-kicker">人生交汇 · 三份名单</div>${node('会商桌上的三份名单',branch,active,resolved)}
+      <p class="life-map-note">${App.escapeHtml(next)}</p></div>
+      <div class="life-map-link" aria-hidden="true">↓ 两年后的复核 → 五年后的回响</div>
+      <div class="life-map-group"><div class="thread-kicker">时间留下的后果</div>${node('两年后的旧事',reviewed?'已发生':active?'等待兑现':'尚未开启',reviewed,false)}${node('五年后的余波',resolved?'已经历':reviewed?'等待兑现':'尚未开启',resolved,resolved)}${node('制度的回声',seen.includes('arc_crossroads_echo')?'新一代接过了旧问题':resolved?'等待新的选择':'尚未开启',seen.includes('arc_crossroads_echo'),seen.includes('arc_crossroads_echo'))}</div>
+      <div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.returnToCurrentFlow()">返回游戏</button></div></div>`);
   },
   // v2.48 档案全程回看：生涯留痕全量列表（按年倒序，滚动容器）
   // v2.70 年鉴翻页：每页 15 条 + 上/下页（原全量滚动，长局 300+ 条时难以定位）
@@ -396,7 +411,7 @@ renderCareer() {
               return `
               <div class="option" ${optionAttrs} aria-label="${optionLabel}${o.cost > 0 ? '，现金-' + o.cost : o.id === 'repayLoan' ? '，偿还负债' : '，借款'}" style="margin-bottom:6px;${canUse ? '' : 'opacity:0.5;pointer-events:none'}">
                 <span class="option-label">${o.icon}</span>
-                <span class="option-text"><b>${optionLabel}</b>${o.cost > 0 ? '（-' + o.cost + '）' : o.id === 'repayLoan' ? '（还）' : '（借）'}<br><span style="font-size:11px;color:var(--ink-lighter)">${this._posOnly(o.desc)}</span></span>
+                <span class="option-text"><b>${optionLabel}</b>${o.cost > 0 ? '（-' + o.cost + '）' : o.id === 'repayLoan' ? '（还）' : '（借）'}<br><span style="font-size:11px;color:var(--ink-lighter)">${this.escapeHtml(this._posOnly(o.desc))}</span></span>
               </div>`;
             }).join('')}
           </div>
@@ -411,6 +426,8 @@ renderCareer() {
     const p = engine.getPlayer();
     const h = engine.getHidden();
     // 每回合限1次（防指数膨胀）
+    const selected = FINANCE_POOL.find(o => o.id === id);
+    if (!selected || !this._finPoolOK(selected)) { this.showToast('当前不满足此项财务规划条件', 'warning'); return; }
     if ((p.flags.financeUsed || 0) >= 1) { this.showToast('本年度已进行过财务规划，明年再来', 'warning'); return; }
     if (!this._hasAP(1)) { this.showToast('精力不足，明年再做财务规划', 'warning'); return; }
     const acts = {
@@ -421,13 +438,13 @@ renderCareer() {
       house: { cost: 120, fn: () => { p.flags.hasHouse = true; h.familyPressure = Math.max(0, h.familyPressure - 15); p.reputation = Math.min(100, p.reputation + 2); p.careerLog.push({ year: p.age, event: '🏠 终于买了房，有了自己的家' }); } },
       charity: { cost: 25, fn: () => { p.reputation = Math.min(100, p.reputation + 4); h.integrity = Math.min(100, h.integrity + 2); p.careerLog.push({ year: p.age, event: '❤️ 资助了贫困学生，心里很充实' }); } },
       insurance: { cost: 30, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 6); h.risk = Math.max(0, (h.risk || 0) - 2); p.careerLog.push({ year: p.age, event: '🛡️ 给全家买了保险，心里安稳了不少' }); } },
-      stock: { cost: 40, fn: () => { p.flags.boughtStock = true; const r = Math.random(); if (r < 0.3) { engine.cashIn(62); p.careerLog.push({ year: p.age, event: '📈 基金行情不错，大赚了一笔（净赚+22）' }); } else if (r < 0.75) { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '📈 基金小有收益（净赚+10）' }); } else { engine.cashIn(34); p.careerLog.push({ year: p.age, event: '📉 基金行情不好，亏了一点（净亏-6）' }); } } }, // v2.1.6 本金返还修复：成本 40 实扣后收益只回净赚额（22/10），本金蒸发致净期望 -30（100% 亏损局）；改为到账=本金+净收益（62/50/34），净期望 +9.6（24% 高方差）与定期/黄金同构
+      stock: { cost: 40, fn: () => { p.flags.boughtStock = true; const r = engine.randf(); if (r < 0.3) { engine.cashIn(62); p.careerLog.push({ year: p.age, event: '📈 基金行情不错，大赚了一笔（净赚+22）' }); } else if (r < 0.75) { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '📈 基金小有收益（净赚+10）' }); } else { engine.cashIn(34); p.careerLog.push({ year: p.age, event: '📉 基金行情不好，亏了一点（净亏-6）' }); } } }, // v2.1.6 本金返还修复：成本 40 实扣后收益只回净赚额（22/10），本金蒸发致净期望 -30（100% 亏损局）；改为到账=本金+净收益（62/50/34），净期望 +9.6（24% 高方差）与定期/黄金同构
       train: { cost: 35, fn: () => { h.workAbility = Math.min(100, (h.workAbility || 0) + 4); h.mentalPressure = Math.min(100, (h.mentalPressure || 0) + 3); p.careerLog.push({ year: p.age, event: '🎓 报了进修班充电，业务能力提升' }); } },
       travel: { cost: 45, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 12); h.familyPressure = Math.max(0, h.familyPressure - 6); p.heat = Math.max(0, (p.heat || 0) - 2); p.careerLog.push({ year: p.age, event: '🏝️ 全家出去旅游了一趟，心情舒畅' }); } },
       renovate: { cost: 50, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 8); h.mentalPressure = Math.max(0, h.mentalPressure - 4); p.careerLog.push({ year: p.age, event: '🛠️ 把老房子装修了一番，住着舒心' }); } },
       car: { cost: 60, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 6); h.familyPressure = Math.max(0, h.familyPressure - 8); p.reputation = Math.min(100, (p.reputation || 50) + 1); p.careerLog.push({ year: p.age, event: '🚗 买了辆车代步，日子轻快了些' }); } },
       gold: { cost: 70, fn: () => { p.flags.goldHeld = true; p.careerLog.push({ year: p.age, event: '📿 买了些黄金压箱底，等着增值' }); } },
-      investMore: { cost: 60, fn: () => { p.flags.boughtStock = true; const r = Math.random(); if (r < 0.30) { engine.cashIn(90); p.careerLog.push({ year: p.age, event: '📊 定投加仓踩中行情，大赚一笔（净赚+30）' }); } else if (r < 0.75) { engine.cashIn(74); p.careerLog.push({ year: p.age, event: '📊 定投加仓小有收获（净赚+14）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '📊 定投加仓遇到回调，亏了一点（净亏-10）' }); } } }, // v2.1.6 本金返还修复（同基金）：到账=本金+净收益（90/74/50），净期望 +12.8
+      investMore: { cost: 60, fn: () => { p.flags.boughtStock = true; const r = engine.randf(); if (r < 0.30) { engine.cashIn(90); p.careerLog.push({ year: p.age, event: '📊 定投加仓踩中行情，大赚一笔（净赚+30）' }); } else if (r < 0.75) { engine.cashIn(74); p.careerLog.push({ year: p.age, event: '📊 定投加仓小有收获（净赚+14）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '📊 定投加仓遇到回调，亏了一点（净亏-10）' }); } } }, // v2.1.6 本金返还修复（同基金）：到账=本金+净收益（90/74/50），净期望 +12.8
       checkup: { cost: 40, fn: () => { engine.gainAttr('body', 2, 10); if (p.flags.chronicIllness) { p.flags.chronicIllness = false; } p.careerLog.push({ year: p.age, event: '🩺 做了全面体检，身体隐患早发现早处理（体质+2）' }); } },
       guanxi: { cost: 25, fn: () => { h.background = Math.min(100, h.background + 5); p.careerLog.push({ year: p.age, event: '🤝 人情往来投入，朋友圈更广了（背景+5）' }); } },
       givehome: { cost: 50, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 12); h.background = Math.min(100, h.background + 2); p.careerLog.push({ year: p.age, event: '🏡 把父母接来同住，一家人其乐融融' }); } },
@@ -446,7 +463,7 @@ renderCareer() {
         engine.addDebt('online', amt); engine.cashIn(amt);
         h.mentalPressure = Math.max(0, h.mentalPressure - 15);
         p.careerLog.push({ year: p.age, event: '📲 网贷秒到账（现金+' + amt + ' / 负债+' + amt + '）——额度越滚越高，利息也会咬人' }); } },
-      gamble: { cost: 10, fn: () => { const r = Math.random(); if (r < 0.10) { engine.cashIn(30); p.careerLog.push({ year: p.age, event: '🎲 博彩中了！一夜回本（+30）' }); } else if (r < 0.70) { engine.cashOut(10); p.careerLog.push({ year: p.age, event: '🎲 博彩又输了（-10）' }); } else { p.flags.gamblingAddict = true; engine.cashOut(20); p.careerLog.push({ year: p.age, event: '🎲 博彩上头，越陷越深（-20，已上瘾）' }); } if (!p.flags.gambleStreak) { p.flags.gambleStreak = 1; p.flags.gambleLastYear = p.yearsWorked || 0; p.flags.gambleMiss = 0; p.careerLog.push({ year: p.age, event: '⚠️ 你染上了赌瘾——此后每隔几年，牌局都会找上你' }); } } },
+      gamble: { cost: 10, fn: () => { const r = engine.randf(); if (r < 0.10) { engine.cashIn(30); p.careerLog.push({ year: p.age, event: '🎲 博彩中了！一夜回本（+30）' }); } else if (r < 0.70) { engine.cashOut(10); p.careerLog.push({ year: p.age, event: '🎲 博彩又输了（-10）' }); } else { p.flags.gamblingAddict = true; engine.cashOut(20); p.careerLog.push({ year: p.age, event: '🎲 博彩上头，越陷越深（-20，已上瘾）' }); } if (!p.flags.gambleStreak) { p.flags.gambleStreak = 1; p.flags.gambleLastYear = p.yearsWorked || 0; p.flags.gambleMiss = 0; p.careerLog.push({ year: p.age, event: '⚠️ 你染上了赌瘾——此后每隔几年，牌局都会找上你' }); } } },
       smartHome: { cost: 30, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 5); h.mentalPressure = Math.max(0, h.mentalPressure - 3); p.careerLog.push({ year: p.age, event: '🏠 全屋智能升级，回家就是享受' }); } },
       gym: { cost: 45, fn: () => { engine.gainAttr('body', 2, 10); h.mentalPressure = Math.max(0, h.mentalPressure - 4); p.careerLog.push({ year: p.age, event: '🏋️ 私教一对一，身材和精力都回来了（体质+2）' }); } },
       therapy: { cost: 35, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 8); p.careerLog.push({ year: p.age, event: '🛋️ 心理咨询师帮你理清了心结（压力-8）' }); } },
@@ -456,7 +473,7 @@ renderCareer() {
       seniorCheckup: { cost: 60, fn: () => { engine.gainAttr('body', 3, 10); if (p.flags.chronicIllness) { p.flags.chronicIllness = false; } p.careerLog.push({ year: p.age, event: '🏥 高端深度体检，身体隐患无处遁形（体质+3）' }); } },
       familyTourPlus: { cost: 70, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 10); h.mentalPressure = Math.max(0, h.mentalPressure - 10); p.careerLog.push({ year: p.age, event: '✈️ 豪华家庭游，全家人尽兴而归' }); } },
       housekeeper: { cost: 35, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 6); h.mentalPressure = Math.max(0, h.mentalPressure - 3); p.careerLog.push({ year: p.age, event: '🧹 请了家政，家务不再缠身' }); } },
-      venture: { cost: 80, fn: () => { const r = Math.random(); if (r < 0.30) { engine.cashIn(140); p.careerLog.push({ year: p.age, event: '🚀 副业项目成了，大赚一笔（净赚+60）' }); } else if (r < 0.70) { engine.cashIn(96); p.careerLog.push({ year: p.age, event: '🚀 副业小有回报（净赚+16）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '🚀 副业项目折了，亏了不少（净亏-30）' }); } } } // v2.1.6 本金返还修复（同基金/定投）：到账=本金+净收益（140/96/50），净期望 +15.4
+      venture: { cost: 80, fn: () => { const r = engine.randf(); if (r < 0.30) { engine.cashIn(140); p.careerLog.push({ year: p.age, event: '🚀 副业项目成了，大赚一笔（净赚+60）' }); } else if (r < 0.70) { engine.cashIn(96); p.careerLog.push({ year: p.age, event: '🚀 副业小有回报（净赚+16）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '🚀 副业项目折了，亏了不少（净亏-30）' }); } } } // v2.1.6 本金返还修复（同基金/定投）：到账=本金+净收益（140/96/50），净期望 +15.4
     };
     const act = acts[id];
     if (!act) return;
