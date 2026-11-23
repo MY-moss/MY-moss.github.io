@@ -491,7 +491,7 @@ class GameEngine {
       // P3 剧本专属事件链根/中间 flag
       'grassrootsBreakthrough', 'grassrootsCautious', 'grassrootsStep2', 'midcareerRebuild', 'midcareerHold', 'midcareerStep2', 'cleanRecord', 'cleanCompromise', 'cleanStep2', 'networkBoundary', 'networkFavor', 'networkStep2', 'reformPilot', 'reformCautious', 'reformStep2', 'retiredMentor', 'retiredLegacy', 'retiredStep2', 'familyBalance', 'familyCareer', 'familyStep2',
       // v2.1.66 赡养链 / 理财暴雷链 / 借调链中间 flag
-      'parentIllness', 'parentCaring', 'leveragedInvest', 'investCrash', 'seconded', 'secondReview', 'receiptOpen', 'receiptQuiet', 'receiptOpenReviewed', 'receiptQuietReviewed', 'teamShared', 'teamDeferred', 'teamSharedFollowed', 'teamDeferredFollowed', 'familyClinicPresent', 'familyClinicAbsent', 'classmateOpen', 'classmateFavor', 'classmateBoundaries', 'classmateOpenReviewed', 'classmateFavorReviewed', 'classmateBoundaryReviewed'];
+      'parentIllness', 'parentCaring', 'leveragedInvest', 'investCrash', 'seconded', 'secondReview', 'receiptOpen', 'receiptQuiet', 'receiptOpenReviewed', 'receiptQuietReviewed', 'teamShared', 'teamDeferred', 'teamSharedFollowed', 'teamDeferredFollowed', 'familyClinicPresent', 'familyClinicAbsent', 'classmateOpen', 'classmateFavor', 'classmateBoundaries', 'classmateOpenReviewed', 'classmateFavorReviewed', 'classmateBoundaryReviewed', 'crossOpen', 'crossPhase', 'crossSeal', 'crossOpenReviewed', 'crossPhaseReviewed', 'crossSealReviewed', 'crossResolved', 'crossLegacyTeaching', 'crossLegacyHanded', 'crossLegacyShortcut'];
     for (const _cf of _chainFlags) {
       if (p.flags[_cf] && typeof p.flags[_cf + '_since'] !== 'number') p.flags[_cf + '_since'] = p.age;
     }

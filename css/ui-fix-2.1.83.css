@@ -53,3 +53,18 @@ html {
 .thread-card p { font-size: 13px; line-height: 1.85; color: var(--ink-light); margin: 7px 0; }
 .thread-foot { font-size: 12px; line-height: 1.7; color: var(--ink-lighter); }
 @media (max-width: 480px) { .thread-card { padding: 13px 14px; } .thread-title { font-size: 16px; } }
+
+/* v2.1.88 人生线路图：可读节点，不展示未解锁分支具体情节。 */
+.life-map-entry { margin: 12px 0; display:flex; justify-content:center; }
+.life-map-entry button { width:100%; min-height:44px; }
+.life-map-group { border:1px solid var(--parchment-dark); background:var(--parchment); padding:14px; border-radius:12px; margin:12px 0; }
+.life-map-sources { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:10px; }
+.life-node { min-width:0; border-radius:9px; border:1px solid var(--parchment-dark); padding:12px; display:flex; gap:6px; flex-direction:column; line-height:1.5; background:var(--parchment-light); }
+.life-node strong { font-size:14px; color:var(--ink); }
+.life-node span { font-size:12px; color:var(--ink-light); overflow-wrap:anywhere; }
+.life-node em { font-style:normal; font-size:11px; color:var(--vermilion); }
+.life-node.is-active { border-color:var(--vermilion); border-left-width:3px; }
+.life-node.is-unknown { opacity:.62; }
+.life-map-link { text-align:center; color:var(--ink-lighter); font-size:12px; line-height:1.7; margin:12px 0; }
+.life-map-note { font-size:13px; line-height:1.8; color:var(--ink-light); padding:4px 0; }
+@media(max-width:480px) { .life-map-group { padding:11px; } .life-map-sources { gap:7px; } .life-node { padding:10px; } .life-node strong { font-size:12px; } }

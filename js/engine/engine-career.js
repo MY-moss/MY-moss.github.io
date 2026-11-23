@@ -464,19 +464,19 @@ GameEngine.prototype._rcy_annualResetAndAssets = function() {
     delete p.flags.giftOptions;
     delete p.flags.giftOptionsYear;
     // 定期存款到期结算（上一年存的定期，今年返还本息）
-    // v2.49b 修复：原实现只返还利息 2（本金 10 蒸发，存定期净亏 8，违背『本息到账』文案与现实逻辑）——改为本金+利息 12
+    // 定期稳健但不再提供每年 20% 的无风险回报。
     if (p.flags.savingDeposit) {
-      this.cashIn(12);
+      this.cashIn(11);
       delete p.flags.savingDeposit;
-      p.careerLog.push({ year: p.age, event: '🏦 去年的定期存款到期，本息到账（+12）' });
+      p.careerLog.push({ year: p.age, event: '🏦 定期到期，投入10、到账11，实际收益1' });
     }
-    // 黄金增值结算（上一年购置的黄金，今年增值出手）
-    // v2.49b 修复：原实现只返还增值 14（本金 70 蒸发，买黄金净亏 56，文案却说『小赚』）——改为本金+增值
-    // v2.59 黄金增值 14→10（与风险投资修正后的期望形成层次：定期 20% 安全 / 黄金 14% 中档 / 基金定投副业 19-24% 高方差）
+    // 黄金属于有价格波动的资产，不是无风险固定年息；清晰记录真实盈亏。
     if (p.flags.goldHeld) {
-      this.cashIn(80);
+      const r=this.randf();
+      const payout=r<0.25?60:r<0.80?74:84;
+      this.cashIn(payout);
       delete p.flags.goldHeld;
-      p.careerLog.push({ year: p.age, event: '📿 压箱底的黄金增值出手，本息到账（+80）' });
+      p.careerLog.push({ year: p.age, event: `📿 去年购金70，今年售出到账${payout}，净盈亏${payout-70 >= 0 ? '+' : ''}${payout-70}` });
     }
     // 天赋：财商觉醒（money_sense）——财富按天赋定义固定增长/年（字段驱动，防指数膨胀）
     const moneyTalent = GameData.talents.find(t => t.id === 'money_sense');
@@ -561,6 +561,41 @@ GameEngine.prototype._rcy_deadFlagConsumption = function() {
       }
     }
   }
+// 人生交汇：不是独立随机抽奖，必须由至少两条已走过的人物线共同触发。
+GameEngine.prototype.getCrossroadsEvent = function() {
+    const p=this.state.player, f=p.flags||{};
+    const hasReceipt=!!(f.receiptOpen||f.receiptQuiet);
+    const hasTeam=!!(f.teamShared||f.teamDeferred);
+    const hasClassmate=!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries);
+    if (!hasReceipt || !(hasTeam || hasClassmate)) return null;
+    const origin=GameData.events.find(e=>e.id==='arc_crossroads_1');
+    if (!origin) return null;
+    const note=[];
+    if (f.receiptOpen) note.push('你当年选择公开复核旧回执，其中几页材料至今保留着你的批注');
+    else note.push('你当年让旧回执通过内部协调处理，如今有些细节还需要重新解释');
+    if (hasTeam) note.push(f.teamShared ? '许砚记得你主动分担值班的那一年' : '许砚记得那份一直拖到很晚才批准的调休单');
+    if (hasClassmate) note.push(f.classmateFavor ? '林默曾得到过你的私下关照，你知道这次必须慎重处理关系' : '林默的创业申请也曾让你思考公务与私人友情的界限');
+    if (f.familyClinicAbsent) note.push('今晚伴侣还在等你回家，电话屏幕亮了两次');
+    else if (f.familyClinicPresent) note.push('你答应过伴侣，不会再让每一次重要约定都让位于加班');
+    const records=hasTeam?'许砚交接过的值班记录':'几份跨部门移交记录';
+    const project=hasClassmate?'与林默那批企业申报同期的项目材料':'新一轮政策项目的申请材料';
+    const scene=origin.text.replace('后来调整的科室值班表和社会机构的申请材料',records+'和'+project);
+    const event={...origin,text:scene+' '+note.join('；')+'。',choices:origin.choices.map(c=>({...c,effects:{...c.effects}}))};
+    // 上一幕不是装饰：既往隐瞒的旧回执，再次公开承担更高的职业代价；
+    // 借私人关系获利的玩家继续遮掩时，调查风险更高。
+    if (f.receiptQuiet) {
+      Object.assign(event.choices[0].effects,{mentalPressure:9,reputation:-2,risk:-4});
+    }
+    if (f.classmateFavor) {
+      event.choices[2].effects.risk+=5;
+      event.choices[2].effects.heat=4;
+    }
+    if (f.teamShared) {
+      event.choices[1].effects.contactDelta={target:'arc_xuyan',trust:4,relation:2};
+    }
+    if (f.familyClinicAbsent) event.choices[0].effects.familyPressure+=4;
+    return event;
+};
 // 子方法 9：年度事件选择（里程碑/政策项目/入口注入/刚性链/随机池）+ 赌博年分支。
 // 返回 { event, aborted }：aborted=true 表示 e761 逮捕/出逃接管，编排主体须立即终止年度。
 GameEngine.prototype._rcy_annualEventSelection = function() {
@@ -662,7 +697,14 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         { flag: 'classmateBoundaries', next: 'arc_classmate_boundary_2', delay: 2 },
         { flag: 'classmateOpenReviewed', next: 'arc_classmate_open_3', delay: 3 },
         { flag: 'classmateFavorReviewed', next: 'arc_classmate_favor_3', delay: 3 },
-        { flag: 'classmateBoundaryReviewed', next: 'arc_classmate_boundary_3', delay: 3 }
+        { flag: 'classmateBoundaryReviewed', next: 'arc_classmate_boundary_3', delay: 3 },
+        { flag: 'crossOpen', next: 'arc_crossroads_open_2', delay: 2 },
+        { flag: 'crossPhase', next: 'arc_crossroads_phase_2', delay: 2 },
+        { flag: 'crossSeal', next: 'arc_crossroads_seal_2', delay: 2 },
+        { flag: 'crossOpenReviewed', next: 'arc_crossroads_open_3', delay: 3 },
+        { flag: 'crossPhaseReviewed', next: 'arc_crossroads_phase_3', delay: 3 },
+        { flag: 'crossSealReviewed', next: 'arc_crossroads_seal_3', delay: 3 },
+        { flag: 'crossResolved', next: 'arc_crossroads_echo', delay: 2 }
       ];
       // 完成待兑现的旧选择后，才抽取今年新的故事入口；避免多年后果被覆盖。
       if (!event) for (const step of RIGID_CHAINS) {
@@ -687,6 +729,14 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
       if (!event && !p.flags.mbaApply && !p.flags.mbaActive && !p.flags.mbaDegree && !(p.seenEvents || []).includes('ent232') && p.age < 35 && this.randf() < 0.03) {
         const ev0 = (GameData.events || []).find(x => x && x.id === 'ent232');
         if (ev0) { p.seenEvents = p.seenEvents || []; if (ev0.eventType === 'auto' || ev0.eventType === 'sudden') p.seenEvents.push('ent232'); event = ev0; }
+      }
+      // 人物故事不是平行孤岛：完成旧回执 + 许砚/林默的任一路线后，
+      // 可以在同一件事情里重新相遇；后续 2 年和 5 年兑现，不覆盖其他旧案。
+      if (!event && p.age >= 30 && p.age <= 49 && p.yearsWorked >= 7
+          && !(p.seenEvents||[]).includes('arc_crossroads_1')
+          && !p.flags.crossOpen && !p.flags.crossPhase && !p.flags.crossSeal
+          && this.randf() < 0.36) {
+        event=this.getCrossroadsEvent();
       }
       // 档案柜里的回执：基层服务的长期抉择，前 12 年每年有一次进入机会。
       // 同一决策槽不覆盖政策项目/其他刚性事件；开始后结局由 flag 延迟确定。

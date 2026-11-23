@@ -307,7 +307,9 @@ const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246'
   'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3',
   'arc_family_present_2','arc_family_absent_2',
   'arc_classmate_open_2','arc_classmate_favor_2','arc_classmate_boundary_2',
-  'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3']);
+  'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3',
+  'arc_crossroads_1','arc_crossroads_open_2','arc_crossroads_phase_2','arc_crossroads_seal_2',
+  'arc_crossroads_open_3','arc_crossroads_phase_3','arc_crossroads_seal_3','arc_crossroads_echo']);
 
 // 生命周期旧标题门槛的唯一兼容实现。
 // 结构化字段是主规则，只有历史事件尚未迁移时才使用这里的标题兜底；
