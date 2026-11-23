@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
  const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>localStorage.setItem('shangan_tut_done','1'));
- await page.goto('http://127.0.0.1:4174/');
+ await page.goto((process.env.GAME_URL || 'http://127.0.0.1:4176/'));
  await page.getByRole('button',{name:/快速开始/}).first().click();
  let stage='';const steps=[];const max=80;
  for(let i=0;i<max;i++){

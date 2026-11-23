@@ -7,7 +7,7 @@ for(const size of [{width:1440,height:900},{width:390,height:844},{width:360,hei
  await ctx.addInitScript(()=>localStorage.setItem('shangan_tut_done','1'));
  const page=await ctx.newPage();const errors=[];const failed=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failed.push(r.status()+' '+r.url())});
- await page.goto('http://127.0.0.1:4174/',{waitUntil:'load'});await page.locator('.game-container').waitFor();
+ await page.goto((process.env.GAME_URL || 'http://127.0.0.1:4176/'),{waitUntil:'load'});await page.locator('.game-container').waitFor();
  const intro=await page.locator('h1').first().innerText();
  await page.getByRole('button',{name:/快速开始/}).first().click();
  const after=await page.locator('h1').first().innerText();

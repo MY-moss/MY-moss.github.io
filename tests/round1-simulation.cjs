@@ -25,8 +25,8 @@ for(let seed=1;seed<=N;seed++){
   if(e.state.currentEvent && e.state.currentEvent.choices){let id=e.state.currentEvent.id;stages[id]=(stages[id]||0)+1;
     const pick=Math.floor(random()*e.state.currentEvent.choices.length);
     if(id==='arc_receipt_1'){entered++;routes[pick===0?'open':'quiet']++}
-    if(id?.endsWith('_2'))second++;
-    if(id?.endsWith('_3'))third++;
+    if(id?.startsWith('arc_receipt_') && id?.endsWith('_2'))second++;
+    if(id?.startsWith('arc_receipt_') && id?.endsWith('_3'))third++;
     if(!e.isChoiceEnabled(e.state.currentEvent.choices[pick])){const choices=e.state.currentEvent.choices;const i=choices.findIndex(c=>e.isChoiceEnabled(c));if(i>=0)e.handleEventChoice(i);else {invalid++;e.state.currentEvent=null;}}
     else e.handleEventChoice(pick);
   }

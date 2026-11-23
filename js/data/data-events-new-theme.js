@@ -744,7 +744,7 @@ const gd_events_new_theme = [
     choices: [
       { text: '主动约个时间聚一聚', effects: { contactRelation: { id: 'auto', delta: 3 }, mentalPressure: -3 } },
       { text: '发条消息问候一下就好', effects: { contactRelation: { id: 'auto', delta: 1 } } },
-      { text: '各人有各人的路，不打扰了', effects: {} }
+      { text: '不强求维系，承认有些关系只能留在记忆里', effects: { mentalPressure: -2, contactRelation: { id: 'auto', delta: -1 } } }
     ] },
   // ========== v2.60 联系人专属互动（内容扩充：青梅/战友/商会/老书记/记者/医生/下属/处长） ==========
   { id: 'ent200', eventType: 'choice', weight: 3, year: [2, 60], stage: 'life', requireContact: 'qingmei', title: '🏘️ 旧城往事',

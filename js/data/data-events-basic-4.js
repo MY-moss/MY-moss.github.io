@@ -167,40 +167,12 @@ const gd_events_basic_4 = [
       { text: '在家做一顿大餐', effects: {eq: 1, mentalPressure: -2, familyPressure: -1, body: 1} },
       { text: '去健身房锻炼', effects: {body: 2, mentalPressure: -2, desire: 1, eq: 1} },
     ]},
-    { id: 'e275', stage: 'life', eventType: 'choice', title: '换手机', weight: 3, text: '你的手机用了好几年了，电池越来越不耐用。你犹豫要不要换新手机。', pools: ['public'], choices: [
-      { text: '买最新款旗舰机', effects: {iq: 1, mentalPressure: -1, familyPressure: 2, desire: 1, reputation: 1} },
-      { text: '买个中端性价比高的', effects: {iq: 2, familyPressure: -1, mentalPressure: -1, workAbility: 1} },
-      { text: '换个电池继续用', effects: {iq: 1, familyPressure: -1, mentalPressure: 1} },
-      { text: '等双十一再买', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, desire: -1} },
-      { text: '买二手旗舰机', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, reputation: -1} },
-    ]},
-    { id: 'e276', stage: 'life', eventType: 'choice', title: '超市购物', weight: 3, text: '周末去超市采购，你发现物价又涨了。你看着购物车里的东西，感觉钱越来越不经花了。', pools: ['public'], choices: [
-      { text: '精打细算只买必需品', effects: {familyPressure: -1, mentalPressure: 1, iq: 1, integrity: 1} },
-      { text: '想吃什么就买什么', effects: {familyPressure: 2, mentalPressure: -1, desire: 1, body: 1} },
-      { text: '囤一些打折商品', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, desire: -1} },
-      { text: '货比三家看哪家便宜', effects: {iq: 2, body: 1, mentalPressure: 1, familyPressure: -1} },
-      { text: '网上买更便宜', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, workAbility: 1} },
-    ]},
     { id: 'e277', stage: 'life', eventType: 'choice', title: '看电影', weight: 3, text: '一部你期待已久的电影上映了。你买了票准备去看，但单位突然通知要加班。', pools: ['public'], choices: [
       { text: '去加班改天再看', effects: {positionWeight: 1, reputation: 1, workAbility: 1, mentalPressure: 2, desire: -1} },
       { text: '请个假去看电影', effects: {mentalPressure: -2, desire: 1, eq: 1, reputation: -1, positionWeight: -1} },
       { text: '加班后去看夜场', effects: {body: -1, mentalPressure: 2, workAbility: 1, desire: 1, positionWeight: 1} },
       { text: '把电影票送给同事', effects: {eq: 1, reputation: 1, background: 1, mentalPressure: 1} },
       { text: '和领导说明情况', effects: {eq: 1, integrity: 1, mentalPressure: 1, workAbility: 1, positionWeight: 1} },
-    ]},
-    { id: 'e278', stage: 'life', eventType: 'choice', title: '理发', weight: 3, text: '你常去的理发店涨价了，而且涨价幅度不小。你犹豫要不要换一家便宜的。', pools: ['public'], choices: [
-      { text: '继续在这家剪', effects: {familyPressure: 1, mentalPressure: 1, reputation: 1, eq: 1} },
-      { text: '换一家便宜的试试', effects: {familyPressure: -1, mentalPressure: 1, risk: 1, eq: 1} },
-      { text: '自己学着剪', effects: {iq: 1, familyPressure: -1, mentalPressure: 1, body: 1} },
-      { text: '和老板讨价还价', effects: {eq: 1, familyPressure: -1, mentalPressure: 1, integrity: 1} },
-      { text: '剪更便宜的简单发型', effects: {familyPressure: -1, mentalPressure: -1, reputation: -1, iq: 1} },
-    ]},
-    { id: 'e279', stage: 'life', eventType: 'choice', title: '下雨天', weight: 3, text: '早上出门时下着大雨，你忘记带伞了。打卡还有5分钟，你是冲过去还是等雨停？', pools: ['public'], choices: [
-      { text: '冲过去打卡再说', effects: {body: -1, mentalPressure: 1, positionWeight: 1, workAbility: 1, appearance: 1} },
-      { text: '等雨小了再走', effects: {body: 1, mentalPressure: 1, positionWeight: -1, reputation: -1} },
-      { text: '向同事借伞', effects: {eq: 1, background: 1, mentalPressure: -1, reputation: 1} },
-      { text: '打车去单位', effects: {familyPressure: 1, mentalPressure: -1, body: 1, positionWeight: 1} },
-      { text: '和领导说一声晚点到', effects: {eq: 1, integrity: 1, mentalPressure: -1, positionWeight: -1} },
     ]},
     { id: 'e280', stage: 'life', eventType: 'choice', title: '请客吃饭', weight: 3, text: '你升职了，同事们起哄让你请客。你算了算，请全科室吃饭要花不少钱。', pools: ['public'], choices: [
       { text: '大方请客感谢大家', effects: {eq: 2, background: 2, reputation: 2, mentalPressure: 1, familyPressure: 2, luck: -1} },
@@ -215,20 +187,6 @@ const gd_events_basic_4 = [
       { text: '增加几个自费项目', effects: {familyPressure: 1, body: 2, mentalPressure: 1, iq: 1} },
       { text: '找熟人医生仔细看看', effects: {background: 1, body: 2, mentalPressure: -1, familyPressure: 1} },
       { text: '拿到报告后认真解读', effects: {iq: 2, body: 1, mentalPressure: 1, workAbility: 1} },
-    ]},
-    { id: 'e282', stage: 'life', eventType: 'choice', title: '快递丢失', weight: 3, text: '你的快递显示已签收，但你并没有收到。联系快递员，他说放在门口了，但门口什么都没有。', pools: ['public'], choices: [
-      { text: '联系快递公司索赔', effects: {iq: 2, mentalPressure: 2, integrity: 1, workAbility: 1} },
-      { text: '查监控录像', effects: {iq: 2, mentalPressure: 2, workAbility: 1, risk: 1} },
-      { text: '自认倒霉再买一个', effects: {familyPressure: 1, mentalPressure: 1, desire: -1} },
-      { text: '投诉快递员', effects: {eq: 1, mentalPressure: 2, integrity: 1, reputation: 1} },
-      { text: '联系卖家退款', effects: {iq: 1, mentalPressure: 1, integrity: 1, workAbility: 1} },
-    ]},
-    { id: 'e283', stage: 'life', eventType: 'choice', title: '天气异常', weight: 3, text: '今年夏天特别热，连续高温让你受不了。空调每天开十几个小时，电费涨了不少。', pools: ['public'], choices: [
-      { text: '开空调注意节约用电', effects: {familyPressure: -1, body: 1, mentalPressure: 1, iq: 1, luck: -1} },
-      { text: '去图书馆蹭空调', effects: {body: 1, mentalPressure: -1, iq: 1, workAbility: 1} },
-      { text: '买台电风扇凑合', effects: {familyPressure: -1, body: 1, mentalPressure: -1} },
-      { text: '去单位加班蹭空调', effects: {workAbility: 2, body: 1, mentalPressure: 1, positionWeight: 1} },
-      { text: '装遮阳帘减少日晒', effects: {iq: 1, familyPressure: -1, body: 1, mentalPressure: 1} },
     ]},
     // ====== 补全缺失事件 ======
     { id: 'e284', stage: 'life', eventType: 'choice', title: '相亲风云', weight: 6, requireSingle: true, year: [22, 45], text: '家里给你安排了一次相亲，对方听说你是体制内的，表现得很热情。但你目前全身心扑在工作上。', pools: ['public'], choices: [

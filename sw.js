@@ -27,8 +27,8 @@
 // 2.1.3：CACHE 名与 index.html 版本号同步；install 时预缓存条目统一追加 ?v= 版本串，
 // fetch 匹配用 ignoreSearch —— 修复预缓存与运行时请求（带 query）不匹配、预缓存形同虚设的问题
 // UI 刷新后切换缓存名，确保已经打开过旧版本的用户能拿到最新样式与交互逻辑。
-const CACHE = 'shangan-pages-5';
-const V = '?v=pages-5';
+const CACHE = 'shangan-pages-6';
+const V = '?v=pages-6';
 const UI_REV3 = new Set([
   './js/app/app-core.js',
   './js/app/app-history.js',
@@ -73,6 +73,7 @@ const CORE = [
   './js/data/data-events-new-v2175.js',
   './js/data/data-events-new-v2178.js',
   './js/data/data-events-arc-receipt.js',
+  './js/data/data-events-arc-revision.js',
   './js/data/data-projects.js',
   './js/data/data-network.js',
   './js/data.js',

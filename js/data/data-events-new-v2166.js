@@ -78,18 +78,6 @@ const gd_events_new_v2166 = [
     { text: '买耳塞和白噪音机自救', effects: { wealth: -2, mentalPressure: -1 }, result: '物理隔音，相安无事' },
     { text: '以牙还牙，早上六点放广场舞神曲', effects: { mentalPressure: 2, peopleReputation: -2, risk: 1 }, result: '战争升级，两败俱伤' }
   ] },
-  { id: 'enl173', stage: 'life', eventType: 'choice', weight: 5, year: [26, 62], title: '大件家电以旧换新', text: '用了八年的冰箱开始半夜嗡嗡作响，正赶上政府以旧换新补贴百分之二十。', choices: [
-    { text: '趁补贴换新的，一步到位', effects: { wealth: -12, familyPressure: -2, eq: 1 }, result: '新冰箱安静省电，补贴到账真香' },
-    { text: '修一修再战三年', effects: { wealth: -3, luck: -1 }, result: '修完安静了两个月，又响了' },
-    { text: '全家开会表决买什么牌子', effects: { eq: 2, familyPressure: -1 }, result: '民主决策，孩子投的牌子意外好用' },
-    { text: '等等看，说不定补贴延续', effects: { luck: 1, familyPressure: 1 }, result: '冰箱又撑了一季，补贴没等到' }
-  ] },
-  { id: 'enl174', stage: 'life', eventType: 'choice', weight: 5, year: [24, 55], title: '直播间冲动下单', text: '深夜刷手机，主播一句"最后三单"让你差点付掉半个月工资——购物车里躺着一台按摩椅。', choices: [
-    { text: '冷静退出，把APP卸了', effects: { mentalPressure: -1, integrity: 1 }, result: '第二天醒来，庆幸自己守住了钱包' },
-    { text: '买！生活需要奖励自己', effects: { wealth: -15, familyPressure: 2, luck: 1 }, result: '按摩椅成了全家的最爱，钱包在哭' },
-    { text: '先加购物车，观察七天再说', effects: { iq: 1, eq: 1 }, result: '七天后热情消退，钱保住了' },
-    { text: '和爱人商量着来', effects: { eq: 2, familyPressure: 1 }, result: '爱人拍板买了小巧款，全家满意' }
-  ] },
   { id: 'enw245', stage: 'work', eventType: 'choice', weight: 5, pools: ['public'], title: '职称评审材料', text: '职称评审窗口下周截止，业绩材料还差近三年的成果证明——而你的获奖证书压在搬家纸箱的最底层。', choices: [
     { text: '连夜翻箱倒柜整理材料', effects: { workAbility: 2, mentalPressure: 2, body: -1 }, result: '材料齐了，盖章跑到腿软' },
     { text: '请同事帮忙补齐佐证', effects: { eq: 2, peopleReputation: 1 }, result: '同事仗义，材料一次过审' },

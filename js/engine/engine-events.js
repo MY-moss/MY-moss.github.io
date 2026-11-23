@@ -220,6 +220,14 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     }
     // 选项条件门槛：不满足条件的选项（背景/财富/flag）直接拦截，防止绕过UI触发
     this.applyEffects(c.effects);
+    // 已有大量事件写有 c.result，但此前游戏完全不消费这个字段；
+    // 将明确的近期结果写进履历，供下一屏和存档回顾。剧情延迟结果仍由独立事件负责。
+    if (typeof c.result === 'string' && c.result.trim()) {
+      this.state.player.careerLog.push({
+        year: this.state.player.age,
+        event: `${String(e.title || '事件').slice(0, 45)}：${c.result.trim().slice(0, 155)}`
+      });
+    }
     this.clampAttrs();
     this.state.currentEvent = null; this.checkEndings();
     // 赌博戒断（e747）：选择"戒赌"选项后彻底清除赌瘾状态（streak/连续未赌计数）
@@ -295,7 +303,9 @@ const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246'
   'e802', 'e803', 'e804', 'e806', 'e807', 'e808',
   // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链 next 节点只由 RIGID_CHAINS 注入
   'ent294', 'ent295', 'ent297', 'ent298', 'ent300', 'ent301',
-  'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3']);
+  'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3',
+  'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3',
+  'arc_family_present_2','arc_family_absent_2']);
 
 // 生命周期旧标题门槛的唯一兼容实现。
 // 结构化字段是主规则，只有历史事件尚未迁移时才使用这里的标题兜底；

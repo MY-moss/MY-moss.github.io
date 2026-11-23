@@ -15,7 +15,7 @@ const gd_events_new_v2172 = [
     { text: '全力备考，把初选当跳板', effects: { iq: 1, workAbility: 1, mentalPressure: 3, background: 1 }, result: '笔试出色，进入了差额考察' },
     { text: '先告之本单位领导，争取支持', effects: { background: 1, eq: 1 }, result: '领导点头放行，程序顺畅' },
     { text: '连夜准备但不声张', effects: { iq: 1, mentalPressure: 2, background: -1 }, result: '低调备考，名次却不如预期' },
-    { text: '评估两家单位再决定是否退出', effects: { eq: 1, background: 1 }, result: '审慎评估，进退有据' }
+    { text: '主动退出选调，留下完成本单位的未结项目', effects: { peopleReputation: 2, workAbility: 1, desire: -2, mentalPressure: -2 }, result: '选调机会留给了别人，未结项目终于完成交接' }
   ] },
   { id: 'enc124', requireRankMin: 2, stage: 'career', eventType: 'choice', weight: 4, year: [26, 45], title: '公选竞岗', text: '本级公开选拔科级岗位，报名条件你刚够线。竞岗要笔试、演讲加答辩，评委里还有两名你不认识的外单位领导。', choices: [
     { text: '认真准备演讲稿和案例素材', effects: { workAbility: 2, reputation: 1, mentalPressure: 2 }, result: '现场发挥稳健，评委给了高分' },
@@ -61,11 +61,11 @@ const gd_events_new_v2172 = [
     { text: '带一壶茶去，慢慢融进圈子', effects: { eq: 2, peopleReputation: 1 }, result: '茶香开了话匣子，圈子里有了你的位置' },
     { text: '教两个年轻人下棋', effects: { eq: 1, reputation: 1, body: 1 }, result: '收了两个学生，公园角落热闹了' }
   ] },
-  { id: 'enl177', stage: 'life', eventType: 'choice', weight: 4, year: [55, 72], title: '隔代带孙', text: '儿子儿媳都忙，三岁的孙女每周有三天送到你这里。你年轻时带儿子是"放养"，现在带孙女却总觉得怕磕着碰着。', choices: [
+  { id: 'enl177', stage: 'life', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 18, year: [55, 72], title: '隔代带孙', text: '儿子儿媳都忙，三岁的孙女每周有三天送到你这里。你年轻时带儿子是"放养"，现在带孙女却总觉得怕磕着碰着。', choices: [
     { text: '拿出当年带儿子的经验来', effects: { familyPressure: 1, eq: 1 }, result: '经验管用，孙女和你最亲' },
     { text: '专门学些育儿知识，紧跟新理念', effects: { iq: 1, familyPressure: -1 }, result: '新理念上手，儿媳也放心了' },
     { text: '和儿媳约法三章，各退一步', effects: { eq: 2, familyPressure: -1 }, result: '边界谈清，接送愉快' },
-    { text: '偶尔推掉几次，留时间给自己', effects: { eq: 1, familyPressure: 1 }, result: '你也有自己的生活，分寸正好' }
+    { text: '明确每周最多照看一天，留下时间给自己的生活', effects: { familyPressure: -3, mentalPressure: -2, eq: -1 }, result: '儿媳一开始有点失落，后来商量出了新的接送表' }
   ] },
   { id: 'enl178', stage: 'life', eventType: 'choice', weight: 3, year: [55, 72], title: '老年兴趣社团', text: '社区新开了书法和合唱两个老年班，报名表上写"名额有限，先到先得"。年轻时你两个都想学，都没学成。', choices: [
     { text: '报书法班，圆年轻时的手痒', effects: { iq: 1, mentalPressure: -1 }, result: '第一幅作品被老伴裱了起来' },
@@ -114,7 +114,7 @@ const gd_events_new_v2172 = [
   { id: 'enc129', requireRankMin: 3, stage: 'career', eventType: 'choice', weight: 4, era: ['stable'], year: [28, 55], title: '编制常规核查', text: '平稳年代，机构编制委员会开展常规核查：编制数、实有人数、编外人员一个都不能少。你们单位退休两人未减编，台账上多出两个"影子岗位"。', choices: [
     { text: '如实上报并推动减编', effects: { integrity: 2, workAbility: 1, positionWeight: -1 }, result: '减编到位，台账清爽' },
     { text: '先补材料说明历史原因', effects: { eq: 1, background: 1 }, result: '说明被采信，岗位暂留' },
-    { text: '顺势申请把编外人员规范入编', effects: { background: 1, eq: 1 }, result: '规范入编，心腹力量变正式' },
+    { text: '主动核对编外岗位性质，建议按公开程序重新核定', effects: { workAbility: 2, integrity: 2, mentalPressure: 2 }, result: '岗位没有被悄悄转正，但编外人员的合同与待遇得到核查' },
     { text: '压着不报，等核查组提醒', effects: { risk: 2, background: -1 }, result: '核查组来了两次，你记了两次' }
   ] },
   { id: 'enc130', requireRankMin: 2, stage: 'career', eventType: 'choice', weight: 4, era: ['stable'], year: [26, 50], title: '年度考核稳定版', text: '平稳年代的年终考核没有改革年那么剑拔弩张，指标就是那几个老科目。你发现同事们都心照不宣地留着"进步空间"。', choices: [
@@ -147,12 +147,6 @@ const gd_events_new_v2172 = [
     { text: '选泳卡，运动更规律', effects: { body: 2, wealth: -3 }, result: '每周三次，体检报告最先受益' },
     { text: '两个都报，周中周末分开', effects: { body: 2, wealth: -6, mentalPressure: 1 }, result: '日程满，精神好' },
     { text: '都缓缓，等明年再说', effects: { body: -1 }, result: '明年，钱包和身体各安其位' }
-  ] },
-  { id: 'enl186', stage: 'life', eventType: 'choice', weight: 3, year: [24, 58], title: '家电分期', text: '新出的洗烘一体机打广告"零利率分期 12 期"，家里刚好那台老式洗衣机轴承异响。买还是不买？', choices: [
-    { text: '分期入手，零利率是真划算', effects: { wealth: -8, familyPressure: -1 }, result: '机器到了，每月还款不肉疼' },
-    { text: '一次性付清，不碰分期', effects: { wealth: -12, mentalPressure: -1 }, result: '一次付清，落个清净' },
-    { text: '等老洗衣机彻底罢工再换', effects: { luck: -1, familyPressure: 1 }, result: '罢工那天正好是全家聚餐夜' },
-    { text: '先修轴承，再战两年', effects: { wealth: -2, luck: 1 }, result: '修好了，省下一半钱' }
   ] },
   // ---------- 7. 结局主题支撑 ×4（estranged_hero / skyline） ----------
   { id: 'enw252', stage: 'work', eventType: 'choice', weight: 4, year: [30, 55], title: '被误解仍守原则', text: '一项改革措施你坚持按原则执行，动了几个利益方的蛋糕。座谈会上有人公开质疑你"教条"，你注意到支持者都在沉默。', choices: [

@@ -1,7 +1,7 @@
 name: Game smoke checks
 on:
   push:
-    branches: [main]
+    branches: [main, 'development/**']
     paths:
       - 'index.html'
       - 'js/**'
@@ -32,5 +32,6 @@ jobs:
           node-version: 22
       - name: Check game assets, JavaScript and offline cache
         run: |
-          node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs
+          node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs tests/round2-content.test.mjs
           node tests/round1-simulation.cjs
+          node tests/round2-simulation.cjs

@@ -20,3 +20,7 @@
 ## 第一轮升级（未正式发布）
 
 参见 [审计与测试报告](docs/ROUND1_AUDIT_2026-11-23.md)。运行 `node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs` 与 `node tests/round1-simulation.cjs` 可以在无服务端的环境下验证核心脚本和剧情模拟。浏览器交互测试需单独安装 Playwright。此次修改不包含任何 ATLAS 或日报系统。
+
+## 第二轮：全事件结构审计与内容精修（未上线）
+
+参见 [第二轮审计与验证报告](docs/ROUND2_CONTENT_AUDIT_2026-11-23.md)、[全部保留事件检查目录](docs/EVENT_CONTENT_AUDIT_ROUND2.csv) 和 [更新日志](docs/CHANGELOG_ROUND2.md)。未修改线上主分支。

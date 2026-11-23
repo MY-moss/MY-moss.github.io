@@ -133,6 +133,7 @@ renderCareer() {
          </div>
         </div>
         ${this.renderReceiptThread(p)}
+        ${this.renderContinuingStories(p)}
         ${this.renderPolicyProjectPanel ? this.renderPolicyProjectPanel(p) : ''}
         ${this.renderPlanningBoard ? this.renderPlanningBoard(p, h) : '<div class="sticky-action"><button type="button" class="btn btn-primary" onclick="App.nextYear()">进入下一年</button></div>'}
       </div>
@@ -157,6 +158,30 @@ renderCareer() {
       <p>${App.escapeHtml(first)}。${App.escapeHtml(detail)}</p>
       <div class="thread-foot">周岚 · 一段关于工作、信任与迟来答复的往事</div>
     </section>`;
+  },
+  // 多年后的人物关系：仅展示已经开启的记忆，不剧透具体剧情。
+  renderContinuingStories(p) {
+    const f = p.flags || {}, seen = p.seenEvents || [], arcs = [];
+    if (f.teamShared || f.teamDeferred) {
+      const first = f.teamShared ? '一起分担排班' : '暂缓处理调休';
+      const reviewed = f.teamSharedFollowed || f.teamDeferredFollowed;
+      const complete = seen.includes(f.teamShared ? 'arc_team_shared_3' : 'arc_team_deferred_3');
+      const since = reviewed ? f[(f.teamShared ? 'teamSharedFollowed' : 'teamDeferredFollowed')+'_since'] : f[(f.teamShared ? 'teamShared' : 'teamDeferred')+'_since'];
+      const remain = Math.max(0, (since || p.age) + (reviewed ? 3 : 2) - p.age);
+      arcs.push({ title: '交接本上的空格', detail: `${first} · ${complete ? '故事已完结' : remain ? '约 ' + remain + ' 年后会有回响' : '等待后续机会'}`, person: '许砚' });
+    }
+    if (f.familyClinicPresent || f.familyClinicAbsent) {
+      const good = f.familyClinicPresent;
+      const complete = seen.includes(good ? 'arc_family_present_2' : 'arc_family_absent_2');
+      const since = f[(good ? 'familyClinicPresent' : 'familyClinicAbsent')+'_since'];
+      const remain = Math.max(0, (since || p.age) + 2 - p.age);
+      arcs.push({ title: '冰箱上的蓝色便签', detail: `${good ? '选择陪诊' : '选择参加汇报'} · ${complete ? '故事已完结' : remain ? '约 ' + remain + ' 年后会有回响' : '等待后续机会'}`, person: '家人' });
+    }
+    return arcs.map(arc => `<section class="thread-card" aria-label="持续故事进度">
+      <div class="thread-kicker">人生纪事 · ${App.escapeHtml(arc.person)}</div>
+      <div class="thread-title">${App.escapeHtml(arc.title)}</div>
+      <p>${App.escapeHtml(arc.detail)}</p>
+    </section>`).join('');
   },
   // v2.48 档案全程回看：生涯留痕全量列表（按年倒序，滚动容器）
   // v2.70 年鉴翻页：每页 15 条 + 上/下页（原全量滚动，长局 300+ 条时难以定位）

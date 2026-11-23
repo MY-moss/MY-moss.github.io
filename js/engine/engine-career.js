@@ -662,7 +662,13 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         { flag: 'receiptOpen', next: 'arc_receipt_open_2', delay: 2 },
         { flag: 'receiptQuiet', next: 'arc_receipt_quiet_2', delay: 2 },
         { flag: 'receiptOpenReviewed', next: 'arc_receipt_open_3', delay: 3 },
-        { flag: 'receiptQuietReviewed', next: 'arc_receipt_quiet_3', delay: 3 }
+        { flag: 'receiptQuietReviewed', next: 'arc_receipt_quiet_3', delay: 3 },
+        { flag: 'teamShared', next: 'arc_team_shared_2', delay: 2 },
+        { flag: 'teamDeferred', next: 'arc_team_deferred_2', delay: 2 },
+        { flag: 'teamSharedFollowed', next: 'arc_team_shared_3', delay: 3 },
+        { flag: 'teamDeferredFollowed', next: 'arc_team_deferred_3', delay: 3 },
+        { flag: 'familyClinicPresent', next: 'arc_family_present_2', delay: 2 },
+        { flag: 'familyClinicAbsent', next: 'arc_family_absent_2', delay: 2 }
       ];
       // 档案柜里的回执：基层服务的长期抉择，前 12 年每年有一次进入机会。
       // 同一决策槽不覆盖政策项目/其他刚性事件；开始后结局由 flag 延迟确定。
@@ -670,6 +676,17 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
           && p.yearsWorked >= 2 && p.yearsWorked <= 12 && this.randf() < 0.15) {
         const first = GameData.events.find(x => x.id === 'arc_receipt_1');
         if (first) event = first;
+      }
+      // 第二轮：团队交接线（早中期）与伴侣复诊线（婚姻中的长期取舍）。
+      // 两条线独立存 flag，只在年度事件槽空闲时进入，后续刚性链不会提前抢占。
+      if (!event && !p.flags.teamShared && !p.flags.teamDeferred && !(p.seenEvents || []).includes('arc_team_1')
+          && p.age >= 27 && p.age <= 43 && p.yearsWorked >= 3 && this.randf() < 0.12) {
+        event = GameData.events.find(x => x.id === 'arc_team_1') || null;
+      }
+      if (!event && p.isMarried && !p.flags.familyClinicPresent && !p.flags.familyClinicAbsent
+          && !(p.seenEvents || []).includes('arc_family_1') && p.age >= 32 && p.age <= 49
+          && this.randf() < 0.10) {
+        event = GameData.events.find(x => x.id === 'arc_family_1') || null;
       }
       // v2.66 买房入口注入：28-45 岁每年 2%（买房是重要人生节点——原 weight 8 在 1265 事件池里生涯触发率仅 ~2%）
       if (!event && !p.flags.mortgage && !(p.seenEvents || []).includes('ent257') && p.age >= 28 && p.age <= 45 && this.randf() < 0.02) {

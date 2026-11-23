@@ -691,7 +691,7 @@ const gd_events_new_life = [
     { text: '买份关东煮，暖胃也暖心', effects: {body: 1, mentalPressure: -2, eq: 1} },
     { text: '随便拿桶泡面回去', effects: {body: -1, mentalPressure: 1} },
     { text: '和他聊两句再走', effects: {eq: 1, mentalPressure: -2} },
-    { text: '什么都不买，直接回家', effects: {body: -1, mentalPressure: 1} },
+    { text: '回家热一碗剩粥，今晚不再打开电脑', effects: {body: 1, mentalPressure: -2, workAbility: -1} },
   ]},
   { id: 'enl117', stage: 'life', eventType: 'choice', weight: 3, requireContact: 'chamber', requireContactMin: 40, year: [28, 55], title: '商会会长的邀约', text: '商会孙会长打来电话，说周末有个"老乡企业家联谊"，想请你出席。"都是家乡人，帮衬帮衬。"他语气热情，你想起他递名片时那副黑白通吃的做派。', choices: [
     { text: '出席，但只寒暄不谈事', effects: {eq: 1, background: 1, risk: 1, contactRelation: { id: 'chamber', delta: 5 } } },

@@ -187,7 +187,7 @@ const gd_events_new_work = [
     { id: 'enw036', stage: 'work', eventType: 'choice', weight: 4, title: '明察暗访', text: '有消息说明察暗访组要来。办公室的零食和躺椅被紧急转移，像一场小型搬家。', choices: [
       { text: '该怎样还怎样，不搞突击', effects: {integrity: 2, mentalPressure: -1, risk: -1} },
       { text: '配合氛围，临时规整一下', effects: {eq: 1, mentalPressure: 1, workAbility: 1} },
-      { text: '提醒同事注意纪律', effects: {eq: 1, workAbility: 1, mentalPressure: 1} },
+      { text: '提醒同事按平日纪律执行，不要临时摆样子', effects: {integrity: 2, workAbility: 1, mentalPressure: 2, background: -1} },
     ]},
     { id: 'enw037', stage: 'work', eventType: 'choice', weight: 5, title: '交叉检查', text: '兄弟单位来交叉检查，你既不能太严得罪人，也不能太松显得敷衍。这把尺子的刻度，全靠手感。', choices: [
       { text: '按标准来，问题如实记录', effects: {workAbility: 3, integrity: 2, eq: -1, mentalPressure: 2} },
@@ -804,7 +804,7 @@ const gd_events_new_work = [
       { text: '虚心接受，明年争取亮点', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
       { text: '请领导指出改进方向', effects: {eq: 2, workAbility: 1} },
       { text: '心里不服，但表面平静', effects: {mentalPressure: 2, desire: 1} },
-      { text: '找小李请教评优经验', effects: {eq: 2, workAbility: 1} },
+      { text: '找小李复盘实绩，主动补上自己薄弱的项目环节', effects: {eq: 1, workAbility: 2, desire: -1, mentalPressure: 1} },
     ]},
     { id: 'enw158', stage: 'work', eventType: 'choice', weight: 4, title: '借阅档案', text: '你申请借阅一份三年前的档案，档案员犹豫了一下："按规定要领导签字。"你想起那份档案里有你当年的签字，忽然有点明白她为什么犹豫。', choices: [
       { text: '按流程找领导签字', effects: {workAbility: 1, integrity: 1, mentalPressure: 1} },
