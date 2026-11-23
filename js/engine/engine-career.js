@@ -807,7 +807,7 @@ GameEngine.prototype._rcy_specialEventInjection = function() {
     }
     // 返聘老年线：返聘期间优先触发老年事件（传帮带/著书立说/余热生辉）
     const elderGate = p.flags.elderLineDone ? this.randf() < 0.25 : this.randf() < 0.6;
-    if (!p.ending && p.flags.rehired && elderGate) {
+    if (!p.ending && !s.currentEvent && !s.pendingPromotion && !s.pendingTransfer && p.flags.rehired && elderGate) {
       const elderCandidates = ['e642', 'e643', 'e644'].filter(id => !p.seenEvents.includes(id));
       if (elderCandidates.length > 0) {
         const elderEv = GameData.events.find(x => x.id === elderCandidates[this.rand(0, elderCandidates.length - 1)]);

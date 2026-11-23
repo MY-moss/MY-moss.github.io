@@ -32,7 +32,8 @@ jobs:
           node-version: 22
       - name: Check game assets, JavaScript and offline cache
         run: |
-          node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs tests/round2-content.test.mjs tests/round3-content.test.mjs
+          node --test tests/game-smoke.test.mjs tests/round1-engine.test.mjs tests/round2-content.test.mjs tests/round3-content.test.mjs tests/round4-regressions.test.mjs
           node tests/round1-simulation.cjs
           node tests/round2-simulation.cjs
           node tests/round3-simulation.cjs
+          node tests/round4-lifecycle.cjs

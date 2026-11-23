@@ -78,6 +78,7 @@ renderCareer() {
     const heatWarning = p.heat > 50 ? ' 🔥热度偏高！纪检关注风险上升' : p.heat > 30 ? ' 🔥热度上升，收敛为妙' : '';
     const maxRank = engine.getMaxRankForLevel ? engine.getMaxRankForLevel(p.unit.level) : 10;
     const promoProgress = p.leadershipRank >= maxRank ? '已达职级上限，可跨级晋升' : '';
+    const promotionReadiness = typeof engine.getPromotionReadiness === 'function' ? engine.getPromotionReadiness() : null;
     const rankLabel = engine.getRankLabel ? engine.getRankLabel(p.leadershipRank) : p.leadershipRank + '级';
     const unitLevelLabel = engine.getUnitLevelLabel(p.unitLevel);
     // 基层历练剩余年限提示
@@ -101,6 +102,8 @@ renderCareer() {
             <div class="stat-item"><span>🏛 单位</span><span>${App.escapeHtml(p.unit.name)}（${App.escapeHtml(unitLevelLabel)}）</span></div>
             <div class="stat-item"><span>⭐ 职级</span><span>${rankLabel} ${promoProgress ? '→ ' + promoProgress : ''}</span></div>
             <div class="stat-item"><span>🏆 晋升</span><span>${p.promotions} 次</span></div>
+            ${promotionReadiness ? `<div class="stat-item" role="status"><span>📋 当前岗位晋升条件</span><span>${App.escapeHtml(promotionReadiness.eligible ? '具备基础资格，仍需组织考察' : promotionReadiness.blockers.slice(0,2).join('；'))}</span></div>
+            <div class="stat-item"><span>⏳ 现职任职年限</span><span>${Math.floor(promotionReadiness.yearsAtRank)} 年 / 最低 ${promotionReadiness.minYears} 年</span></div>` : ''}
             <div class="stat-item"><span>📊 工作能力</span><span>${Math.round(h.workAbility)}</span></div>
             <div class="stat-item"><span>😰 心理压力</span><span>${Math.round(h.mentalPressure)} ${h.mentalPressure > 60 ? '🔴' : h.mentalPressure > 35 ? '🟡' : '🟢'}</span></div>
             <div class="stat-item"><span>⚠️ 风险</span><span>${Math.round(h.risk)} ${h.risk > 60 ? '🔴' : h.risk > 35 ? '🟡' : '🟢'}</span></div>

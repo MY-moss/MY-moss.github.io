@@ -2,6 +2,27 @@
 // 依赖：engine-career.js、engine-career-ranks.js、engine-network.js。
 // 方法名保持 GameEngine 公开契约不变。
 
+// 与真实晋升年限检查共享：旧档先从履历重建任职时间，无法重建则保留旧版保守兜底。
+GameEngine.prototype.getPromotionReadiness = function() {
+    const p=this.state.player, h=this.state.hidden;
+    const maxRank=p.unit ? this.getMaxRankForLevel(p.unit.level) : 0;
+    const rank=p.leadershipRank||1;
+    let required=this.getMinYearsForRank(rank);
+    if(h.workAbility>=60 && h.positionWeight>=18 && required>1)required--;
+    if((p.flags.promotionExcellence||0)>=2 && required>1)required--;
+    const entries=(p.careerLog||[]).filter(x=>x && x.special==='upgrade' && Number.isFinite(Number(x.year)) && Number(x.year)<=p.age);
+    const inferred=entries.length ? Math.max(...entries.map(x=>Number(x.year))) : null;
+    const stored=Number.isFinite(p.rankSinceAge) && p.rankSinceAge<=p.age ? p.rankSinceAge : null;
+    const since=stored===null ? inferred : inferred===null ? stored : Math.max(stored,inferred);
+    const years=since===null ? Math.max(0,(p.yearsWorked||0)-(p.promotions||0)) : Math.max(0,p.age-since);
+    const blockers=[];
+    if(!p.unit)blockers.push('尚未入职');
+    if(p.flags.grassrootsActive)blockers.push('基层历练期间暂不参加常规晋升');
+    if(rank>=maxRank)blockers.push('当前单位职级已达上限，可争取调任');
+    if(rank<maxRank && years<required)blockers.push('现职任职还需'+(required-years)+'年');
+    if(rank<maxRank && this.getPoliticalReq(rank+1)==='cpc' && p.political!=='cpc')blockers.push('需要符合相应政治面貌条件');
+    return {eligible:blockers.length===0,yearsAtRank:years,minYears:required,maxRank,blockers};
+};
 GameEngine.prototype.checkPromotion = function() {
     const p = this.state.player; const h = this.state.hidden;
     if (!p.unit) return;
@@ -23,15 +44,8 @@ GameEngine.prototype.checkPromotion = function() {
     }
     
     // 1. 最低年限检查（v2.49f：merit 阶梯——高实绩或答辩优秀者每级减免年限，打破论资排辈；保底 1 年防跳级泛滥）
-    let minYears = this.getMinYearsForRank(currentRank);
-    if (h.workAbility >= 60 && h.positionWeight >= 18 && minYears > 1) minYears -= 1;
-    if ((p.flags.promotionExcellence || 0) >= 2 && minYears > 1) minYears -= 1;
-    const yearsAtCurrentRank = Math.max(0, p.yearsWorked - p.promotions);
-    if (yearsAtCurrentRank < minYears) return;
-    
-    // 2. 政治面貌检查
-    const needParty = this.getPoliticalReq(currentRank + 1);
-    if (needParty === 'cpc' && p.political !== 'cpc') return;
+    const readiness = this.getPromotionReadiness();
+    if (!readiness.eligible) return;
     
     // 3. 年龄限制（动态难度：年龄越大晋升越难）
     const ageLimit = this.getAgeLimit(currentRank);
@@ -114,6 +128,7 @@ GameEngine.prototype.checkPromotion = function() {
     // v2.69 卡顶处理已移至函数开头（v2.67 原分支在 early return 后为死代码，已删除）
     if (this.randf() < finalChance) {
       p.leadershipRank++; p.leadershipPromotions++; p.promotions++;
+      p.rankSinceAge=p.age;
       h.positionWeight += 3; h.mentalPressure += 3; h.risk += 1;
       // v2.27 体验优化：晋升成功仅 60% 进入答辩候选（40% 直接晋升通过）——答辩从"每次晋升的日常"回归"重要时刻"
       if (this.randf() < 0.6) p.flags.promotionCandidate = true;
@@ -315,6 +330,7 @@ GameEngine.prototype.checkCrossLevelPromotion = function() {
 GameEngine.prototype.acceptPromotion = function() {
     const pp = this.state.pendingPromotion; if (!pp) return;
     const p = this.state.player; const h = this.state.hidden;
+    const previousRank = p.leadershipRank;
     if (pp.type === 'crossLevel' && pp.targetUnit) {
       if (this.setPosting) this.setPosting(pp.targetUnit, '跨级晋升');
       else { p.unit = pp.targetUnit; p.unitLevel = { '省级': 3, '市级': 2, '县级': 1, '乡镇': 0, '街道': 0, '中央': 4 }[pp.targetUnit.level] || 0; }
@@ -351,6 +367,7 @@ GameEngine.prototype.acceptPromotion = function() {
     // 晋升后确保不超过新单位上限
     const maxRankNew = this.getMaxRankForLevel(p.unit ? p.unit.level : '乡镇');
     if (p.leadershipRank > maxRankNew) p.leadershipRank = maxRankNew;
+    if (p.leadershipRank > previousRank) p.rankSinceAge = p.age;
   }
 GameEngine.prototype.declinePromotion = function() {
     const pp = this.state.pendingPromotion; if (!pp) return;
