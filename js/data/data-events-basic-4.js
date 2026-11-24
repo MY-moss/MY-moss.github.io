@@ -31,13 +31,6 @@ const gd_events_basic_4 = [
       { text: '申请单位宿舍', effects: {background: 1, familyPressure: -2, mentalPressure: -1, reputation: 1, positionWeight: 1} },
       { text: '和同事合租分摊房租', effects: {eq: 1, familyPressure: -2, mentalPressure: 1, background: 1, reputation: 1} },
     ]},
-    { id: 'e251', stage: 'work', eventType: 'choice', title: '第一次汇报', weight: 4, text: '领导让你在全局会议上做工作汇报。这是你第一次在这么多人面前发言，你紧张得手心出汗。', pools: ['public'], choices: [
-      { text: '精心准备PPT反复演练', effects: {workAbility: 3, reputation: 3, positionWeight: 2, mentalPressure: 3, iq: 1} },
-      { text: '写逐字稿背下来', effects: {workAbility: 2, mentalPressure: 2, reputation: 2, positionWeight: 1} },
-      { text: '脱稿讲展现自信', effects: {eq: 1, reputation: 2, mentalPressure: 3, risk: 1, positionWeight: 1} },
-      { text: '让同事帮忙把关内容', effects: {eq: 1, background: 1, workAbility: 1, mentalPressure: 1, reputation: 1} },
-      { text: '提前去会议室演练', effects: {workAbility: 2, mentalPressure: -1, iq: 1, reputation: 1} },
-    ]},
     { id: 'e252', stage: 'work', eventType: 'choice', title: '轮岗学习', weight: 3, text: '单位安排新入职人员轮岗学习，你要去不同科室各待三个月。每个科室的领导和同事都不一样。', pools: ['public'], choices: [
       { text: '在每个科室都认真学习', effects: {workAbility: 3, background: 2, reputation: 2, mentalPressure: 2, iq: 1, appearance: 1} },
       { text: '重点在核心科室表现', effects: {desire: 2, positionWeight: 2, mentalPressure: 2, reputation: 1, workAbility: 1} },
@@ -121,7 +114,6 @@ const gd_events_basic_4 = [
     // ====== 新增突发事件 ======
     { id: 'e264', stage: 'work', eventType: 'sudden', title: '突发地震', weight: 3, text: '一场突如其来的地震打乱了正常的工作秩序。办公楼出现了裂缝，需要紧急疏散。', pools: ['public'], effects: {mentalPressure: 6, body: -1, workAbility: 1} },
     { id: 'e265', stage: 'work', eventType: 'sudden', title: '政策突变', weight: 4, text: '上级突然出台了一项新政策，和你之前负责的工作方向完全相反。之前半年的努力白费了。', pools: ['public'], effects: {mentalPressure: 5, workAbility: 2, desire: -2, luck: -1} },
-    { id: 'e266', stage: 'work', eventType: 'sudden', title: '领导更替', weight: 4, text: '单位一把手突然被调走，新领导还没到位。整个单位陷入了群龙无首的状态。', pools: ['public'], effects: {positionWeight: -2, mentalPressure: 3, background: -2} },
     { id: 'e267', stage: 'life', eventType: 'sudden', title: '交通意外', weight: 4, text: '你在上班路上遭遇了一场交通事故，虽然人没事，但车被撞坏了。处理事故花了一整天。', pools: ['public'], effects: {mentalPressure: 4, familyPressure: 2, body: -1} },
     { id: 'e268', stage: 'work', eventType: 'sudden', title: '集体辞职', weight: 3, text: '你分管的部门有三个人同时提出辞职，原因是待遇太低。人手一下子不够用了。', pools: ['public'], effects: {mentalPressure: 5, workAbility: -2, positionWeight: -1, risk: 1, luck: -1} },
     { id: 'e269', stage: 'work', eventType: 'sudden', title: '媒体曝光', weight: 4, text: '单位的一个历史遗留问题被媒体曝光了，引发了社会关注。虽然不是你经手的，但你被安排去处理危机公关。', pools: ['public'], effects: {mentalPressure: 6, risk: 3, reputation: -2, workAbility: 2} },
@@ -362,13 +354,6 @@ const gd_events_basic_4 = [
       { text: '组织座谈会听取各方意见', effects: {eq: 2, background: 2, mentalPressure: 2, workAbility: 1} },
     ]},
     { id: 'e330', stage: 'work', eventType: 'auto', title: '调研成果', weight: 4, text: '调研报告得到了省领导的高度评价，批示"建议很有价值，请相关部门研究落实"。你的名字在省政府系统内传开了。', requireFlag: 'policyResearch', pools: ['省级','市级'], effects: {reputation: 6, positionWeight: 4, workAbility: 3, background: 3, mentalPressure: -2} },
-    { id: 'e331', stage: 'work', eventType: 'choice', title: '省管干部', weight: 3, text: '你被列为省管干部考察对象，组织部门开始了全面考察。你的履历、家庭背景、工作表现都会被仔细审查。', pools: ['省级','市级'], choices: [
-      { text: '积极配合考察，如实汇报情况', effects: {integrity: 3, reputation: 2, mentalPressure: 3, positionWeight: 2, background: 1} },
-      { text: '主动向考察组展示工作成绩', effects: {desire: 3, positionWeight: 2, mentalPressure: 3, reputation: 1, risk: 1} },
-      { text: '请老领导帮忙说好话', effects: {background: 3, risk: 2, mentalPressure: 2, positionWeight: 1, eq: 1} },
-      { text: '保持平常心，顺其自然', effects: {integrity: 2, mentalPressure: -1, reputation: 1, desire: -1} },
-      { text: '提前准备应对可能的问题', effects: {iq: 2, workAbility: 2, mentalPressure: 2, risk: -1} },
-    ]},
 
     // ====== 政法系统专属事件池 ======
     { id: 'e332', stage: 'work', eventType: 'choice', title: '案件评查', weight: 3, text: '上级政法委开展案件质量评查，你发现一个经手案件存在程序瑕疵，但如果纠正可能会引发当事人上访。', pools: ['政法系统', '执法部门'], choices: [

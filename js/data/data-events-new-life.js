@@ -144,12 +144,6 @@ const gd_events_new_life = [
   ]},
 
   // ====== 社交人情类（25个） ======
-  { id: 'enl029', stage: 'life', eventType: 'choice', weight: 4, title: '老领导调走', text: '老领导要调走了，办公室商量着凑钱送份礼物。有人说送购物卡实在，有人说送字画有品位，有人提议集体请吃饭。', choices: [
-    { text: '提议集体送购物卡', effects: {eq: 1, wealth: -5, background: 1, mentalPressure: 1} },
-    { text: '单独送份有品位的礼物', effects: {wealth: -20, background: 2, eq: 1, desire: 1} },
-    { text: '参与集体请客吃饭', effects: {wealth: -15, eq: 1, background: 1, mentalPressure: -1} },
-    { text: '写封感谢信表达心意', effects: {integrity: 2, eq: 1, mentalPressure: 1, wealth: 0} }
-  ]},
   { id: 'enl030', stage: 'life', eventType: 'choice', weight: 5, requireMarried: true, title: '饭局应酬', text: '今晚有饭局，据说是为了"协调"某个项目。你不想去但又怕得罪人，伴侣也抱怨"又喝酒，肝还要不要了"。', choices: [
     { text: '硬着头皮去应酬', effects: {background: 2, body: -1, mentalPressure: 2, eq: 1, familyPressure: 2} },
     { text: '借口身体不适推掉', effects: {familyPressure: -1, mentalPressure: 1, background: -1, integrity: 1} },

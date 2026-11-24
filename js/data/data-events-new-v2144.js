@@ -4,12 +4,6 @@
 // 重点补充政府系统、垂管系统、宣传系统、网信系统专属事件，提升小系统玩家体验。
 const gd_events_new_v2144 = [
   // ---------- 政府系统专属池（6个）----------
-  { id: 'enw173', stage: 'work', eventType: 'choice', weight: 5, title: '领导批示件督办（限期办结）', pools: ['政府系统'], text: '市领导对一件久拖不决的民生诉求作出批示，要求限期办结。你负责跟踪督办，牵头单位却以各种理由推迟。', choices: [
-    { text: '每日调度，逐项核实进展', effects: {workAbility: 3, reputation: 2, mentalPressure: 3} },
-    { text: '发正式督办函，抄送分管领导', effects: {positionWeight: 2, workAbility: 2, risk: 1} },
-    { text: '上门蹲点，现场推动办结', effects: {workAbility: 3, peopleReputation: 2, body: -1, mentalPressure: 2} },
-    { text: '提醒牵头单位注意时限，留痕即可', effects: {mentalPressure: -1, risk: 2, workAbility: 1} },
-  ]},
   { id: 'enw174', stage: 'work', eventType: 'choice', weight: 5, title: '常务会议题协调', pools: ['政府系统'], text: '常务会要审议十多个议题，两个部门因为一个项目的牵头单位争执不下，会议材料到你这里时已晚。', choices: [
     { text: '连夜召集双方协商，争取会前统一', effects: {workAbility: 3, eq: 2, mentalPressure: 4} },
     { text: '按惯例由排序在前的部门牵头', effects: {workAbility: 2, risk: 1, mentalPressure: 1} },

@@ -6,12 +6,6 @@
 // 文本首 40 字按 analyze_work_themes 主题序（接待先于督查/执法）设计，确保归类命中。
 const gd_events_new_v2161 = [
   // ---------- 接待 7 ----------
-  { id: 'enw231', stage: 'work', eventType: 'choice', weight: 4, title: '接待经费核减', pools: ['public'], text: '上级要求压减明年公务接待预算，财务翻出近年开支明细，你的科室被点名压减三成。', choices: [
-    { text: '如实压减，宁可少办也不超标', effects: {integrity: 2, reputation: 1, workAbility: -1} },
-    { text: '压减指标摊给各条线，自己科室少担', effects: {eq: 1, peopleReputation: -1} },
-    { text: '借机梳理流程，把无谓开支省出来', effects: {workAbility: 2, integrity: 1, mentalPressure: 2} },
-    { text: '先拖着，等年底再想办法', effects: {heat: 2, mentalPressure: 1} }
-  ] },
   { id: 'enw232', stage: 'work', eventType: 'choice', weight: 4, title: '招商考察团来访', pools: ['public'], text: '重要客商带队来园区实地考察，领导让你陪同全程接待，规格、路线、餐饮都要拿捏分寸。', choices: [
     { text: '高规格接待，力求留下好印象', effects: {eq: 2, positionWeight: 1, wealth: 1, heat: 1} },
     { text: '从简接待，把功夫下在方案本身', effects: {workAbility: 2, integrity: 1} },
@@ -35,18 +29,6 @@ const gd_events_new_v2161 = [
     { text: '讲成绩为主，难点一笔带过', effects: {reputation: 1, integrity: -1} },
     { text: '按宣传口径讲，多一句不说', effects: {workAbility: 1, mentalPressure: 1} },
     { text: '请分管领导出面主谈，自己补充', effects: {background: 1, eq: 1} }
-  ] },
-  { id: 'enw236', stage: 'work', eventType: 'choice', weight: 4, title: '接待用车告急', pools: ['public'], text: '公务用车平台车辆全派出去了，偏偏明天有重要来访，办公室让你想想办法。', choices: [
-    { text: '协调兄弟单位借车，欠个人情', effects: {eq: 1, peopleReputation: 1, background: 1} },
-    { text: '按制度用社会租赁，走正规手续', effects: {integrity: 2, wealth: -1} },
-    { text: '调整内部用车，压缩其他安排', effects: {workAbility: 1, mentalPressure: 2} },
-    { text: '建议对方自行安排交通', effects: {eq: -1, peopleReputation: -1} }
-  ] },
-  { id: 'enw237', stage: 'work', eventType: 'choice', weight: 4, title: '食堂接待餐标准', pools: ['public'], text: '机关食堂改造后承接了内部接待用餐，有客人嫌标准太简单，管后勤的你被夹在中间。', choices: [
-    { text: '标准就是标准，谁来都一样', effects: {integrity: 2, peopleReputation: -1, reputation: 1} },
-    { text: '在标准内把粗茶淡饭做出特色', effects: {eq: 2, workAbility: 1} },
-    { text: '自掏腰包添两个菜，息事宁人', effects: {eq: 1, wealth: -1, integrity: -1} },
-    { text: '把矛盾报给领导定夺', effects: {background: 1, eq: -1} }
   ] },
   // ---------- 执法 7 ----------
   { id: 'enw238', stage: 'work', eventType: 'choice', weight: 4, title: '执法资格考试', pools: ['执法部门', '政法系统'], text: '单位安排你参加执法资格考试，白天案子不断只能挤晚上时间，同事劝你突击划重点就行。', choices: [

@@ -599,7 +599,6 @@ const gd_events_spec = [
       { text: '用工作成绩说话，不搞这些', effects: {workAbility: 2, integrity: 1, background: -1} },
       { text: '找老同事请教融入之道', effects: {eq: 1, background: 1, mentalPressure: 1} },
     ]},
-    { id: 'e724', stage: 'work', eventType: 'auto', title: '错失晋升信息', weight: 3, maxBackground: 39, text: '遴选公告发出来三天后你才知道。报名窗口只剩两天，材料还缺两份证明——没有熟人提前提醒，也没有人帮你把材料补齐。', pools: ['public'], effects: {mentalPressure: 5, desire: 3, background: -1} },
     { id: 'e725', stage: 'work', eventType: 'choice', title: '担保无门', weight: 3, maxBackground: 39, text: '想参加竞岗，需要单位两名同事联名推荐。你数了数，居然凑不齐两个愿意为你签字的人。', pools: ['public'], choices: [
       { text: '平时多帮同事的忙，攒人情', effects: {eq: 1, background: 3, workAbility: 1} },
       { text: '厚着脸皮逐个去说', effects: {mentalPressure: 3, eq: 1, background: 1} },
@@ -637,11 +636,6 @@ const gd_events_spec = [
     { id: 'e733', stage: 'work', eventType: 'choice', title: '跨部门借调', weight: 3, year: [26, 45], minBackground: 40, maxBackground: 70, excludeFlags: ['seconded', 'secondReview', 'secondDone'], text: '隔壁单位临时缺人，点名想借调你——因为"你两边都熟"。借调是机会，也是人情。', pools: ['public'], choices: [
       { text: '欣然前往，积累跨部门人脉', effects: {background: 3, workAbility: 2, positionWeight: 1, mentalPressure: 2, flag: 'seconded'}, result: '你与两边单位办好交接，正式到新岗位报到；期满考核将决定下一步去留。' },
       { text: '婉拒，安心本职工作', effects: {workAbility: 1, mentalPressure: -1, background: -1}, result: '你说明当前岗位离不开人手，对方理解了你的难处，借调安排暂时作罢。' },
-    ]},
-    { id: 'e734', stage: 'work', eventType: 'choice', title: '领导私下询问', weight: 3, minBackground: 40, maxBackground: 70, text: '一位领导私下找你了解另一个部门的情况。你知道他醉翁之意不在酒，但也知道说错一句话的代价——你人缘好，意味着知道的事也多。', pools: ['public'], choices: [
-      { text: '如实客观陈述，不带情绪', effects: {integrity: 2, background: 2, eq: 1} },
-      { text: '点到为止，暗示自己不想掺和', effects: {eq: 1, background: 1, mentalPressure: 1} },
-      { text: '顺着领导想听的讲', effects: {background: 3, risk: 3, integrity: -2, desire: 2} },
     ]},
     { id: 'e735', stage: 'work', eventType: 'auto', title: '两边都找你', weight: 3, minBackground: 40, maxBackground: 70, text: '同一个下午，两个立场不同的人都来找你牵线——他们恰好互相不对付。你夹在中间，忽然明白了"枢纽"这两个字的重量。', pools: ['public'], effects: {mentalPressure: 3, background: 2, eq: 1} },
 

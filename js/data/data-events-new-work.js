@@ -3,12 +3,6 @@
 // 定位：材料写作/会议/督查等工作子类，文件内以子类注释分组
 const gd_events_new_work = [
     // ---------- 材料写作类（15个） ----------
-    { id: 'enw001', stage: 'work', eventType: 'choice', weight: 7, title: '领导讲话稿', text: '领导让你起草一个讲话稿，特意交代"要有高度，也要接地气"。你在"高度"和"地气"之间反复弹跳，膝盖先扛不住了。', choices: [
-      { text: '翻遍领导近半年讲话，模仿其语言风格', effects: {workAbility: 3, eq: 1, mentalPressure: 2} },
-      { text: '找兄弟单位要一份类似稿件作参考', effects: {background: 2, workAbility: 2, risk: 1} },
-      { text: '大胆融入新提法，做出辨识度', effects: {iq: 2, positionWeight: 2, risk: 3, mentalPressure: 3} },
-      { text: '请老笔杆子帮忙把把关', effects: {eq: 1, workAbility: 2, mentalPressure: -1} },
-    ]},
 
     { id: 'enw003', stage: 'work', eventType: 'choice', weight: 5, title: '调研报告', text: '一份调研报告要交了，可你只去调研了一天，其中半天在车上。报告得写出"问题导向"和"基层声音"。', choices: [
       { text: '补打电话核实数据，把样本说细一点', effects: {workAbility: 3, integrity: 2, mentalPressure: 3} },
@@ -71,11 +65,6 @@ const gd_events_new_work = [
       { text: '提三条思路，留一条后路', effects: {iq: 2, eq: 1, mentalPressure: 2} },
       { text: '附和主要观点，稳妥发言', effects: {mentalPressure: -1, eq: 1, positionWeight: -1} },
       { text: '抛出一个新提法引起讨论', effects: {positionWeight: 2, iq: 2, risk: 2, mentalPressure: 3} },
-    ]},
-    { id: 'enw018', stage: 'work', eventType: 'choice', weight: 6, title: '座谈会', text: '一场座谈会，来的人各有各的诉求。你主持时像在走一桌麻将，每张牌都想听，每张牌都怕点炮。', choices: [
-      { text: '逐个回应，能办的当场表态', effects: {workAbility: 3, eq: 1, risk: 2, mentalPressure: 3} },
-      { text: '只听不表态，会后研究', effects: {mentalPressure: -1, risk: -1, eq: 1} },
-      { text: '挑重点回应，其余记录在册', effects: {workAbility: 2, eq: 1, mentalPressure: 1} },
     ]},
     { id: 'enw019', stage: 'work', eventType: 'choice', weight: 6, title: '专题会', text: '一个专题会开了两小时还没结论，领导看你一眼："你说说？"全场的目光像聚光灯一样打过来。', choices: [
       { text: '抛出提前准备的方案，推动决策', effects: {workAbility: 3, positionWeight: 2, mentalPressure: 3} },
@@ -191,11 +180,6 @@ const gd_events_new_work = [
     ]},
 
     // ---------- 协调沟通类（15个） ----------
-    { id: 'enw046', stage: 'work', eventType: 'choice', weight: 7, title: '部门协调', text: '一件事要三个部门会签，第一个部门说"没意见"，第二个部门"再研究"，第三个部门"不归我们管"。', choices: [
-      { text: '逐个上门沟通，求共识', effects: {eq: 2, workAbility: 2, mentalPressure: 3} },
-      { text: '提请联席会议集体研究', effects: {workAbility: 2, positionWeight: 1, mentalPressure: 2} },
-      { text: '请分管领导出面协调', effects: {background: 2, mentalPressure: -1, eq: 1} },
-    ]},
     { id: 'enw047', stage: 'work', eventType: 'choice', weight: 6, title: '上下对接', text: '上级处室要数据，口径和你们的不一样。你像在两种语言之间当同声传译，还自带词典。', choices: [
       { text: '按上级口径重新统计', effects: {workAbility: 3, mentalPressure: 3, body: -1} },
       { text: '说明口径差异，附对照表', effects: {workAbility: 2, iq: 2, mentalPressure: 2} },
@@ -382,11 +366,6 @@ const gd_events_new_work = [
       { text: '两头兼顾，保持联系', effects: {workAbility: 2, mentalPressure: 5, body: -2, flag: 'seconded'}, result: '你在两边保持沟通，工作压力更大，但也为后续考核留住了余地。' },
       { text: '婉拒，留在原岗位', effects: {mentalPressure: -2, positionWeight: -1, workAbility: 1}, result: '你选择留在原岗位，暂时守住了手头的工作。' },
     ]},
-    { id: 'enw087', stage: 'work', eventType: 'choice', weight: 4, title: '轮岗交流', text: '单位内部轮岗，你被调到一个陌生的科室。新科长比你还年轻，你调整心态的速度赶不上调整岗位的速度。', choices: [
-      { text: '虚心学习，从头做起', effects: {workAbility: 3, eq: 1, mentalPressure: 3} },
-      { text: '发挥原岗位经验，寻找结合点', effects: {iq: 2, workAbility: 2, mentalPressure: 2} },
-      { text: '申请换到熟悉的岗位', effects: {mentalPressure: -1, positionWeight: -2, background: 1} },
-    ]},
     { id: 'enw088', stage: 'work', eventType: 'choice', weight: 5, title: '下沉基层', requireUnitLevelMin: 2, requireUnitLevelMax: 3, excludeFlags: ['grassrootsActive', 'grassrootsDone'], text: '组织安排下沉基层锻炼。基层的办公室比想象中小，群众的诉求比想象中具体。接受后保留原单位关系，期满根据考核决定返回或调整。', choices: [
       { text: '扎下去，解决几件实事', effects: {workAbility: 3, eq: 2, mentalPressure: 4, positionWeight: 2, flag: 'grassrootsWork', grassrootsDispatch: { duration: 1, reason: '下沉基层锻炼' }} },
       { text: '完成规定动作，平稳度过', effects: {workAbility: 2, mentalPressure: 2, positionWeight: 1, flag: 'grassrootsWork', grassrootsDispatch: { duration: 1, reason: '下沉基层锻炼' }} },
@@ -428,11 +407,6 @@ const gd_events_new_work = [
       { text: '推荐更合适的同事', effects: {eq: 1, mentalPressure: -1, positionWeight: -1} },
       { text: '参赛但目标定为"不垫底"', effects: {workAbility: 1, mentalPressure: 2, eq: 1} },
     ]},
-    { id: 'enw097', stage: 'work', eventType: 'choice', weight: 5, title: '岗位练兵', text: '岗位练兵要求"人人过关"。考核题库里有一半是你没接触过的业务，你像复习一场没上过课的考试。', choices: [
-      { text: '加班刷题，确保过关', effects: {workAbility: 3, mentalPressure: 4, body: -1, iq: 1} },
-      { text: '找业务骨干请教', effects: {eq: 1, workAbility: 2, mentalPressure: 2} },
-      { text: '只练重点，及格就行', effects: {workAbility: 1, mentalPressure: 1, risk: 1} },
-    ]},
     { id: 'enw098', stage: 'work', eventType: 'choice', weight: 4, title: '技能竞赛（切磋）', text: '一场技能竞赛，你的对手是兄弟单位的"老法师"。你在后台准备时，手心比稿纸还潮。', choices: [
       { text: '稳住心态，发挥正常水平', effects: {workAbility: 3, mentalPressure: 3, positionWeight: 1} },
       { text: '剑走偏锋，用新方法', effects: {iq: 2, workAbility: 2, risk: 3, mentalPressure: 3} },
@@ -451,12 +425,6 @@ const gd_events_new_work = [
 
     // ================= v2.1.9 内容扩充（enw101-enw112）：政府系统/垂管系统专属 + 联系人深度 + 通用 =================
     // ---- 政府系统（办公厅/政府办）专属池 ----
-    { id: 'enw101', stage: 'work', eventType: 'choice', weight: 6, title: '领导批示件督办', pools: ['政府系统'], text: '主要领导在一份群众来信上批示"请速办"，批件经你手转到承办处室。三天过去，承办处室的答复还是"正在办理中"。领导问起进度时，你手心微微出汗。', choices: [
-      { text: '催办跟踪，汇总进展如实上报', effects: {workAbility: 3, reputation: 1, mentalPressure: 2} },
-      { text: '先汇报"已转办"稳住局面', effects: {risk: 2, positionWeight: 1, integrity: -1} },
-      { text: '协调承办单位优先办理', effects: {eq: 2, workAbility: 2, background: 1} },
-      { text: '把办理时限压力层层传导', effects: {positionWeight: 1, eq: -1, risk: 1} },
-    ]},
     { id: 'enw102', stage: 'work', eventType: 'choice', weight: 5, title: '常务会筹备', pools: ['政府系统'], text: '市政府常务会议题材料要提前三天送审。你在会前一夜发现某部门提交的议题数据与统计局口径不一致，明天就要上会。', choices: [
       { text: '连夜核实，会前说明情况', effects: {workAbility: 3, integrity: 2, mentalPressure: 3, body: -1} },
       { text: '联系统计部门核对口径', effects: {workAbility: 2, eq: 1, background: 1} },
@@ -741,12 +709,6 @@ const gd_events_new_work = [
       { text: '放弃查这份档案', effects: {mentalPressure: -1, workAbility: -1} },
     ]},
     { id: 'enw159', stage: 'work', eventType: 'auto', weight: 3, title: '转业干部培训', text: '单位接收了几名转业干部，你负责岗前培训。有位老营长学公文格式，学得比谁都认真。他笔记本上写着：新战场，新兵蛋子重新练。', effects: {workAbility: 2, eq: 1, reputation: 1} },
-    { id: 'enw160', stage: 'work', eventType: 'choice', weight: 4, title: '部门间的推诿', text: '一项工作在你和兄弟科室之间推了两个来回：他们说"不归我们管"，你们说"我们只管受理"。办事群众在走廊里来回跑，最后问了一句："你们到底谁负责？"', choices: [
-      { text: '牵头厘清职责边界', effects: {workAbility: 3, eq: 1, background: 1} },
-      { text: '先办结再说，别让群众跑', effects: {eq: 2, integrity: 2, workAbility: 1} },
-      { text: '写请示让领导裁定', effects: {workAbility: 1, mentalPressure: 1} },
-      { text: '按现有分工顶回去', effects: {eq: -2, peopleReputation: -1, workAbility: -1} },
-    ]},
     { id: 'enw161', stage: 'work', eventType: 'auto', weight: 3, title: '两会保障', text: '两会期间你在驻地保障服务。凌晨整理材料，白天跟着代表团跑。闭幕那天，代表委员们散去，你瘫在椅子上，忽然觉得这十天比一年都长。', effects: {workAbility: 3, reputation: 2, body: -1, mentalPressure: 2} },
     { id: 'enw162', stage: 'work', eventType: 'choice', weight: 4, title: '材料里的数字', text: '领导讲话稿里的一个数字，你记得和统计局口径不一致。你在"照抄领导说的数"和"改回正确数字"之间犹豫了一下午，稿子快下班才交。', choices: [
       { text: '按正确数字写，附说明', effects: {integrity: 3, workAbility: 2, mentalPressure: 2} },

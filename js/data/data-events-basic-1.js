@@ -374,13 +374,6 @@ const gd_events_basic_1 = [
       { text: '散布竞争对手的不利言论', effects: {risk: 4, integrity: -5, mentalPressure: 3, reputation: -3, flag: 'dirtyCompetitor'} },
       { text: '专注做好本职工作顺其自然', effects: {workAbility: 3, mentalPressure: -1, integrity: 2, reputation: 1} },
     ]},
-    { id: 'e079', stage: 'work', eventType: 'choice', title: '竞争结果', weight: 3, text: '岗位竞聘结果出来了。你得到的消息是——你和竞争对手票数非常接近，最终结果取决于领导的一票。', choices: [
-      { text: '主动找领导汇报工作争取最后一票', effects: {positionWeight:3, background:2, desire:1, mentalPressure:1, reputation:2} },
-      { text: '相信自己的表现已经足够好', effects: {integrity: 2, mentalPressure: 1, reputation: 1, positionWeight: -1} },
-      { text: '打探竞争对手的动向', effects: {iq: 1, risk: 2, mentalPressure: 2, background: 1} },
-      { text: '准备接受任何结果', effects: {integrity:2, mentalPressure:1, desire:-2, reputation:-1, positionWeight:-1} },
-      { text: '联合其他同事给自己投票', effects: {background: 2, eq: 1, risk: 2, mentalPressure: 2, reputation: -1} },
-    ]},
     { id: 'e080', stage: 'work', eventType: 'auto', title: '竞聘成功', weight: 3, text: '你成功获得了这个岗位！这是你职业生涯的一个重要里程碑。竞争对手虽然不服气，但也只能接受结果。', requireFlag: 'fairCompetitor', effects: {positionWeight: 2, reputation: 3, workAbility: 2, mentalPressure: -2, desire: 2} },
     // ====== 连锁事件链四：导师线 ======
     { id: 'e081', year: [28, 65], stage: 'work', eventType: 'choice', title: '导师退休（再遇良师）', weight: 5, excludeFlag: 'tookMentorOffer', text: '第二位带你入行的老领导要退休了。他把一箱工作笔记留给你："这些年的门道都在里面，你慢慢看。"他说退休前还能最后帮你一次，但怎么帮，看你的意思。', choices: [
@@ -389,13 +382,6 @@ const gd_events_basic_1 = [
       { text: '当场请教笔记里的门道', effects: {iq: 2, workAbility: 2, background: 2, mentalPressure: 1} },
       { text: '请老领导帮忙引荐上级单位', effects: {background: 4, positionWeight: 2, desire: 2, reputation: 1, risk: 1} },
       { text: '组织欢送会，把笔记当众展示', effects: {eq: 2, reputation: 2, background: 1, mentalPressure: -1} },
-    ]},
-    { id: 'e082', stage: 'work', eventType: 'choice', title: '新领导到任', weight: 3, text: '新领导到任了，风格和前任完全不同。他要求所有工作"推倒重来"，你之前的努力可能白费了。', choices: [
-      { text: '积极适应新领导的工作方式', effects: {eq: 2, workAbility: 2, mentalPressure: 2, positionWeight: 1, reputation: 1} },
-      { text: '保留原有工作成果等待时机', effects: {iq: 2, workAbility: 1, mentalPressure: 1, risk: 1, positionWeight: -1} },
-      { text: '联合老同事表达不同意见', effects: {background: 2, eq: 1, risk: 2, mentalPressure: 3, positionWeight: -1} },
-      { text: '主动向新领导汇报原有工作', effects: {background: 2, positionWeight: 2, eq: 1, mentalPressure: 2, reputation: 1} },
-      { text: '按新要求重新开始', effects: {workAbility: 2, mentalPressure: 3, desire: -1, positionWeight: 1} },
     ]},
     { id: 'e083', stage: 'work', eventType: 'auto', title: '导师遗产', weight: 4, text: '已经退休的老领导在行业内还有很大影响力。他在一次行业会议上提到了你的名字，让很多高层对你有了印象。', requireFlag: 'tookMentorOffer', effects: {background: 5, positionWeight: 3, reputation: 3, mentalPressure: -1} },
     // ====== 连锁事件链五：家庭线 ======

@@ -43,12 +43,6 @@ const gd_events_new_v2178 = [
   { id: 'enl213', stage: 'life', eventType: 'sudden', weight: 3, year: [26, 70], title: '清晨的物业停暖', effects: { mentalPressure: 3, familyPressure: 2, wealth: -2 }, text: '深冬清晨六点，暖气管道爆裂停暖，全楼在业主群里吵成一团。你披着羽绒服下楼帮着物业找阀门，楼道里的水已经没到脚踝。' },
   { id: 'enl214', stage: 'life', eventType: 'sudden', weight: 3, year: [24, 62], title: '老家亲戚突然到访', effects: { familyPressure: 2, mentalPressure: 2, wealth: -2 }, text: '周末早上九点，老家堂哥带着两个提包突然出现在你家门口，说"来城里看看你"。厨房里只有昨晚的剩菜，你一边切菜一边想今晚睡哪。' },
   // ---------- ② 接待 ×2 ----------
-  { id: 'enw282', stage: 'work', eventType: 'choice', weight: 4, pools: ['public'], title: '接待住宿的安排', text: '上级检查组住宿要安排，宾馆只剩两种房型：标准的标间和超标准的套房。接待标准红头文件在抽屉里躺着，上面划痕清晰。', choices: [
-    { text: '按标准标间安排，如实说明房型', effects: { integrity: 2, workAbility: 1, mentalPressure: 1 }, result: '检查组长说"住标准间踏实"' },
-    { text: '请示办公室再定', effects: { background: 1, eq: 1 }, result: '请示过了，标准没变' },
-    { text: '订两间套房备用，看情况安排', effects: { wealth: -2, risk: 2 }, result: '套房空着没人住，账要自圆其说' },
-    { text: '让宾馆出"协议价"规避标准', effects: { risk: 3, integrity: -2 }, result: '协议价也是价，账在民心' }
-  ] },
   { id: 'enw283', stage: 'work', eventType: 'choice', weight: 4, pools: ['public'], title: '接待用餐的陪餐', text: '接待用餐只剩两个陪餐名额，处长安排名单时扫了你一眼。餐桌上的话题从工作聊到人脉，你在心里记下了菜价。', choices: [
     { text: '控制陪餐人数，按一主一陪执行', effects: { integrity: 2, workAbility: 1 }, result: '接待从简，主宾都自在' },
     { text: '借用餐谈正事，把话题带回来', effects: { eq: 1, workAbility: 2 }, result: '酒桌谈正事，效率高于气氛' },

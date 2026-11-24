@@ -57,12 +57,6 @@ const gd_events_new_theme = [
       { text: '通报了事，不深究', effects: {mentalPressure: -2, risk: 4, integrity: -3} },
       { text: '移交纪检部门处理', effects: {background: 1, integrity: 2, mentalPressure: 1} },
     ]},
-    { id: 'ent012', stage: 'work', eventType: 'choice', weight: 5, title: '超标接待', text: '上级来调研，接待标准卡在"四菜一汤"。可对方带队的是老熟人，处里有人嘀咕"加两个菜不碍事"。', choices: [
-      { text: '严格执行接待标准，不超标', effects: {integrity: 3, workAbility: 1, mentalPressure: 2} },
-      { text: '加菜但自掏腰包补差价', effects: {integrity: 2, wealth: -30, eq: 1} },
-      { text: '公款超标接待，"热情一点"', effects: {risk: 5, integrity: -4, wealth: -100} },
-      { text: '安排工作餐，边吃边谈工作', effects: {workAbility: 2, integrity: 2, mentalPressure: 1} },
-    ]},
     { id: 'ent013', stage: 'work', eventType: 'choice', weight: 5, title: '公车钥匙', text: '周末要回老家一趟，单位公车钥匙就挂在值班室。司机说"反正周末也没人用"。', choices: [
       { text: '自己买票坐车回去', effects: {integrity: 3, wealth: -20, mentalPressure: 1} },
       { text: '申请私事用车并缴费', effects: {integrity: 2, wealth: -50, workAbility: 1} },
@@ -458,7 +452,6 @@ const gd_events_new_theme = [
     // ---------- v2.35 内容填充：办公室日常微叙事（纯内容，无新 flag） ----------
     { id: 'ent119', stage: 'work', eventType: 'auto', weight: 3, title: '办公室绿植', text: '科室新来的年轻人买了盆绿萝放在窗台，说要给老气横秋的办公室添点生气。一个月后，绿萝长得很好，大家路过都会顺手浇浇水——包括平时最严肃的科长。', effects: {mentalPressure: -2, workAbility: 1, eq: 1} },
 
-    { id: 'ent121', year: [40, 65], stage: 'work', eventType: 'auto', weight: 3, title: '退休欢送会', text: '隔壁科室的老王退休了，欢送会上他举着茶杯说了四十分钟，从参加工作讲到孙子满月。散场时他把养了十年的钢笔送给刚来的小李："笔杆子要传下去。"你忽然想，自己退休那天会说些什么。', effects: {reputation: 2, eq: 1, mentalPressure: -1} },
     { id: 'ent122', stage: 'life', eventType: 'choice', weight: 3, title: '同学借钱', text: '毕业后再没联系过的大学同学突然加你微信，寒暄几句后开口借三万，说生意周转，下个月就还。你想起上学时他借过你饭卡，一直没还。', choices: [
       { text: '爽快转账，同学情分在', effects: {wealth: -30, eq: 1, background: 2, familyPressure: 1} },
       { text: '婉拒，说自己手头也紧', effects: {eq: -1, desire: 1, reputation: -1} },
@@ -466,7 +459,6 @@ const gd_events_new_theme = [
     ]},
     { id: 'ent123', stage: 'work', eventType: 'auto', weight: 2, title: '文明单位奖金', text: '单位评上"文明单位"，每人发了一笔奖金。财务贴出明细，大家盘算着怎么花。你领到钱，给孩子报了早就想报的兴趣班。', effects: {wealth: 8, reputation: 1, familyPressure: -2} },
     { id: 'ent124', stage: 'work', eventType: 'auto', weight: 2, title: '值班室的除夕', text: '今年除夕轮到你值班。办公室很安静，窗外烟花声远远传来。你泡了杯茶，翻着通讯录，给没法回家的同事发了句"新年好"。零点时，门卫大爷端来一盘饺子："值班的都有份。"', effects: {mentalPressure: -3, reputation: 1, eq: 1} },
-    { id: 'ent125', stage: 'life', eventType: 'auto', weight: 2, title: '政务大厅的表扬信', text: '政务大厅的墙上贴了一封表扬信，是办事群众写的，感谢你帮他解决了拖了三年的房产证问题。信的最后一句是："跑了几趟没办成，只有这次，有人真正听我说话。"同事们路过都要看一眼，你看得有点不好意思。', effects: {peopleReputation: 4, reputation: 2, mentalPressure: -1} },
     { id: 'ent126', stage: 'work', eventType: 'choice', weight: 2, title: '单位搬迁', text: '单位要搬到新办公区，装修方案里有一项：你的办公室窗外正对一片工地，要吵至少两年。后勤问你要不要换到北面安静的房间——但那间离领导办公室远，也离"核心圈子"远。', choices: [
       { text: '安静要紧，换到北面', effects: {mentalPressure: -3, positionWeight: -1, body: 1} },
       { text: '忍两年噪音，留在核心圈', effects: {mentalPressure: 2, positionWeight: 1, reputation: 1} },
@@ -1240,11 +1232,6 @@ const gd_events_new_theme = [
     { text: '请假赶回老家，守在病床前', effects: { familyPressure: -5, mentalPressure: 3, background: -1, positionWeight: -1 } },
     { text: '托付家人照料，先把手头项目干完', effects: { background: 1, positionWeight: 1, familyPressure: 8 } },
     { text: '请几天假回去，期间远程盯项目', effects: { familyPressure: -2, mentalPressure: 2, workAbility: 1 } }
-  ] },
-  { id: 'ent278', stage: 'life', eventType: 'choice', weight: 4, year: [25, 55], title: '💍 配偶升职', text: '你爱人单位宣布了提拔名单，她被任命为部门负责人。晚上她跟你商量：新岗位要经常出差，孩子接送得重新安排。', choices: [
-    { text: '全力支持，家务多担一些', effects: { familyPressure: -2, background: 1, eq: 2 } },
-    { text: '支持但约法三章，家庭优先', effects: { familyPressure: 1, eq: 1 } },
-    { text: '心里不是滋味，嘴上阴阳怪气', effects: { familyPressure: 4, mentalPressure: 2, eq: -2 } }
   ] },
   { id: 'ent279', stage: 'life', eventType: 'choice', weight: 4, year: [35, 60], title: '🏚️ 老宅拆迁', text: '老家传来消息：祖宅所在片区要拆迁了。补偿方案有两档——签字拿钱，或者等政策观望。老宅是爷爷那辈留下的，邻居们都在连夜签协议。', choices: [
     { text: '签字拿钱，落袋为安', effects: { wealth: 40, peopleReputation: -2 } },

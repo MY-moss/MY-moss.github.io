@@ -47,13 +47,6 @@ const gd_events_basic_5 = [
       { text: '组织支部党员集中补材料', effects: {workAbility: 2, mentalPressure: 3, risk: 1, integrity: -1} },
     ]},
     { id: 'e344', stage: 'work', eventType: 'auto', title: '党建先进', weight: 4, text: '党建考核结果出来了，你的支部被评为"先进党支部"！你作为支部书记在经验交流会上做了典型发言。', requireFlag: 'partyExam', pools: ['党委系统', '机关'], effects: {reputation: 4, positionWeight: 3, background: 2, mentalPressure: -2, desire: 1} },
-    { id: 'e345', stage: 'work', eventType: 'choice', title: '干部考察', weight: 3, text: '省委组织部来单位开展干部考察工作，你被列为推荐考察对象。这是你职业生涯的重要关口。', pools: ['党委系统', '机关'], choices: [
-      { text: '全面梳理工作业绩，做好准备', effects: {workAbility: 3, desire: 2, mentalPressure: 3, reputation: 2, positionWeight: 2} },
-      { text: '走访座谈对象，争取支持', effects: {eq: 2, background: 2, mentalPressure: 2, risk: 1, reputation: 1} },
-      { text: '以平常心对待，真实展现自己', effects: {integrity: 3, mentalPressure: -1, reputation: 1, positionWeight: 1} },
-      { text: '请领导帮忙推荐', effects: {background: 3, risk: 1, mentalPressure: 2, positionWeight: 1, eq: 1} },
-      { text: '了解考察流程，针对性准备', effects: {iq: 2, workAbility: 2, mentalPressure: 2, risk: -1} },
-    ]},
 
     // ====== 短链事件（2-3事件链，自然触发）=====
     // 链1: 师徒传承

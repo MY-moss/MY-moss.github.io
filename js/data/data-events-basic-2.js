@@ -87,26 +87,12 @@ const gd_events_basic_2 = [
       { text: '直接拒绝说手头紧', effects: {mentalPressure: -1, integrity: 1, familyPressure: 3, eq: -1, reputation: -1} },
       { text: '帮他分析创业计划看是否有前景', effects: {iq: 2, workAbility: 2, eq: 1, mentalPressure: 2, familyPressure: 1} },
     ]},
-    { id: 'e106', stage: 'work', eventType: 'choice', title: '提拔下属', weight: 3, text: '你手下有一个表现优秀的年轻人，你认为他应该得到提拔。但人事部门说名额有限，需要你"推荐更有资历的人"。', choices: [
-      { text: '坚持推荐有能力的人', effects: {integrity: 4, reputation: 3, positionWeight: 1, mentalPressure: 3, background: 1} },
-      { text: '妥协推荐有资历的人', effects: {eq: 1, positionWeight: 1, mentalPressure: 1, reputation: -1, integrity: -1} },
-      { text: '帮年轻人争取一个试用机会', effects: {workAbility: 2, eq: 1, reputation: 2, mentalPressure: 2, positionWeight: 1} },
-      { text: '让年轻人自己去找领导争取', effects: {eq: 1, workAbility: 1, mentalPressure: 1, reputation: 1, integrity: 1} },
-      { text: '为年轻人写一封推荐信', effects: {integrity: 3, workAbility: 2, reputation: 2, mentalPressure: 2, eq: 1} },
-    ]},
     { pools: ['public'], id: 'e107', stage: 'life', eventType: 'choice', title: '搬家决定', weight: 4, text: '你租的房子要到期了，房东要涨租金。你考虑要不要买一套自己的房子，但现在房价处于高位，利率也不低。', choices: [
       { text: '咬牙买房上车', effects: {familyPressure: 5, mentalPressure: 3, desire: 2, risk: 2, reputation: 1} },
       { text: '换个便宜点的房子租', effects: {familyPressure: -2, mentalPressure: -1, workAbility: 1, desire: -1} },
       { text: '申请单位公租房', effects: {background: 2, familyPressure: -2, mentalPressure: -1, reputation: 1, positionWeight: 1} },
       { text: '和房东谈长期租约压价', effects: {eq: 1, familyPressure: -1, mentalPressure: 1, iq: 1} },
       { text: '先存钱等房价降了再买', effects: {familyPressure: 1, mentalPressure: 1, desire: -1, integrity: 1} },
-    ]},
-    { id: 'e108', stage: 'work', eventType: 'choice', title: '临时点名发言', weight: 3, text: '全局大会上，领导突然点名让你发言谈谈对某项工作的看法。你之前没有准备，所有人的目光都聚集在你身上。', choices: [
-      { text: '临时组织语言说出真实想法', effects: {eq: 1, reputation: 2, positionWeight: 1, mentalPressure: 3, workAbility: 1} },
-      { text: '说一些套话安全过关', effects: {risk: -1, mentalPressure: 1, reputation: -1, positionWeight: -1} },
-      { text: '结合自己的工作谈具体问题', effects: {workAbility: 3, reputation: 2, positionWeight: 2, mentalPressure: 3, iq: 1} },
-      { text: '把问题抛回给领导请教', effects: {eq: 1, mentalPressure: 1, reputation: 1, positionWeight: 1} },
-      { text: '借机提出早就想说的建议', effects: {integrity: 2, workAbility: 2, reputation: 2, mentalPressure: 3, risk: 1} },
     ]},
     { pools: ['public'], id: 'e109', stage: 'life', eventType: 'choice', title: '朋友圈风波', weight: 3, text: '你发的一条朋友圈被人截图发到了网上，引起了不必要的误解。有人开始人肉搜索你的个人信息。', choices: [
       { text: '立即删除朋友圈并解释清楚', effects: {eq: 1, risk: -3, mentalPressure: 3, reputation: 1, integrity: 2, appearance: 1} },

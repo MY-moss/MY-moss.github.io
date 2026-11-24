@@ -24,11 +24,6 @@ const gd_events_new_career = [
     { text: '请人事科同志帮忙把关', effects: {eq: 1, background: 1, positionWeight: 2, mentalPressure: 1} },
     { text: '按部就班准备不急不躁', effects: {mentalPressure: -1, positionWeight: 1, integrity: 1} },
   ]},
-  { id: 'enc004', stage: 'career', eventType: 'choice', weight: 6, title: '职级并行（名额竞争）', text: '职级并行政策落地，你符合晋升职级的条件。但名额有限，单位要综合排名确定人选。', choices: [
-    { text: '整理近年工作业绩积极争取', effects: {workAbility: 2, positionWeight: 3, desire: 2, mentalPressure: 2} },
-    { text: '服从组织安排相信公平', effects: {integrity: 2, mentalPressure: -1, positionWeight: 1} },
-    { text: '找分管领导表达诉求', effects: {background: 2, positionWeight: 2, desire: 1, mentalPressure: 1} },
-  ]},
   { id: 'enc005', stage: 'career', eventType: 'choice', weight: 4, requireRankMin: 2, year: [25, 45], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '挂职机会', text: '组织部门选派干部到沿海发达地区挂职锻炼两年。这是个开阔眼界的好机会，但意味着离开家人和熟悉的岗位。', choices: [
     { text: '积极申请把握难得机会', effects: {workAbility: 3, background: 3, positionWeight: 2, mentalPressure: 3, political: 2, flag: 'seconded'}, result: '你通过组织选派赴沿海地区挂职，原单位保留关系，一年后将进入阶段考核。' },
     { text: '考虑到家庭因素放弃机会', effects: {mentalPressure: -2, desire: -1, eq: 1} },
@@ -397,11 +392,6 @@ const gd_events_new_career = [
     { text: '接受现实重新规划人生', effects: {mentalPressure: 7, iq: 1, desire: -2, positionWeight: -8, workAbility: 1} },
     { text: '四处申诉不甘心', effects: {mentalPressure: 8, risk: 3, eq: -2, positionWeight: -7} },
     { text: '消沉度日借酒浇愁', effects: {mentalPressure: 9, workAbility: -4, desire: -4, integrity: -2} },
-  ]},
-  { id: 'enc086', stage: 'career', eventType: 'choice', weight: 5, title: '退休', year: [50, 65], text: '到了法定退休年龄，你要办理退休手续了。离开工作了几十年的单位，心里五味杂陈。', choices: [
-    { text: '愉快退休享受晚年生活', effects: {mentalPressure: -4, desire: 2, wealth: 1, eq: 1, workAbility: -1} },
-    { text: '返聘继续发挥余热', effects: {wealth: 2, workAbility: 1, mentalPressure: 2, eq: 1} },
-    { text: '不舍失落情绪低落', effects: {mentalPressure: 4, desire: -2, eq: -1, workAbility: -1} },
   ]},
   { id: 'enc087', stage: 'career', eventType: 'choice', weight: 4, requireYearsWorkedMin: 30, title: '提前退休', year: [45, 60], text: '工龄满三十年可以申请提前退休。你才五十出头，是退下来享清福，还是继续干几年？', choices: [
     { text: '提前退休开启新生活', effects: {mentalPressure: -3, wealth: -1, desire: 2, eq: 1, workAbility: -1} },

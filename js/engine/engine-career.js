@@ -771,6 +771,22 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'renewBookLink', next: 'renew_book_2', delay: 2 },
         { flag: 'renewBookReader', next: 'renew_book_2', delay: 2 },
         { flag: 'renewBookReviewed', next: 'renew_book_3', delay: 3 },
+        { flag: 'renewGrantApply', next: 'renew_grant_rejected', delay: 1 },
+        { flag: 'renewGrantStay', next: 'renew_grant_local', delay: 1 },
+        { flag: 'renewGrantNotes', next: 'renew_grant_local', delay: 1 },
+        { flag: 'renewGrantReviewed', next: 'renew_grant_3', delay: 4 },
+        { flag: 'renewFerryExtend', next: 'renew_ferry_lost', delay: 2 },
+        { flag: 'renewFerryClose', next: 'renew_ferry_bus', delay: 2 },
+        { flag: 'renewFerryMerge', next: 'renew_ferry_bus', delay: 2 },
+        { flag: 'renewFerryReviewed', next: 'renew_ferry_3', delay: 3 },
+        { flag: 'renewDuetJoint', next: 'renew_duet_split', delay: 2 },
+        { flag: 'renewDuetSeparate', next: 'renew_duet_independent', delay: 2 },
+        { flag: 'renewDuetDecline', next: 'renew_duet_independent', delay: 2 },
+        { flag: 'renewDuetReviewed', next: 'renew_duet_3', delay: 3 },
+        { flag: 'renewGardenJoin', next: 'renew_garden_closed', delay: 2 },
+        { flag: 'renewGardenGuest', next: 'renew_garden_pass', delay: 2 },
+        { flag: 'renewGardenDecline', next: 'renew_garden_pass', delay: 2 },
+        { flag: 'renewGardenReviewed', next: 'renew_garden_3', delay: 3 },
     ];
 };
 // 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
@@ -779,7 +795,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
     const known=new Set((GameData.events||[]).map(e=>e.id));
     const unique=new Map();
     const labels=[
-      [/^renew_lesson_/,'第二志愿 · 小梁'],[/^renew_room_/,'借来的教室 · 唐老师'],[/^renew_keepsake_/,'家庭旧物 · 不同记忆'],[/^renew_book_/,'样书 · 阿岑'],[/^renew_stage_/,'小剧场 · 罗青'],[/^renew_route_/,'公交变迁 · 顾芸'],[/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
+      [/^renew_grant_/,'未入选的课题 · 程越'],[/^renew_ferry_/,'渡口停航 · 出行变迁'],[/^renew_duet_/,'合作终止 · 许闻'],[/^renew_garden_/,'临时花园 · 方叔'],[/^renew_lesson_/,'第二志愿 · 小梁'],[/^renew_room_/,'借来的教室 · 唐老师'],[/^renew_keepsake_/,'家庭旧物 · 不同记忆'],[/^renew_book_/,'样书 · 阿岑'],[/^renew_stage_/,'小剧场 · 罗青'],[/^renew_route_/,'公交变迁 · 顾芸'],[/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
@@ -831,6 +847,63 @@ GameEngine.prototype.getLifePathEvent = function(event) {
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'renew_grant_rejected':
+      if(f.renewLessonRelease){add('想起小梁当年独立选择的经历，你没有把这次未获选归咎于程越。');bump(0,{mentalPressure:-1});}
+      break;
+    case 'renew_grant_local':
+      if(f.renewGrantStay)add('当年留下来完成的工作已经交付，程越还保留着那次的交接记录。');
+      else if(f.renewGrantNotes)add('那份独立笔记仍有几页没有写完，外地报告的结论并不能直接回答其中的问题。');
+      break;
+    case 'renew_grant_3':
+      if(f.renewGrantApply)add('当年你确实提交过申请但未获选，这段履历不能补写成联合组成员。');
+      else add('你没有报名那次联合组课题，今日的报告来自此后的工作。');
+      if(f.renewGrantSalvage)add('原来整理出的研究建议仍有版本记录，其中部分已被新证据修正。');
+      else if(f.renewGrantRebuild)add('程越后来独立处理了若干问题，报告的署名属于实际研究者。');
+      else if(f.renewGrantEnd)add('停止额外研究之后，你没有参与后来形成这份报告的工作。');
+      if(f.renewCreditLegacy){add('你想起沈宁当年的署名分歧，主动核对了发言范围。');bump(0,{mentalPressure:-1});}
+      break;
+    case 'renew_ferry_bus':
+      if(f.renewFerryClose)add('你当年提出结束试点的建议，此刻仍需面对替代服务没有完全解决的问题。');
+      else if(f.renewFerryMerge)add('合并班次曾让部分出行更困难，停航之后这些问题转到新的接驳系统。');
+      if(f.renewRouteHonest){add('公交线路的分阶段评价记录可以帮助区分停航前后不同的需求。');bump(0,{workAbility:1});}
+      break;
+    case 'renew_ferry_lost':
+      if(f.renewRouteWait)add('你曾见过交通意见被留待下一轮评估，这次不把尚无结果的需求当成已解决。');
+      break;
+    case 'renew_ferry_3':
+      if(f.renewFerryExtend)add('当年的续行建议没有阻止停航，渡船没有恢复。');
+      else add('最初对班次与补贴的取舍已经成为旧服务的历史。');
+      if(f.renewFerryRepair)add('补充调查让一些新服务需求有了记录，但没有复原旧渡口。');
+      else if(f.renewFerryTriage)add('那时的临时接驳解决了部分急需，并没有覆盖每个人。');
+      else if(f.renewFerryHandoff)add('移交以后，你不再负责新的运营安排。');
+      break;
+    case 'renew_duet_split':
+      if(f.renewCreditTaken){add('以前成果署名的争议提醒你，共同文件的归属不能凭谁更资深决定。');bump(0,{mentalPressure:1});}
+      break;
+    case 'renew_duet_independent':
+      if(f.renewDuetSeparate)add('你们当年只是各自尝试小样，并没有共同维护协议。');
+      else if(f.renewDuetDecline){add('你当年明确拒绝了长期合作，今天也没有理由要求许闻接受合并。');out.choices[1].text='提供可公开的独立业务经验，不提出合并';result(1,'你只分享自己掌握的公开经验，许闻的工具仍由他的团队独立维护。');}
+      break;
+    case 'renew_duet_3':
+      if(f.renewDuetJoint)add('共同文件夹早已关闭，你们不再是一个共同项目组。');
+      else add('那份合作备忘录从未签署，不能把各自的工作说成共同成果。');
+      if(f.renewDuetRespect)add('双方保留了独立选择的空间。');
+      else if(f.renewDuetBridge)add('当时约定的有限共享没有改变后来各自维护的事实。');
+      else if(f.renewDuetClosed)add('那次结束之后，你们没有再开启共同项目。');
+      if(f.renewBookReviewed)add('你记得阿岑的样书撤稿经历，知道过去的合作不能自动授权新的使用。');
+      break;
+    case 'renew_garden_pass':
+      if(f.renewGardenGuest)add('你还记得最初帮忙种植的那一天，但此后并未参与轮值。');
+      else if(f.renewGardenDecline)add('你从来不是这里的固定维护者，这次只是收到邻居的开放日邀请。');
+      break;
+    case 'renew_garden_3':
+      if(f.renewGardenJoin)add('你曾轮值照顾过旧花园，知道它并不会因为怀念而重新出现。');
+      else add('过去你并未长期维护旧花园，更多是作为邻居了解它的变化。');
+      if(f.renewGardenMove)add('当时参与转移的少量植物已经有了新的去处。');
+      else if(f.renewGardenMemory)add('你还留着关于旧花园结束那天的记忆。');
+      else if(f.renewGardenLeave)add('你没有参与最后的整理，方叔也没有因此要求你补偿什么。');
+      if(f.renewStageLegacy)add('小剧场里的新演员也曾让你明白，新事物并不必须复刻过去。');
+      break;
     case 'renew_lesson_2':
       if(f.renewLessonChoice)add('小梁还留着当年你给他的两份说明，这次他已经自己问过新岗位的人。');
       else if(f.renewLessonCareer){add('当年你推荐的发展方向与这次选择不同，他有些担心你会认为自己走了弯路。');bump(0,{mentalPressure:1});}
@@ -1570,6 +1643,10 @@ GameEngine.prototype.getLifeEvaluation = function() {
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
+  if(f.renewGrantLegacy)memories.push('你如实讲述了未参加联合课题的那段经历，没有将后来成果归于自己。');
+  if(f.renewFerryLegacy)memories.push('旧渡船停航后，你在河岸听见了不同的新旧出行体验。');
+  if(f.renewDuetLegacy)memories.push('你与许闻的成果在多年后的交流中得到独立介绍。');
+  if(f.renewGardenLegacy)memories.push('旧花园已经结束，你和方叔在另一处花坛重逢。');
   if(f.renewLessonLegacy)memories.push('你与小梁多年后以独立同行的身份交谈。');
   if(f.renewRoomLegacy)memories.push('唐老师离开岗位后，社区活动空间的记录交给了新一代组织者。');
   if(f.renewKeepsakeLegacy)memories.push('家里的旧照片与不同记忆得到了有边界的保存。');
