@@ -174,6 +174,8 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     const e = this.state.currentEvent; if (!e || !e.choices) return;
     const c = e.choices[ci];
     if (!c || !this.isChoiceEnabled(c)) return false;
+    if (e.projectEvent) return this.resolvePolicyProjectChoice(ci);
+    if (e.opinionCrisis) return this.resolvePolicyOpinionChoice(ci);
     if (e.id) {
       this.state.player.seenEvents = this.state.player.seenEvents || [];
       if (!this.state.player.seenEvents.includes(e.id)) this.state.player.seenEvents.push(e.id);
@@ -197,9 +199,6 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     if (c.effects && c.effects.careerLogNote) {
       this.state.player.careerLog.push({ year: this.state.player.age, event: c.effects.careerLogNote });
     }
-    // 政策项目与舆情危机复用事件面板，但由项目模块推进自己的状态机。
-    if (e.projectEvent) { this.resolvePolicyProjectChoice(ci); return; }
-    if (e.opinionCrisis) { this.resolvePolicyOpinionChoice(ci); return; }
     // ===== 赌博动态事件（v2.5）：赌注递增 / 选项递增 / 连续5次不赌消退 =====
     if (e.gambleDynamic) {
       const gp = this.state.player;
@@ -311,6 +310,7 @@ GameEngine.prototype.isChoiceEnabled = function(c) {
     if (!c) return false;
     const p = this.state.player;
     const bg = this.state.hidden.background;
+    if (c.effects?.projectBudget<0 && this.state.currentEvent?.projectEvent && (this.state.policyProject?.budget??14)+c.effects.projectBudget<0) return false;
     if (c.minBackground !== undefined && bg < c.minBackground) return false;
     if (c.maxBackground !== undefined && bg > c.maxBackground) return false;
     if (c.minWealth !== undefined && (p.wealth || 0) < c.minWealth) return false;
@@ -955,7 +955,7 @@ GameEngine.prototype.generateEvent = function(force) {
       // v2.43 廉政挂钩：腐败（风险≥40）或被开除党籍者，中央遴选机会骤降（×0.1）
       // v2.49 D6：×0.1 后权重 12 仍高于普通事件基准——降为 ×0.05（=6），腐败者中央捷径基本关闭
       if (p.unitLevel === 3 && e.id === 'e639') {
-        w *= 120;
+        w *= 12;
         if (p.flags.expelledFromParty || this.state.hidden.risk >= 40) w *= 0.05;
       }
       if (f.centralCandidate && e.id === 'e640') w *= 20;
@@ -1084,7 +1084,7 @@ GameEngine.prototype.checkEndings = function() {
     }
     if (p.age >= (p.retireAgeExt || (p.gender === '女' ? 55 : 60))) {
       if (this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return;
-      const handoff=this.getPendingCausalConsequences().find(x=>['arc_team_legacy_4','arc_receipt_legacy_4','arc_classmate_legacy_4'].includes(x.id)&&x.overdue);
+      const handoff=this.getPendingCausalConsequences().find(x=>(['arc_team_legacy_4','arc_receipt_legacy_4','arc_classmate_legacy_4'].includes(x.id)||x.id.startsWith('renew_'))&&x.overdue);
       if(handoff){
         const event=GameData.events.find(x=>x.id===handoff.id);
         if(event){this.state.currentEvent=this.getLifePathEvent(event);return;}
@@ -1156,25 +1156,21 @@ GameEngine.prototype.determineEnding = function() {
     // 巅峰：正厅级以上 + 地市级以上 + 高声誉低风险 + 长期深耕 + 晋升节奏快（中央单位走 central 线，不再判巅峰）
     // v2.7.1 收紧：正常玩家随机玩 45% 达巅峰过于泛滥；加晋升节奏（≥7次）+声誉/能力门槛提升。
     // 放宽至 0.75 后仍在固定种子 500 局中达到 23%，与稀有顶级结局定位不符；本轮收敛为 0.55，目标约 15-20%。
-    if (unitLevel !== 4 && p.leadershipRank >= 8 && h.risk < 40 && unitLevel >= 2 && p.reputation > 70 && h.workAbility > 65 && p.yearsWorked > 20 && p.promotions >= 6 && this.randf() < 0.40) return 'skyline';
+    if (unitLevel !== 4 && p.leadershipRank >= 8 && h.risk < 30 && unitLevel >= 2 && p.reputation > 82 && h.workAbility > 80 && p.yearsWorked > 20 && p.promotions >= 6 && ((p.policyFollowups||[]).some(x=>x.quality==='strong'&&x.review2)||Object.values(p.dutyVerified||{}).reduce((a,b)=>a+b,0)>=5)) return 'skyline';
     // 快速：晋升快+职级高+欲望强（v2.27 平衡迭代：第一轮 4次/欲望8 → 45% 泛滥；收敛为 5次/欲望12，目标 ~15%）
     if (p.leadershipRank >= 5 && p.promotions >= 5 && h.risk < 50 && h.desire > 12 && unitLevel >= 1) return 'fast';
     // 清官：一生清廉，integrity>80、risk<10、工作20年以上、无任何腐败flag，名垂青史（v2.49：逃脱过调查者不得判定）
-    if (h.integrity > 80 && h.risk < 10 && p.yearsWorked >= 20 && !this.hasCorruptFlag(p.flags) && !p.flags.escapedOnce) return 'honest_official';
+    if (h.integrity > 85 && h.risk < 10 && p.yearsWorked >= 20 && (p.flags.refusedBribe||p.flags.reportedOthers||p.flags.lifeIntegrityReviewed||(p.dutyVerified?.special_finance||0)>=3||(p.dutyVerified?.special_law||0)>=3) && !this.hasCorruptFlag(p.flags) && !p.flags.escapedOnce) return 'honest_official';
     // v2.48 双轨悲情结局：群众爱戴但组织不待见（口碑高 + 组织印象低 + 基层）——须在 edge 之前判定
     if ((p.peopleReputation ?? 50) >= 75 && p.reputation < 40 && unitLevel <= 1) return 'estranged_hero';
-    // 边缘化：职级低+工龄长，或大量错过晋升
-    if (p.leadershipRank <= 2) return 'edge';
-    if (p.leadershipRank <= 3 && p.yearsWorked > 15) return 'edge';
-    if (p.missedPromotions >= 8 && p.leadershipRank < 5) return 'edge';
-    if (p.leadershipRank <= 3 && p.yearsWorked > 25) return 'edge';
-    if (p.yearsWorked > 30 && p.leadershipRank <= 4) return 'edge';
-    // 家庭拖累：家庭压力大且职级低 → 被家庭事务拖垮事业
-    if (h.familyPressure > 60 && p.leadershipRank <= 4) return 'edge';
-    // 安稳：处级以上 + 低风险 + 低家庭压力 + 高声誉（安稳退休是德高望重的归宿）
-    if (h.risk < 40 && p.leadershipRank >= 6 && h.familyPressure < 35 && p.reputation > 62) return 'safe';
-    // 家庭和睦：家庭压力极低时安稳条件适度放宽（需中层以上+较好声誉）
-    if (h.familyPressure < 15 && h.risk < 40 && p.leadershipRank >= 6 && p.reputation > 55) return 'safe';
+    // 家庭与个人生活的主动选择可形成独立于职级的安稳收束。
+    if(h.familyPressure<20&&h.mentalPressure<45&&h.risk<20&&p.yearsWorked>=20&&
+       (p.flags.renewHomeLegacy||p.flags.lifeFamilyReviewed||p.flags.renewStageLegacy||p.flags.renewKeepsakeLegacy||p.flags.renewGardenLegacy))return 'safe';
+    // 职级低不等于失败：需有真实组织困境、未能实现晋升意愿或持续高压。
+    if (p.yearsWorked>=15 && p.leadershipRank<=3 && p.reputation<48) return 'edge';
+    if (p.missedPromotions>=8 && p.leadershipRank<5 && h.desire>=14 && p.reputation<55) return 'edge';
+    if (h.familyPressure>60 && p.leadershipRank<=4) return 'edge';
+    if (h.risk<20 && p.leadershipRank>=5 && h.familyPressure<20 && h.mentalPressure<45 && p.reputation>65) return 'safe';
     // 平凡人生：默认结局
     return 'ordinary';
   }

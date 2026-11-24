@@ -68,23 +68,38 @@
     const tier=rank<=3?'frontline':rank<=6?'manager':'leader';
     const plans={
       frontline:{title:'一线执行',actions:[
-        {id:'field',name:'走访并核对群众反馈',desc:'次年兑现群众反馈，承担额外工作压力',now:{mentalPressure:3},later:{peopleReputation:3,workAbility:1}},
+        {id:'field',name:'走访并核对群众反馈',desc:'次年兑现群众反馈，承担额外工作压力',now:{mentalPressure:2},later:{peopleReputation:3,workAbility:1,positionWeight:1}},
         {id:'skills',name:'整理业务手册',desc:'次年形成可复用材料，暂缓个人表现',now:{positionWeight:-1},later:{workAbility:3,mentalPressure:-1}}]},
       manager:{title:'团队管理',actions:[
-        {id:'delegate',name:'培养骨干并分配任务',desc:'今年增加协调负担，次年缓解压力',now:{mentalPressure:3,positionWeight:-1},later:{workAbility:2,mentalPressure:-4}},
+        {id:'delegate',name:'培养骨干并分配任务',desc:'今年增加协调负担，次年缓解压力',now:{mentalPressure:1,positionWeight:-1},later:{workAbility:2,mentalPressure:-4}},
         {id:'review',name:'复核积压项目与责任清单',desc:'当前声誉承压，次年改善风险与口碑',now:{reputation:-1,mentalPressure:2},later:{risk:-3,peopleReputation:3}}]},
       leader:{title:'统筹与问责',actions:[
-        {id:'priorities',name:'调整公共服务优先序',desc:'承担协调压力，次年兑现公共服务反馈',now:{mentalPressure:4,background:-1},later:{peopleReputation:4,reputation:1}},
+        {id:'priorities',name:'调整公共服务优先序',desc:'承担协调压力，次年兑现公共服务反馈',now:{mentalPressure:2,background:-1},later:{peopleReputation:4,reputation:1,positionWeight:1}},
         {id:'audit',name:'组织独立复核与交接',desc:'暂缓个人考核收益，次年减少遗留风险',now:{positionWeight:-2,mentalPressure:2},later:{risk:-4,integrity:2}}]}
     };
-    return {tier,...plans[tier],used:p.dutyPlanAge===p.age,pending:p.dutyPending||null};
+    const tags=p.unit?.tags||[],system=p.unit?.system||'';
+    const kind=tags.some(t=>['tech','data'].includes(t))?'tech':tags.some(t=>['finance','audit'].includes(t))?'finance':tags.some(t=>['law','enforcement'].includes(t))?'law':p.unitLevel===0||['民生部门','窗口部门','基层单位'].includes(system)?'service':'coordination';
+    const specialist={
+      tech:{id:'special_tech',name:'验证系统与故障复盘',desc:'次年按业务能力验证，成功积累专业实绩',now:{mentalPressure:2,positionWeight:-1},later:{workAbility:3,risk:-1}},
+      finance:{id:'special_finance',name:'核对预算与历史账目',desc:'次年按廉洁和风险复核，成功降低遗留风险',now:{mentalPressure:2,reputation:-1},later:{risk:-3,integrity:1}},
+      law:{id:'special_law',name:'复核证据与程序记录',desc:'次年按能力及风险核查，成功改善公信力',now:{mentalPressure:3},later:{integrity:2,peopleReputation:2}},
+      service:{id:'special_service',name:'跟进未办结的服务事项',desc:'次年按群众口碑与压力核查，成功改善服务反馈',now:{mentalPressure:2},later:{peopleReputation:3,workAbility:1}},
+      coordination:{id:'special_coordination',name:'梳理跨部门责任与交付',desc:'次年按业务能力和组织声誉核查，成功积累协调实绩',now:{mentalPressure:2},later:{reputation:2,positionWeight:1}}
+    }[kind];
+    const counts=p.dutyCounts||{};
+    const actions=[...plans[tier].actions,specialist].map(a=>{
+      const count=counts[a.id]||0;
+      const later=Object.fromEntries(Object.entries(a.later).map(([k,v])=>[k,Math.sign(v)*Math.max(1,Math.floor(Math.abs(v)*(count>=4?0.35:count>=2?0.65:1)))]));
+      return {...a,later,desc:a.desc+(count>=2?'；重复执行收益递减':'')};
+    });
+    return {tier,title:plans[tier].title,actions,used:p.dutyPlanAge===p.age,pending:p.dutyPending||null};
   };
   GameEngine.prototype.chooseDutyPlan = function(id) {
     const s=this.state,p=s.player,plan=this.getDutyPlan();
     const action=plan.actions.find(a=>a.id===id);
     if(!p.isEmployed||p.ending||s.currentEvent||s.pendingPromotion||s.pendingTransfer||plan.used||plan.pending||!action||!this.canAffordAP(1))return false;
     this.spendActionPoint(1);this.applyEffects(action.now);this.clampAttrs();
-    p.dutyPlanAge=p.age;p.dutyPending={id, name:action.name, dueAge:p.age+1, effects:{...action.later}};
+    p.dutyPlanAge=p.age;p.dutyPending={id, name:action.name, dueAge:p.age+1, effects:{...action.later},unitId:p.unit?.id};
     p.careerLog.push({year:p.age,event:'岗位职责：'+action.name+'（次年回访）'});
     return true;
   };
@@ -92,8 +107,17 @@
     const p=this.state.player,d=p.dutyPending;
     if(!d||p.age<d.dueAge)return false;
     // 职级变化不会取消已经承担的责任。
-    delete p.dutyPending;this.applyEffects(d.effects);this.clampAttrs();
-    p.careerLog.push({year:p.age,event:'岗位职责回访：'+d.name+'，已核对执行反馈'});
+    delete p.dutyPending;
+    const h=this.state.hidden,counts=p.dutyCounts||(p.dutyCounts={});
+    const checks={special_tech:h.workAbility>=55&&h.mentalPressure<75,special_finance:h.integrity>=65&&h.risk<35,special_law:h.workAbility>=50&&h.risk<35,special_service:(p.peopleReputation??50)>=55&&h.mentalPressure<75,special_coordination:h.workAbility>=50&&p.reputation>=55};
+    const special=String(d.id||'').startsWith('special_'),success=!special||!!checks[d.id];
+    counts[d.id]=(counts[d.id]||0)+1;
+    if(success){
+      this.applyEffects(d.effects);
+      if(special){const record=p.dutyVerified||(p.dutyVerified={});record[d.id]=(record[d.id]||0)+1;}
+    }else this.applyEffects({mentalPressure:2});
+    this.clampAttrs();
+    p.careerLog.push({year:p.age,event:'岗位职责回访：'+d.name+(success?'，已核对执行反馈':'，未达到复核条件，遗留事项未算作实绩')});
     return true;
   };
 

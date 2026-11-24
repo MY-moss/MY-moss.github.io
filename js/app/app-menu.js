@@ -415,7 +415,7 @@ Object.assign(App, {
     // 上岸年龄分（最高10分：22岁=10分，27岁=4分，30岁=1.6分）
     if (p.ageOnshore > 0) add('上岸年龄', Math.max(0, 10 - (p.ageOnshore - 22) * 1.2), p.ageOnshore + '岁');
     // 结局分（v2.49e：清廉道德结局 clean/honest_official/era_rectify 20→22，缩小与权力巅峰 skyline 25 的差距、显性化道德回报；skyline 保持 25 保留权力巅峰略高）
-    add('结局', endingScores[p.ending] || 8, endingNames[p.ending] || '平凡人生');
+    add('结局', endingScores[p.ending] ?? 8, endingNames[p.ending] || '平凡人生');
     // 廉洁/风险
     if (h.integrity > 60) add('廉洁', 3, '一生清廉');
     if (h.risk > 60) add('风险', -5, '高风险生涯');
@@ -635,7 +635,7 @@ Object.assign(App, {
   renderEndingCollection() {
     const all = this.ALL_ENDINGS || [];
     const names = { skyline: '巅峰人生', fast: '快速晋升', safe: '安稳退休', ordinary: '平凡人生', edge: '边缘化', arrest: '被抓', burnout: '燃尽', central: '中央殿堂', entrepreneur: '下海人生', reform: '改革先锋', digital: '数字先驱', grassroots: '乡土守望', clean: '清廉丰碑', grassroots_devotion: '基层奉献', tech_backbone: '技术骨干', people_champion: '群众贴心人', reform_pioneer: '改革先锋', honest_official: '一代清官', era_reform: '时代弄潮儿', era_rectify: '清流砥柱', patron_legacy: '大树成荫', lifelong_friend: '莫逆之交', hometown_net: '桑梓情深', estranged_hero: '曲高和寡', whistleblower_hero: '举报英雄', author_legacy: '著书立说', rural_star: '乡村振兴之星' };
-    const hints = { skyline: '厅级以上+地市级+高声誉', fast: '晋升快+欲望强', safe: '处级以上+低风险+家庭和睦', ordinary: '随波逐流', edge: '长期未晋升/被边缘化', arrest: '贪腐被查', burnout: '高压燃尽', central: '中央单位+副部级以上+低风险+党员', entrepreneur: '辞职下海', reform: '改革建议被采纳（改革链事件）', digital: '数据平台建成（技术/数据部门）', grassroots: '基层历练后留任扎根', clean: '拒绝贿赂+高廉洁（清廉路线）', grassroots_devotion: '乡镇/街道工作15年以上+廉洁无腐', tech_backbone: '技术/数据岗+工作能力85以上+智商8以上', people_champion: '处理群众事件10次以上+情商8以上+廉洁65以上', reform_pioneer: '参与2次以上改革事件+职务权重15以上', honest_official: '廉洁80以上+风险10以下+工作20年以上+无腐败', era_reform: '改革年代+改革链事件2次以上+厅级以上+高声誉', era_rectify: '整顿年代+廉洁75以上+反腐实绩+处级以上', patron_legacy: '贵人关系85以上+职务厅级以上+低风险', lifelong_friend: '老同学关系80以上+低风险+声誉良好', hometown_net: '邻里关系80以上+基层工作20年以上', estranged_hero: '民间口碑75以上+组织印象40以下+基层（悲情线）', whistleblower_hero: '举报链完整（匿名举报→配合调查→专案外围→风清月明）+廉洁60以上', author_legacy: '著书立说（bookPublished 专著出版）+工作能力55以上', rural_star: '乡村振兴示范村（ruralRevitalize）+基层工作10年以上+口碑60以上' };
+    const hints = { skyline: '厅级以上、地市级以上、高能力声誉、项目回访或5次专业实绩', fast: '晋升快+欲望强', safe: '中高职级低风险，或长期生活选择与身心稳定', ordinary: '随波逐流', edge: '长期低组织评价、晋升受阻或家庭困境', arrest: '贪腐被查', burnout: '高压燃尽', central: '中央单位+副部级以上+低风险+党员', entrepreneur: '辞职下海', reform: '改革建议被采纳（改革链事件）', digital: '数据平台建成（技术/数据部门）', grassroots: '基层历练后留任扎根', clean: '拒绝贿赂+高廉洁（清廉路线）', grassroots_devotion: '乡镇/街道工作15年以上+廉洁无腐', tech_backbone: '技术/数据岗+工作能力85以上+智商8以上', people_champion: '处理群众事件10次以上+情商8以上+廉洁65以上', reform_pioneer: '参与2次以上改革事件+职务权重15以上', honest_official: '廉洁85以上、低风险、20年工龄、无腐败且有实际原则记录', era_reform: '改革年代+改革链事件2次以上+厅级以上+高声誉', era_rectify: '整顿年代+廉洁75以上+反腐实绩+处级以上', patron_legacy: '贵人关系85以上+职务厅级以上+低风险', lifelong_friend: '老同学关系80以上+低风险+声誉良好', hometown_net: '邻里关系80以上+基层工作20年以上', estranged_hero: '民间口碑75以上+组织印象40以下+基层（悲情线）', whistleblower_hero: '举报链完整（匿名举报→配合调查→专案外围→风清月明）+廉洁60以上', author_legacy: '著书立说（bookPublished 专著出版）+工作能力55以上', rural_star: '乡村振兴示范村（ruralRevitalize）+基层工作10年以上+口碑60以上' };
     const stats = this.stats && this.stats.endings ? this.stats.endings : {};
     const got = all.filter(e => stats[e] > 0).length;
     const cells = all.map(e => {

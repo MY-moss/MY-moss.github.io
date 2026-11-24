@@ -30,6 +30,8 @@
     const yearsOk = !def.requireYearsWorked || (p.yearsWorked || 0) >= def.requireYearsWorked;
     if (!yearsOk) missing.push('工作年限 ≥ ' + def.requireYearsWorked + ' 年（当前 ' + (p.yearsWorked || 0) + ' 年）');
     if (this.state.policyProject) missing.push('已有进行中的项目');
+    if (p.flags?.['policy_'+id+'_cancelled']) missing.push('本项目已终止，不能重复承接');
+    if (p.policyDecisionAge === p.age) missing.push('本年度项目决策已使用');
     if (p.flags && p.flags[`policy_${def.id}_done`]) missing.push('本项目已完成');
     return { ok: missing.length === 0, missing: missing };
   };
@@ -47,6 +49,8 @@
       stage: 0,
       startedYear: p.yearsWorked || 0,
       progress: 0,
+      budget: 14, // 公共项目预算点，与私人现金无关
+      lastDecisionAge: null,
       opinionCrises: 0,
       qualitySum: 0, qualitySamples: 0, suppressed: false,
       pendingDecision: null // { type: 'stage'|'opinion', stage }
@@ -59,7 +63,7 @@
 
   GameEngine.prototype.getPolicyProjectDecisionEvent = function() {
     const current = activeProject(this);
-    if (!current || this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return null;
+    if (!current || this.state.player.ending || this.state.player.policyDecisionAge===this.state.player.age || this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return null;
     const pending = current.state.pendingDecision;
     if (pending && pending.type && pending.type !== 'stage') return null;
     const requestedStage = pending && pending.type === 'stage' && Number.isInteger(pending.stage) ? pending.stage : current.state.stage;
@@ -75,24 +79,31 @@
       title: `${current.def.icon || '📋'} ${current.def.name} · ${stageLabel}：${stage.title || ''}`,
       stage: 'work',
       eventType: 'choice',
-      projectEvent: true,
+      projectEvent: true, projectId: current.def.id, projectStage: stageIndex,
       text: stage.text,
-      choices: stage.choices
+      choices: stage.choices.map(c=>({...c, text:c.text+(c.effects?.projectBudget?'（公共预算'+(c.effects.projectBudget>0?'+':'')+c.effects.projectBudget+'）':'')}))
     };
   };
 
   GameEngine.prototype.resolvePolicyProjectChoice = function(index) {
     const current = activeProject(this);
     const event = this.state.currentEvent;
-    if (!current || (event && !event.projectEvent)) return false;
+    const p = this.state.player;
+    if (!current || p.ending || p.policyDecisionAge===p.age || !event?.projectEvent ||
+        event.projectId!==current.def.id || event.projectStage!==current.state.stage ||
+        current.state.pendingDecision?.type!=='stage') return false;
     const stageIndex = current.state.stage || 0;
     const stage = current.def.stages[stageIndex];
     const choice = stage && stage.choices ? stage.choices[index] : null;
     if (!choice || (typeof this.isChoiceEnabled === 'function' && !this.isChoiceEnabled(choice))) return false;
 
-    this.applyEffects(choice.effects || {});
+    const {projectBudget=0, wealth:legacyWealth, ...fx}=choice.effects||{};
+    if(current.state.budget+projectBudget<0)return false;
+    current.state.budget+=projectBudget;
+    this.applyEffects(fx);
     this.clampAttrs();
-    const fx=choice.effects||{};
+    p.policyDecisionAge=p.age;
+    current.state.lastDecisionAge=p.age;
     // 项目质量只记录本项目实际选择，不读取其他项目留下的舆情标记。
     const quality=Math.max(-4,Math.min(4,(fx.integrity||0)+(fx.peopleReputation||0)+(fx.workAbility||0)-(fx.risk||0)-(fx.heat||0)));
     current.state.qualitySum=(current.state.qualitySum||0)+quality;
@@ -100,16 +111,17 @@
     current.state.progress = (current.state.progress || 0) + (choice.progress || 1);
     current.state.stage = stageIndex + 1;
     current.state.pendingDecision = null;
-    const p = this.state.player;
     p.careerLog = p.careerLog || [];
     p.careerLog.push({ year: p.age, event: `${current.def.icon || '📋'} ${current.def.name}：${choice.result || choice.text}` });
 
     if (current.state.stage >= current.def.duration) {
-      this.applyEffects(current.def.completionEffects || {});
       const score=(current.state.qualitySum||0)/Math.max(1,current.state.qualitySamples||0);
       const quality=current.state.suppressed?'concern':score>=1?'strong':score<0?'concern':'mixed';
+      const reward={...current.def.completionEffects};
+      for(const k of Object.keys(reward))if(typeof reward[k]==='number'&&reward[k]>0)reward[k]=quality==='concern'?0:quality==='mixed'?Math.floor(reward[k]/2):reward[k];
+      this.applyEffects(reward);this.clampAttrs();
       const ledger=p.policyFollowups||(p.policyFollowups=[]);
-      ledger.push({id:current.def.id,completedAge:p.age,quality,suppressed:!!current.state.suppressed,review2:false,review5:false});
+      ledger.push({id:current.def.id,completedAge:p.age,budget:current.state.budget,quality,suppressed:!!current.state.suppressed,review2:false,review5:false});
       p.flags = p.flags || {};
       p.flags.policyProjectCount = (p.flags.policyProjectCount || 0) + 1;
       p.flags[`policy_${current.def.id}_done`] = true;
@@ -127,11 +139,16 @@
     const current = activeProject(this);
     if (!current) return false;
     const p = this.state.player;
+    const ev=this.state.currentEvent;
+    if(p.ending || this.state.pendingPromotion || this.state.pendingTransfer ||
+       (ev && (!(ev.projectEvent||ev.opinionCrisis)||ev.projectId!==current.def.id)))return false;
     p.flags = p.flags || {};
     delete p.flags.policyProjectActive;
+    p.flags[`policy_${current.def.id}_cancelled`]=true;
+    p.policyDecisionAge=p.age;
     p.flags.policyProjectAbandoned = (p.flags.policyProjectAbandoned || 0) + 1;
     p.careerLog = p.careerLog || [];
-    p.careerLog.push({ year: p.age, event: `📋 政策项目「${current.def.name}」中途搁置` });
+    p.careerLog.push({ year: p.age, event: `📋 政策项目「${current.def.name}」终止，已投入工作不可重复领取` });
     this.state.policyProject = null;
     this.state.currentEvent = null;
     return true;
@@ -140,7 +157,7 @@
   GameEngine.prototype.preparePolicyOpinionCrisisEvent = function() {
     const current = activeProject(this);
     const p = this.state.player;
-    if (!current || this.state.currentEvent || !p || (current.state.opinionCrises || 0) >= 1) return null;
+    if (!current || this.state.currentEvent || !p || p.ending || p.policyDecisionAge===p.age || this.state.pendingPromotion || this.state.pendingTransfer || (current.state.opinionCrises || 0) >= 1) return null;
     const pending = current.state.pendingDecision;
     if (pending && pending.type === 'stage') return null;
     // 已经写入存档的危机必须可恢复，不再依赖当前热度阈值（热度可能被迁移/修复逻辑调整）。
@@ -151,7 +168,7 @@
       title: `🔥 ${current.def.name} · 舆情危机`,
       stage: 'work',
       eventType: 'choice',
-      opinionCrisis: true,
+      opinionCrisis: true, projectId:current.def.id, projectStage:current.state.stage,
       text: `项目热度已经超过安全线，网上开始出现对「${current.def.name}」的质疑。你准备如何回应？`,
       choices: [
         { text: '公开回应：说明问题、公布进度和整改时间', effects: { heat: -18, peopleReputation: 4, reputation: 1, workAbility: 1 } },
@@ -164,9 +181,12 @@
   GameEngine.prototype.resolvePolicyOpinionChoice = function(index) {
     const current = activeProject(this);
     const event = this.state.currentEvent;
-    if (!current || (event && !event.opinionCrisis)) return false;
+    const p = this.state.player;
+    if (!current || p.ending || p.policyDecisionAge===p.age || !event?.opinionCrisis ||
+        event.projectId!==current.def.id || event.projectStage!==current.state.stage ||
+        current.state.pendingDecision?.type!=='opinion') return false;
     if ((current.state.opinionCrises || 0) >= 1) return false;
-    const crisis = (event && event.opinionCrisis) ? event : this.preparePolicyOpinionCrisisEvent();
+    const crisis = event;
     const choice = crisis && crisis.choices[index];
     if (!choice || (typeof this.isChoiceEnabled === 'function' && !this.isChoiceEnabled(choice))) return false;
     this.applyEffects(choice.effects || {});
@@ -174,7 +194,7 @@
     current.state.opinionCrises = (current.state.opinionCrises || 0) + 1;
     if(index===2)current.state.suppressed=true;
     current.state.pendingDecision = null;
-    const p = this.state.player;
+    p.policyDecisionAge=p.age;current.state.lastDecisionAge=p.age;
     p.careerLog = p.careerLog || [];
     p.careerLog.push({ year: p.age, event: `🔥 舆情危机处置：${choice.text}` });
     this.state.currentEvent = null;

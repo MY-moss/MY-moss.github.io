@@ -39,16 +39,14 @@ if (p.unit) { s.hidden.mentalPressure += Math.round(p.unit.stress * 0.05); s.hid
     if (p.personality === 'stable') { s.hidden.mentalPressure = Math.max(0, s.hidden.mentalPressure - 1); }
     else if (p.personality === 'ambitious') { s.hidden.mentalPressure += 1; s.hidden.desire = Math.min(100, s.hidden.desire + 1); }
     else if (p.personality === 'smooth') { s.hidden.risk = Math.max(0, s.hidden.risk - 1); }
-    else if (p.personality === 'straight') { s.hidden.integrity = Math.min(100, s.hidden.integrity + 1); }
+    else if (p.personality === 'straight' && s.hidden.integrity<80) { s.hidden.integrity = Math.min(80, s.hidden.integrity + 0.5); }
     if (this.state.attrs.body > 2) s.hidden.mentalPressure -= this.rand(0, Math.floor(this.state.attrs.body / 3));
-    s.hidden.workAbility += this.rand(0, 2) + Math.max(0, Math.floor(this.state.attrs.body / 3));
-    // 专业对口加成：专业与所在单位匹配时，业务能力每年额外积累（匹配度越高成长越快）
+    // 自然积累趋于饱和，但绝不截断已有能力；高阶成长依靠主动学习与实际选择。
     const majorFit = this.getMajorFit(p.unit);
-    if (majorFit.matchCount > 0) {
-      s.hidden.workAbility += 0.5 + Math.min(majorFit.matchCount, 4) * 0.25;
-    }
-    if (s.hidden.workAbility > 92) s.hidden.workAbility = 92;
-    else if (s.hidden.workAbility > 80) s.hidden.workAbility -= this.rand(0, 1);
+    const growth = this.rand(0, 2) + Math.max(0, Math.floor(this.state.attrs.body / 3)) + (majorFit.matchCount>0?0.5+Math.min(majorFit.matchCount,4)*0.25:0);
+    const ability=s.hidden.workAbility;
+    s.hidden.workAbility += growth*Math.max(0,1-ability/80);
+    if(ability>80)s.hidden.workAbility-=0.5+(ability-80)*0.06;
     if (s.hidden.mentalPressure > 50) { var recBase = Math.min(3 + Math.floor(s.hidden.mentalPressure / 15), s.hidden.mentalPressure - 10); var familyBlock = Math.floor(s.hidden.familyPressure / 25); s.hidden.mentalPressure -= Math.max(1, recBase - familyBlock); }
     // v2.19 改革年代：高压常态，压力恢复更慢
     if (eraEff && eraEff.stressRecover) s.hidden.mentalPressure += eraEff.stressRecover;
@@ -63,7 +61,8 @@ GameEngine.prototype._rcy_riskHeatDecay = function(eraId) {
       const decayMult = (eraId === 'rectify') ? 0.5 : 1;
       s.hidden.risk = Math.max(0, s.hidden.risk - (p.flags && this.hasCorruptFlag(p.flags) ? Math.max(0, Math.floor((riskDecay / 2) * decayMult)) : Math.floor(riskDecay * decayMult)));
     }
-    if (s.hidden.integrity < 70) s.hidden.integrity += 1.5 + (eraId === 'rectify' ? 1 : 0); // v2.19 整顿年代：廉洁恢复更快
+    if (s.hidden.integrity < 65 && !this.hasCorruptFlag(p.flags)) s.hidden.integrity += 0.6 + (eraId === 'rectify' ? 0.4 : 0);
+    if(s.hidden.integrity>85)s.hidden.integrity-=0.5+(s.hidden.integrity-85)*0.05; // v2.19 整顿年代：廉洁恢复更快
     // 体质自然恢复
     if (this.state.attrs.body < 0) this.state.attrs.body += 0.3;
     // 调查热度自然衰减（更慢，给腐败行为更多暴露风险）
@@ -81,6 +80,10 @@ GameEngine.prototype._rcy_riskHeatDecay = function(eraId) {
     if (eraId === 'stable' && s.hidden.familyPressure > 0) s.hidden.familyPressure = Math.max(0, s.hidden.familyPressure - 1);
     // 家境殷实（家境≥8）：家里有底气，家庭压力额外回落（不为柴米油盐发愁）
     if (s.hidden.familyPressure > 0 && this.state.attrs.family >= 8) s.hidden.familyPressure = Math.max(0, s.hidden.familyPressure - 1);
+    if(p.isMarried||p.hasChildren){
+      // 长期高压挤占家庭时间；不能只靠年岁自动消除家庭矛盾。
+      s.hidden.familyPressure+=Math.max(0,Math.min(3,(s.hidden.mentalPressure-35)/12))+(p.hasChildren&&p.childAge<18?0.5:0);
+    }
     // 拥有住房：安居乐业，家庭压力每年小幅回落
     if (p.flags.hasHouse && s.hidden.familyPressure > 0) s.hidden.familyPressure = Math.max(0, s.hidden.familyPressure - 1);
   }
@@ -1643,6 +1646,8 @@ GameEngine.prototype.getLifeEvaluation = function() {
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
+  const verified=Object.values(p.dutyVerified||{}).reduce((a,b)=>a+b,0);
+  if(verified)memories.push('岗位专业复核实际完成 '+verified+' 次。');
   if(f.renewGrantLegacy)memories.push('你如实讲述了未参加联合课题的那段经历，没有将后来成果归于自己。');
   if(f.renewFerryLegacy)memories.push('旧渡船停航后，你在河岸听见了不同的新旧出行体验。');
   if(f.renewDuetLegacy)memories.push('你与许闻的成果在多年后的交流中得到独立介绍。');

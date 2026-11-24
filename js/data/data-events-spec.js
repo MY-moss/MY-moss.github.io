@@ -424,7 +424,7 @@ const gd_events_spec = [
 
     // ==================== 中央选拔链（省级专属特殊通道） ====================
     // e639：中央遴选考察（省级+党员+厅级(职级≥6)，choice 事件，玩家可选是否争取）
-    { id: 'e639', stage: 'work', eventType: 'choice', title: '中央遴选考察', weight: 4, text: '中组部干部考察组来到你所在的省调研后备干部情况。你的名字出现在了推荐名单上——这是进入中央的重要机会，但考察极其严格，一旦进入视野也将承受巨大压力。', pools: ['public'], requireUnitLevelMin: 3, requireUnitLevelMax: 3, requirePolitical: 'cpc', requireRankMin: 6, choices: [
+    { id: 'e639', stage: 'work', eventType: 'choice', title: '中央遴选考察', weight: 4, text: '中组部干部考察组来到你所在的省调研后备干部情况。你的名字出现在了推荐名单上——这是进入中央的重要机会，但考察极其严格，一旦进入视野也将承受巨大压力。', pools: ['public'], requireUnitLevelMin: 3, requireUnitLevelMax: 3, requirePolitical: 'cpc', requireRankMin: 8, minReputation: 75, choices: [
       { text: '全力争取，精心准备汇报材料', effects: {mentalPressure: 6, workAbility: 2, reputation: 2, positionWeight: 3, background: 2, flag: 'centralCandidate'} },
       { text: '低调配合考察，顺其自然', effects: {mentalPressure: 2, reputation: 1, eq: 1, positionWeight: 1, flag: 'centralCandidate'} },
       { text: '主动请辞推荐，专注本省工作', effects: {mentalPressure: -2, reputation: 1, eq: 1, positionWeight: -1} },

@@ -23,9 +23,10 @@ Object.assign(App, {
           <div class="career-stats">
             <div class="stat-item"><span>📍 当前子案</span><span>${App.escapeHtml(subCaseText)}</span></div>
             <div class="stat-item"><span>📊 完成度</span><span>${progress}%（${stage}/${project.duration} 决策点）</span></div>
+            <div class="stat-item"><span>公共预算</span><span>${active.budget} 点（非个人财富）</span></div>
             <div class="stat-item"><span>🔥 舆情危机</span><span>${active.opinionCrises || 0}/1</span></div>
           </div>
-          <button class="btn btn-secondary" onclick="App.abandonPolicyProject()" style="margin-top:6px">暂时搁置项目</button>
+          <button class="btn btn-secondary" onclick="App.abandonPolicyProject()" style="margin-top:6px">终止项目</button>
         </div>
       `;
     }
@@ -89,14 +90,14 @@ Object.assign(App, {
   },
 
   abandonPolicyProject() {
-    if (!window.confirm('搁置后本项目进度会清零，确定要暂时放弃吗？')) return;
+    if (!window.confirm('终止后本项目不能再次承接，已投入的工作不会退回。确定终止吗？')) return;
     this.safeProcess(() => {
       if (!engine.abandonPolicyProject()) {
-        this.showToast('当前没有进行中的政策项目', 'warning');
+        this.showToast('当前无法终止，请先完成手头决策', 'warning');
         return;
       }
       if (typeof this.saveCheckpoint === 'function') this.saveCheckpoint('project-abandon'); else engine.saveState();
-      this.showToast('项目已搁置，之后可以重新承接', 'info');
+      this.showToast('项目已终止，本局不能再次承接', 'info');
       this.renderContent(this.renderCareer());
       this.updateStatus();
     });

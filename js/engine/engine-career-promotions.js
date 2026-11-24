@@ -8,8 +8,8 @@ GameEngine.prototype.getPromotionReadiness = function() {
     const maxRank=p.unit ? this.getMaxRankForLevel(p.unit.level) : 0;
     const rank=p.leadershipRank||1;
     let required=this.getMinYearsForRank(rank);
-    if(h.workAbility>=60 && h.positionWeight>=18 && required>1)required--;
-    if((p.flags.promotionExcellence||0)>=2 && required>1)required--;
+    if(h.workAbility>=75 && h.positionWeight>=25 && required>2)required--;
+    if((p.flags.promotionExcellence||0)>=2 && required>2 && rank<=5)required--;
     const entries=(p.careerLog||[]).filter(x=>x && x.special==='upgrade' && Number.isFinite(Number(x.year)) && Number(x.year)<=p.age);
     const inferred=entries.length ? Math.max(...entries.map(x=>Number(x.year))) : null;
     const stored=Number.isFinite(p.rankSinceAge) && p.rankSinceAge<=p.age ? p.rankSinceAge : null;
@@ -102,10 +102,10 @@ GameEngine.prototype.checkPromotion = function() {
     let _rawChance = 0.03 + merit / 70 + partyBonus + repBonus + desireBonus + systemBonus + contactBonus + personalityBonus + majorFitBonus - familyPenalty - lateGamePenalty;
     // v2.49f 分层 clamp（merit 敏感年度上限）：merit≥14 起每点 +0.6% 上限（0.22→0.30）——高配玩家晋升力不被抹平，
     // 低配 merit<14 保持 0.22 原值不受影响（区别于 v2.49d 否定的『统一放宽』方案：后者低配后期也受益、区分度反降）
-    const chanceCap = Math.min(0.30, 0.22 + Math.max(0, merit - 14) * 0.006);
+    const chanceCap = Math.min(0.27, 0.19 + Math.max(0, merit - 14) * 0.006);
     let chance = Math.max(0.02, Math.min(chanceCap, _rawChance)); // v2.27 修复：v2.20 贵人加成曾对 const 赋值导致有贵人时晋升崩溃
     // v2.43 廉政挂钩：腐败（风险高）与开除党籍者升迁大幅受阻——风险每 +10 概率 -0.3，开除党籍 ×0.25
-    if (this.state.hidden.risk > 0) chance = Math.max(0.02, chance - this.state.hidden.risk * 0.03);
+    if (this.state.hidden.risk > 0) chance = Math.max(0.02, chance - this.state.hidden.risk * 0.004);
     if (p.flags.expelledFromParty) chance *= 0.25;
     
     // 晋升保底：连续未晋升年数越长，概率越高
@@ -126,6 +126,8 @@ GameEngine.prototype.checkPromotion = function() {
     if (p.flags.promotionSloppy) { finalChance = Math.max(0.01, finalChance - 0.05); delete p.flags.promotionSloppy; }
     
     // v2.69 卡顶处理已移至函数开头（v2.67 原分支在 early return 后为死代码，已删除）
+    // 高职级机会稀缺，不能仅靠属性触顶保证晋升。
+    finalChance*=currentRank>=8?0.55:currentRank>=6?0.75:1;
     if (this.randf() < finalChance) {
       p.leadershipRank++; p.leadershipPromotions++; p.promotions++;
       p.rankSinceAge=p.age;
@@ -152,10 +154,10 @@ GameEngine.prototype.checkPromotion = function() {
 GameEngine.prototype.checkBreakthroughPromotions = function() {
     const p = this.state.player; const h = this.state.hidden;
     if (p.flags && p.flags.grassrootsActive) return;
-    if (this.state.pendingPromotion || this.state.pendingTransfer) return;
+    if (this.state.pendingPromotion || this.state.pendingTransfer || p.rankSinceAge===p.age) return;
 
     // 1. 遴选晋升（下级→上级，乡镇→县→市→省，逐级晋升不跳级）
-    if (h.workAbility > 45 && p.yearsWorked >= 4 && this.randf() < 0.06) {
+    if (h.workAbility > 45 && p.yearsWorked >= 4 && this.getPromotionReadiness().yearsAtRank>=2 && this.randf() < 0.035) {
       if (h.workAbility * 0.3 + Math.min(this.state.attrs.iq, 15) * 2 + this.rand(0, 20) > 50) {
         const levelOrder = ['乡镇', '县级', '市级', '省级', '中央'];
         const currentLevelIdx = levelOrder.indexOf(p.unit.level);
@@ -181,7 +183,7 @@ GameEngine.prototype.checkBreakthroughPromotions = function() {
 
     // 2. 破格提拔（越级晋升，但不超过单位上限）——实权岗位（职级权重高）更有破格资格，权重每点+0.03%概率（上限+3%）
     // v2.49d 加入能力 merit：能力每点 +0.0003（能力 50 → +1.5%），精英玩家破格机会更多
-    if (p.leadershipRank >= 3 && h.workAbility > 65 && h.risk < 35 && this.randf() < 0.02 + Math.min(h.positionWeight, 100) * 0.0003 + Math.min(h.workAbility, 50) * 0.0003) {
+    if (p.leadershipRank >= 3 && p.leadershipRank<=7 && this.getPromotionReadiness().yearsAtRank>=2 && h.workAbility > 75 && h.risk < 25 && this.randf() < 0.02 + Math.min(h.positionWeight, 100) * 0.0003 + Math.min(h.workAbility, 50) * 0.0003) {
       const maxRank = this.getMaxRankForLevel(p.unit.level);
       const maxPossible = Math.min(2, maxRank - p.leadershipRank);
       if (maxPossible >= 1) {
@@ -192,7 +194,7 @@ GameEngine.prototype.checkBreakthroughPromotions = function() {
     }
 
     // 3. 公开选拔（竞争上岗更高职位，不超过单位上限）——实权权重同样影响竞争分（实绩=竞争力）
-    if (p.leadershipRank >= 2 && h.workAbility > 35 && this.randf() < 0.06) {
+    if (p.leadershipRank >= 2 && this.getPromotionReadiness().yearsAtRank>=2 && h.workAbility > 45 && this.randf() < 0.035) {
       const maxRank = this.getMaxRankForLevel(p.unit.level);
       if (p.leadershipRank < maxRank && h.workAbility * 0.3 + h.background * 0.2 + Math.min(this.state.attrs.eq, 15) * 2 + h.positionWeight * 0.15 + this.rand(0, 30) > 55) {
         this.state.pendingPromotion = { type: 'open', levels: 1, source: '公开选拔', desc: '通过公开选拔晋升1级，风险+2' };
@@ -262,13 +264,13 @@ GameEngine.prototype.checkBreakthroughPromotions = function() {
   }
 GameEngine.prototype.checkCrossLevelPromotion = function() {
     const p = this.state.player; const h = this.state.hidden;
-    if (!p.unit) return;
+    if (!p.unit || this.state.pendingPromotion || this.state.pendingTransfer || p.rankSinceAge===p.age) return;
     
     // 中央晋升：省级→中央（常规通道），条件放宽：省级+厅级(rank>=9)+党员+声誉良好，概率~2.2%（v2.7.1 从2.5%下调后300局实测仅0.33%，回调到2.2%保1-2%）
     // 中央晋升：省级→中央（常规通道），条件放宽：省级+厅级(rank>=9)+党员+声誉良好
     // v2.49f：固定 2.2% → merit 加权（能力每点 +0.04%、声誉每点超 50 +0.02%，上限 5%）——高配中央通道显著更优
-    const centralChance = Math.min(0.05, 0.015 + Math.min(h.workAbility, 50) * 0.0004 + (p.reputation > 50 ? (p.reputation - 50) * 0.0002 : 0));
-    if (p.leadershipRank >= 9 && p.unitLevel === 3 && h.risk < 40 && p.reputation > 65 && p.political === 'cpc' && p.promotions >= 7 && this.randf() < centralChance) {
+    const centralChance = Math.min(0.025, 0.008 + Math.min(h.workAbility, 80) * 0.00015 + Math.max(0,p.reputation-65)*0.0001);
+    if (p.leadershipRank >= 9 && p.unitLevel === 3 && h.risk < 40 && p.reputation > 65 && p.political === 'cpc' && p.promotions >= 7 && this.getPromotionReadiness().yearsAtRank>=3 && this.randf() < centralChance) {
       const centralUnits = GameData.units.filter(u => u.level === '中央');
       if (centralUnits.length > 0) {
         this.state.pendingPromotion = {
@@ -293,7 +295,7 @@ GameEngine.prototype.checkCrossLevelPromotion = function() {
     const maxRank = this.getMaxRankForLevel(p.unit.level);
     
     // 达到职级上限-1即可申请跨级
-    if (currentRank < maxRank - 1) return;
+    if (currentRank < maxRank - 1 || this.getPromotionReadiness().yearsAtRank<2) return;
     if (h.risk > 50) return;
     // 市级以上非党员也可跨级，但概率减半
     let partyBonus = 0.06;
@@ -302,7 +304,7 @@ GameEngine.prototype.checkCrossLevelPromotion = function() {
     // 跨级概率：同系统加成，跨系统惩罚（v2.49f：加能力 merit，cap 0.08→0.12——高配可突破上限，低配仍 ≤8% 不受影响）
     const rankDiff = Math.max(0, currentRank - (maxRank - 3));
     const systemAffinity = p.unit ? this.getSystemAffinity(p.unit.system, p.unit.system) : 0;
-    const chance = Math.min(0.12, 0.03 + rankDiff * 0.02 + h.background * 0.001 + h.positionWeight * 0.001 + Math.min(h.workAbility, 50) * 0.0006 + partyBonus + systemAffinity);
+    const chance = Math.min(targetLevel>=3?0.065:0.095, 0.03 + rankDiff * 0.02 + h.background * 0.001 + h.positionWeight * 0.001 + Math.min(h.workAbility, 50) * 0.0006 + partyBonus + systemAffinity);
     
     if (this.randf() < chance) {
       // 同系统单位优先，跨系统需要额外判定

@@ -21,7 +21,7 @@ const gd_projects = [
         { text: '从群众办事最痛的事项入手建模型', effects: { workAbility: 2, peopleReputation: 2, mentalPressure: 2 }, result: '优先打通群众高频事项，模型落地有样板' },
         { text: '先做领导关注的重点领域示范', effects: { background: 1, reputation: 2, peopleReputation: -1 }, result: '示范先行，进度快但民间感知弱' },
         { text: '各家系统负责人集中办公攻坚', effects: { workAbility: 1, mentalPressure: 3, heat: 1 }, result: '集中攻坚推进快，人也快被拖垮' },
-        { text: '请第三方出具整体方案背书', effects: { iq: 1, wealth: -1, background: 1 }, result: '方案专业，但预算先花出去一块' }
+        { text: '请第三方出具整体方案背书', effects: { iq: 1, projectBudget: -1, background: 1 }, result: '方案专业，但预算先花出去一块' }
       ] },
       { subCase: 'sc1', title: '数据开放边界之争', text: '要不要把部门数据开放给同级单位共享？考核数据、财务数据都牵扯利益，阻力集中到了你这里。', choices: [
         { text: '按清单分级开放，先共享非敏感数据', effects: { workAbility: 2, peopleReputation: 1, risk: 1 }, result: '分级共享落地，兄弟单位开始认账' },
@@ -33,7 +33,7 @@ const gd_projects = [
         { text: '现场督战，逼供应商通宵修复', effects: { workAbility: 2, mentalPressure: 3, body: -2 }, result: '天亮前修好，演示顺利' },
         { text: '临时降级方案，先保住演示主链路', effects: { eq: 1, workAbility: 1, risk: 1 }, result: '演示保住了，尾巴留到上线后' },
         { text: '推迟演示，把问题列表摊开讲', effects: { integrity: 2, background: -1 }, result: '推迟把丑话讲在前面，领导不太高兴' },
-        { text: '更换供应商分系统，快刀斩乱麻', effects: { background: 1, wealth: -2, heat: 1 }, result: '换血代价高，但后方清净了' }
+        { text: '更换供应商分系统，快刀斩乱麻', effects: { background: 1, projectBudget: -2, heat: 1 }, result: '换血代价高，但后方清净了' }
       ] },
       { subCase: 'sc2', title: '试运行期群众的差评', text: '平台试运行上线，功能全了，家长的号却挂不上——排队系统把老人卡在外头。舆情开始发酵。', choices: [
         { text: '连夜开放线下兜底窗口', effects: { peopleReputation: 3, workAbility: 1, mentalPressure: 2 }, result: '兜底窗口救回口碑' },
@@ -42,7 +42,7 @@ const gd_projects = [
         { text: '暂停试运行，回炉重测', effects: { background: -1, reputation: -1, mentalPressure: -1 }, result: '回炉稳妥但打脸' }
       ] },
       { subCase: 'sc2', title: '供应商想续签五年长约', text: '平台刚稳，供应商提出五年长约加价三成，暗示"换人维护会出事故"。续还是不续，汇报材料等你签字。', choices: [
-        { text: '公开竞标，把主动权拿回来', effects: { integrity: 2, workAbility: 1, wealth: 1, mentalPressure: 2 }, result: '竞标压价成功，风评亦佳' },
+        { text: '公开竞标，把主动权拿回来', effects: { integrity: 2, workAbility: 1, projectBudget: 1, mentalPressure: 2 }, result: '竞标压价成功，风评亦佳' },
         { text: '续约一年观察期，附考核条款', effects: { eq: 1, risk: 1, background: 1 }, result: '折中续约，留了后手' },
         { text: '培养自己人接手关键维护', effects: { workAbility: 2, mentalPressure: 2 }, result: '自研维护能力起步' },
         { text: '同意长约换供应商深度绑定', effects: { background: 1, heat: 2, risk: 2 }, result: '供应商满意，采购程序存疑' }
@@ -89,21 +89,21 @@ const gd_projects = [
       ] },
       { subCase: 'sc2', title: '入户路硬化资金缺口', text: '示范村还有两公里入户路没硬化，上级资金只够一半，缺口要自己想办法。', choices: [
         { text: '组织村民投工投劳，材料走项目资金', effects: { workAbility: 2, peopleReputation: 3, mentalPressure: 2 }, result: '路修好了，干群关系也修好了' },
-        { text: '向上再跑一次，争取追加资金', effects: { background: 2, wealth: 1 }, result: '软磨硬泡要来追加指标' },
+        { text: '向上再跑一次，争取追加资金', effects: { background: 2, projectBudget: 1 }, result: '软磨硬泡要来追加指标' },
         { text: '先修主干道，入户路列入下期', effects: { eq: 1, peopleReputation: -1 }, result: '主路光鲜，入户路村民有意见' },
-        { text: '引入乡贤捐资共建', effects: { eq: 2, peopleReputation: 1, wealth: 1 }, result: '乡贤出资，路通了情也通了' }
+        { text: '引入乡贤捐资共建', effects: { eq: 2, peopleReputation: 1, projectBudget: 1 }, result: '乡贤出资，路通了情也通了' }
       ] },
       { subCase: 'sc2', title: '示范村改造中的违建矛盾', text: '环境整治要先拆一批私搭乱建，其中一户是村支书的亲戚。拆，还是绕？', choices: [
         { text: '一视同仁先拆亲戚家，立住规矩', effects: { integrity: 3, peopleReputation: 2, mentalPressure: 2 }, result: '规矩立住了，拆迁势如破竹' },
         { text: '动员支书自己先拆，给全村做示范', effects: { eq: 2, background: 1 }, result: '支书带头，阻力小了一半' },
         { text: '保留几家过渡，争取时间化解', effects: { eq: 1, risk: 1, workAbility: -1 }, result: '暂时缓和，风言风语不断' },
-        { text: '补偿标准先行谈妥再动手', effects: { wealth: -1, peopleReputation: 1, workAbility: 1 }, result: '补偿谈得细，拆得安稳' }
+        { text: '补偿标准先行谈妥再动手', effects: { projectBudget: -1, peopleReputation: 1, workAbility: 1 }, result: '补偿谈得细，拆得安稳' }
       ] },
       { subCase: 'sc2', title: '村集体账目被起底', text: '有村民举报村里的账目不清，涉示范项目资金。纪检组下周要来了解情况。', choices: [
         { text: '主动公开账目，配合纪检核查', effects: { integrity: 2, risk: -2, peopleReputation: 2 }, result: '账清人正，核查平安落地' },
         { text: '先自查一遍再交材料', effects: { workAbility: 1, integrity: 1, mentalPressure: 1 }, result: '自查发现问题及时纠正' },
         { text: '托人打招呼淡化处理', effects: { background: 1, risk: 3, integrity: -2 }, result: '招呼打了，风声更紧' },
-        { text: '请第三方审计出具意见', effects: { iq: 1, wealth: -1 }, result: '第三方审计背书，村民安心' }
+        { text: '请第三方审计出具意见', effects: { iq: 1, projectBudget: -1 }, result: '第三方审计背书，村民安心' }
       ] },
       { subCase: 'sc3', title: '红白理事会推广遇冷', text: '示范村要推婚丧简办新规，德高望重的老支书先泼了冷水："管天管地还管人家办酒？"', choices: [
         { text: '先说服老支书，让规矩从族老开始', effects: { eq: 2, peopleReputation: 2, mentalPressure: 1 }, result: '族老点头，新规落地有声' },
@@ -140,7 +140,7 @@ const gd_projects = [
         { text: '暂缓加装，先干地下管网', effects: { eq: 1, workAbility: -1 }, result: '绕开矛盾，管网先行' }
       ] },
       { subCase: 'sc1', title: '停车位改造撞上绿化红线', text: '居民要求扩建停车位，但方案要砍一片绿地，绿化部门不肯松口。', choices: [
-        { text: '做立体停车位，保绿化不占一寸', effects: { iq: 1, workAbility: 2, wealth: -1 }, result: '立体车位加预算，绿化保住了' },
+        { text: '做立体停车位，保绿化不占一寸', effects: { iq: 1, workAbility: 2, projectBudget: -1 }, result: '立体车位加预算，绿化保住了' },
         { text: '绿化部门联合踏勘找平衡方案', effects: { eq: 2, background: 1 }, result: '踏勘出方案，两边都让一步' },
         { text: '缩进绿地边角挤出车位', effects: { background: 1, peopleReputation: -1 }, result: '车位多了，绿地小了，眼不见为净' },
         { text: '引入共享停车试点缓压力', effects: { workAbility: 1, eq: 1 }, result: '错峰共享，先解燃眉' }
@@ -148,12 +148,12 @@ const gd_projects = [
       { subCase: 'sc2', title: '施工队和住户的噪音战', text: '改造开工半月，施工噪音与粉尘引发住户打市长热线；施工队扬言"干不完就撤"。', choices: [
         { text: '约谈施工方立噪音规章，就高不就低', effects: { integrity: 1, workAbility: 1, mentalPressure: 2 }, result: '规矩立住，热线回落' },
         { text: '调整工序，噪音大的时段避开午休', effects: { eq: 2, peopleReputation: 1 }, result: '人性化工序，骂声少了' },
-        { text: '给住户发耳塞与空气净化补贴', effects: { wealth: -1, peopleReputation: 1 }, result: '物质安抚，短期有效' },
+        { text: '给住户发耳塞与空气净化补贴', effects: { projectBudget: -1, peopleReputation: 1 }, result: '物质安抚，短期有效' },
         { text: '压着施工方赶进度早日完工', effects: { background: 1, risk: 2, body: -1 }, result: '进度优先，质量隐患埋下' }
       ] },
       { subCase: 'sc2', title: '隐蔽工程签证额暴涨', text: '地下管网开挖发现实际管线比图纸复杂，施工方报来一笔超预算签证，卡在你能不能批。', choices: [
         { text: '邀请监理与造价站联合核量后再定', effects: { integrity: 2, workAbility: 1, mentalPressure: 1 }, result: '核量把虚报部分剔掉了' },
-        { text: '按实际工程量批，先保工期', effects: { wealth: -2, risk: 1 }, result: '工期保了，预算超了' },
+        { text: '按实际工程量批，先保工期', effects: { projectBudget: -2, risk: 1 }, result: '工期保了，预算超了' },
         { text: '要求施工方分担一部分风险', effects: { background: 1, workAbility: 1 }, result: '共担机制谈成，双方捏鼻子认' },
         { text: '拖着不批，让施工方垫资', effects: { eq: -1, peopleReputation: -1, risk: 1 }, result: '垫资拖着，关系僵了' }
       ] },
@@ -165,7 +165,7 @@ const gd_projects = [
       ] },
       { subCase: 'sc3', title: '改造后的物业费怎么收', text: '改造焕然一新，但长效维护要靠物业费。居民习惯了免费就医的物业，收费方案引发新一轮争吵。', choices: [
         { text: '按质定价公开账本，先试点一年', effects: { integrity: 2, peopleReputation: 1, mentalPressure: 1 }, result: '试点一年，缴费率七成' },
-        { text: '低标准起步，政府补贴过渡', effects: { wealth: -1, peopleReputation: 1 }, result: '过渡期平稳，财政背一点' },
+        { text: '低标准起步，政府补贴过渡', effects: { projectBudget: -1, peopleReputation: 1 }, result: '过渡期平稳，财政背一点' },
         { text: '引入红色物业兜底服务', effects: { background: 1, workAbility: 1 }, result: '红色物业接手，钉子户也服软' },
         { text: '并入周边成熟小区统一管理', effects: { eq: 1, workAbility: 1 }, result: '规模化降本，争议最小化' }
       ] }
@@ -223,7 +223,7 @@ const gd_projects = [
       ] },
       { subCase: 'sc3', title: '年终考核的营商环境排名', text: '省里营商环境年度排名公布，市内排名中游。领导要求明年进前十，专班压力到你头上。', choices: [
         { text: '对照指标体系逐项补短板', effects: { workAbility: 2, background: 1, mentalPressure: 2 }, result: '指标逐项攻坚，排名回升' },
-        { text: '请第三方评估找真实差距', effects: { iq: 1, wealth: -1 }, result: '评估报告客观，短板清单清晰' },
+        { text: '请第三方评估找真实差距', effects: { iq: 1, projectBudget: -1 }, result: '评估报告客观，短板清单清晰' },
         { text: '对标先进城市学经验', effects: { eq: 1, workAbility: 1 }, result: '取经学习，少走弯路' },
         { text: '把考核重心引到优势指标上', effects: { background: 1, integrity: -1, risk: 1 }, result: '扬长避短，心虚自知' }
       ] }
@@ -252,13 +252,13 @@ const gd_projects = [
       { subCase: 'sc1', title: '小作坊的整治名单', text: '城中村小作坊群消防通道堵塞严重，房东是老街坊，整治消息刚放出去，求情电话就来了。', choices: [
         { text: '一视同仁进名单，逐户告知整改', effects: { integrity: 2, peopleReputation: 1, mentalPressure: 2 }, result: '名单公示，人情让位安全' },
         { text: '先整改示范户，再推开', effects: { eq: 1, workAbility: 1 }, result: '示范先行，阻力小步快跑' },
-        { text: '协调搬迁补助政策同步出台', effects: { background: 1, wealth: -1, peopleReputation: 1 }, result: '搬迁有补助，真心整改' },
+        { text: '协调搬迁补助政策同步出台', effects: { background: 1, projectBudget: -1, peopleReputation: 1 }, result: '搬迁有补助，真心整改' },
         { text: '按投诉优先级分批整治', effects: { eq: 1, workAbility: -1, risk: 1 }, result: '分批整治，投诉无门的还急' }
       ] },
       { subCase: 'sc1', title: '暴雨季前的防汛盲区', text: '巡查发现两处地下空间防汛预案是纸面的，应急物资也没配齐。汛期只剩三周。', choices: [
         { text: '物资与演练一周内双到位', effects: { workAbility: 2, body: -1, mentalPressure: 2 }, result: '物资就位，演练做实' },
         { text: '更新预案并落实责任人', effects: { workAbility: 1, integrity: 1 }, result: '预案活起来，责任落到人' },
-        { text: '上报申请专项资金补配', effects: { background: 1, wealth: 1 }, result: '专项到位，物资补齐' },
+        { text: '上报申请专项资金补配', effects: { background: 1, projectBudget: 1 }, result: '专项到位，物资补齐' },
         { text: '汛期加强值守以人力弥补', effects: { body: -2, mentalPressure: 2, workAbility: 1 }, result: '人盯人防守，心里没底' }
       ] },
       { subCase: 'sc2', title: '执法记录仪拍到了熟人', text: '执法队员上门检查，发现你同学负责的企业灭火器过期。同学当场打电话给你。', choices: [
@@ -283,7 +283,7 @@ const gd_projects = [
         { text: '建立企业隐患自查月度打卡制', effects: { workAbility: 2, mentalPressure: 1 }, result: '月度打卡，隐患早发现' },
         { text: '将整治纳入绩效考核硬指标', effects: { integrity: 1, background: 1, heat: 1 }, result: '考核挂钩，层层传导' },
         { text: '组建镇村安全网格员队伍', effects: { peopleReputation: 1, workAbility: 1 }, result: '网格员落地，末梢有人管' },
-        { text: '引入保险机构第三方风控', effects: { iq: 1, wealth: 1 }, result: '保险参与，风控市场化' }
+        { text: '引入保险机构第三方风控', effects: { iq: 1, projectBudget: 1 }, result: '保险参与，风控市场化' }
       ] }
     ],
     completionEffects: { integrity: 3, reputation: 3, workAbility: 3, risk: -3, flag: 'policy_safety_rectify_done' }

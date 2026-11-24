@@ -586,6 +586,19 @@ class GameEngine {
         delete p.flags.policyProjectActive;
       } else {
         st.policyProject.stage = projectStage;
+        st.policyProject.budget=Number.isFinite(st.policyProject.budget)?Math.max(0,st.policyProject.budget):14;
+        if(!Number.isFinite(st.policyProject.lastDecisionAge)&&projectStage>0&&!st.policyProject.pendingDecision){
+          st.policyProject.lastDecisionAge=p.age;
+          p.policyDecisionAge=p.age;
+        }
+        if(st.currentEvent?.projectEvent||st.currentEvent?.opinionCrisis){
+          st.currentEvent.projectId=projectDef.id;
+          st.currentEvent.projectStage=projectStage;
+          if(st.currentEvent.projectEvent)st.currentEvent.choices=projectDef.stages[projectStage].choices.map(c=>({...c,text:c.text+(c.effects?.projectBudget?'（公共预算'+(c.effects.projectBudget>0?'+':'')+c.effects.projectBudget+'）':'')}));
+          // Legacy serialized decisions must retain their original year and recover canonical stage.
+          st.policyProject.pendingDecision={type:st.currentEvent.opinionCrisis?'opinion':'stage',stage:projectStage};
+        }
+
         st.policyProject.startedYear = Number.isFinite(st.policyProject.startedYear) ? st.policyProject.startedYear : (p.yearsWorked || 0);
         st.policyProject.progress = Number.isFinite(st.policyProject.progress) ? Math.max(0, Math.min(projectDef.duration, st.policyProject.progress)) : projectStage;
         st.policyProject.opinionCrises = st.policyProject.opinionCrises === 1 ? 1 : 0;
@@ -600,7 +613,11 @@ class GameEngine {
       delete p.flags.policyProjectActive;
     }
     // 新模块存档形状：未知条目不进入执行路径。
-    p.policyFollowups=Array.isArray(p.policyFollowups)?p.policyFollowups.filter(r=>r&&this.getPolicyProjectDefinition(r.id)&&Number.isFinite(r.completedAge)&&['strong','mixed','concern'].includes(r.quality)).map(r=>({id:r.id,completedAge:r.completedAge,quality:r.quality,suppressed:!!r.suppressed,review2:!!r.review2,review5:!!r.review5})):[];
+    p.policyFollowups=Array.isArray(p.policyFollowups)?p.policyFollowups.filter(r=>r&&this.getPolicyProjectDefinition(r.id)&&Number.isFinite(r.completedAge)&&['strong','mixed','concern'].includes(r.quality)).map(r=>({id:r.id,completedAge:r.completedAge,budget:Number.isFinite(r.budget)?r.budget:null,quality:r.quality,suppressed:!!r.suppressed,review2:!!r.review2,review5:!!r.review5})):[];
+    for(const key of ['dutyCounts','dutyVerified']){
+      const val=p[key];
+      p[key]=val&&typeof val==='object'&&!Array.isArray(val)?Object.fromEntries(Object.entries(val).filter(([id,n])=>['field','skills','delegate','review','priorities','audit','special_tech','special_finance','special_law','special_service','special_coordination'].includes(id)&&Number.isFinite(n)&&n>=0).map(([id,n])=>[id,Math.min(70,Math.floor(n))])):{};
+    }
     if(p.dutyPending&&(!Number.isFinite(p.dutyPending.dueAge)||!p.dutyPending.effects||typeof p.dutyPending.name!=='string'))delete p.dutyPending;
     if(p.retirementChapter){
       const r=p.retirementChapter;

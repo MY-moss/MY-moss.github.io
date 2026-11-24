@@ -61,12 +61,13 @@ test('rank duty survives save load and rest year, including zero AP and pending 
 test('project history tracks choices, separates suppression across projects, and settles two callbacks exactly once',()=>{
  const {e,p}=setup({rank:8,yearsWorked:20});e.cashIn(200);
  for(const [id,bad] of [['digital_governance',true],['old_community',false]]){
+  if(p.policyDecisionAge===p.age){p.age++;p.yearsWorked++;}
   assert.ok(e.startPolicyProject(id));const def=e.getPolicyProjectDefinition(id);
-  if(bad){p.heat=50;e.state.currentEvent=e.preparePolicyOpinionCrisisEvent();assert.ok(e.resolvePolicyOpinionChoice(2));}
-  for(let i=0;i<def.duration;i++){e.state.currentEvent=e.getPolicyProjectDecisionEvent();const choices=e.state.currentEvent.choices;const best=choices.reduce((best,c,j)=>{const f=c.effects||{},score=(f.integrity||0)+(f.workAbility||0)+(f.peopleReputation||0)-(f.risk||0)-(f.heat||0);return score>best.score?{j,score}:best;},{j:0,score:-100});assert.ok(e.resolvePolicyProjectChoice(best.j));}
+  if(bad){p.heat=50;e.state.currentEvent=e.preparePolicyOpinionCrisisEvent();assert.ok(e.resolvePolicyOpinionChoice(2));p.age++;p.yearsWorked++;}
+  for(let i=0;i<def.duration;i++){e.state.currentEvent=e.getPolicyProjectDecisionEvent();const choices=e.state.currentEvent.choices;const best=choices.reduce((best,c,j)=>{const f=c.effects||{},score=(f.integrity||0)+(f.workAbility||0)+(f.peopleReputation||0)-(f.risk||0)-(f.heat||0);return score>best.score?{j,score}:best;},{j:0,score:-100});assert.ok(e.resolvePolicyProjectChoice(best.j));if(i+1<def.duration){p.age++;p.yearsWorked++;}}
  }
  assert.equal(p.policyFollowups.length,2);assert.equal(e.hasQualifiedPolicyOutcome('digital_governance'),false);assert.equal(e.hasQualifiedPolicyOutcome('old_community'),true);
- assert.equal(p.flags.policyOpinionSuppressed,true);p.age+=2;e.settlePolicyFollowups();assert.ok(p.policyFollowups.every(x=>x.review2&&!x.review5));assert.ok(e.saveState(1));assert.ok(e.loadState(1));const q=e.getPlayer();q.age+=3;e.settlePolicyFollowups();assert.ok(q.policyFollowups.every(x=>x.review5));const log=q.careerLog.length;e.settlePolicyFollowups();assert.equal(q.careerLog.length,log);
+ assert.equal(p.flags.policyOpinionSuppressed,true);p.age+=2;e.settlePolicyFollowups();assert.ok(p.policyFollowups.every(x=>x.review2));assert.equal(p.policyFollowups.at(-1).review5,false);assert.ok(e.saveState(1));assert.ok(e.loadState(1));const q=e.getPlayer();q.age+=3;e.settlePolicyFollowups();assert.ok(q.policyFollowups.every(x=>x.review5));const log=q.careerLog.length;e.settlePolicyFollowups();assert.equal(q.careerLog.length,log);
 });
 test('retirement chapter has three playable years, preserves career result and can resume from a save',()=>{
  const {e,p}=setup({age:60});assert.equal(e.getRetirementChapter(),null);p.ending='ordinary';p.deathReason='retired';
