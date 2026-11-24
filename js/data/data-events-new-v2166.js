@@ -10,8 +10,8 @@ const gd_events_new_v2166 = [
     { text: '把报告拍照发给熟人医生参谋', effects: { flag: 'parentIllness', background: 1, eq: 1 }, result: '熟人给出了中肯的方案，但照护仍需人手' }
   ] },
   { id: 'ent294', stage: 'life', eventType: 'choice', weight: 5, year: [48, 70], requireFlag: 'parentIllness', title: '照护抉择', text: '医生说需要人长期照看。你腾不出整块时间，亲人各有各的难处，护工的价钱又年年涨。这张排班表，谁来填？', choices: [
-    { text: '自己扛下主要照护，工作往边上排', effects: { flag: 'parentCaring', familyPressure: 3, mentalPressure: 3, positionWeight: -2, body: -2 }, result: '你成了父母的准时闹钟，工作节奏慢了下来' },
-    { text: '请专业护工，自己每周探望', effects: { flag: 'parentCaring', wealth: -25, familyPressure: 1, eq: 1 }, result: '护工分担了体力活，账单分担了心理负担' },
+    { text: '自己扛下主要照护，工作往边上排', effects: { setFlags: ['parentCaring','parentCareSelf'], familyPressure: 3, mentalPressure: 3, positionWeight: -2, body: -2 }, result: '你成了父母的准时闹钟，工作节奏慢了下来' },
+    { text: '请专业护工，自己每周探望', effects: { setFlags: ['parentCaring','parentCareProfessional'], wealth: -25, familyPressure: 1, eq: 1 }, result: '护工分担了体力活，账单分担了心理负担' },
     { text: '和能参与的亲属商量轮班，明确照护协议', effects: { deleteFlag: 'parentIllness', flag: 'parentShared', eq: 2, familyPressure: -1 }, result: '排班表贴在冰箱上，责任分摊心不散' }
   ] },
   { id: 'ent295', stage: 'life', eventType: 'choice', weight: 5, year: [50, 72], requireFlag: 'parentCaring', title: '漫长照护之后', text: '两年过去，父母的复诊日期被写在冰箱门上。病情有好有坏，药不能轻易停，但你已经学会把夜里临时起床和白天的工作安排分开。', choices: [

@@ -178,6 +178,14 @@ renderCareer() {
       const remain = Math.max(0, (since || p.age) + (reviewed ? 3 : 2) - p.age);
       arcs.push({ title: '冰箱上的蓝色便签', detail: `${good ? '选择陪诊' : '选择参加汇报'} · ${complete ? '故事已完结' : remain ? '约 ' + remain + ' 年后会有回响' : '等待后续机会'}`, person: '家人' });
     }
+    if(f.parentIllness||f.parentCaring||f.parentShared||seen.includes('enl216')){
+      const pending=engine.getPendingCausalConsequences().find(x=>['ent294','ent295','enl215','enl216'].includes(x.id));
+      arcs.push({title:'父母照护',person:'家人',detail:seen.includes('enl216')?'故事已收束':pending?(pending.waitingYears?'约 '+pending.waitingYears+' 年后回响':'等待后续机会'):'照护安排仍在发展'});
+    }
+    if(f.mortgage||f.mortgageCleared||f.mortgageSold||f.mortgageRestructured){
+      const pending=engine.getPendingCausalConsequences().find(x=>['ent258','ent259','arc_mortgage_3'].includes(x.id));
+      arcs.push({title:'住房账本',person:'家庭财务',detail:f.mortgage?(pending?(pending.waitingYears?'约 '+pending.waitingYears+' 年后回访':'等待还款回访'):'仍在还款'):f.mortgageSold?'已出售并结清':f.mortgageRestructured?'已转为普通债务':'已结清住房贷款'});
+    }
     if (f.classmateOpen || f.classmateFavor || f.classmateBoundaries) {
       const route = f.classmateOpen ? 'open' : f.classmateFavor ? 'favor' : 'boundary';
       const intro = f.classmateOpen ? '公开协助' : f.classmateFavor ? '私下请托' : '守住边界';
@@ -226,6 +234,8 @@ renderCareer() {
       {name:'交接本上的空格',tag:f.teamShared?'共同承担':f.teamDeferred?'暂缓调休':'未经历',active:!!(f.teamShared||f.teamDeferred),finished:seen.includes(f.teamShared?'arc_team_shared_3':'arc_team_deferred_3')},
       {name:'老同学的申请书',tag:f.classmateOpen?'公开协助':f.classmateFavor?'私下请托':f.classmateBoundaries?'守住边界':'未经历',active:!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries),finished:seen.some(id=>id.startsWith('arc_classmate_')&&id.endsWith('_3'))},
       {name:'冰箱上的蓝色便签',tag:f.familyClinicPresent?'陪伴家人':f.familyClinicAbsent?'投入事业':'未经历',active:!!(f.familyClinicPresent||f.familyClinicAbsent),finished:seen.includes('arc_family_clinic_3')},
+      {name:'父母照护',tag:f.parentCareSelf?'亲自照护':f.parentCareProfessional?'专业照护':f.parentShared?'亲属轮班':f.parentIllness?'开始照护':'未经历',active:!!(f.parentIllness||f.parentCaring||f.parentShared),finished:seen.includes('enl216')},
+      {name:'住房账本',tag:f.mortgage?'持续还款':f.mortgageSold?'出售结清':f.mortgageRestructured?'债务重组':f.mortgageCleared?'还款结清':f.homeOwned?'全款购房':'未经历',active:!!(f.mortgage||f.mortgageSold||f.mortgageCleared||f.mortgageRestructured||f.homeOwned),finished:!!(f.mortgageSold||f.mortgageCleared||f.mortgageRestructured||f.homeOwned)},
       {name:'岗位发展',tag:f.lifeCareerHandoff?'专班 · 已交接':f.lifeCareerContinued?'专班 · 继续负责':f.lifeCareerLead?'重点专班':f.lifeCareerExpert?'专业深耕':'未经历',active:!!(f.lifeCareerLead||f.lifeCareerExpert),finished:seen.includes('arc_life_career_3')},
       {name:'原则与担当',tag:f.lifeIntegrityFullDisclosure?'完整披露':f.lifeIntegrityPending?'保留待核':f.lifeIntegrityOpen?'公开复核':f.lifeIntegrityQuiet?'程序补正':'未经历',active:!!(f.lifeIntegrityOpen||f.lifeIntegrityQuiet),finished:seen.includes('arc_life_integrity_3')},
       {name:'家庭的约定',tag:f.lifeFamilySchedule?'固定陪伴':f.lifeFamilyShared?'共同分工':f.lifeFamilyPresent?'守住约定':f.lifeFamilyCareer?'承担任务':'未经历',active:!!(f.lifeFamilyPresent||f.lifeFamilyCareer),finished:seen.includes('arc_life_family_3')},

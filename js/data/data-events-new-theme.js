@@ -1119,24 +1119,31 @@ const gd_events_new_theme = [
     ] },
   // ========== v2.65 购房贷款链（贷款→月供→还清） ==========
   { id: 'ent257', eventType: 'choice', weight: 8, year: [3, 50], stage: 'life', title: '🏠 贷款买房',
-    text: '看了一年的房子，终于等到一套合适的。总价不低——公积金贷款加商贷，月供要吃掉你工资的三成。签字的笔，在手里有点沉。',
+    text: '看了一年的房子，终于等到一套合适的。贷款首付需要20，之后每年还要承担6的住房支出。你把合同和手头的储蓄列在纸上，开始计算还能留下多少应急金。',
     choices: [
-      { text: '贷款上车，从此有了自己的家', effects: { flag: 'mortgage', wealth: -20, familyPressure: -6, mentalPressure: 3, family: 2 } },
-      { text: '凑全款买，一步到位', effects: { wealth: -60, familyPressure: -4, mentalPressure: 1, family: 2 } },
-      { text: '再攒几年，先租房', effects: { wealth: -3, familyPressure: 3, mentalPressure: 2 } }
+      { text: '付首付20，贷款买房', minWealth:20, effects: { flag: 'mortgage', wealth: -20, familyPressure: -4, mentalPressure: 3, family: 2 }, result:'合同签了，之后每年都得为住房支出留出预算。' },
+      { text: '付60全款买房，不承担月供', minWealth:60, effects: { flag:'homeOwned', wealth: -60, familyPressure: -4, mentalPressure: 1, family: 2 }, result:'你保留了产权凭证，也记下剩余的应急资金。' },
+      { text: '继续租房，保留现金缓冲', effects: { familyPressure: 1, mentalPressure: 1 }, result:'住处还不是自己的，但手里的钱仍能应付突发情况。' }
     ] },
-  { id: 'ent258', eventType: 'choice', weight: 4, year: [3, 52], stage: 'life', requireFlag: 'mortgage', title: '📆 月供的压力',
-    text: '房贷扣款日。工资到账还没捂热，月供就划走了一大笔。你看着账户余额，想起售楼处那句"月供虽多，房子是自己的"——是房子自己的，钱也是银行的了。',
+  { id: 'ent258', eventType: 'choice', weight: 4, stage: 'life', requireFlag: 'mortgage', title: '📆 月供的压力',
+    text: '年度住房支出已经计入生活费。你翻开账本，发现存款增长比买房之前慢了。家人问起，今后遇到医疗或失业这样的意外，家里能不能撑住。',
     choices: [
-      { text: '精打细算，缩减日常开支', effects: { wealth: -6, familyPressure: -2, mentalPressure: 2, body: -1 } },
-      { text: '接点私活补贴月供', effects: { wealth: -2, risk: 3, body: -1, mentalPressure: 2 } },
-      { text: '先拖着，实在不行就断供', effects: { deleteFlag: 'mortgage', risk: 6, reputation: -3, mentalPressure: 5, wealth: -5 } }
+      { text: '重排家庭预算，缩减非必要开支', effects: { flag:'mortgageBudgeted', familyPressure: -1, mentalPressure: 2 }, result:'你们留下应急预算，没有把所有钱都投进房子。' },
+      { text: '与单位核实兼职限制，寻找合规的额外收入机会', effects: { flag:'mortgageIncomePlan', eq:1, mentalPressure:2 }, result:'你先核对规则，再决定哪些机会值得花时间。收入尚未到账。' },
+      { text: '协商出售住房，用成交款清偿剩余贷款，重新租房', effects: { deleteFlag: 'mortgage', flag:'mortgageSold', familyPressure: 5, mentalPressure: 3, reputation: -1 }, result:'经协商以成交款结清住房贷款，家里搬回租住的房子。没有额外卖房收益。' }
     ] },
-  { id: 'ent259', eventType: 'choice', weight: 4, year: [4, 55], stage: 'life', requireFlag: 'mortgage', title: '💸 提前还贷',
-    text: '年终奖到账，加上几年的积蓄，够把剩余贷款一次性还清了。银行柜台的经理笑着问："确定要提前结清？"你深吸一口气——终于要无债一身轻了。',
+  { id: 'ent259', eventType: 'choice', weight: 4, stage: 'life', requireFlag: 'mortgage', title: '💸 提前还贷',
+    text: '贷款已经还了几年。银行提供了提前结清的方案：一次性支付40，或继续按现有计划偿还。你还要考虑手头是否留得下应急资金。',
     choices: [
-      { text: '提前还清，卸下这块石头', effects: { deleteFlag: 'mortgage', wealth: -40, mentalPressure: -6, familyPressure: -3 } },
-      { text: '留一部分现金应急，继续月供', effects: { mentalPressure: 1, wealth: -10 } }
+      { text: '支付40提前结清住房贷款', minWealth:40, effects: { deleteFlag: 'mortgage', flag:'mortgageCleared', wealth: -40, mentalPressure: -5, familyPressure: -3 }, result:'住房贷款结清；以后年度生活费不再包含这笔支出。其他债务仍需偿还。' },
+      { text: '保留现金，继续按年偿还', effects: { flag:'mortgageContinued', mentalPressure: 1 }, result:'你留下了现金缓冲，约定几年后再核对剩余贷款。' }
+    ] },
+  { id: 'arc_mortgage_3', eventType: 'choice', stage:'life', requireFlag:'mortgage', title:'房本旁的最后一张账单',
+    text:'多年还款后，银行寄来重新核算的账单。剩余住房贷款可用16结清，但家里仍需要应付日常开支。也可以出售房屋，用成交款结清贷款后另找住处。',
+    choices:[
+      {text:'支付16结清住房贷款，保留住房', minWealth:16, effects:{deleteFlag:'mortgage',flag:'mortgageCleared',wealth:-16,mentalPressure:-4,familyPressure:-2},result:'你把结清凭证放进房本夹里，之后不再承担住房贷款支出。其他欠款没有自动消失。'},
+      {text:'与银行协商重组剩余16的欠款，保留住房', effects:{deleteFlag:'mortgage',flag:'mortgageRestructured',addDebt:{type:'personal',amount:16},mentalPressure:2,familyPressure:1},result:'固定住房支出停止，剩余16转为普通债务，仍需按债务系统偿还本金与利息。'},
+      {text:'协商出售住房并用成交款结清，重新租住', effects:{deleteFlag:'mortgage',flag:'mortgageSold',familyPressure:3,mentalPressure:1},result:'房子交给了新住户，住房贷款一并结清。你没有获得额外出售收益，开始寻找合适的租住地点。'}
     ] },
   // ========== v2.65 站队/派系线（站队后 2 年派系风云） ==========
   { id: 'ent260', eventType: 'choice', weight: 3, year: [2, 50], stage: 'work', requireFlag: 'faction_lean', title: '🌪️ 派系风云',

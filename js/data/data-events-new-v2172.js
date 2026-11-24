@@ -61,9 +61,9 @@ const gd_events_new_v2172 = [
     { text: '继续依赖私人消息，希望不了了之', effects: {flag: 'cadreReviewClosed', risk: 5, integrity: -3, background: -2, mentalPressure: 3}, result: '正式核查并未停止，长期不回应让组织对你的评价更加谨慎。' }
   ] },
   { id: 'enl215', stage: 'life', eventType: 'choice', weight: 2, requireFlag: 'parentShared', year: [48, 76], title: '轮班表上的空位', text: '两年前你和参与照护的亲属定下轮班表。如今母亲的复诊日临时改期，原本负责陪诊的人又要出差。家族群里没有吵架，只是那个空白日期静静挂了一整晚。', choices: [
-    { text: '自己调休补上这一天，之后重新议定轮班', effects: {flag:'parentCareReviewed', familyPressure:-2, mentalPressure:2, positionWeight:-1, eq:2}, result:'医院的走廊很长。你替大家补了这一次，也让每个人把下个月的安排写清楚。' },
-    { text: '征求家人意见，合请可靠护工分担', effects: {flag:'parentCareReviewed', wealth:-12, familyPressure:-3, eq:1}, result:'费用由几家分摊，复诊没有耽误；你们开始认真讨论照护的可持续性。' },
-    { text: '坚持原约定，由轮值者自行协调', effects: {flag:'parentCareReviewed', familyPressure:3, mentalPressure:1, eq:-1}, result:'复诊最后还是有人陪了，但家族群里几天没人说话。' }
+    { text: '自己调休补上这一天，之后重新议定轮班', effects: {setFlags:['parentCareReviewed','parentCareCover'], familyPressure:-2, mentalPressure:2, positionWeight:-1, eq:2}, result:'医院的走廊很长。你替大家补了这一次，也让每个人把下个月的安排写清楚。' },
+    { text: '征求家人意见，合请可靠护工分担', effects: {setFlags:['parentCareReviewed','parentCareHire'], wealth:-12, familyPressure:-3, eq:1}, result:'费用由几家分摊，复诊没有耽误；你们开始认真讨论照护的可持续性。' },
+    { text: '坚持原约定，由轮值者自行协调', effects: {setFlags:['parentCareReviewed','parentCareRigid'], familyPressure:3, mentalPressure:1, eq:-1}, result:'复诊最后还是有人陪了，但家族群里几天没人说话。' }
   ] },
   { id: 'enl216', stage: 'life', eventType: 'choice', weight: 2, requireFlag: 'parentCareReviewed', year: [50, 80], title: '五年后的病历袋', text: '整理家里的旧抽屉时，你发现父母的病历袋越来越厚，有些日期旁写着自己的名字，有些是其他亲人代签的。那些年各家都不容易，没人能把所有事情做得完美。今后怎样分担，已经比当年谁付出得多更重要。', choices: [
     { text: '把照护记录整理给全家，明确紧急联络与复诊计划', effects: {eq:2, familyPressure:-3, mentalPressure:1, workAbility:1}, result:'表格没有让亲情变得生硬，反而让每个人都知道什么时候该主动补位。' },

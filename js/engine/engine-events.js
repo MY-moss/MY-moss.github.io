@@ -308,7 +308,7 @@ GameEngine.prototype.applyEventEffects = function(event) {
     this.clampAttrs();
   }
 // v2.66 刚性链 next 事件白名单：只由 RIGID_CHAINS 注入触发（从随机池排除，防 delay 被绕过/死链）
-const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'ent260', 'ent261', 'ent262', 'ent263',
+const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
   // P3 剧本专属事件链：002/003 只由链注入触发，防随机池提前抽取破坏阶段节奏
   'scn_grassroots_002', 'scn_grassroots_003', 'scn_midcareer_002', 'scn_midcareer_003', 'scn_clean_002', 'scn_clean_003', 'scn_network_002', 'scn_network_003', 'scn_reform_002', 'scn_reform_003', 'scn_retired_002', 'scn_retired_003', 'scn_family_002', 'scn_family_003',
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入

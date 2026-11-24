@@ -587,7 +587,8 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'faction_leaned_out', next: 'ent262', delay: 1 }, // 靠山倒台后必然面对清算/转向
         { flag: 'dating', next: 'ent263', delay: 3 }, // 恋爱满 3 年必然决断（结婚/继续/分手）
         { flag: 'faction_steadfast', next: 'ent261', delay: 2 }, // v2.66 坚定站队 → 2 年后必然得势
-        { flag: 'mortgage', next: 'ent259', delay: 4 }, // v2.66 房贷 4 年后必然可提前还贷（出口保障，原 ent259 池子概率极低）
+        { flag: 'mortgage', next: 'ent259', delay: 4 },
+        { flag: 'mortgage', next: 'arc_mortgage_3', delay: 8 }, // v2.66 房贷 4 年后必然可提前还贷（出口保障，原 ent259 池子概率极低）
         // P3 剧本专属事件链：首步两种走法都推进到 002；002 完成后推进到 003（链根 flag 只由剧本事件设置，经典模式不受影响）
         { flag: 'grassrootsBreakthrough', next: 'scn_grassroots_002', delay: 1 },
         { flag: 'grassrootsCautious', next: 'scn_grassroots_002', delay: 1 },
@@ -727,7 +728,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
       [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$|^enl21[56]$/,'父母照护'],
       [/^ent2(96|97|98)$|^ent302$/,'资产与风险'],[/^ent(299|300|301)$|^enw249$/,'借调与考察'],[/^ent(169|17[0-4]|28[56]|30[3-5])$/,'职场分歧 · 当年旧账'],[/^ent(17[5-7]|18[23]|30[6-8])$/,'郑教授 · 多年往来'],[/^enc(125|126|127|128|140)$/,'干部考察 · 异议与复核'],[/^enw246$/,'岗位业务评审'],
       [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648|649)$/,'调查与责任'],[/^e(805|806|807|808)$/,'基层挂职'],[/^enw126$/,'借调与考察'],[/^e(728|729|730|731)$/,'人脉枢纽'],[/^e(616|617|618|743|744|747|748|756|758|765)$/,'财务与廉政后果'],
-      [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$/,'房贷与家庭财务']
+      [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$|^arc_mortgage_3$/,'房贷与家庭财务']
     ];
     this.getCausalChainSteps().forEach((step,index)=>{
       if(!flags[step.flag]||seen.has(step.next)||!known.has(step.next)||unique.has(step.next))return;
@@ -761,13 +762,32 @@ GameEngine.prototype.getVentureReviewEvent = function() {
 };
 // 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
 GameEngine.prototype.getLifePathEvent = function(event) {
-  if (!event || !/^(arc_life_|arc_family_clinic_3|ent30[67])/.test(event.id || '')) return event;
+  if (!event || !/^(arc_life_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
   const f=this.state.player.flags||{};
   const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
   const add=(text)=>{out.text=(out.text||'')+' '+text;};
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'ent259':
+    case 'arc_mortgage_3':
+      if(f.mortgageBudgeted) add('当年一起做的预算仍放在账本里，你们习惯先留出应急的钱。');
+      if(f.mortgageIncomePlan) add('你想起当年核对兼职限制的经历，额外收入不能成为还款计划的唯一支柱。');
+      if(f.parentCaring||f.parentShared){add('家里的照护支出也需要预留资金。');bump(0,{mentalPressure:1});}
+      break;
+    case 'ent295':
+      if(f.parentCareSelf){out.text='两年过去，你手机里设置的服药闹钟越来越多。最近一次值班交接时，同事发现你在记录本上写错了日期。父母的照护仍需继续，你也需要恢复自己的生活。';bump(0,{mentalPressure:-1});}
+      else if(f.parentCareProfessional){out.text='护工已经来了两年。你每周核对用药记录，但最近收到费用调整通知。照护没有停下来，你们需要重新考虑时间和金钱的分配。';bump(1,{familyPressure:-1});}
+      break;
+    case 'enl216':
+      if(f.parentCareCover){add('那次临时补班之后，大家开始把无法赴约的日期提前标出。');bump(0,{familyPressure:-1});}
+      else if(f.parentCareHire){add('当年共同请的护工减轻了体力负担，但各家的支付能力发生了变化。');bump(1,{mentalPressure:-1});}
+      else if(f.parentCareRigid){add('那次坚持轮班原约定后，有位亲属很少再主动联系。你意识到制度也需要应对例外。');bump(2,{familyPressure:2});}
+      else if(f.parentLongTerm){add('你已经承认照护是长期的事情，不必每次都把自己的生活让给突发安排。');bump(1,{familyPressure:-1});}
+      else if(f.parentRecovered){add('你曾经试着逐步找回自己的生活，父母也希望你能留出一些自己的时间。');bump(0,{mentalPressure:-1});}
+      if(f.mortgage){add('账本上的住房贷款和照护支出还在争夺同一笔应急金。');bump(2,{mentalPressure:1});}
+      if(f.familyClinicRoutine||f.familyClinicRepair){add('过去和伴侣建立的陪诊安排，让你知道如何把责任写进可执行的日程。');bump(0,{eq:1});}
+      break;
     case 'arc_family_clinic_3':
       if(f.familyClinicRoutine){
         add('两年前你们选择把共同时间固定下来。多数约定终于兑现，但有时为了守住日程，你也不得不请团队替你承担临时任务。');
