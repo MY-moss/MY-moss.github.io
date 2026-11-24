@@ -11,7 +11,7 @@ for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:360
  await page.getByRole('button',{name:'返回游戏'}).click();const ok=await page.evaluate(()=>!!document.querySelector('.life-map-entry'));assert.ok(ok);
  await page.evaluate(()=>{const p=eval('engine').getPlayer();p.flags.financeOptions=['gold','train','save'];p.flags.financeOptionsYear=p.yearsWorked;window.App.showFinancePanel();});const financeText=await page.evaluate(()=>document.querySelector('.stage')?.textContent||'');assert.match(financeText,/可能亏损/);assert.match(financeText,/压力\+3/);await page.evaluate(()=>window.App.returnToCurrentFlow());
  await page.reload();await page.getByRole('button',{name:/读取第2个存档/}).click();assert.ok(await page.evaluate(()=>eval('engine').getPlayer().flags.receiptOpen));
- const worker=await page.evaluate(async()=>({controller:!!navigator.serviceWorker.controller,keys:await caches.keys()}));assert.ok(worker.controller&&worker.keys.includes('shangan-pages-33'));
+ const worker=await page.evaluate(async()=>({controller:!!navigator.serviceWorker.controller,keys:await caches.keys()}));assert.ok(worker.controller&&worker.keys.includes('shangan-pages-34'));
  let offline='not checked';if(viewport.width===390){await c.setOffline(true);await page.reload();await page.locator('.game-container').waitFor();offline='loaded';}
  assert.deepEqual(errors,[]);assert.deepEqual(resources,[]);out.push({viewport,context,lines,offline,errors,resources});await c.close();
 }await browser.close();console.log(JSON.stringify(out,null,2))})().catch(e=>{console.error(e);process.exit(1)});

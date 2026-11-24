@@ -170,6 +170,39 @@ GameEngine.prototype.recordEventVisit = function(eventId) {
     const counts = this.state.player.eventCounts || (this.state.player.eventCounts = {});
     counts[eventId] = (Number(counts[eventId]) || 0) + 1;
 };
+// 履历证据来自真正处理过的选择，不按终局属性倒推经历；每个方向每年最多一条。
+GameEngine.prototype.recordLifeEvidence = function(kind,label) {
+    const p=this.state.player;
+    if(!p.isEmployed||p.ending||!['craft','care','service'].includes(kind))return false;
+    const ledger=p.lifeEvidence||(p.lifeEvidence={}),rows=ledger[kind]||(ledger[kind]=[]);
+    if(rows.some(r=>r.age===p.age))return false;
+    rows.push({age:p.age,label:String(label||'年度选择').slice(0,100)});
+    return true;
+};
+GameEngine.prototype.recordChoiceLifeEvidence = function(event,choice) {
+    const fx=choice.effects||{},title=event.title+'：'+choice.text;
+    if(!event.id||event.gambleDynamic||!this.state.player.isEmployed)return;
+    if((fx.risk||0)>0||(fx.integrity||0)<0||(fx.heat||0)>2)return;
+    if(['work','career'].includes(event.stage)){
+      if((fx.workAbility||0)>=2&&((fx.mentalPressure||0)>0||(fx.positionWeight||0)<0))this.recordLifeEvidence('craft',title);
+      if((fx.peopleReputation||0)>=2&&((fx.workAbility||0)>0||(fx.mentalPressure||0)>0||(fx.positionWeight||0)<0))this.recordLifeEvidence('service',title);
+    }else if(event.stage==='life'&&((fx.familyPressure||0)<=-2||(fx.childCompany||0)>0||((fx.mentalPressure||0)<=-3&&(fx.wealth||0)<=0))){
+      this.recordLifeEvidence('care',title);
+    }
+};
+GameEngine.prototype.getLifeEvidence = function(){
+    const ledger=this.state.player.lifeEvidence||{};
+    return Object.fromEntries(['craft','care','service'].map(k=>[k,(ledger[k]||[]).slice()]));
+};
+GameEngine.prototype.getEarnedLifeEnding = function(){
+    const p=this.state.player,h=this.state.hidden,e=this.getLifeEvidence(),f=p.flags||{};
+    if(p.yearsWorked<15||h.risk>=30||this.hasCorruptFlag(f))return null;
+    const candidates=[];
+    if(e.craft.length>=6&&h.workAbility>=70&&h.mentalPressure<80)candidates.push({id:'steady_professional',strength:e.craft.length/6});
+    if(e.care.length>=5&&h.familyPressure<30&&h.mentalPressure<60&&h.risk<25)candidates.push({id:'life_companion',strength:e.care.length/5});
+    if(e.service.length>=5&&(p.peopleReputation??50)>=72&&h.integrity>=65)candidates.push({id:'people_champion',strength:e.service.length/5});
+    return candidates.sort((a,b)=>b.strength-a.strength)[0]?.id||null;
+};
 GameEngine.prototype.handleEventChoice = function(ci) {
     const e = this.state.currentEvent; if (!e || !e.choices) return;
     const c = e.choices[ci];
@@ -240,6 +273,7 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     }
     // 选项条件门槛：不满足条件的选项（背景/财富/flag）直接拦截，防止绕过UI触发
     this.applyEffects(c.effects);
+    this.recordChoiceLifeEvidence(e,c);
     if(e.id==='ent235'){
       const p=this.state.player;if(p.education!=='doctor')p.education='master';
       delete p.flags.mbaApply;delete p.flags.mbaApply_since;delete p.flags.mbaActive;delete p.flags.mbaActive_since;
@@ -310,6 +344,7 @@ GameEngine.prototype.isChoiceEnabled = function(c) {
     if (!c) return false;
     const p = this.state.player;
     const bg = this.state.hidden.background;
+    if(c.policyPause&&!this.canAffordAP(1))return false;
     if (c.effects?.projectBudget<0 && this.state.currentEvent?.projectEvent && (this.state.policyProject?.budget??14)+c.effects.projectBudget<0) return false;
     if (c.minBackground !== undefined && bg < c.minBackground) return false;
     if (c.maxBackground !== undefined && bg > c.maxBackground) return false;
@@ -1146,7 +1181,7 @@ GameEngine.prototype.determineEnding = function() {
     // 基层奉献：扎根乡镇/街道15年以上，廉洁无腐，成为百姓口中的好干部（v2.49：逃脱过调查者不得判定）
     if (unitLevel === 0 && p.yearsWorked >= 15 && h.integrity > 60 && !this.hasCorruptFlag(p.flags) && !p.flags.escapedOnce) return 'grassroots_devotion';
     // 技术骨干：在技术/数据岗位深耕，能力突出，成为单位不可或缺的技术力量
-    if (h.workAbility > 85 && this.state.attrs.iq > 8 && p.unit && (p.unit.system === '技术部门' || p.unit.system === '数据部门')) return 'tech_backbone';
+    if (((h.workAbility > 85 && this.state.attrs.iq > 8)||((p.dutyVerified?.special_tech||0)>=3&&h.workAbility>=70)) && p.unit && (p.unit.system === '技术部门' || p.unit.system === '数据部门')) return 'tech_backbone';
     // 群众贴心人：处理群众事件10次以上，情商高、作风正派、民间口碑深厚（v2.21 双轨接入），被群众称为"贴心人"
     // v2.1.49 M5.3 项目结局分支：完成「老旧小区改造」政策项目（policy_old_community_done，解难排忧类实绩）成为另一条路，同样受舆情压制阻断
     if (((p.flags.peopleEventCount || 0) >= 10 || (this.hasQualifiedPolicyOutcome('old_community'))) && this.state.attrs.eq > 8 && h.integrity > 65 && (p.peopleReputation ?? 50) >= 75) return 'people_champion';
@@ -1163,6 +1198,7 @@ GameEngine.prototype.determineEnding = function() {
     if (h.integrity > 85 && h.risk < 10 && p.yearsWorked >= 20 && (p.flags.refusedBribe||p.flags.reportedOthers||p.flags.lifeIntegrityReviewed||(p.dutyVerified?.special_finance||0)>=3||(p.dutyVerified?.special_law||0)>=3) && !this.hasCorruptFlag(p.flags) && !p.flags.escapedOnce) return 'honest_official';
     // v2.48 双轨悲情结局：群众爱戴但组织不待见（口碑高 + 组织印象低 + 基层）——须在 edge 之前判定
     if ((p.peopleReputation ?? 50) >= 75 && p.reputation < 40 && unitLevel <= 1) return 'estranged_hero';
+    const earned=this.getEarnedLifeEnding();if(earned)return earned;
     // 家庭与个人生活的主动选择可形成独立于职级的安稳收束。
     if(h.familyPressure<20&&h.mentalPressure<45&&h.risk<20&&p.yearsWorked>=20&&
        (p.flags.renewHomeLegacy||p.flags.lifeFamilyReviewed||p.flags.renewStageLegacy||p.flags.renewKeepsakeLegacy||p.flags.renewGardenLegacy))return 'safe';

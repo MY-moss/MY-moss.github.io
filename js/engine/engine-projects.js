@@ -32,6 +32,7 @@
     if (this.state.policyProject) missing.push('已有进行中的项目');
     if (p.flags?.['policy_'+id+'_cancelled']) missing.push('本项目已终止，不能重复承接');
     if (p.policyDecisionAge === p.age) missing.push('本年度项目决策已使用');
+    if (this.state.hidden.mentalPressure>=65) missing.push('当前工作负担过高，先调整工作节奏');
     if (p.flags && p.flags[`policy_${def.id}_done`]) missing.push('本项目已完成');
     return { ok: missing.length === 0, missing: missing };
   };
@@ -50,7 +51,7 @@
       startedYear: p.yearsWorked || 0,
       progress: 0,
       budget: 14, // 公共项目预算点，与私人现金无关
-      lastDecisionAge: null,
+      lastDecisionAge: null, pauses: 0,
       opinionCrises: 0,
       qualitySum: 0, qualitySamples: 0, suppressed: false,
       pendingDecision: null // { type: 'stage'|'opinion', stage }
@@ -59,6 +60,21 @@
     p.careerLog = p.careerLog || [];
     p.careerLog.push({ year: p.age, event: `${def.icon || '📋'} 承接政策项目「${def.name}」` });
     return true;
+  };
+
+  // 项目决策占用正常职责的工作量。有限延期不算交付，不重复领取实绩。
+  GameEngine.prototype.getPolicyStageChoices = function(def,stageIndex) {
+    const st=this.state.policyProject,p=this.state.player,pending=st?.pendingDecision;
+    const choices=def.stages[stageIndex].choices.map(c=>({...c,effects:{...c.effects},text:c.text+(c.effects?.projectBudget?'（公共预算'+(c.effects.projectBudget>0?'+':'')+c.effects.projectBudget+'）':'')}));
+    for(const c of choices){
+      if(c.effects.mentalPressure>0 && !(c.effects.body<0) && (pending?.staffed??(this.state.hidden.workAbility>=50))){
+        c.effects.mentalPressure=Math.max(0,c.effects.mentalPressure-1);
+      }
+    }
+    if(st&&(st.pauses||0)<2&&(pending?.paceOffered??(this.state.hidden.mentalPressure>=48))){
+      choices.push({text:'调整工期，暂停本年交付（精力-1，公共预算-1）',result:'重新安排任务与交接，项目停留在当前阶段，明年重新评估。',policyPause:true,effects:{mentalPressure:-10,positionWeight:-1,projectBudget:-1}});
+    }
+    return choices;
   };
 
   GameEngine.prototype.getPolicyProjectDecisionEvent = function() {
@@ -70,7 +86,7 @@
     const stageIndex = Math.max(0, Math.min(Number.isInteger(requestedStage) ? requestedStage : 0, current.def.stages.length - 1));
     const stage = current.def.stages[stageIndex];
     if (!stage || !Array.isArray(stage.choices) || stage.choices.length === 0) return null;
-    if (!pending) current.state.pendingDecision = { type: 'stage', stage: stageIndex };
+    if (!pending) current.state.pendingDecision = { type: 'stage', stage: stageIndex, staffed:this.state.hidden.workAbility>=50, paceOffered:this.state.hidden.mentalPressure>=48 };
     // v2.1.63 子案标注：决策点归属的子案名进标题（无子案引用时退回第 N 步）
     const subCase = stage.subCase && Array.isArray(current.def.subCases)
       ? current.def.subCases.find(sc => sc && sc.id === stage.subCase) : null;
@@ -81,7 +97,7 @@
       eventType: 'choice',
       projectEvent: true, projectId: current.def.id, projectStage: stageIndex,
       text: stage.text,
-      choices: stage.choices.map(c=>({...c, text:c.text+(c.effects?.projectBudget?'（公共预算'+(c.effects.projectBudget>0?'+':'')+c.effects.projectBudget+'）':'')}))
+      choices: this.getPolicyStageChoices(current.def,stageIndex)
     };
   };
 
@@ -94,11 +110,20 @@
         current.state.pendingDecision?.type!=='stage') return false;
     const stageIndex = current.state.stage || 0;
     const stage = current.def.stages[stageIndex];
-    const choice = stage && stage.choices ? stage.choices[index] : null;
-    if (!choice || (typeof this.isChoiceEnabled === 'function' && !this.isChoiceEnabled(choice))) return false;
+    const choice = stage && stage.choices ? this.getPolicyStageChoices(current.def,stageIndex)[index] : null;
+    if (!choice || !event.choices?.[index] || !!choice.policyPause!==!!event.choices[index].policyPause || (typeof this.isChoiceEnabled === 'function' && !this.isChoiceEnabled(choice))) return false;
 
     const {projectBudget=0, wealth:legacyWealth, ...fx}=choice.effects||{};
     if(current.state.budget+projectBudget<0)return false;
+    if(choice.policyPause){
+      if((current.state.pauses||0)>=2||!this.canAffordAP(1))return false;
+      this.spendActionPoint(1);current.state.budget+=projectBudget;
+      current.state.pauses=(current.state.pauses||0)+1;current.state.pendingDecision=null;
+      p.policyDecisionAge=p.age;p.policyPauseAge=p.age;current.state.lastDecisionAge=p.age;
+      this.applyEffects(fx);this.clampAttrs();
+      p.careerLog.push({year:p.age,event:current.def.name+'：调整工期，延后当前阶段（不计交付）'});
+      this.state.currentEvent=null;this.checkEndings();return true;
+    }
     current.state.budget+=projectBudget;
     this.applyEffects(fx);
     this.clampAttrs();
@@ -110,6 +135,7 @@
     current.state.qualitySamples=(current.state.qualitySamples||0)+1;
     current.state.progress = (current.state.progress || 0) + (choice.progress || 1);
     current.state.stage = stageIndex + 1;
+    if(quality>=1&&typeof this.recordLifeEvidence==='function')this.recordLifeEvidence('craft','项目阶段：'+current.def.name+' · '+stage.title);
     current.state.pendingDecision = null;
     p.careerLog = p.careerLog || [];
     p.careerLog.push({ year: p.age, event: `${current.def.icon || '📋'} ${current.def.name}：${choice.result || choice.text}` });
@@ -118,7 +144,7 @@
       const score=(current.state.qualitySum||0)/Math.max(1,current.state.qualitySamples||0);
       const quality=current.state.suppressed?'concern':score>=1?'strong':score<0?'concern':'mixed';
       const reward={...current.def.completionEffects};
-      for(const k of Object.keys(reward))if(typeof reward[k]==='number'&&reward[k]>0)reward[k]=quality==='concern'?0:quality==='mixed'?Math.floor(reward[k]/2):reward[k];
+      for(const k of Object.keys(reward))if(typeof reward[k]==='number')reward[k]=quality==='concern'?0:quality==='mixed'?Math.trunc(reward[k]/2):reward[k];
       this.applyEffects(reward);this.clampAttrs();
       const ledger=p.policyFollowups||(p.policyFollowups=[]);
       ledger.push({id:current.def.id,completedAge:p.age,budget:current.state.budget,quality,suppressed:!!current.state.suppressed,review2:false,review5:false});

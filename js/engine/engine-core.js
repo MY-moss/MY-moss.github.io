@@ -586,6 +586,7 @@ class GameEngine {
         delete p.flags.policyProjectActive;
       } else {
         st.policyProject.stage = projectStage;
+        st.policyProject.pauses=Math.max(0,Math.min(2,Math.floor(Number(st.policyProject.pauses)||0)));
         st.policyProject.budget=Number.isFinite(st.policyProject.budget)?Math.max(0,st.policyProject.budget):14;
         if(!Number.isFinite(st.policyProject.lastDecisionAge)&&projectStage>0&&!st.policyProject.pendingDecision){
           st.policyProject.lastDecisionAge=p.age;
@@ -594,9 +595,11 @@ class GameEngine {
         if(st.currentEvent?.projectEvent||st.currentEvent?.opinionCrisis){
           st.currentEvent.projectId=projectDef.id;
           st.currentEvent.projectStage=projectStage;
-          if(st.currentEvent.projectEvent)st.currentEvent.choices=projectDef.stages[projectStage].choices.map(c=>({...c,text:c.text+(c.effects?.projectBudget?'（公共预算'+(c.effects.projectBudget>0?'+':'')+c.effects.projectBudget+'）':'')}));
-          // Legacy serialized decisions must retain their original year and recover canonical stage.
-          st.policyProject.pendingDecision={type:st.currentEvent.opinionCrisis?'opinion':'stage',stage:projectStage};
+          // Preserve eligibility at issue time; other same-year settlements may change pressure.
+          const oldPending=st.policyProject.pendingDecision;
+          st.policyProject.pendingDecision={type:st.currentEvent.opinionCrisis?'opinion':'stage',stage:projectStage,
+            staffed:oldPending?.staffed??(st.hidden.workAbility>=50),paceOffered:oldPending?.paceOffered??(st.hidden.mentalPressure>=48)};
+          if(st.currentEvent.projectEvent)st.currentEvent.choices=this.getPolicyStageChoices(projectDef,projectStage);
         }
 
         st.policyProject.startedYear = Number.isFinite(st.policyProject.startedYear) ? st.policyProject.startedYear : (p.yearsWorked || 0);
@@ -605,7 +608,7 @@ class GameEngine {
         const pd = st.policyProject.pendingDecision;
         const validStagePending = pd && pd.type === 'stage' && projectStage < projectDef.duration;
         const validOpinionPending = pd && pd.type === 'opinion' && st.policyProject.opinionCrises < 1;
-        st.policyProject.pendingDecision = (validStagePending || validOpinionPending) ? { type: pd.type, stage: projectStage } : null;
+        st.policyProject.pendingDecision = (validStagePending || validOpinionPending) ? { type: pd.type, stage: projectStage, staffed:pd.staffed??(st.hidden.workAbility>=50),paceOffered:pd.paceOffered??(st.hidden.mentalPressure>=48) } : null;
         p.flags.policyProjectActive = true;
       }
     } else {
@@ -614,9 +617,16 @@ class GameEngine {
     }
     // 新模块存档形状：未知条目不进入执行路径。
     p.policyFollowups=Array.isArray(p.policyFollowups)?p.policyFollowups.filter(r=>r&&this.getPolicyProjectDefinition(r.id)&&Number.isFinite(r.completedAge)&&['strong','mixed','concern'].includes(r.quality)).map(r=>({id:r.id,completedAge:r.completedAge,budget:Number.isFinite(r.budget)?r.budget:null,quality:r.quality,suppressed:!!r.suppressed,review2:!!r.review2,review5:!!r.review5})):[];
+    const evidence=p.lifeEvidence;
+    p.lifeEvidence={};
+    for(const kind of ['craft','care','service']){
+      const rows=Array.isArray(evidence?.[kind])?evidence[kind]:[];
+      const dates=new Set();
+      p.lifeEvidence[kind]=rows.filter(r=>r&&Number.isInteger(r.age)&&r.age>=18&&r.age<=p.age&&typeof r.label==='string'&&!dates.has(r.age)&&(dates.add(r.age),true)).slice(-70).map(r=>({age:r.age,label:r.label.slice(0,100)}));
+    }
     for(const key of ['dutyCounts','dutyVerified']){
       const val=p[key];
-      p[key]=val&&typeof val==='object'&&!Array.isArray(val)?Object.fromEntries(Object.entries(val).filter(([id,n])=>['field','skills','delegate','review','priorities','audit','special_tech','special_finance','special_law','special_service','special_coordination'].includes(id)&&Number.isFinite(n)&&n>=0).map(([id,n])=>[id,Math.min(70,Math.floor(n))])):{};
+      p[key]=val&&typeof val==='object'&&!Array.isArray(val)?Object.fromEntries(Object.entries(val).filter(([id,n])=>['field','skills','delegate','review','priorities','audit','pace','special_tech','special_finance','special_law','special_service','special_coordination'].includes(id)&&Number.isFinite(n)&&n>=0).map(([id,n])=>[id,Math.min(70,Math.floor(n))])):{};
     }
     if(p.dutyPending&&(!Number.isFinite(p.dutyPending.dueAge)||!p.dutyPending.effects||typeof p.dutyPending.name!=='string'))delete p.dutyPending;
     if(p.retirementChapter){

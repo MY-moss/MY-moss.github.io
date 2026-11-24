@@ -715,6 +715,7 @@ renderCareer() {
   getChoiceBlockReason(c) {
     const p = engine.getPlayer();
     if (!c) return '';
+    if(c.policyPause&&!engine.canAffordAP(1))return '需要1点精力';
     if(c.effects?.projectBudget<0 && engine.state.currentEvent?.projectEvent && (engine.state.policyProject?.budget??14)+c.effects.projectBudget<0)return '公共项目预算不足';
     const bg = engine.getHidden().background;
     if (c.minBackground !== undefined && bg < c.minBackground) return '背景不足（需要背景 ' + c.minBackground + '，当前 ' + Math.round(bg) + '）';

@@ -205,6 +205,7 @@ GameEngine.prototype.checkLifeGates = function() {
 // ===== 家庭行动：子女培养（v2.1.66 自 engine-social.js 并入，行为逐字不变） =====
 GameEngine.prototype.raiseChild = function(mode) {
     const p = this.state.player;
+    if (!p.isEmployed||p.ending||this.state.currentEvent||this.state.pendingPromotion||this.state.pendingTransfer)return {ok:false,msg:'请先处理当前事务'};
     if (!p.hasChildren) return { ok: false, msg: '还没有孩子' };
     if ((p.flags.childRaiseUsed || 0) >= 1) return { ok: false, msg: '今年已经安排过孩子的事了' };
     if (p.childAge >= 22) return { ok: false, msg: '孩子已经成年独立，不用再操心了' };
@@ -218,6 +219,7 @@ GameEngine.prototype.raiseChild = function(mode) {
     }
     if (mode === 'company') {
       p.childCompany = (p.childCompany || 0) + 1;
+      this.recordLifeEvidence?.('care','主动安排子女陪伴');
       p.flags.childRaiseUsed = 1;
       this.state.hidden.familyPressure = Math.max(0, (this.state.hidden.familyPressure || 0) - 3);
       this.state.hidden.mentalPressure = Math.min(100, (this.state.hidden.mentalPressure || 0) + 2);

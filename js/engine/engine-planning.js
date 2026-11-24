@@ -87,17 +87,21 @@
       coordination:{id:'special_coordination',name:'梳理跨部门责任与交付',desc:'次年按业务能力和组织声誉核查，成功积累协调实绩',now:{mentalPressure:2},later:{reputation:2,positionWeight:1}}
     }[kind];
     const counts=p.dutyCounts||{};
-    const actions=[...plans[tier].actions,specialist].map(a=>{
+    const projectLoad=!!this.state.policyProject||p.policyDecisionAge===p.age;
+    const pace={id:'pace',name:'调整工作节奏',desc:'把非紧急任务交接，放弃本年额外实绩，降低压力',now:{mentalPressure:-5,positionWeight:-1},later:{mentalPressure:-2}};
+    const actions=[...plans[tier].actions,pace,specialist].map(a=>{
       const count=counts[a.id]||0;
       const later=Object.fromEntries(Object.entries(a.later).map(([k,v])=>[k,Math.sign(v)*Math.max(1,Math.floor(Math.abs(v)*(count>=4?0.35:count>=2?0.65:1)))]));
-      return {...a,later,desc:a.desc+(count>=2?'；重复执行收益递减':'')};
+      const now={...a.now};if(a.id.startsWith('special_')&&count>=2&&now.mentalPressure>0)now.mentalPressure=Math.max(1,now.mentalPressure-1);
+      const blocked=a.id==='pace'?(this.state.hidden.mentalPressure<40?'当前压力未达调整条件':p.policyPauseAge===p.age?'本年已经调整项目工期':''):(projectLoad?'项目已占用本年主要职责':this.state.hidden.mentalPressure>=(a.id.startsWith('special_')?55:65)?'工作负担过高，请先调整节奏':'');
+      return {...a,now,later,blocked,desc:a.desc+(count>=2?'；重复执行收益递减':'')};
     });
     return {tier,title:plans[tier].title,actions,used:p.dutyPlanAge===p.age,pending:p.dutyPending||null};
   };
   GameEngine.prototype.chooseDutyPlan = function(id) {
     const s=this.state,p=s.player,plan=this.getDutyPlan();
     const action=plan.actions.find(a=>a.id===id);
-    if(!p.isEmployed||p.ending||s.currentEvent||s.pendingPromotion||s.pendingTransfer||plan.used||plan.pending||!action||!this.canAffordAP(1))return false;
+    if(!p.isEmployed||p.ending||s.currentEvent||s.pendingPromotion||s.pendingTransfer||plan.used||plan.pending||!action||action.blocked||!this.canAffordAP(1))return false;
     this.spendActionPoint(1);this.applyEffects(action.now);this.clampAttrs();
     p.dutyPlanAge=p.age;p.dutyPending={id, name:action.name, dueAge:p.age+1, effects:{...action.later},unitId:p.unit?.id};
     p.careerLog.push({year:p.age,event:'岗位职责：'+action.name+'（次年回访）'});
@@ -114,7 +118,8 @@
     counts[d.id]=(counts[d.id]||0)+1;
     if(success){
       this.applyEffects(d.effects);
-      if(special){const record=p.dutyVerified||(p.dutyVerified={});record[d.id]=(record[d.id]||0)+1;}
+      if(special){const record=p.dutyVerified||(p.dutyVerified={});record[d.id]=(record[d.id]||0)+1;
+        this.recordLifeEvidence?.(d.id==='special_service'?'service':'craft','专业职责：'+d.name);}
     }else this.applyEffects({mentalPressure:2});
     this.clampAttrs();
     p.careerLog.push({year:p.age,event:'岗位职责回访：'+d.name+(success?'，已核对执行反馈':'，未达到复核条件，遗留事项未算作实绩')});

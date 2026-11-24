@@ -34,7 +34,7 @@ GameEngine.prototype._rcy_snapshotAndAdvance = function(eraEff) {
     }
     s.year++; p.age++; p.yearsWorked++;
     s.pendingMicro = null; // P2：上一年未回应的使绊窗口过期（不回应=维持原状，模拟行为不变）
-if (p.unit) { s.hidden.mentalPressure += Math.round(p.unit.stress * 0.05); s.hidden.risk += Math.round(p.unit.riskDensity * 0.03); }
+if (p.unit) { s.hidden.mentalPressure += Math.max(0,Math.round(p.unit.stress * 0.05)-(s.policyProject?1:0)); s.hidden.risk += Math.round(p.unit.riskDensity * 0.03); }
     // 性格修正
     if (p.personality === 'stable') { s.hidden.mentalPressure = Math.max(0, s.hidden.mentalPressure - 1); }
     else if (p.personality === 'ambitious') { s.hidden.mentalPressure += 1; s.hidden.desire = Math.min(100, s.hidden.desire + 1); }
@@ -1583,6 +1583,7 @@ GameEngine.prototype.restYear = function() {
     if ((p.flags.restCount || 0) >= 3) { p.careerLog.push({ year: p.age, event: '你申请休整，但组织认为长期离岗不妥，没有批准' }); return false; }
     p.flags.everRested = true;
     p.flags.restCount = (p.flags.restCount || 0) + 1;
+    this.recordLifeEvidence?.('care','主动休整一年');
     s.year++; p.age++; p.yearsWorked++;
     this._resetAnnualActionsAndMatureAssets();
     s.pendingMicro = null; // P2：休整年同样让上一年未回应的使绊窗口过期
@@ -1648,6 +1649,11 @@ GameEngine.prototype.getLifeEvaluation = function() {
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
   const verified=Object.values(p.dutyVerified||{}).reduce((a,b)=>a+b,0);
   if(verified)memories.push('岗位专业复核实际完成 '+verified+' 次。');
+  const evidence=this.getLifeEvidence();
+  for(const [kind,label] of [['craft','专业投入'],['care','生活与照护'],['service','公共服务']]){
+    const rows=evidence[kind];if(rows.length)memories.push(label+' · '+rows.length+' 个不同年份有主动选择记录；最近一次：'+rows.at(-1).label);
+  }
+
   if(f.renewGrantLegacy)memories.push('你如实讲述了未参加联合课题的那段经历，没有将后来成果归于自己。');
   if(f.renewFerryLegacy)memories.push('旧渡船停航后，你在河岸听见了不同的新旧出行体验。');
   if(f.renewDuetLegacy)memories.push('你与许闻的成果在多年后的交流中得到独立介绍。');

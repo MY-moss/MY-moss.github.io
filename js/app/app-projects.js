@@ -24,6 +24,7 @@ Object.assign(App, {
             <div class="stat-item"><span>📍 当前子案</span><span>${App.escapeHtml(subCaseText)}</span></div>
             <div class="stat-item"><span>📊 完成度</span><span>${progress}%（${stage}/${project.duration} 决策点）</span></div>
             <div class="stat-item"><span>公共预算</span><span>${active.budget} 点（非个人财富）</span></div>
+            <div class="stat-item"><span>调整工期</span><span>${active.pauses||0}/2 次</span></div>
             <div class="stat-item"><span>🔥 舆情危机</span><span>${active.opinionCrises || 0}/1</span></div>
           </div>
           <button class="btn btn-secondary" onclick="App.abandonPolicyProject()" style="margin-top:6px">终止项目</button>
@@ -41,7 +42,7 @@ Object.assign(App, {
     }
     return `
       <div class="career-card" style="margin-top:10px;border-left:3px solid var(--ui-gold)">
-        <div class="career-event"><p style="font-weight:700">📋 选择一项政策项目</p><p style="font-size:12px;color:var(--ink-light);margin-top:4px">项目会占用后续年度的决策槽，完成后留下可验证的政绩成果。</p></div>
+        <div class="career-event"><p style="font-weight:700">📋 选择一项政策项目</p><p style="font-size:12px;color:var(--ink-light);margin-top:4px">项目占用本年主要职责；压力较高时可有限调整工期，延期不算交付。</p></div>
         ${projects.map(project => {
           const completed = !!(p.flags && p.flags[`policy_${project.id}_done`]);
           // v2.1.63 门槛：不满足承接条件 → 锁定并列出缺项

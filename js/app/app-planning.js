@@ -14,9 +14,9 @@ Object.assign(App, {
     const max = typeof engine.getMaxActionPoints === 'function' ? engine.getMaxActionPoints() : (engine.getPlayer().maxActionPoints || cur);
     return { cur, max, legacy: false };
   },
-  // 子女培养入口门槛（筹划板与人脉页家庭卡共用）：孩子 40 岁前仍可安排；旧档缺 childAge 视为可培养
+  // 子女培养入口门槛（筹划板与人脉页家庭卡共用）：孩子 22 岁前仍可安排；旧档缺 childAge 视为可培养
   _canRaiseChild(p) {
-    return !!p && !!p.hasChildren && (typeof p.childAge !== 'number' || p.childAge < 40);
+    return !!p && !!p.hasChildren && (typeof p.childAge !== 'number' || p.childAge < 22);
   },
   // 年度筹划板：精力指示 + 行动按钮（取代 renderCareer 底部散落按钮）
   renderPlanningBoard(p, h) {
@@ -50,6 +50,7 @@ Object.assign(App, {
       ${this.renderChallengeHint()}
       ${this.renderEraWaveBanner()}
       ${this.renderDutyPlan()}
+      ${this.renderLifeEvidence()}
       ${this.renderPolicyFollowups()}
       ${this.renderMicroResponseCard()}
       ${this.renderOpportunityCards()}
@@ -72,12 +73,16 @@ Object.assign(App, {
     const disabled=d.used||d.pending||!this._hasAP(1);
     return `<section class="career-card" aria-label="岗位职责"><div class="career-event"><b>岗位职责 · ${App.escapeHtml(d.title)}</b><p>每年一项，消耗 1 点精力；次年兑现反馈。晋升将改变职责。</p></div>
       ${d.pending?`<p>待回访：${App.escapeHtml(d.pending.name)} · ${d.pending.dueAge}岁</p>`:''}
-      ${d.actions.map(a=>`<button class="btn btn-secondary" ${disabled?'disabled':''} onclick="App.chooseDutyPlan('${a.id}')">${App.escapeHtml(a.name)}<span class="ap-cost">精力-1</span></button><small>${App.escapeHtml(a.desc)}</small>`).join('')}
+      ${d.actions.map(a=>`<button class="btn btn-secondary" ${disabled||a.blocked?'disabled':''} onclick="App.chooseDutyPlan('${a.id}')">${App.escapeHtml(a.name)}<span class="ap-cost">精力-1</span></button><small>${App.escapeHtml(a.blocked||a.desc)}</small>`).join('')}
       </section>`;
   },
   chooseDutyPlan(id) {
     this.safeProcess(()=>{if(!engine.chooseDutyPlan(id)){this.showToast('当前无法安排该职责','warning');return;}
       this.saveCheckpoint('duty-plan');this.renderContent(this.renderCareer());this.updateStatus();});
+  },
+  renderLifeEvidence(){
+    const e=engine.getLifeEvidence();
+    return `<section class="career-card" aria-label="人生选择履历"><div class="career-event"><b>人生选择履历</b><p>记录实际选择的不同年份，不是属性刷分。达标后仍需满足终局状态。</p></div><div class="career-stats">${[['专业投入','craft',6],['生活与照护','care',5],['公共服务','service',5]].map(([label,k,n])=>`<div class="stat-item"><span>${label}</span><span>${e[k].length}/${n} 年</span></div>`).join('')}</div></section>`;
   },
   renderPolicyFollowups() {
     const rows=engine.getPolicyFollowups();

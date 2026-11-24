@@ -20,9 +20,9 @@ function __h(html) {
 
 Object.assign(App, {
   // v2.24 结局全集（图鉴分母与渲染共用；新增结局需同步此处）
-  ALL_ENDINGS: ['skyline', 'fast', 'safe', 'ordinary', 'edge', 'arrest', 'burnout', 'central', 'entrepreneur', 'reform', 'digital', 'grassroots', 'clean', 'grassroots_devotion', 'tech_backbone', 'people_champion', 'reform_pioneer', 'honest_official', 'era_reform', 'era_rectify', 'patron_legacy', 'lifelong_friend', 'hometown_net', 'estranged_hero', 'whistleblower_hero', 'author_legacy', 'rural_star'],
+  ALL_ENDINGS: ['skyline', 'fast', 'safe', 'ordinary', 'edge', 'arrest', 'burnout', 'central', 'entrepreneur', 'reform', 'digital', 'grassroots', 'clean', 'grassroots_devotion', 'tech_backbone', 'people_champion', 'reform_pioneer', 'honest_official', 'era_reform', 'era_rectify', 'patron_legacy', 'lifelong_friend', 'hometown_net', 'estranged_hero', 'whistleblower_hero', 'author_legacy', 'rural_star', 'steady_professional', 'life_companion'],
   // v2.1.56 结局中文名单一来源（结算页/分享/排行榜/统计共用；exam_fail 供历史记录兜底）
-  ENDING_NAMES: { skyline: '巅峰人生', fast: '快速晋升', safe: '安稳退休', ordinary: '平凡人生', edge: '边缘化', arrest: '被抓', burnout: '燃尽', central: '中央殿堂', entrepreneur: '下海人生', reform: '改革先锋', digital: '数字先驱', grassroots: '乡土守望', clean: '清廉丰碑', grassroots_devotion: '基层奉献', tech_backbone: '技术骨干', people_champion: '群众贴心人', reform_pioneer: '改革旗手', honest_official: '一代清官', era_reform: '时代弄潮儿', era_rectify: '清流砥柱', patron_legacy: '大树成荫', lifelong_friend: '莫逆之交', hometown_net: '桑梓情深', estranged_hero: '曲高和寡', whistleblower_hero: '举报英雄', author_legacy: '著书立说', rural_star: '乡村振兴之星', exam_fail: '落榜' },
+  ENDING_NAMES: { skyline: '巅峰人生', fast: '快速晋升', safe: '安稳退休', ordinary: '平凡人生', edge: '边缘化', arrest: '被抓', burnout: '燃尽', central: '中央殿堂', entrepreneur: '下海人生', reform: '改革先锋', digital: '数字先驱', grassroots: '乡土守望', clean: '清廉丰碑', grassroots_devotion: '基层奉献', tech_backbone: '技术骨干', people_champion: '群众贴心人', reform_pioneer: '改革旗手', honest_official: '一代清官', era_reform: '时代弄潮儿', era_rectify: '清流砥柱', patron_legacy: '大树成荫', lifelong_friend: '莫逆之交', hometown_net: '桑梓情深', estranged_hero: '曲高和寡', whistleblower_hero: '举报英雄', author_legacy: '著书立说', rural_star: '乡村振兴之星', steady_professional:'专业长跑', life_companion:'生活有岸', exam_fail: '落榜' },
   init() {
     if (this._initialized) return;
     this._initialized = true;

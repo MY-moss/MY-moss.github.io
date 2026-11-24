@@ -21,6 +21,8 @@
   };
 
   var ENDING_META = {
+    steady_professional:['专业长跑','长期专业投入，有实际选择记录，能力与风险达标'],
+    life_companion:['生活有岸','长期生活与照护选择，身心状态稳定'],
     skyline: ['巅峰人生', '厅级以上、地市级以上、高能力声誉、项目回访或5次专业实绩'],
     fast: ['快速晋升', '保持高欲望并连续争取晋升'],
     safe: ['安稳退休', '中高职级低风险，或长期生活选择与身心稳定'],
@@ -53,8 +55,9 @@
   var ROUTES = [
     { id: 'clean', title: '清廉路线', icon: '🕊️', endings: ['clean', 'honest_official', 'era_rectify'], flags: ['refusedBribe', 'reportedOthers'] },
     { id: 'grassroots', title: '基层路线', icon: '🌾', endings: ['grassroots', 'grassroots_devotion', 'hometown_net', 'rural_star'], flags: ['grassrootsWork', 'grassrootsStay', 'ruralRevitalize', 'policy_rural_revitalization_done'] }, // v2.1.76 +乡村振兴项目完成
-    { id: 'reform', title: '改革与技术路线', icon: '🚩', endings: ['reform', 'reform_pioneer', 'era_reform', 'digital', 'tech_backbone'], flags: ['reformProposal', 'reformDraft', 'dataPlatform', 'policy_digital_governance_done', 'policy_business_environment_done'] }, // v2.1.76 +数字政务/营商环境项目完成
+    { id: 'reform', title: '改革与技术路线', icon: '🚩', endings: ['reform', 'reform_pioneer', 'era_reform', 'digital', 'tech_backbone','steady_professional'], flags: ['reformProposal', 'reformDraft', 'dataPlatform', 'policy_digital_governance_done', 'policy_business_environment_done'] }, // v2.1.76 +数字政务/营商环境项目完成
     { id: 'relationship', title: '关系与群众路线', icon: '🤝', endings: ['patron_legacy', 'lifelong_friend', 'people_champion', 'estranged_hero'], flags: ['dating', 'mentorLegacy'] },
+    { id: 'life', title: '生活与身心路线', icon: '🌿', endings: ['safe','life_companion'], flags: ['lifeFamilyReviewed','renewHomeLegacy','everRested'] },
     { id: 'risk', title: '风险与转身路线', icon: '⚖️', endings: ['arrest', 'burnout', 'edge', 'entrepreneur'], flags: ['tookBribe', 'underInvestigation', 'resigned', 'leveragedInvest', 'investCrash', 'investLesson'] } // v2.1.76 +理财暴雷链（财政风险转身）
   ];
 
