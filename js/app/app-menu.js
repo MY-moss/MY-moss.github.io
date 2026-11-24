@@ -5,11 +5,11 @@ Object.assign(App, {
     if (h.risk >= 60) parts.push('当前廉政风险较高，需要关注实际调查记录');
     else if (h.risk >= 35) parts.push('当前存在一定廉政风险');
     else parts.push('当前廉政风险较低');
-    if ((p.peopleReputation || 50) >= 75) parts.push('当前群众口碑较高');
-    else if ((p.peopleReputation || 50) <= 30) parts.push('当前群众口碑偏低');
+    if ((p.peopleReputation ?? 50) >= 75) parts.push('当前群众口碑较高');
+    else if ((p.peopleReputation ?? 50) <= 30) parts.push('当前群众口碑偏低');
     else parts.push('群众基础尚可');
-    if ((p.reputation || 50) >= 75) parts.push('当前组织评价较高');
-    else if ((p.reputation || 50) <= 35) parts.push('组织评价一般，考察中有不同声音');
+    if ((p.reputation ?? 50) >= 75) parts.push('当前组织评价较高');
+    else if ((p.reputation ?? 50) <= 35) parts.push('组织评价一般，考察中有不同声音');
     if (h.integrity >= 75 && !engine.hasCorruptFlag(p.flags || {})) parts.push('原则评价较高，未记录腐败标记');
     return parts.join('；') + '。';
   },

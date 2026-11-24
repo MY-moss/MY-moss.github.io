@@ -171,7 +171,7 @@
     const recover = (amount, ratio) => {
       const back = Math.max(1, Math.round(amount * ratio));
       if (micro.hit === 'risk') h.risk = Math.max(0, (h.risk || 0) - back);
-      else if (micro.hit === 'reputation') p.reputation = Math.min(100, (p.reputation || 50) + back);
+      else if (micro.hit === 'reputation') p.reputation = Math.min(100, (p.reputation ?? 50) + back);
       else if (micro.hit === 'pressure') h.mentalPressure = Math.max(0, (h.mentalPressure || 0) - back);
       return back;
     };
@@ -183,7 +183,7 @@
     };
     this.spendActionPoint(1);
     if (mode === 'clarify') {
-      const chance = Math.min(0.85, 0.4 + (p.reputation || 50) / 250);
+      const chance = Math.min(0.85, 0.4 + (p.reputation ?? 50) / 250);
       if (this.randf() < chance) {
         const back = recover(micro.amount, 0.6);
         return finish(`🗣️ 你主动向组织说明了情况，${micro.enemyName} 的算计没能得逞（挽回 ${back}）`);

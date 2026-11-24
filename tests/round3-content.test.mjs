@@ -12,8 +12,8 @@ function setup(){
  return {e:new ctx.Eng(),d:ctx.Data,store};
 }
 function employed(e,d,age=29){const p=e.getPlayer();p.name='路径测试';p.unit=d.units[0];p.unitLevel=0;p.isEmployed=true;p.age=age;p.yearsWorked=age-22;p.leadershipRank=1;p.reputation=50;p.peopleReputation=50;p.political='mass';e.initFinance();e.setPhase('career');return p;}
-test('all 1837 event IDs are unique and six excessive choice scenes have concise meaningful decisions',()=>{
- const {d}=setup();assert.equal(d.events.length,1837);assert.equal(new Set(d.events.map(x=>x.id)).size,d.events.length);
+test('all 1838 event IDs are unique and six excessive choice scenes have concise meaningful decisions',()=>{
+ const {d}=setup();assert.equal(d.events.length,1838);assert.equal(new Set(d.events.map(x=>x.id)).size,d.events.length);
  for(const id of ['e018','e093','e094','e237','e257','e663']){const v=d.events.find(x=>x.id===id);assert.ok(v, id);assert.ok(v.choices.length<=5&&v.choices.length>=3,id)}
  for(const id of ['e134','e176'])assert.equal(d.events.some(x=>x.id===id),false);
 });

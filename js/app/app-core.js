@@ -321,7 +321,7 @@ Object.assign(App, {
     return labels[era] || '平稳年代';
   },
   getPeoplePhrase() {
-    const r = (engine.getPlayer().peopleReputation || 50);
+    const r = (engine.getPlayer().peopleReputation ?? 50);
     if (r >= 80) return '群众交口称赞';
     if (r >= 60) return '群众认可有加';
     if (r >= 40) return '群众印象平平';
@@ -352,8 +352,8 @@ Object.assign(App, {
 
     // v2.1.70 移动总览：8 项核心指标 + 绿/金/红语义色标（与桌面 inspector 同口径，独立渲染）
     const mTone = (value, goodMin, badMax) => value >= goodMin ? 'is-good' : (value <= badMax ? 'is-bad' : 'is-warn');
-    const mRep = Math.round(p.reputation || 50);
-    const mPp = Math.round(p.peopleReputation || 50);
+    const mRep = Math.round(p.reputation ?? 50);
+    const mPp = Math.round(p.peopleReputation ?? 50);
     const mCash = p.finance ? Math.round(p.finance.cash) : Math.round(p.wealth || 0);
     const mDebt = p.finance && typeof engine.debtTotal === 'function' ? Math.round(engine.debtTotal()) : 0;
     const mHeat = Math.round(p.heat || 0);
@@ -393,8 +393,8 @@ Object.assign(App, {
           <p>📅 工作 ${p.yearsWorked || 0} 年</p>
           <p>⭐ 职级: ${engine.getRankLabel ? engine.getRankLabel(p.leadershipRank) : p.leadershipRank + '级'}（${p.leadershipRank}级）</p>
           <p>🏆 晋升 ${p.promotions || 0} 次</p>
-          <p>⭐ 声誉: ${Math.round(p.reputation || 50)} ${(p.reputation || 50) > 70 ? '🟢' : (p.reputation || 50) < 30 ? '🔴' : '🟡'}</p>
-          <p>🤝 口碑: ${Math.round(p.peopleReputation || 50)} ${(p.peopleReputation || 50) > 70 ? '🟢' : (p.peopleReputation || 50) < 30 ? '🔴' : '🟡'} · ${this.getPeoplePhrase()}</p>
+          <p>⭐ 声誉: ${Math.round(p.reputation ?? 50)} ${(p.reputation ?? 50) > 70 ? '🟢' : (p.reputation ?? 50) < 30 ? '🔴' : '🟡'}</p>
+          <p>🤝 口碑: ${Math.round(p.peopleReputation ?? 50)} ${(p.peopleReputation ?? 50) > 70 ? '🟢' : (p.peopleReputation ?? 50) < 30 ? '🔴' : '🟡'} · ${this.getPeoplePhrase()}</p>
           <p>🏛️ 时代: ${this.getEraLabel()}${engine.getState().era === 'rectify' ? '（廉洁优先，腐败严查）' : engine.getState().era === 'reform' ? '（晋升更快，改革浪潮）' : '（安稳为主，论资排辈）'}</p>
           <p>🔥 热度: ${Math.round(p.heat || 0)} ${(p.heat || 0) > 60 ? '🔴' : (p.heat || 0) > 30 ? '🟡' : '🟢'}</p>
           ${p.wealth !== undefined ? `<p>💰 现金: ${p.finance ? p.finance.cash : p.wealth}${p.finance && engine.debtTotal() > 0 ? ' · 负债: ' + Math.round(engine.debtTotal()) : ''}</p>` : ''}
@@ -487,8 +487,8 @@ Object.assign(App, {
             <p>📅 工作 ${p.yearsWorked || 0} 年</p>
             <p>⭐ 职级: ${engine.getRankLabel ? engine.getRankLabel(p.leadershipRank) : p.leadershipRank + '级'}（${p.leadershipRank}级）</p>
             <p>🏆 晋升 ${p.promotions || 0} 次</p>
-            <p>⭐ 声誉: ${Math.round(p.reputation || 50)} ${(p.reputation || 50) > 70 ? '🟢' : (p.reputation || 50) < 30 ? '🔴' : '🟡'}</p>
-            <p>🤝 口碑: ${Math.round(p.peopleReputation || 50)} ${(p.peopleReputation || 50) > 70 ? '🟢' : (p.peopleReputation || 50) < 30 ? '🔴' : '🟡'}</p>
+            <p>⭐ 声誉: ${Math.round(p.reputation ?? 50)} ${(p.reputation ?? 50) > 70 ? '🟢' : (p.reputation ?? 50) < 30 ? '🔴' : '🟡'}</p>
+            <p>🤝 口碑: ${Math.round(p.peopleReputation ?? 50)} ${(p.peopleReputation ?? 50) > 70 ? '🟢' : (p.peopleReputation ?? 50) < 30 ? '🔴' : '🟡'}</p>
             <p>🔥 热度: ${Math.round(p.heat || 0)} ${(p.heat || 0) > 60 ? '🔴' : (p.heat || 0) > 30 ? '🟡' : '🟢'}</p>
             <p>💰 现金: ${p.finance ? p.finance.cash : (p.wealth || 0)}${p.finance && engine.debtTotal() > 0 ? ' · 负债: <span style="color:var(--ui-danger)">' + Math.round(engine.debtTotal()) + '</span>' : ''}</p>
           </div>

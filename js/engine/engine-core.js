@@ -256,7 +256,7 @@ class GameEngine {
       if (key === 'minExamAge' || key === 'minExamAgeAdd' || key === 'maxExamAge') continue;
       if (key === 'wealth') { if (mult > 0) this.cashIn(val); else this.cashOut(val); continue; }
       // v2.59 修复：reputation 在 attrs/hidden 之外（player 上），原被静默忽略——「气运之子 声誉+5」「绿植养护员 声誉+2」死效果
-      if (key === 'reputation') { this.state.player.reputation = this.clampStat('reputation', (this.state.player.reputation || 50) + val * mult); continue; }
+      if (key === 'reputation') { this.state.player.reputation = this.clampStat('reputation', (this.state.player.reputation ?? 50) + val * mult); continue; }
       if (key in this.state.attrs) this.state.attrs[key] += val * mult;
       if (key in this.state.hidden) this.state.hidden[key] += val * mult;
     }
@@ -372,7 +372,7 @@ class GameEngine {
     if (targetTypes.includes('online')) { delete flags.loanOnline; delete flags.loanOnline_since; }
     this.syncDebtFlags();
     if (shortfall > 0) {
-      this.state.player.reputation = Math.max(0, (this.state.player.reputation || 50) - 2);
+      this.state.player.reputation = Math.max(0, (this.state.player.reputation ?? 50) - 2);
       this.state.player.careerLog.push({ year: this.state.player.age, event: '⚠️ 负债 ' + total + ' 只还上 ' + paid + '，剩余 ' + shortfall + ' 靠人情/组织兜底——信誉受损' });
     }
   }
@@ -500,6 +500,12 @@ class GameEngine {
       if (p.flags[_cf] && !(Number.isFinite(Number(p.flags[_cf + '_since'])) && Number(p.flags[_cf + '_since']) > 0)) p.flags[_cf + '_since'] = p.age;
     }
     p.careerLog = p.careerLog || [];
+    // Older completed team arcs have no third-stage flag; recover only the known completion, not an invented choice.
+    if(!p.flags.teamThirdResolved && p.seenEvents.some(id=>['arc_team_shared_3','arc_team_deferred_3'].includes(id))){
+      const record=p.careerLog.slice().reverse().find(l=>typeof l.event==='string' && /五年后的推荐表|五年后缺席的人/.test(l.event));
+      p.flags.teamThirdResolved=true;
+      p.flags.teamThirdResolved_since=Number(record?.year)||p.age||22;
+    }
     p.eventCounts = (p.eventCounts && typeof p.eventCounts === 'object' && !Array.isArray(p.eventCounts)) ? p.eventCounts : {};
     p.talents = p.talents || [];
     p.promotions = p.promotions || 0;
@@ -508,8 +514,8 @@ class GameEngine {
     p.yearsWorked = p.yearsWorked || 0;
     p.age = p.age || 22;
     p.leadershipRank = p.leadershipRank || 1;
-    p.reputation = p.reputation || 50;
-    p.peopleReputation = p.peopleReputation || 50; // v2.21 声望双轨：民间口碑（组织印象=reputation 不动）
+    p.reputation = p.reputation ?? 50;
+    p.peopleReputation = p.peopleReputation ?? 50; // v2.21 声望双轨：民间口碑（组织印象=reputation 不动）
     // 年度筹划回合：旧档补齐精力点字段（无则按上限补满，避免所有筹划动作被误禁）
     if (typeof p.maxActionPoints !== 'number') p.maxActionPoints = (typeof this.getMaxActionPoints === 'function') ? this.getMaxActionPoints() : 3;
     if (typeof p.actionPoints !== 'number') p.actionPoints = p.maxActionPoints;

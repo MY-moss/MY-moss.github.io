@@ -12,32 +12,41 @@ const gd_events_arc_revision = [
     id:'arc_team_shared_2',stage:'work',eventType:'choice',title:'两年后的空缺',
     text:'两年后，许砚已经能独立主持一次跨部门协调。组织准备从你们科室抽一名骨干参与为期半年的专项工作。许砚想去，可手里的项目正到验收关口。他把两份材料都带来了，没有请你替他决定。',
     choices:[
-      {text:'让许砚去专项工作，亲自协调验收交接',effects:{flag:'teamSharedFollowed',mentalPressure:5,workAbility:2,positionWeight:-1,contactDelta:{target:'arc_xuyan',relation:6,trust:10},careerLogNote:'支持许砚去专项工作，并承担了交接项目的收尾责任。'},result:'交接表写了十一页。许砚离开那天，把项目里的风险点另列了一张纸交给你。'},
-      {text:'建议许砚把眼前项目做完，再等待下一次机会',effects:{flag:'teamSharedFollowed',reputation:2,mentalPressure:-2,contactDelta:{target:'arc_xuyan',relation:-3,trust:-5},careerLogNote:'劝许砚先完成验收、暂缓外出锻炼；科室进度得到保证。'},result:'许砚点头，说“也有道理”。那次专项工作的名单公布后，他沉默了几天。'}
+      {text:'让许砚去专项工作，亲自协调验收交接',effects:{setFlags:['teamSharedFollowed','teamRotationSupported'],mentalPressure:5,workAbility:2,positionWeight:-1,contactDelta:{target:'arc_xuyan',relation:6,trust:10},careerLogNote:'支持许砚去专项工作，并承担了交接项目的收尾责任。'},result:'交接表写了十一页。许砚离开那天，把项目里的风险点另列了一张纸交给你。'},
+      {text:'建议许砚把眼前项目做完，再等待下一次机会',effects:{setFlags:['teamSharedFollowed','teamRotationDeferred'],reputation:2,mentalPressure:-2,contactDelta:{target:'arc_xuyan',relation:-3,trust:-5},careerLogNote:'劝许砚先完成验收、暂缓外出锻炼；科室进度得到保证。'},result:'许砚点头，说“也有道理”。那次专项工作的名单公布后，他沉默了几天。'}
     ]
   },
   {
     id:'arc_team_deferred_2',stage:'work',eventType:'choice',title:'调休申请单',
     text:'两年后，许砚转来一份调休申请，后面附着两年里加班和值班的记录。办公室主任认为排班一直合规，不必翻旧账。许砚没有在申请里提你的名字，但你认得上面那一笔一画。',
     choices:[
-      {text:'公开核对值班记录，补足调休并重新建立轮值规则',effects:{flag:'teamDeferredFollowed',reputation:-2,workAbility:2,mentalPressure:5,peopleReputation:2,contactDelta:{target:'arc_xuyan',relation:10,trust:12},careerLogNote:'重新核算积欠调休；干部们得到了休息，科室绩效短暂受影响。'},result:'调整名单贴在公告栏时，有人抱怨工作更难排。许砚走过来，说终于能回家过个周末。'},
-      {text:'只批准这一次调休，不触碰原有值班制度',effects:{flag:'teamDeferredFollowed',reputation:2,mentalPressure:-2,contactDelta:{target:'arc_xuyan',relation:-8,trust:-10},careerLogNote:'单独批准许砚调休，原有排班制度保持不变。'},result:'申请单很快盖了章。两周后又一位新人请了长假，值班表上再次出现空格。'}
+      {text:'公开核对值班记录，补足调休并重新建立轮值规则',effects:{setFlags:['teamDeferredFollowed','teamRosterReformed'],reputation:-2,workAbility:2,mentalPressure:5,peopleReputation:2,contactDelta:{target:'arc_xuyan',relation:10,trust:12},careerLogNote:'重新核算积欠调休；干部们得到了休息，科室绩效短暂受影响。'},result:'调整名单贴在公告栏时，有人抱怨工作更难排。许砚走过来，说终于能回家过个周末。'},
+      {text:'只批准这一次调休，不触碰原有值班制度',effects:{setFlags:['teamDeferredFollowed','teamRosterUnchanged'],reputation:2,mentalPressure:-2,contactDelta:{target:'arc_xuyan',relation:-8,trust:-10},careerLogNote:'单独批准许砚调休，原有排班制度保持不变。'},result:'申请单很快盖了章。两周后又一位新人请了长假，值班表上再次出现空格。'}
     ]
   },
   {
     id:'arc_team_shared_3',stage:'career',eventType:'choice',title:'五年后的推荐表',
     text:'五年后，许砚被列进一次岗位竞聘名单。他把推荐表放在你桌上，问你能不能客观写写他做过的项目。他已经不像当年那样犹豫，但你也知道，推荐不能代替能力和考察。',
     choices:[
-      {text:'照实写上成绩与短板，附上可核验的项目材料',effects:{reputation:2,integrity:2,contactDelta:{target:'arc_xuyan',trust:7,reciprocity:5},careerLogNote:'五年后为许砚提供客观推荐材料，保留了业绩也注明了局限。'},result:'推荐表没有华丽措辞，许砚看完说：“这样就够了。”'},
-      {text:'不插手竞聘，约他吃顿饭聊下一阶段的工作',effects:{mentalPressure:-3,eq:1,contactDelta:{target:'arc_xuyan',relation:3,trust:3},careerLogNote:'没有参与许砚的岗位竞聘，仍继续保持同事间坦诚的联系。'},result:'饭馆收摊前，你们终于把话题从职级聊到了家里人。'}
+      {text:'照实写上成绩与短板，附上可核验的项目材料',effects:{setFlags:['teamThirdResolved','teamRecommended'],reputation:2,integrity:2,contactDelta:{target:'arc_xuyan',trust:7,reciprocity:5},careerLogNote:'五年后为许砚提供客观推荐材料，保留了业绩也注明了局限。'},result:'推荐表没有华丽措辞，许砚看完说：“这样就够了。”'},
+      {text:'不插手竞聘，约他吃顿饭聊下一阶段的工作',effects:{setFlags:['teamThirdResolved','teamIndependent'],mentalPressure:-3,eq:1,contactDelta:{target:'arc_xuyan',relation:3,trust:3},careerLogNote:'没有参与许砚的岗位竞聘，仍继续保持同事间坦诚的联系。'},result:'饭馆收摊前，你们终于把话题从职级聊到了家里人。'}
     ]
   },
   {
     id:'arc_team_deferred_3',stage:'career',eventType:'choice',title:'五年后缺席的人',
     text:'五年后，原科室几经调整，许砚早已调离。一次跨部门会商时，他作为对方单位负责人走进会议室，礼貌地叫了一声“老同事”。结束后，他没有像别人那样围上来寒暄。',
     choices:[
-      {text:'会后请他单独谈谈，承认当年排班对人的忽视',effects:{integrity:3,mentalPressure:2,contactDelta:{target:'arc_xuyan',relation:8,trust:10},careerLogNote:'多年后向许砚解释并反思旧日排班，重新建立了平等的工作关系。'},result:'他没有立刻说原谅，只说：“那时候大家都太累了。”'},
-      {text:'把会议任务做好，尊重已经产生的距离',effects:{workAbility:2,mentalPressure:-1,contactDelta:{target:'arc_xuyan',relation:1},careerLogNote:'与多年未见的许砚完成协作，接受关系已经改变。'},result:'最后一页会议纪要签完，许砚先离开了会场。'}
+      {text:'会后请他单独谈谈，承认当年排班对人的忽视',effects:{setFlags:['teamThirdResolved','teamReconciled'],integrity:3,mentalPressure:2,contactDelta:{target:'arc_xuyan',relation:8,trust:10},careerLogNote:'多年后向许砚解释并反思旧日排班，重新建立了平等的工作关系。'},result:'他没有立刻说原谅，只说：“那时候大家都太累了。”'},
+      {text:'把会议任务做好，尊重已经产生的距离',effects:{setFlags:['teamThirdResolved','teamDistance'],workAbility:2,mentalPressure:-1,contactDelta:{target:'arc_xuyan',relation:1},careerLogNote:'与多年未见的许砚完成协作，接受关系已经改变。'},result:'最后一页会议纪要签完，许砚先离开了会场。'}
+    ]
+  },
+  {
+    id:'arc_team_legacy_4',stage:'career',eventType:'choice',title:'交接本的下一位主人',
+    text:'多年后，许砚已经有了自己的团队。他把一份轮值与项目交接方案发给你，请你看看哪些内容应该公开留档，哪些仍需要根据新岗位的情况调整。你翻开旧交接本，发现当年空着的那一格还留着一道铅笔印。',
+    choices:[
+      {text:'与许砚核对真实的工作记录，留下可复查的交接方法',effects:{setFlags:['teamLegacyResolved','teamLegacyDocumented'],workAbility:2,integrity:2,mentalPressure:2,contactDelta:{target:'arc_xuyan',trust:5,reciprocity:3}},result:'你们把没有解决的问题也写进附件。最后一页留给接手的人填写，不再由你替他们决定。'},
+      {text:'只提供历史背景，让新团队独立制定规则',effects:{setFlags:['teamLegacyResolved','teamLegacyIndependent'],eq:1,mentalPressure:-3,contactDelta:{target:'arc_xuyan',relation:3,trust:2}},result:'许砚带着自己的方案离开。你把旧本子合上，没有要求他沿用当年的办法。'},
+      {text:'说明过去的安排并不完善，主动交代遗留风险',effects:{setFlags:['teamLegacyResolved','teamLegacyAccountable'],integrity:3,reputation:-1,mentalPressure:3,contactDelta:{target:'arc_xuyan',trust:4}},result:'你在备注里注明了当年没有解决的排班问题。许砚保留了这份说明，也明确了重新核查的责任。'}
     ]
   },
   {

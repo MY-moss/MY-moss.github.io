@@ -157,7 +157,7 @@ GameEngine.prototype.answerInterviewQuestion = function(ci) {
     for (const [k, v] of Object.entries(c.effects)) {
       if (k === 'political') { this.state.player.political = v; continue; }
       if (k === 'education') { this.state.player.education = v; continue; }
-      if (k === 'reputation') { this.state.player.reputation = this.clampStat('reputation', (this.state.player.reputation || 50) + v); continue; }
+      if (k === 'reputation') { this.state.player.reputation = this.clampStat('reputation', (this.state.player.reputation ?? 50) + v); continue; }
       if (k === 'heat') { this.state.player.heat = this.clampStat('heat', (this.state.player.heat || 0) + v); continue; }
       if (k === 'wealth') { if (v >= 0) this.cashIn(v); else this.cashOut(-v); continue; }
       if (k in this.state.attrs) this.state.attrs[k] += v;

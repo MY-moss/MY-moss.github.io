@@ -850,7 +850,7 @@
         this.state.attrs.iq += 1;
         return { msg: `恩师指点你研究问题的方法（工作能力+${2 * mult}，智商+1）` };
       case 'hometown':
-        this.state.player.peopleReputation = Math.min(100, (this.state.player.peopleReputation || 50) + 2 * mult);
+        this.state.player.peopleReputation = Math.min(100, (this.state.player.peopleReputation ?? 50) + 2 * mult);
         this.state.hidden.background += mult;
         return { msg: `老乡帮你在老家说了好话（民间口碑+${2 * mult}，背景+${mult}）` };
       case 'subordinate':
@@ -898,7 +898,7 @@
         this.state.attrs.eq += 1;
         return { msg: '同事和同学交换了经验（工作能力+' + (1 * mult) + '，情商+1）' };
       case 'community':
-        this.state.player.peopleReputation = Math.min(100, (this.state.player.peopleReputation || 50) + 2 * mult);
+        this.state.player.peopleReputation = Math.min(100, (this.state.player.peopleReputation ?? 50) + 2 * mult);
         this.state.hidden.risk = Math.max(0, (this.state.hidden.risk || 0) - 1);
         return { msg: '基层联系人提供了真实反馈（民间口碑+' + (2 * mult) + '，风险-1）' };
       case 'family':

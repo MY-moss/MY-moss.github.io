@@ -25,7 +25,7 @@ for (const [k, v] of Object.entries(eff)) {
       if (k === 'childEducation') { this.state.player.childEducation = (this.state.player.childEducation || 0) + v; continue; } // v2.48 子女培养计数
       if (k === 'childCompany') { this.state.player.childCompany = (this.state.player.childCompany || 0) + v; continue; } // v2.48 子女陪伴计数
       if (k === 'reputation') { this.state.player.reputation = this.clampStat('reputation', this.state.player.reputation + v); continue; }
-      if (k === 'peopleReputation') { this.state.player.peopleReputation = this.clampStat('peopleReputation', (this.state.player.peopleReputation || 50) + v); continue; } // v2.21 民间口碑
+      if (k === 'peopleReputation') { this.state.player.peopleReputation = this.clampStat('peopleReputation', (this.state.player.peopleReputation ?? 50) + v); continue; } // v2.21 民间口碑
       if (k === 'flag') { if (typeof v === 'string') { this.state.player.flags[v] = true; this.state.player.flags[v + '_since'] = this.state.player.age; // v2.64 记录 flag 设置年份，供延迟刚性链（delay）判定
         if (v === 'resigned') this.state.player.isEmployed = false; if (v === 'reformProposal' || v === 'reformDraft') this.state.player.flags.reformCount = (this.state.player.flags.reformCount || 0) + 1; if (v === 'helpedCitizen' || v === 'petitionWork') this.state.player.flags.peopleEventCount = (this.state.player.flags.peopleEventCount || 0) + 1; } continue; }
       // P3 剧本链：一次选择同时落下多个 flag（链推进 flag + 剧情风味 flag），各自记录 _since 供延迟链判定
@@ -240,6 +240,15 @@ GameEngine.prototype.handleEventChoice = function(ci) {
         event: `${String(e.title || '事件').slice(0, 45)}：${c.result.trim().slice(0, 155)}`
       });
     }
+    if(['arc_team_shared_3','arc_team_deferred_3'].includes(e.id)){
+      const p=this.state.player;
+      if(!p.flags.teamThirdResolved){p.flags.teamThirdResolved=true;p.flags.teamThirdResolved_since=p.age;}
+      if(e.id==='arc_team_deferred_3')this.evolveContact('arc_xuyan',{position:'跨部门业务负责人',evolutionStage:2,addRoles:['colleague'],message:'已在其他岗位独立承担业务'});
+      else this.evolveContact('arc_xuyan',{position:'业务骨干',evolutionStage:1,message:'已成为能独立负责项目的骨干'});
+    }
+    if(e.id==='arc_team_legacy_4'){
+      this.evolveContact('arc_xuyan',{position:'团队负责人',evolutionStage:3,addRoles:['colleague'],message:'开始独立带领团队'});
+    }
     this.clampAttrs();
     this.state.currentEvent = null; if (e.id !== 'e110') this.checkEndings();
     // 赌博戒断（e747）：选择"戒赌"选项后彻底清除赌瘾状态（streak/连续未赌计数）
@@ -312,7 +321,7 @@ const RIGID_NEXT_SET = new Set(['e110','arc_health_retry','ent233', 'ent234', 'e
   // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链 next 节点只由 RIGID_CHAINS 注入
   'ent294', 'ent295', 'ent297', 'ent298', 'ent299', 'ent300', 'ent301', 'enw126', 'e616', 'e617', 'e618', 'e728', 'e729', 'e730', 'e731', 'e743', 'e744', 'e747', 'e748', 'e756', 'e758', 'e765',
   'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3',
-  'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3',
+  'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3','arc_team_legacy_4',
   'arc_family_present_2','arc_family_absent_2','arc_family_clinic_3',
   'arc_classmate_open_2','arc_classmate_favor_2','arc_classmate_boundary_2',
   'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3',
@@ -534,7 +543,7 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
         if (Number(p.childAge) < Number(event.requireChildAgeMin)) fail('requireChildAgeMin', '子女年龄未达到事件门槛');
         else pass('requireChildAgeMin', '子女年龄条件满足');
       }
-      if (event.requirePeopleReputationMax !== undefined && Number(p.peopleReputation || 50) > Number(event.requirePeopleReputationMax)) fail('requirePeopleReputationMax', '群众口碑高于事件上限');
+      if (event.requirePeopleReputationMax !== undefined && Number(p.peopleReputation ?? 50) > Number(event.requirePeopleReputationMax)) fail('requirePeopleReputationMax', '群众口碑高于事件上限');
       if (event.requireHeatOrRisk !== undefined && Number(p.heat) < Number(event.requireHeatOrRisk) && Number(hidden.risk) < Number(event.requireHeatOrRisk)) fail('requireHeatOrRisk', '热度和风险均未达到事件门槛');
       if (event.pools && event.pools.length > 0) {
         const hasPublic = event.pools.includes('public');
@@ -674,7 +683,7 @@ GameEngine.prototype.generateEvent = function(force) {
       if (e.requireBody !== undefined && this.state.attrs.body < e.requireBody) return false;
       if (e.requireBodyMax !== undefined && this.state.attrs.body > e.requireBodyMax) return false;
       // v2.59 实现民间口碑上限条件（原 requirePeopleReputationMax 被事件引用但引擎未实现，导致 e197 等口碑反噬事件无门槛触发）
-      if (e.requirePeopleReputationMax !== undefined && (this.state.player.peopleReputation || 50) > e.requirePeopleReputationMax) return false;
+      if (e.requirePeopleReputationMax !== undefined && (this.state.player.peopleReputation ?? 50) > e.requirePeopleReputationMax) return false;
       // 属性门槛：外貌（第一印象类事件）/家境（家庭资源类）/运气（机遇类）/职级权重（实权岗位类）
       if (e.requireAppearance !== undefined && this.state.attrs.appearance < e.requireAppearance) return false;
       if (e.requireFamily !== undefined && this.state.attrs.family < e.requireFamily) return false;
@@ -754,7 +763,7 @@ GameEngine.prototype.generateEvent = function(force) {
         if (activeScenario.poolBoosts && e.pools && activeScenario.poolBoosts.some(pool => e.pools.includes(pool))) w *= 1.6;
       }
       // v2.21 声望双轨：民间口碑高者更容易遇到群众事件（口碑≥60 时群众事件权重×1.5）
-      if (e.effects && e.effects.peopleReputation !== undefined && (p.peopleReputation || 50) >= 60) w *= 1.5;
+      if (e.effects && e.effects.peopleReputation !== undefined && (p.peopleReputation ?? 50) >= 60) w *= 1.5;
       // ===== 运气联动（v2.1）：高运气玩家更容易刷出稀有/好运事件 =====
       // 1. 好运事件：按运气属性 + 天赋 luckEvents 加成加权
       if (e.luckEvent) {
@@ -1045,6 +1054,11 @@ GameEngine.prototype.checkEndings = function() {
     }
     if (p.age >= (p.retireAgeExt || (p.gender === '女' ? 55 : 60))) {
       if (this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return;
+      const handoff=this.getPendingCausalConsequences().find(x=>x.id==='arc_team_legacy_4'&&x.overdue);
+      if(handoff){
+        const event=GameData.events.find(x=>x.id===handoff.id);
+        if(event){this.state.currentEvent=this.getLifePathEvent(event);return;}
+      }
       p.ending = this.determineEnding(); p.deathReason = 'retired'; return;
     }
   }
@@ -1089,7 +1103,7 @@ GameEngine.prototype.determineEnding = function() {
     // 乡村振兴之星：牵头乡村振兴示范村建设（e320 ruralRevitalize → e321 成果），扎根基层带动一方致富
     // 须基层工作 + 振兴实绩 + 群众口碑（防止城市玩家误判）
     // v2.1.49 M5.3 项目结局分支：完成「乡村振兴示范」政策项目（policy_rural_revitalization_done）成为另一条路，同样受舆情压制阻断
-    if ((p.flags.ruralRevitalize || (p.flags.policy_rural_revitalization_done && !p.flags.policyOpinionSuppressed)) && unitLevel <= 1 && p.yearsWorked >= 10 && (p.peopleReputation || 50) >= 60) return 'rural_star';
+    if ((p.flags.ruralRevitalize || (p.flags.policy_rural_revitalization_done && !p.flags.policyOpinionSuppressed)) && unitLevel <= 1 && p.yearsWorked >= 10 && (p.peopleReputation ?? 50) >= 60) return 'rural_star';
     // ===== v2.25 联系人专属结局（人际网络闭环：贵人提携 / 老友一生 / 邻里桑梓） =====
     const ct = (id, min) => (p.contacts || []).some(c => c.id === id && c.relation >= min);
     // 大树成荫：贵人关系深厚且已至高位——你站在贵人站过的地方
@@ -1105,7 +1119,7 @@ GameEngine.prototype.determineEnding = function() {
     if (h.workAbility > 85 && this.state.attrs.iq > 8 && p.unit && (p.unit.system === '技术部门' || p.unit.system === '数据部门')) return 'tech_backbone';
     // 群众贴心人：处理群众事件10次以上，情商高、作风正派、民间口碑深厚（v2.21 双轨接入），被群众称为"贴心人"
     // v2.1.49 M5.3 项目结局分支：完成「老旧小区改造」政策项目（policy_old_community_done，解难排忧类实绩）成为另一条路，同样受舆情压制阻断
-    if (((p.flags.peopleEventCount || 0) >= 10 || (p.flags.policy_old_community_done && !p.flags.policyOpinionSuppressed)) && this.state.attrs.eq > 8 && h.integrity > 65 && (p.peopleReputation || 50) >= 75) return 'people_champion';
+    if (((p.flags.peopleEventCount || 0) >= 10 || (p.flags.policy_old_community_done && !p.flags.policyOpinionSuppressed)) && this.state.attrs.eq > 8 && h.integrity > 65 && (p.peopleReputation ?? 50) >= 75) return 'people_champion';
     // 改革先锋（新）：参与2次以上改革事件（reformCount 由 reformProposal/reformDraft 各 +1，单局上限 2），职级权重高，成为推动改革的中坚力量
     // v2.49：原条件 >=3 永不可达（单局上限 2），修正为 >=2
     if ((p.flags.reformCount || 0) >= 2 && h.positionWeight > 15) return 'reform_pioneer';
@@ -1118,7 +1132,7 @@ GameEngine.prototype.determineEnding = function() {
     // 清官：一生清廉，integrity>80、risk<10、工作20年以上、无任何腐败flag，名垂青史（v2.49：逃脱过调查者不得判定）
     if (h.integrity > 80 && h.risk < 10 && p.yearsWorked >= 20 && !this.hasCorruptFlag(p.flags) && !p.flags.escapedOnce) return 'honest_official';
     // v2.48 双轨悲情结局：群众爱戴但组织不待见（口碑高 + 组织印象低 + 基层）——须在 edge 之前判定
-    if ((p.peopleReputation || 50) >= 75 && p.reputation < 40 && unitLevel <= 1) return 'estranged_hero';
+    if ((p.peopleReputation ?? 50) >= 75 && p.reputation < 40 && unitLevel <= 1) return 'estranged_hero';
     // 边缘化：职级低+工龄长，或大量错过晋升
     if (p.leadershipRank <= 2) return 'edge';
     if (p.leadershipRank <= 3 && p.yearsWorked > 15) return 'edge';

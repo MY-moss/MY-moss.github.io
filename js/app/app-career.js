@@ -44,7 +44,7 @@ Object.assign(App, {
   renderOrgHint(p, h) {
     const retireAge = (p.retireAgeExt || (p.gender === '女' ? 55 : 60));
     if (p.age < 50 && p.age < retireAge - 3) return '';
-    const r = Math.round(p.reputation || 50);
+    const r = Math.round(p.reputation ?? 50);
     const risk = Math.round(h.risk || 0);
     let color, text;
     if (risk > 60) { color = 'var(--ui-danger)'; text = '组织里隐约有些风声……有些事，该收手了。'; }
@@ -106,7 +106,7 @@ renderCareer() {
             ${p.flags.mbaActive ? '<div class="stat-item"><span>🎓 在职读研</span><span style="color:var(--ui-gold)">学业进行中</span></div>' : ''}
             ${p.flags.dating && !p.isMarried ? '<div class="stat-item"><span>💕 恋爱中</span><span style="color:#AD1457">感情稳定</span></div>' : ''}
             ${p.flags.faction_lean ? '<div class="stat-item"><span>⚖️ 派系站队</span><span style="color:var(--ui-danger)">利益与风险并存</span></div>' : ''}
-            <div class="stat-item"><span>⭐ 声誉</span><span>${Math.round(p.reputation || 50)} ${(p.reputation || 50) > 70 ? '🟢' : (p.reputation || 50) < 30 ? '🔴' : '🟡'}</span></div>
+            <div class="stat-item"><span>⭐ 声誉</span><span>${Math.round(p.reputation ?? 50)} ${(p.reputation ?? 50) > 70 ? '🟢' : (p.reputation ?? 50) < 30 ? '🔴' : '🟡'}</span></div>
             <div class="stat-item"><span>🔥 热度</span><span>${Math.round(p.heat || 0)} ${(p.heat || 0) > 60 ? '🔴' : (p.heat || 0) > 30 ? '🟡' : '🟢'}</span></div>
             <div class="stat-item"><span>💭 欲望</span><span>${Math.round(h.desire)}</span></div>
             <div class="stat-item"><span>🏠 家压</span><span>${Math.round(h.familyPressure)} ${h.familyPressure > 60 ? '🔴' : h.familyPressure > 35 ? '🟡' : '🟢'}</span></div>
@@ -165,9 +165,10 @@ renderCareer() {
     if (f.teamShared || f.teamDeferred) {
       const first = f.teamShared ? '一起分担排班' : '暂缓处理调休';
       const reviewed = f.teamSharedFollowed || f.teamDeferredFollowed;
-      const complete = seen.includes(f.teamShared ? 'arc_team_shared_3' : 'arc_team_deferred_3');
+      const complete = seen.includes('arc_team_legacy_4');
+      const third = seen.includes(f.teamShared ? 'arc_team_shared_3' : 'arc_team_deferred_3');
       const since = reviewed ? f[(f.teamShared ? 'teamSharedFollowed' : 'teamDeferredFollowed')+'_since'] : f[(f.teamShared ? 'teamShared' : 'teamDeferred')+'_since'];
-      const remain = Math.max(0, (since || p.age) + (reviewed ? 3 : 2) - p.age);
+      const remain = Math.max(0, (third ? (f.teamThirdResolved_since || p.age) : (since || p.age)) + (third ? 6 : reviewed ? 3 : 2) - p.age);
       arcs.push({ title: '交接本上的空格', detail: `${first} · ${complete ? '故事已完结' : remain ? '约 ' + remain + ' 年后会有回响' : '等待后续机会'}`, person: '许砚' });
     }
     if (f.familyClinicPresent || f.familyClinicAbsent) {
@@ -231,7 +232,7 @@ renderCareer() {
     const p=engine.getPlayer(), f=p.flags||{}, seen=p.seenEvents||[];
     const source=[
       {name:'档案柜里的回执',tag:f.receiptOpen?'公开复核':f.receiptQuiet?'内部协调':'未经历',active:!!(f.receiptOpen||f.receiptQuiet),finished:seen.includes(f.receiptOpen?'arc_receipt_open_3':'arc_receipt_quiet_3')},
-      {name:'交接本上的空格',tag:f.teamShared?'共同承担':f.teamDeferred?'暂缓调休':'未经历',active:!!(f.teamShared||f.teamDeferred),finished:seen.includes(f.teamShared?'arc_team_shared_3':'arc_team_deferred_3')},
+      {name:'交接本上的空格',tag:f.teamShared?'共同承担':f.teamDeferred?'暂缓调休':'未经历',active:!!(f.teamShared||f.teamDeferred),finished:seen.includes('arc_team_legacy_4')},
       {name:'老同学的申请书',tag:f.classmateOpen?'公开协助':f.classmateFavor?'私下请托':f.classmateBoundaries?'守住边界':'未经历',active:!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries),finished:seen.some(id=>id.startsWith('arc_classmate_')&&id.endsWith('_3'))},
       {name:'冰箱上的蓝色便签',tag:f.familyClinicPresent?'陪伴家人':f.familyClinicAbsent?'投入事业':'未经历',active:!!(f.familyClinicPresent||f.familyClinicAbsent),finished:seen.includes('arc_family_clinic_3')},
       {name:'父母照护',tag:f.parentCareSelf?'亲自照护':f.parentCareProfessional?'专业照护':f.parentShared?'亲属轮班':f.parentIllness?'开始照护':'未经历',active:!!(f.parentIllness||f.parentCaring||f.parentShared),finished:seen.includes('enl216')},
@@ -373,7 +374,7 @@ renderCareer() {
             <div class="stat-item"><span>⭐ 当前职级</span><span>${engine.getRankLabel ? engine.getRankLabel(p.leadershipRank) : p.leadershipRank + '级'}</span></div>
             <div class="stat-item"><span>🏆 晋升次数</span><span>${p.promotions} 次</span></div>
             <div class="stat-item"><span>💰 财富</span><span>${Math.round(p.wealth || 0)}</span></div>
-            <div class="stat-item"><span>⭐ 声誉 / 口碑</span><span>${Math.round(p.reputation || 50)} / ${Math.round(p.peopleReputation || 50)}</span></div>
+            <div class="stat-item"><span>⭐ 声誉 / 口碑</span><span>${Math.round(p.reputation ?? 50)} / ${Math.round(p.peopleReputation ?? 50)}</span></div>
             <div class="stat-item"><span>📜 事件留痕</span><span>${(p.careerLog || []).length} 条</span></div>
             <div class="stat-item"><span>📜 见识事件</span><span>${(p.seenEvents || []).length} 个</span></div>
           </div>
@@ -494,7 +495,7 @@ renderCareer() {
       train: { cost: 35, fn: () => { h.workAbility = Math.min(100, (h.workAbility || 0) + 4); h.mentalPressure = Math.min(100, (h.mentalPressure || 0) + 3); p.careerLog.push({ year: p.age, event: '🎓 报了进修班充电，业务能力提升' }); } },
       travel: { cost: 45, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 12); h.familyPressure = Math.max(0, h.familyPressure - 6); p.heat = Math.max(0, (p.heat || 0) - 2); p.careerLog.push({ year: p.age, event: '🏝️ 全家出去旅游了一趟，心情舒畅' }); } },
       renovate: { cost: 50, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 8); h.mentalPressure = Math.max(0, h.mentalPressure - 4); p.careerLog.push({ year: p.age, event: '🛠️ 把老房子装修了一番，住着舒心' }); } },
-      car: { cost: 60, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 6); h.familyPressure = Math.max(0, h.familyPressure - 8); p.reputation = Math.min(100, (p.reputation || 50) + 1); p.careerLog.push({ year: p.age, event: '🚗 买了辆车代步，日子轻快了些' }); } },
+      car: { cost: 60, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 6); h.familyPressure = Math.max(0, h.familyPressure - 8); p.reputation = Math.min(100, (p.reputation ?? 50) + 1); p.careerLog.push({ year: p.age, event: '🚗 买了辆车代步，日子轻快了些' }); } },
       gold: { cost: 70, fn: () => { p.flags.goldHeld = true; p.careerLog.push({ year: p.age, event: '📿 买了些黄金压箱底，等着增值' }); } },
       investMore: { cost: 60, fn: () => { p.flags.boughtStock = true; const r = engine.randf(); if (r < 0.30) { engine.cashIn(90); p.careerLog.push({ year: p.age, event: '📊 定投加仓踩中行情，大赚一笔（净赚+30）' }); } else if (r < 0.75) { engine.cashIn(74); p.careerLog.push({ year: p.age, event: '📊 定投加仓小有收获（净赚+14）' }); } else { engine.cashIn(50); p.careerLog.push({ year: p.age, event: '📊 定投加仓遇到回调，亏了一点（净亏-10）' }); } } }, // v2.1.6 本金返还修复（同基金）：到账=本金+净收益（90/74/50），净期望 +12.8
       checkup: { cost: 40, fn: () => { engine.gainAttr('body', 2, 10); if (p.flags.chronicIllness) { p.flags.chronicIllness = false; } p.careerLog.push({ year: p.age, event: '🩺 做了全面体检，身体隐患早发现早处理（体质+2）' }); } },
@@ -523,7 +524,7 @@ renderCareer() {
       therapy: { cost: 35, fn: () => { h.mentalPressure = Math.max(0, h.mentalPressure - 8); p.careerLog.push({ year: p.age, event: '🛋️ 心理咨询师帮你理清了心结（压力-8）' }); } },
       books: { cost: 25, fn: () => { engine.gainAttr('iq', 1, 15); h.workAbility = Math.min(100, (h.workAbility || 0) + 2); p.careerLog.push({ year: p.age, event: '📖 买书报课充实自己（智商+1，能力+2）' }); } },
       pet: { cost: 30, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 5); engine.gainAttr('eq', 1, 15); p.careerLog.push({ year: p.age, event: '🐕 养了只毛孩子，家里热闹又治愈' }); } },
-      donateAlma: { cost: 40, fn: () => { p.reputation = Math.min(100, (p.reputation || 50) + 3); h.integrity = Math.min(100, h.integrity + 1); p.careerLog.push({ year: p.age, event: '🎓 向母校捐了一笔奖学金，名声更好了（声誉+3）' }); } },
+      donateAlma: { cost: 40, fn: () => { p.reputation = Math.min(100, (p.reputation ?? 50) + 3); h.integrity = Math.min(100, h.integrity + 1); p.careerLog.push({ year: p.age, event: '🎓 向母校捐了一笔奖学金，名声更好了（声誉+3）' }); } },
       seniorCheckup: { cost: 60, fn: () => { engine.gainAttr('body', 3, 10); if (p.flags.chronicIllness) { p.flags.chronicIllness = false; } p.careerLog.push({ year: p.age, event: '🏥 高端深度体检，身体隐患无处遁形（体质+3）' }); } },
       familyTourPlus: { cost: 70, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 10); h.mentalPressure = Math.max(0, h.mentalPressure - 10); p.careerLog.push({ year: p.age, event: '✈️ 豪华家庭游，全家人尽兴而归' }); } },
       housekeeper: { cost: 35, fn: () => { h.familyPressure = Math.max(0, h.familyPressure - 6); h.mentalPressure = Math.max(0, h.mentalPressure - 3); p.careerLog.push({ year: p.age, event: '🧹 请了家政，家务不再缠身' }); } },
@@ -846,7 +847,7 @@ renderCareer() {
       }
       const ctx = { player: p, hidden: engine.getHidden(), attrs: engine.getState().attrs };
       const r = this.DEFENSE_SETS[st.set][st.q].options[oi].judge(ctx);
-      if (r.apply) { Object.entries(r.apply).forEach(([k, v]) => { if (k === 'risk') engine.getHidden().risk = Math.min(100, engine.getHidden().risk + v); if (k === 'peopleReputation') p.peopleReputation = Math.max(0, Math.min(100, (p.peopleReputation || 50) + v)); if (k === 'eq') ctx.attrs.eq = Math.min(15, (ctx.attrs.eq || 0) + v); if (k === 'integrity') engine.getHidden().integrity = Math.min(100, engine.getHidden().integrity + v); }); }
+      if (r.apply) { Object.entries(r.apply).forEach(([k, v]) => { if (k === 'risk') engine.getHidden().risk = Math.min(100, engine.getHidden().risk + v); if (k === 'peopleReputation') p.peopleReputation = Math.max(0, Math.min(100, (p.peopleReputation ?? 50) + v)); if (k === 'eq') ctx.attrs.eq = Math.min(15, (ctx.attrs.eq || 0) + v); if (k === 'integrity') engine.getHidden().integrity = Math.min(100, engine.getHidden().integrity + v); }); }
       st.score += r.delta;
       st.q += 1;
       if (st.q >= 3) {

@@ -428,7 +428,7 @@ GameEngine.prototype._rcy_financeSettlement = function() {
       }
       // v2.59 负财富惩罚：入不敷出有现实代价（债主上门——声誉/风险/家压逐年恶化，逼玩家出坑而非无感锁死）
       if (p.wealth < 0 && fin.cash < 6) {
-        p.reputation = Math.max(0, (p.reputation || 50) - 2);
+        p.reputation = Math.max(0, (p.reputation ?? 50) - 2);
         s.hidden.risk = Math.min(100, (s.hidden.risk || 0) + 2);
         s.hidden.familyPressure = Math.min(100, (s.hidden.familyPressure || 0) + 2);
         p.careerLog.push({ year: p.age, event: '⚠️ 入不敷出，债主天天上门（声誉-2 风险+2 家压+2）' });
@@ -681,6 +681,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'teamDeferred', next: 'arc_team_deferred_2', delay: 2 },
         { flag: 'teamSharedFollowed', next: 'arc_team_shared_3', delay: 3 },
         { flag: 'teamDeferredFollowed', next: 'arc_team_deferred_3', delay: 3 },
+        { flag: 'teamThirdResolved', next: 'arc_team_legacy_4', delay: 6 },
         { flag: 'familyClinicPresent', next: 'arc_family_present_2', delay: 2 },
         { flag: 'familyClinicAbsent', next: 'arc_family_absent_2', delay: 2 },
         { flag: 'familyClinicResolved', next: 'arc_family_clinic_3', delay: 3 },
@@ -723,7 +724,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
 GameEngine.prototype.getPendingCausalConsequences = function() {
     const p=this.state.player, flags=p.flags||{}, seen=new Set(p.seenEvents||[]);
     const known=new Set((GameData.events||[]).map(e=>e.id));
-    const unique=new Set(), queue=[];
+    const unique=new Map();
     const labels=[
       [/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
@@ -735,16 +736,17 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
       [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$|^arc_mortgage_3$/,'房贷与家庭财务']
     ];
     this.getCausalChainSteps().forEach((step,index)=>{
-      if(!flags[step.flag]||seen.has(step.next)||!known.has(step.next)||unique.has(step.next))return;
+      if(!flags[step.flag]||seen.has(step.next)||!known.has(step.next))return;
       if(step.nonMember && p.political==='cpc')return;
       if(step.unless?.some(k=>flags[k] && !(step.allowSeenRisk && k==='healthRisk' && seen.has('ent245'))))return;
-      unique.add(step.next);
       const since=Number(flags[step.flag+'_since']);
       const dueAge=Number.isFinite(since)&&since>0 ? since+(step.delay||1) : p.age+(step.delay||1);
       const label=labels.find(([re])=>re.test(step.next))?.[1]||'职业与人生旧事';
-      queue.push({id:step.next,flag:step.flag,label,dueAge,waitingYears:Math.max(0,dueAge-p.age),overdue:dueAge<=p.age,index});
+      const item={id:step.next,flag:step.flag,label,dueAge,waitingYears:Math.max(0,dueAge-p.age),overdue:dueAge<=p.age,index};
+      const previous=unique.get(step.next);
+      if(!previous||dueAge<previous.dueAge)unique.set(step.next,item);
     });
-    return queue.sort((a,b)=>a.dueAge-b.dueAge||a.index-b.index);
+    return [...unique.values()].sort((a,b)=>a.dueAge-b.dueAge||a.index-b.index);
 };
 // 与此前决定交错：财务结算是即时的，私人投资是否合规要在两年后检查。
 GameEngine.prototype.getVentureReviewEvent = function() {
@@ -768,13 +770,33 @@ GameEngine.prototype.getVentureReviewEvent = function() {
 };
 // 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
 GameEngine.prototype.getLifePathEvent = function(event) {
-  if (!event || !/^(arc_life_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
+  if (!event || !/^(arc_life_|arc_team_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
   const f=this.state.player.flags||{};
   const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
   const add=(text)=>{out.text=(out.text||'')+' '+text;};
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'arc_team_shared_3':
+      if(f.teamRotationSupported){add('当年外出锻炼留下的工作记录，这次也一并送来了。');bump(0,{workAbility:1});}
+      else if(f.teamRotationDeferred){add('那次错过的专项工作没有补回来。许砚后来自己找到了新的学习机会。');bump(0,{mentalPressure:1});}
+      break;
+    case 'arc_team_deferred_3':
+      if(f.teamRosterReformed){out.text='五年后，许砚作为另一单位的业务负责人参加会商。你认出他带来的轮值表：那份曾经核对过的调休制度，后来被他带到了新岗位。他结束会议后留下来，想与你谈谈旧制度的不足。';bump(0,{mentalPressure:-1});}
+      else if(f.teamRosterUnchanged){add('那次单独批准的调休没有改变后来新人的处境。他没有忘记这一点。');bump(0,{mentalPressure:1});}
+      break;
+    case 'arc_team_legacy_4': {
+      const p=this.state.player;
+      const contact=(p.contacts||[]).find(c=>c.id==='arc_xuyan'||c.legacyId==='arc_xuyan');
+      if(f.teamRecommended)add('许砚记得你在推荐表上同时写了成绩和短板。');
+      else if(f.teamIndependent)add('你当年没有插手竞聘，他后来凭自己的工作记录通过考察。');
+      else if(f.teamReconciled)add('当年的那次谈话没有抹去旧事，却使你们重新有了讨论问题的可能。');
+      else if(f.teamDistance)add('你们过去保持的距离仍在，这次联系仅限于业务交接。');
+      if(contact&&Number(contact.trust)<35){add('他没有把私人关系当作工作背书，只希望核对有据可查的事实。');bump(0,{mentalPressure:1});}
+      if(f.crossResolved){add('联合会商留下的证据和责任清单也可以成为这次交接的参考。');bump(0,{workAbility:1});}
+      if(f.familyClinicRoutine||f.familyClinicRepair){add('你也记得，可靠的交接才能让同事按时回家。');bump(1,{familyPressure:-1});}
+      break;
+    }
     case 'ent259':
     case 'arc_mortgage_3':
       if(f.mortgageBudgeted) add('当年一起做的预算仍放在账本里，你们习惯先留出应急的钱。');
@@ -897,7 +919,7 @@ GameEngine.prototype.getLifePathProfile = function() {
     career:bounded((p.leadershipRank||0)*5+(p.promotions||0)*4+(p.unitLevel||0)*8+(h.workAbility||0)*0.22+(p.unitUpgrades||0)*3+(f.lifeCareerReviewed?6:0)),
     integrity:bounded((h.integrity||0)*0.55+Math.max(0,80-(h.risk||0))*0.25+(f.refusedBribe?8:0)+(f.reportedOthers?4:0)+(f.tookResponsibility?4:0)+(f.lifeIntegrityReviewed?8:0)+(f.lifeIntegrityOpen?3:0)-(this.hasCorruptFlag(f)?18:0)),
     family:bounded((a.family||0)*3.2+Math.max(0,75-(h.familyPressure||0))*0.48+(p.childEducation||0)*2+(p.childCompany||0)*2+(p.isMarried?8:0)+(p.hasChildren?6:0)+(f.lifeFamilyReviewed?10:0)+(f.lifeFamilyPresent?4:0)-(f.lifeFamilyCareer?3:0)),
-    network:bounded(trusted*8+(p.peopleReputation||50)*0.32+(p.reputation||50)*0.12+(f.peopleEventCount||0)*2+(f.lifeNetworkReviewed?8:0)+(f.lifeNetworkPublic?4:0))
+    network:bounded(trusted*8+(p.peopleReputation ?? 50)*0.32+(p.reputation ?? 50)*0.12+(f.peopleEventCount||0)*2+(f.lifeNetworkReviewed?8:0)+(f.lifeNetworkPublic?4:0))
   };
   const routes=[
     {id:'career',name:'仕途发展',subtitle:'晋升、历练与组织信任',score:scores.career,detail:scores.career>=70?'已形成持续的职业积累':scores.career>=40?'正在积累岗位经验':'仍有较大的成长空间'},
@@ -1132,7 +1154,7 @@ GameEngine.prototype._rcy_yearEndSettlement = function(event) {
     this.checkLifeGates();
     this.clampAttrs();
     const yearEventTitle = this.state.currentEvent && this.state.currentEvent.title ? this.state.currentEvent.title : (event ? event.title : '平静的一年');
-    p.careerLog.push({ year: p.age, event: yearEventTitle, mentalPressure: Math.round(s.hidden.mentalPressure), risk: Math.round(s.hidden.risk), integrity: Math.round(s.hidden.integrity), positionWeight: Math.round(s.hidden.positionWeight), leadershipRank: p.leadershipRank, unitLevel: p.unitLevel, unitName: (p.unit && p.unit.name) || '', reputation: Math.round(p.reputation || 50), peopleReputation: Math.round(p.peopleReputation || 50), heat: Math.round(p.heat || 0), attrs: { iq: s.attrs.iq, eq: s.attrs.eq, body: s.attrs.body, luck: s.attrs.luck } }); // v2.18 年度快照；v2.21 补民间口碑；v2.1.17 补四维属性（年鉴曲线图）；v2.1.47 补单位名（人生回顾职业路径）
+    p.careerLog.push({ year: p.age, event: yearEventTitle, mentalPressure: Math.round(s.hidden.mentalPressure), risk: Math.round(s.hidden.risk), integrity: Math.round(s.hidden.integrity), positionWeight: Math.round(s.hidden.positionWeight), leadershipRank: p.leadershipRank, unitLevel: p.unitLevel, unitName: (p.unit && p.unit.name) || '', reputation: Math.round(p.reputation ?? 50), peopleReputation: Math.round(p.peopleReputation ?? 50), heat: Math.round(p.heat || 0), attrs: { iq: s.attrs.iq, eq: s.attrs.eq, body: s.attrs.body, luck: s.attrs.luck } }); // v2.18 年度快照；v2.21 补民间口碑；v2.1.17 补四维属性（年鉴曲线图）；v2.1.47 补单位名（人生回顾职业路径）
     // 自动保存（v2.16 修复：先生成年度评价再存档，读档后年鉴不丢"年度评价"）
     const evalText = this.getYearEvaluation(s.hidden, p);
     if (evalText) p.careerLog[p.careerLog.length - 1].evaluation = evalText;
@@ -1312,6 +1334,7 @@ GameEngine.prototype.getLifeEvaluation = function() {
     ['个人原则',n(h.integrity)*0.8+(100-n(h.risk))*0.2-(this.hasCorruptFlag(f)?20:0),'廉洁、风险及腐败记录']
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
+  if(seen.has('arc_team_legacy_4'))memories.push('许砚的交接本进入新团队，你完成了多年后的经验移交。');
   if(seen.has('arc_family_clinic_3'))memories.push('蓝色便签的五年回访已经完成。');
   if(seen.has('enl216'))memories.push('父母照护经历已完成多年后的家庭复盘。');
   if(f.mortgageCleared)memories.push('住房贷款已经结清。');
