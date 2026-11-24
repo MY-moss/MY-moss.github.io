@@ -451,6 +451,8 @@ GameEngine.prototype._rcy_financeSettlement = function() {
 // 子方法 7：年度次数重置 / 定期与黄金到期 / 理财天赋 / 财富动态
 GameEngine.prototype._resetAnnualActionsAndMatureAssets = function() {
     const p = this.state.player;
+    if(this.settleDutyPlan)this.settleDutyPlan();
+    if(this.settlePolicyFollowups)this.settlePolicyFollowups();
     // 年度重置：财务规划/人情往来次数归零（每回合限次防膨胀），并清理年度选项缓存（面板选项每年首次打开时重新抽取）
     p.flags.financeUsed = 0;
     if (this.resetNetworkActions) this.resetNetworkActions();
@@ -1374,6 +1376,7 @@ GameEngine.prototype.getLifeEvaluation = function() {
     ['个人原则',n(h.integrity)*0.8+(100-n(h.risk))*0.2-(this.hasCorruptFlag(f)?20:0),'廉洁、风险及腐败记录']
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
+  for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
   if(seen.has('arc_receipt_legacy_4'))memories.push('旧城回执的历史材料已交由新窗口核查，未决事项没有被视为自动办结。');
   if(seen.has('arc_classmate_legacy_4'))memories.push('多年后与林默重谈旧事，留下了新的关系边界。');
   if(seen.has('arc_team_legacy_4'))memories.push('许砚的交接本进入新团队，你完成了多年后的经验移交。');

@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});
+for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:360,height:740}]){
+ const c=await browser.newContext({viewport,serviceWorkers:'allow',colorScheme:'dark'});await c.addInitScript(()=>localStorage.setItem('shangan_tut_done','1'));
+ const page=await c.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(process.env.GAME_URL||'http://127.0.0.1:4303/',{waitUntil:'load'});await page.getByRole('button',{name:/快速开始/}).first().click();
+ await page.evaluate(()=>{const e=eval('engine'),p=e.getPlayer(),d=eval('GameData');p.name='职责与退休';p.age=40;p.yearsWorked=18;p.gender='男';p.isEmployed=true;p.unit=d.units[0];p.leadershipRank=5;e.initFinance();e.resetActionPoints();e.setPhase('career');window.App.afterCareerStep();});
+ const duty=page.getByRole('region',{name:'岗位职责'});await duty.waitFor();await duty.getByRole('button',{name:/培养骨干/}).click();await duty.getByText(/待回访/).waitFor();assert.equal(await duty.getByRole('button',{name:/培养骨干/}).isDisabled(),true);
+ await page.evaluate(()=>{const e=eval('engine'),p=e.getPlayer();p.age=63;p.flags.retireAsked=true;p.retireAgeExt=63;p.ending='ordinary';p.deathReason='retired';window.App.afterCareerStep();});
+ const chapter=page.getByRole('region',{name:'退休后篇'});await chapter.waitFor();await chapter.getByRole('button',{name:/运动和休息/}).click();await chapter.getByText(/第二年/).waitFor();await chapter.getByRole('button',{name:/社区志愿/}).click();await chapter.getByText(/第三年/).waitFor();await chapter.getByRole('button',{name:/家人、兴趣/}).click();await chapter.getByText(/后篇已完成/).waitFor();assert.equal(await page.evaluate(()=>eval('engine').getPlayer().age),63);
+ const sizes=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:document.documentElement.clientWidth}));assert.ok(sizes.scroll<=sizes.width);assert.deepEqual(errors,[]);console.log(JSON.stringify({viewport,duty:true,retirement:true,errors}));await c.close();
+}await browser.close();})().catch(e=>{console.error(e);process.exit(1)});

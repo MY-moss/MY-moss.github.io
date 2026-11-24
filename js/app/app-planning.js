@@ -49,6 +49,8 @@ Object.assign(App, {
       ${apLine ? `<div class="planning-board">${apLine}</div>` : ''}
       ${this.renderChallengeHint()}
       ${this.renderEraWaveBanner()}
+      ${this.renderDutyPlan()}
+      ${this.renderPolicyFollowups()}
       ${this.renderMicroResponseCard()}
       ${this.renderOpportunityCards()}
       <div class="sticky-action">
@@ -63,6 +65,24 @@ Object.assign(App, {
         <button type="button" class="btn btn-secondary" onclick="App.showExperience()" style="margin-top:6px">📜 人生经历（分类留痕）</button>
       </div>
     `;
+  },
+  renderDutyPlan() {
+    const p=engine.getPlayer(),d=engine.getDutyPlan();
+    if(!p.isEmployed||p.ending)return '';
+    const disabled=d.used||d.pending||!this._hasAP(1);
+    return `<section class="career-card" aria-label="岗位职责"><div class="career-event"><b>岗位职责 · ${App.escapeHtml(d.title)}</b><p>每年一项，消耗 1 点精力；次年兑现反馈。晋升将改变职责。</p></div>
+      ${d.pending?`<p>待回访：${App.escapeHtml(d.pending.name)} · ${d.pending.dueAge}岁</p>`:''}
+      ${d.actions.map(a=>`<button class="btn btn-secondary" ${disabled?'disabled':''} onclick="App.chooseDutyPlan('${a.id}')">${App.escapeHtml(a.name)}<span class="ap-cost">精力-1</span></button><small>${App.escapeHtml(a.desc)}</small>`).join('')}
+      </section>`;
+  },
+  chooseDutyPlan(id) {
+    this.safeProcess(()=>{if(!engine.chooseDutyPlan(id)){this.showToast('当前无法安排该职责','warning');return;}
+      this.saveCheckpoint('duty-plan');this.renderContent(this.renderCareer());this.updateStatus();});
+  },
+  renderPolicyFollowups() {
+    const rows=engine.getPolicyFollowups();
+    if(!rows.length)return '';
+    return `<section class="career-card" aria-label="政策项目回访"><div class="career-event"><b>政策成果与长期反馈</b><p>验收不是终点。两年、五年后按实际历史选择复核。</p></div>${rows.map(r=>`<p><b>${App.escapeHtml(r.name)}</b> · ${App.escapeHtml(r.label)}</p>`).join('')}</section>`;
   },
   // P3 时代背景波：当年时代主题横幅（轮转展示，影响机会候选的浮现倾向）
   // v2.1.76 挑战长廊局内进度提示：跨周目目标最接近完成的一项（无进行中挑战时不渲染）

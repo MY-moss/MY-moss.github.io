@@ -25,6 +25,20 @@ Object.assign(App, {
       ${review.unfinished.length?`<h3>尚未兑现的旧事</h3><p>故事在本局结局前未能收束，不视为已完成。</p>${review.unfinished.map(x=>`<p>· ${App.escapeHtml(x.label)}（${x.dueAge}岁起）</p>`).join('')}`:''}
     </section>`;
   },
+  renderRetirementChapter() {
+    const r=engine.getRetirementChapter();
+    if(!r)return '';
+    return `<section class="ending-summary" aria-label="退休后篇"><h3>退休之后 · 三年后篇</h3><p>职业生涯已经结算。可选的生活后篇不改变原结局、评分及成就。</p>
+      <div class="summary-grid"><div><span>健康</span><span>${r.health}/100</span></div><div><span>家庭</span><span>${r.family}/100</span></div><div><span>社会连接</span><span>${r.connection}/100</span></div></div>
+      ${r.years.map(y=>`<p>${y.age}岁 · ${App.escapeHtml(y.result)}</p>`).join('')}
+      ${r.done?'<p><b>后篇已完成。</b> 职业之外，生活仍有自己的节奏。</p>':`<h3>${r.age}岁 · ${App.escapeHtml(r.scene.title)}</h3><p>${App.escapeHtml(r.scene.text)}</p>${r.scene.choices.map(c=>`<button type="button" class="btn btn-secondary" onclick="App.chooseRetirementChapter('${c.id}')">${App.escapeHtml(c.text)}</button>`).join('')}`}
+    </section>`;
+  },
+  chooseRetirementChapter(id) {
+    this.safeProcess(()=>{if(!engine.chooseRetirementChapter(id))return;
+      this.saveCheckpoint('retirement-chapter');const node=document.querySelector('[aria-label="退休后篇"]');
+      if(node)node.outerHTML=this.renderRetirementChapter();});
+  },
   renderEnding() {
     const p = engine.getPlayer();
     const h = engine.getHidden();
@@ -100,6 +114,7 @@ Object.assign(App, {
         <p class="ending-desc">${App.escapeHtml(ending.desc)}</p>
         ${scenarioGoalHtml}
         ${this.renderLifeEvaluation(p)}
+        ${this.renderRetirementChapter()}
         ${newAch && newAch.length ? `
         <div class="ending-summary" style="border:1px solid var(--gold);border-radius:10px;padding:10px 14px;background:linear-gradient(135deg, rgba(196,164,74,0.08), rgba(196,164,74,0.02))">
           <h3 style="color:var(--gold-dark)">🏆 新成就解锁</h3>

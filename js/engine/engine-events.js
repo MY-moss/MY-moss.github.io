@@ -406,6 +406,8 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
     const eraId = (this.state && this.state.era) || 'stable';
     const poolEvents = typeof this.getEventPoolSnapshot === 'function' ? this.getEventPoolSnapshot() : [];
     const poolById = new Map(poolEvents.filter(event => event && event.id).map(event => [event.id, event]));
+    const scheduled=new Set(this.getCausalChainSteps().map(step=>step.next));
+    const isScheduled=id=>RIGID_NEXT_SET.has(id)||scheduled.has(id);
     const reasonCodeByGate = {
       employment: 'EMPLOYMENT', era: 'ERA', scenario: 'SCENARIO', requireFlag: 'REQUIRE_FLAG', requireFlags: 'REQUIRE_FLAG', excludeFlag: 'EXCLUDE_FLAG', excludeFlags: 'EXCLUDE_FLAG',
       reputation: 'REPUTATION', yearsWorked: 'WORK_YEARS', ageWindow: 'YEAR_WINDOW', legacyTitleGate: 'TITLE_GATE',
@@ -566,9 +568,9 @@ GameEngine.prototype.getEventVisibilityDiagnostics = function(refs) {
         else pass('pool', '单位或公共事件池条件满足');
       }
       const inPool = poolById.has(event.id);
-      if (!inPool && !reasons.length) reasons.push(RIGID_NEXT_SET.has(event.id) ? '刚性链后续事件只由链条注入，不进入随机事件池' : '当前事件未进入随机事件池');
+      if (!inPool && !reasons.length) reasons.push(isScheduled(event.id) ? '刚性链后续事件只由链条注入，不进入随机事件池' : '当前事件未进入随机事件池');
       const reasonCodes = codesForGates(gates);
-      if (!inPool && RIGID_NEXT_SET.has(event.id) && !reasonCodes.includes('RIGID_CHAIN')) reasonCodes.push('RIGID_CHAIN');
+      if (!inPool && isScheduled(event.id) && !reasonCodes.includes('RIGID_CHAIN')) reasonCodes.push('RIGID_CHAIN');
       if (!inPool && !reasonCodes.length) reasonCodes.push('RANDOM_POOL_EXCLUDED');
       const status = inPool ? 'eligible' : 'ineligible';
       return { id: event.id, title: event.title || event.id, contentTier: event.contentTier || null, status, reasons, reasonCodes, eligibleShare: 0, weight: { base: Number(event.weight) || 1, effective: inPool ? Number(poolById.get(event.id).weight) || 0 : 0, totalEligible: 0, share: 0 }, gates };
@@ -624,6 +626,7 @@ GameEngine.prototype.generateEvent = function(force) {
       const _all = (GameData.events || []).filter(Boolean);
       this._poolCache = { all: _all, noWork: _all.filter(_e => _e.stage !== 'work') };
     }
+    const causalTargets=new Set(this.getCausalChainSteps().map(step=>step.next));
     let events = (p.isEmployed ? this._poolCache.all : this._poolCache.noWork).filter(e => {
       if (!e) return false;
       // v2.67 性能：seenEvents 数组→Set 索引（年度全量过滤由 O(n×m) 降 O(n)——长局后期 seenEvents 数百项时提速最明显）
@@ -653,7 +656,7 @@ GameEngine.prototype.generateEvent = function(force) {
       // v2.67 下界宽容：year[0] < 22 视为无下界（游戏 22 岁起步，63 处窗口下界 1-5 实为"无下界"语义，无需改数据）
       if (Array.isArray(e.year) && e.year.length === 2 && (p.age < (e.year[0] < 22 ? 22 : e.year[0]) || p.age > e.year[1])) return false;
       // v2.66 修复：刚性链 next 事件从随机池排除（只由 RIGID_CHAINS 注入触发）——原实现可被随机池抢先抽取 seen，链等待期（delay）被绕过、保留 flag 的选项造成死链
-      if (e.id && RIGID_NEXT_SET.has(e.id)) return false;
+      if (e.id && (RIGID_NEXT_SET.has(e.id)||causalTargets.has(e.id))) return false;
       // 联系人条件
       if (e.requireContact && !p.contacts.some(c => c.id === e.requireContact || c.uid === e.requireContact || c.legacyId === e.requireContact)) return false;
       if (e.excludeContact && p.contacts.some(c => c.id === e.excludeContact || c.uid === e.excludeContact || c.legacyId === e.excludeContact)) return false;
@@ -753,8 +756,10 @@ GameEngine.prototype.generateEvent = function(force) {
     const hasCorrupt = this.hasCorruptFlag(flags);
     const currentDebt = this.debtTotal();
     const talentById = this._talentById || (this._talentById = new Map((GameData.talents || []).map(t => [t.id, t])));
+    const annualWave=this.getEraWave();
     events = events.map(e => {
       let w = e.weight || 1;
+      if(annualWave&&this._eventMatchesWave(e,annualWave))w*=1.15;
       const f = flags;
       // 工作/生活比例控制：确保工作业务事件占比≥70%
       // work×1.35 提升，life×0.75 压缩（池内77/23 → 触发约82/18，结合平静年更偏工作）
@@ -1099,7 +1104,7 @@ GameEngine.prototype.determineEnding = function() {
     // 数字先驱：数字政府建设突破者（e402 数据平台 → e403 全省典型案例链，技术/数据部门专属）
     // v2.1.49 M5.3 项目结局分支：完成「数字政务升级」政策项目（policy_digital_governance_done）成为另一条路——
     // 项目成果兑现需未压过舆情（压制扩散 = 成果打折，policyOpinionSuppressed 阻断项目分支）
-    if ((p.flags.dataPlatform || (p.flags.policy_digital_governance_done && !p.flags.policyOpinionSuppressed)) && (p.unit && (p.unit.system === '技术部门' || p.unit.system === '数据部门' || p.unit.system === '政府部门' || p.unit.system === '民生部门')) && p.leadershipRank >= 3 && p.reputation > 60) return 'digital'; // v2.59 纳入政府部门（dataPlatform 由政府部门事件链可得，原 flag 有却无结局消费）
+    if ((p.flags.dataPlatform || (this.hasQualifiedPolicyOutcome('digital_governance'))) && (p.unit && (p.unit.system === '技术部门' || p.unit.system === '数据部门' || p.unit.system === '政府部门' || p.unit.system === '民生部门')) && p.leadershipRank >= 3 && p.reputation > 60) return 'digital'; // v2.59 纳入政府部门（dataPlatform 由政府部门事件链可得，原 flag 有却无结局消费）
     // 乡土守望：基层历练后留任扎根（grassrootsStay），深耕基层至退休，群众口碑深厚
     // v2.49：乡镇/街道职级上限 3，原条件 rank>=4 使乡镇留任者不可达——放宽为 rank>=3（正科级主政一方即符合叙事）
     if (p.flags.grassrootsStay && unitLevel <= 1 && p.yearsWorked >= 20 && p.reputation > 80 && p.leadershipRank >= 3 && h.risk < 40) return 'grassroots';
@@ -1114,7 +1119,7 @@ GameEngine.prototype.determineEnding = function() {
     // 乡村振兴之星：牵头乡村振兴示范村建设（e320 ruralRevitalize → e321 成果），扎根基层带动一方致富
     // 须基层工作 + 振兴实绩 + 群众口碑（防止城市玩家误判）
     // v2.1.49 M5.3 项目结局分支：完成「乡村振兴示范」政策项目（policy_rural_revitalization_done）成为另一条路，同样受舆情压制阻断
-    if ((p.flags.ruralRevitalize || (p.flags.policy_rural_revitalization_done && !p.flags.policyOpinionSuppressed)) && unitLevel <= 1 && p.yearsWorked >= 10 && (p.peopleReputation ?? 50) >= 60) return 'rural_star';
+    if ((p.flags.ruralRevitalize || (this.hasQualifiedPolicyOutcome('rural_revitalization'))) && unitLevel <= 1 && p.yearsWorked >= 10 && (p.peopleReputation ?? 50) >= 60) return 'rural_star';
     // ===== v2.25 联系人专属结局（人际网络闭环：贵人提携 / 老友一生 / 邻里桑梓） =====
     const ct = (id, min) => (p.contacts || []).some(c => c.id === id && c.relation >= min);
     // 大树成荫：贵人关系深厚且已至高位——你站在贵人站过的地方
@@ -1130,7 +1135,7 @@ GameEngine.prototype.determineEnding = function() {
     if (h.workAbility > 85 && this.state.attrs.iq > 8 && p.unit && (p.unit.system === '技术部门' || p.unit.system === '数据部门')) return 'tech_backbone';
     // 群众贴心人：处理群众事件10次以上，情商高、作风正派、民间口碑深厚（v2.21 双轨接入），被群众称为"贴心人"
     // v2.1.49 M5.3 项目结局分支：完成「老旧小区改造」政策项目（policy_old_community_done，解难排忧类实绩）成为另一条路，同样受舆情压制阻断
-    if (((p.flags.peopleEventCount || 0) >= 10 || (p.flags.policy_old_community_done && !p.flags.policyOpinionSuppressed)) && this.state.attrs.eq > 8 && h.integrity > 65 && (p.peopleReputation ?? 50) >= 75) return 'people_champion';
+    if (((p.flags.peopleEventCount || 0) >= 10 || (this.hasQualifiedPolicyOutcome('old_community'))) && this.state.attrs.eq > 8 && h.integrity > 65 && (p.peopleReputation ?? 50) >= 75) return 'people_champion';
     // 改革先锋（新）：参与2次以上改革事件（reformCount 由 reformProposal/reformDraft 各 +1，单局上限 2），职级权重高，成为推动改革的中坚力量
     // v2.49：原条件 >=3 永不可达（单局上限 2），修正为 >=2
     if ((p.flags.reformCount || 0) >= 2 && h.positionWeight > 15) return 'reform_pioneer';

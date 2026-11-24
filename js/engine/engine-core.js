@@ -599,6 +599,13 @@ class GameEngine {
       st.policyProject = null;
       delete p.flags.policyProjectActive;
     }
+    // 新模块存档形状：未知条目不进入执行路径。
+    p.policyFollowups=Array.isArray(p.policyFollowups)?p.policyFollowups.filter(r=>r&&this.getPolicyProjectDefinition(r.id)&&Number.isFinite(r.completedAge)&&['strong','mixed','concern'].includes(r.quality)).map(r=>({id:r.id,completedAge:r.completedAge,quality:r.quality,suppressed:!!r.suppressed,review2:!!r.review2,review5:!!r.review5})):[];
+    if(p.dutyPending&&(!Number.isFinite(p.dutyPending.dueAge)||!p.dutyPending.effects||typeof p.dutyPending.name!=='string'))delete p.dutyPending;
+    if(p.retirementChapter){
+      const r=p.retirementChapter;
+      if(!Array.isArray(r.years)||r.years.length>3||r.years.some(y=>!y||typeof y.result!=='string'||!Number.isFinite(y.age))||!['health','family','connection'].every(k=>Number.isFinite(r[k])&&r[k]>=0&&r[k]<=100))delete p.retirementChapter;
+    }
     // 人脉分层迁移由可选的 engine-network 提供；旧测试/旧入口未加载该模块时也保持可运行。
     if (typeof this.ensureNetworkState === 'function') this.ensureNetworkState();
     // 旧版存档没有待选事件时继续保持空值；有效选择事件必须原样恢复，避免刷新跳过抉择。

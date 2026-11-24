@@ -21,7 +21,7 @@
     const def = this.getPolicyProjectDefinition(id);
     if (!def) return { ok: false, missing: ['项目不存在'] };
     const p = this.state.player;
-    if (!p || !p.isEmployed) return { ok: false, missing: ['需要先上岸入职'] };
+    if (!p || !p.isEmployed || p.ending) return { ok: false, missing: ['需要先上岸入职'] };
     const missing = [];
     const rankOk = !def.requireRankMin || (p.leadershipRank || 0) >= def.requireRankMin;
     if (!rankOk) missing.push('职级 ≥ ' + def.requireRankMin + ' 级（当前 ' + (p.leadershipRank || 0) + ' 级）');
@@ -48,6 +48,7 @@
       startedYear: p.yearsWorked || 0,
       progress: 0,
       opinionCrises: 0,
+      qualitySum: 0, qualitySamples: 0, suppressed: false,
       pendingDecision: null // { type: 'stage'|'opinion', stage }
     };
     p.flags.policyProjectActive = true;
@@ -91,6 +92,11 @@
 
     this.applyEffects(choice.effects || {});
     this.clampAttrs();
+    const fx=choice.effects||{};
+    // 项目质量只记录本项目实际选择，不读取其他项目留下的舆情标记。
+    const quality=Math.max(-4,Math.min(4,(fx.integrity||0)+(fx.peopleReputation||0)+(fx.workAbility||0)-(fx.risk||0)-(fx.heat||0)));
+    current.state.qualitySum=(current.state.qualitySum||0)+quality;
+    current.state.qualitySamples=(current.state.qualitySamples||0)+1;
     current.state.progress = (current.state.progress || 0) + (choice.progress || 1);
     current.state.stage = stageIndex + 1;
     current.state.pendingDecision = null;
@@ -100,12 +106,16 @@
 
     if (current.state.stage >= current.def.duration) {
       this.applyEffects(current.def.completionEffects || {});
+      const score=(current.state.qualitySum||0)/Math.max(1,current.state.qualitySamples||0);
+      const quality=current.state.suppressed?'concern':score>=1?'strong':score<0?'concern':'mixed';
+      const ledger=p.policyFollowups||(p.policyFollowups=[]);
+      ledger.push({id:current.def.id,completedAge:p.age,quality,suppressed:!!current.state.suppressed,review2:false,review5:false});
       p.flags = p.flags || {};
       p.flags.policyProjectCount = (p.flags.policyProjectCount || 0) + 1;
       p.flags[`policy_${current.def.id}_done`] = true;
       p.flags.lastPolicyProject = current.def.id;
       delete p.flags.policyProjectActive;
-      p.careerLog.push({ year: p.age, event: `${current.def.icon || '📋'} 政策项目「${current.def.name}」完成，成果通过验收` });
+      p.careerLog.push({ year: p.age, event: `${current.def.icon || '📋'} 政策项目「${current.def.name}」完成阶段交付，实际运行效果待回访` });
       this.state.policyProject = null;
     }
     this.state.currentEvent = null;
@@ -162,6 +172,7 @@
     this.applyEffects(choice.effects || {});
     this.clampAttrs();
     current.state.opinionCrises = (current.state.opinionCrises || 0) + 1;
+    if(index===2)current.state.suppressed=true;
     current.state.pendingDecision = null;
     const p = this.state.player;
     p.careerLog = p.careerLog || [];
@@ -169,6 +180,36 @@
     this.state.currentEvent = null;
     this.checkEndings();
     return true;
+  };
+
+  GameEngine.prototype.getPolicyFollowups = function() {
+    const p=this.state.player;
+    return (p.policyFollowups||[]).map(r=>{
+      const name=this.getPolicyProjectDefinition(r.id)?.name||r.id;
+      const label=r.review5?'五年复核已完成 · '+({strong:'运行稳定',mixed:'仍需维护',concern:'遗留问题待处理'}[r.quality]||'未评价'):
+        r.review2?'二年回访完成，'+(r.completedAge+5)+'岁长期复核':(r.completedAge+2)+'岁运行回访';
+      return {...r,name,label};
+    });
+  };
+  GameEngine.prototype.settlePolicyFollowups = function() {
+    const p=this.state.player;
+    for(const r of p.policyFollowups||[]){
+      const name=this.getPolicyProjectDefinition(r.id)?.name;if(!name)continue;
+      for(const [key,delay] of [['review2',2],['review5',5]]){
+        if(r[key]||p.age<r.completedAge+delay)continue;
+        r[key]=true;
+        const strong=r.quality==='strong',concern=r.quality==='concern';
+        this.applyEffects(strong?(delay===2?{peopleReputation:3,workAbility:1}:{reputation:2,peopleReputation:2}):concern?(delay===2?{mentalPressure:3,risk:2,peopleReputation:-2}:{reputation:-2,risk:2}):{mentalPressure:1});
+        this.clampAttrs();
+        p.careerLog.push({year:p.age,event:'政策回访 · '+name+'（'+delay+'年）：'+(strong?'实际使用反馈较好':concern?'遗留问题仍需核查，不能视作长期成功':'运行仍需维护与跟踪')});
+      }
+    }
+  };
+  GameEngine.prototype.hasQualifiedPolicyOutcome = function(id) {
+    const p=this.state.player;
+    if(!p.flags['policy_'+id+'_done'])return false;
+    const row=(p.policyFollowups||[]).find(r=>r.id===id);
+    return row ? !row.suppressed && row.quality!=='concern' : !p.flags.policyOpinionSuppressed;
   };
 
   // 读档后恢复 saveState 主动清除的 currentEvent；只恢复本模块已明确标记的待决策。
