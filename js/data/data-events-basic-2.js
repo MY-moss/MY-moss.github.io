@@ -123,11 +123,11 @@ const gd_events_basic_2 = [
       { text: '向单位报告请组织出面处理', effects: {background: 2, risk: -2, mentalPressure: 2, positionWeight: 1, reputation: 1} },
     ]},
     { id: 'e110', stage: 'work', eventType: 'choice', title: '退休返聘', year: [50, 65], weight: 8, text: '临近退休，单位领导找到你，希望退休后能返聘你继续工作。你身体还硬朗，也想继续发挥余热。', choices: [
-      { text: '接受返聘继续工作', effects: {workAbility: 2, positionWeight: 2, mentalPressure: 2, reputation: 2, desire: 1} },
-      { text: '婉拒返聘享受退休生活', effects: {mentalPressure: -3, familyPressure: -2, body: 1, desire: -2, reputation: 1} },
-      { text: '接受返聘但要求减少工作量', effects: {eq: 1, workAbility: 1, mentalPressure: -1, positionWeight: 1, reputation: 1} },
-      { text: '推荐年轻同事接替自己', effects: {integrity: 3, eq: 1, reputation: 2, workAbility: 1, background: 1} },
-      { text: '接受返聘同时培养接班人', effects: {workAbility: 2, eq: 1, reputation: 2, positionWeight: 1, iq: 1} },
+      { text: '接受返聘继续工作', effects: {workAbility: 2, positionWeight: 2, mentalPressure: 2, reputation: 2, desire: 1}, result: "你接受了继续工作的安排，原本准备交出去的工作还要再承担一段时间。" },
+      { text: '婉拒返聘享受退休生活', effects: {mentalPressure: -3, familyPressure: -2, body: 1, desire: -2, reputation: 1}, result: "你把办公室里的私人物品慢慢收拾好，准备把更多时间留给生活。" },
+      { text: '接受返聘但要求减少工作量', effects: {eq: 1, workAbility: 1, mentalPressure: -1, positionWeight: 1, reputation: 1}, result: "你和单位商定新的工作范围，不再把每一项临时任务都揽到身上。" },
+      { text: '推荐年轻同事接替自己', effects: {integrity: 3, eq: 1, reputation: 2, workAbility: 1, background: 1}, result: "你把年轻同事的工作记录整理给负责人，最终人选仍需按程序确定。" },
+      { text: '接受返聘同时培养接班人', effects: {workAbility: 2, eq: 1, reputation: 2, positionWeight: 1, iq: 1}, result: "你留下来帮助年轻同事熟悉工作，接下来的任务不再只由你一个人承担。" },
     ]},
     // ====== 连锁事件链六：举报线 ======
     { id: 'e111', stage: 'work', eventType: 'choice', title: '发现违规', weight: 4, text: '你无意中发现同事老张在报销单据上做了手脚，金额虽然不大，但性质恶劣。老张平时对你不错，你陷入了两难。', choices: [

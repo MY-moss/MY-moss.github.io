@@ -1030,22 +1030,22 @@ const gd_events_new_theme = [
   { id: 'ent244', eventType: 'choice', weight: 5, year: [38, 58], stage: 'life', title: '🩺 体检报告的箭头',
     text: '体检报告出来了。血脂、血压、血糖，三个向上的箭头整整齐齐。医生推了推眼镜："你这个年纪，指标该注意了。再这么应酬下去，身体要找你算账。"',
     choices: [
-      { text: '认真对待，戒烟限酒开始调理', effects: { flag: 'healthRisk', body: -2, mentalPressure: 2 } },
-      { text: '先观察观察，明年再说', effects: { flag: 'healthRisk', body: -3, mentalPressure: 1 } },
-      { text: '不当回事，身体哪有那么脆弱', effects: { flag: 'healthHardhead', body: -4, mentalPressure: -1 } }
+      { text: '认真对待，戒烟限酒开始调理', effects: { flag: 'healthRisk', body: -2, mentalPressure: 2 }, result: "你把体检单收进随身的本子，开始按医生建议调整生活。" },
+      { text: '先观察观察，明年再说', effects: { flag: 'healthRisk', body: -3, mentalPressure: 1 }, result: "你暂时没有改变日程，但异常指标仍需要后续复查。" },
+      { text: '不当回事，身体哪有那么脆弱', effects: { flag: 'healthHardhead', body: -4, mentalPressure: -1 }, result: "报告被压在抽屉底下，身体的不适并没有随着你把它忘掉而消失。" }
     ] },
   { id: 'ent245', eventType: 'choice', weight: 5, year: [38, 60], stage: 'life', requireFlag: 'healthRisk', title: '🚶 调理还是硬扛',
     text: '医生的话还在耳边，单位的工作却一天没少。体检单上的箭头不会骗人，可材料明天就要交——你站在了岔路口。',
     choices: [
-      { text: '坚持锻炼，规律作息，推掉应酬', effects: { flag: 'healthCare', body: 2, mentalPressure: -3, familyPressure: -2, positionWeight: -1 } },
-      { text: '吃药控制，工作照旧', effects: { flag: 'healthCare', body: 1, mentalPressure: 2, risk: 2 } },
-      { text: '硬扛着，等忙完这阵再说', effects: { deleteFlag: 'healthRisk', flag: 'healthHardhead', body: -6, mentalPressure: 3 } }
+      { text: '坚持锻炼，规律作息，推掉应酬', effects: { flag: 'healthCare', body: 2, mentalPressure: -3, familyPressure: -2, positionWeight: -1 }, result: "你从日程里划掉几场应酬，留出了运动和休息的时间。" },
+      { text: '吃药控制，工作照旧', effects: { flag: 'healthCare', body: 1, mentalPressure: 2, risk: 2 }, result: "你按医嘱处理异常指标，却暂时没有减少工作负荷。" },
+      { text: '硬扛着，等忙完这阵再说', effects: { deleteFlag: 'healthRisk', flag: 'healthHardhead', body: -6, mentalPressure: 3 }, result: "你把复查往后挪，下一次身体发出的警告可能更难忽视。" }
     ] },
   { id: 'ent246', eventType: 'choice', weight: 5, year: [38, 62], stage: 'life', requireFlag: 'healthCare', title: '🏥 住院治疗',
     text: '某个加班的深夜，你眼前一黑，再醒来已经躺在医院的病床上。心电图上的曲线和病房里的消毒水味，让你第一次认真思考"身体是革命的本钱"这句话。',
     choices: [
-      { text: '安心住院，把身体彻底调养好', effects: { flag: 'healthTreated', body: 6, mentalPressure: -5, wealth: -15, positionWeight: -3, reputation: -1 } },
-      { text: '边住院边处理工作电话', effects: { flag: 'healthTreated', body: 3, mentalPressure: 2, positionWeight: -2, wealth: -10 } }
+      { text: '安心住院，把身体彻底调养好', effects: { flag: 'healthTreated', body: 6, mentalPressure: -5, wealth: -15, positionWeight: -3, reputation: -1 }, result: "你把手头的工作交出去，在医生安排下完成治疗。" },
+      { text: '边住院边处理工作电话', effects: { flag: 'healthTreated', body: 3, mentalPressure: 2, positionWeight: -2, wealth: -10 }, result: "病床旁的手机还亮着，你既需要治疗，也没能真正放下工作。" }
     ] },
   { id: 'ent247', eventType: 'choice', weight: 5, year: [38, 64], stage: 'life', requireFlag: 'healthTreated', title: '🌅 康复归来',
     text: '出院那天阳光很好。你站在医院门口，看着来来往往的人群，忽然觉得以前争的那些东西，也没那么要紧。身体好了，路还长。',

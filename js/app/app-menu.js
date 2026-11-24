@@ -2,16 +2,28 @@ Object.assign(App, {
   // v2.21 组织档案评语：按组织印象（reputation）/民间口碑（peopleReputation）/廉洁/风险组合生成卷宗评语
   renderArchiveComment(p, h) {
     const parts = [];
-    if (h.risk >= 60) parts.push('任内多次收到廉政风险提示，谈话记录在册');
-    else if (h.risk >= 35) parts.push('曾有过廉政谈话记录，后表现平稳');
-    else parts.push('廉洁情况良好，无不良反映');
-    if ((p.peopleReputation || 50) >= 75) parts.push('群众口碑深厚，走访时有群众主动提起其名字');
-    else if ((p.peopleReputation || 50) <= 30) parts.push('群众反映一般，信访件中偶有提及');
+    if (h.risk >= 60) parts.push('当前廉政风险较高，需要关注实际调查记录');
+    else if (h.risk >= 35) parts.push('当前存在一定廉政风险');
+    else parts.push('当前廉政风险较低');
+    if ((p.peopleReputation || 50) >= 75) parts.push('当前群众口碑较高');
+    else if ((p.peopleReputation || 50) <= 30) parts.push('当前群众口碑偏低');
     else parts.push('群众基础尚可');
-    if ((p.reputation || 50) >= 75) parts.push('组织评价高，历次考察均为优秀');
+    if ((p.reputation || 50) >= 75) parts.push('当前组织评价较高');
     else if ((p.reputation || 50) <= 35) parts.push('组织评价一般，考察中有不同声音');
-    if (h.integrity >= 75) parts.push('作风正派，两袖清风');
+    if (h.integrity >= 75 && !engine.hasCorruptFlag(p.flags || {})) parts.push('原则评价较高，未记录腐败标记');
     return parts.join('；') + '。';
+  },
+  renderLifeEvaluation(p) {
+    const review=engine.getLifeEvaluation();
+    return `<section class="ending-summary" aria-label="多维人生评价">
+      <h3>人生的另一种答案</h3>
+      <p>六项独立评价反映当前状态，并不改变原有结局、成就或挑战规则。</p>
+      <div class="life-path-list">${review.dimensions.map(d=>`<div class="life-path-row"><div class="life-path-copy"><div><strong>${App.escapeHtml(d.name)}</strong><span>${d.score}/100</span></div><small>${App.escapeHtml(d.detail)}</small></div><div class="life-path-track" role="progressbar" aria-label="${App.escapeHtml(d.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${d.score}"><i style="width:${d.score}%"></i></div></div>`).join('')}</div>
+      <h3>留在年鉴里的选择</h3>
+      <p>${App.escapeHtml(review.summary)}</p>
+      ${review.memories.map(m=>`<p>· ${App.escapeHtml(m)}</p>`).join('')}
+      ${review.unfinished.length?`<h3>尚未兑现的旧事</h3><p>故事在本局结局前未能收束，不视为已完成。</p>${review.unfinished.map(x=>`<p>· ${App.escapeHtml(x.label)}（${x.dueAge}岁起）</p>`).join('')}`:''}
+    </section>`;
   },
   renderEnding() {
     const p = engine.getPlayer();
@@ -87,6 +99,7 @@ Object.assign(App, {
         </div>
         <p class="ending-desc">${App.escapeHtml(ending.desc)}</p>
         ${scenarioGoalHtml}
+        ${this.renderLifeEvaluation(p)}
         ${newAch && newAch.length ? `
         <div class="ending-summary" style="border:1px solid var(--gold);border-radius:10px;padding:10px 14px;background:linear-gradient(135deg, rgba(196,164,74,0.08), rgba(196,164,74,0.02))">
           <h3 style="color:var(--gold-dark)">🏆 新成就解锁</h3>
@@ -125,7 +138,7 @@ Object.assign(App, {
             <div><span>姓名</span><span>${App.escapeHtml(p.name)}</span></div>
             <div><span>性别</span><span>${App.escapeHtml(p.gender)}</span></div>
             <div><span>出身</span><span>${App.escapeHtml(p.background ? p.background.name : '未知')}</span></div>
-            <div><span>享年</span><span>${p.age}岁</span></div>
+            <div><span>${p.deathReason==='death'?'享年':'结局年龄'}</span><span>${p.age}岁</span></div>
             <div><span>最终评分</span><span style="color:${grade.color};font-weight:700">${grade.label}·${finalScore}分</span></div>
             <div><span>单位</span><span>${App.escapeHtml(p.unit ? p.unit.name : '无')}</span></div>
             <div><span>最终职务</span><span>${App.escapeHtml(engine.getCurrentPositionTitle ? engine.getCurrentPositionTitle() : engine.getRankLabel(p.leadershipRank))}</span></div>

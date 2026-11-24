@@ -299,8 +299,8 @@ class GameEngine {
     this.syncWealth();
   }
   syncWealth() { const f = this.state.player.finance; this.state.player.wealth = f.cash - this.debtTotal(); }
-  debtTotal() { return (this.state.player.finance.debts || []).reduce((s, d) => s + d.principal, 0); }
-  debtTypeTotal(type) { return (this.state.player.finance.debts || []).filter(d => d.type === type).reduce((s, d) => s + d.principal, 0); }
+  debtTotal() { return (this.state.player.finance.debts || []).reduce((s, d) => s + d.principal + (d.unpaidInterest || 0), 0); }
+  debtTypeTotal(type) { return (this.state.player.finance.debts || []).filter(d => d.type === type).reduce((s, d) => s + d.principal + (d.unpaidInterest || 0), 0); }
   syncDebtFlags() {
     const flags=this.state.player.flags||(this.state.player.flags={});
     if (this.debtTypeTotal('personal') <= 0.5) { delete flags.borrowed; delete flags.borrowed_since; }
@@ -314,37 +314,30 @@ class GameEngine {
     else f.debts.push({ type, principal: amount, rate: this.debtRate(type), since: this.state.year || 1 });
     this.syncWealth();
   }
-  // 还本：利率从高到低优先偿还；本金从现金扣除（现金不足则只还能还的）
+  // 先偿还挂账利息，再减本金；现金还款与明确豁免共用同一账本。
+  reduceDebt(amount) {
+    const f = this.state.player.finance;
+    let rem = Math.max(0, Math.floor(amount)), paid = 0;
+    for (const d of f.debts.slice().sort((a,b)=>b.rate-a.rate)) {
+      if (rem <= 0) break;
+      const arrears = Math.min(d.unpaidInterest || 0, rem);
+      if (arrears) d.unpaidInterest -= arrears;
+      rem -= arrears; paid += arrears;
+      const principal = Math.min(d.principal, rem);
+      d.principal -= principal; rem -= principal; paid += principal;
+    }
+    f.debts = f.debts.filter(d=>d.principal + (d.unpaidInterest || 0) > 0);
+    return paid;
+  }
   payDebt(amount) {
     const f = this.state.player.finance;
-    let rem = Math.min(Math.max(0, Math.floor(amount)), f.cash); let paid = 0;
-    const sorted = f.debts.slice().sort((a, b) => b.rate - a.rate);
-    for (const d of sorted) {
-      if (rem <= 0) break;
-      const pay = Math.min(d.principal, rem);
-      d.principal -= pay; rem -= pay; paid += pay;
-    }
+    const paid = this.reduceDebt(Math.min(amount, f.cash));
     f.cash -= paid;
-    f.debts = f.debts.filter(d => d.principal > 0.5);
-    this.syncWealth();
-    this.syncDebtFlags();
+    this.syncWealth(); this.syncDebtFlags();
     return paid;
   }
-  // v2.1.5 H1 出坑通道：强制还本直接减本金（不扣现金——还本来自工资结余的"省吃俭用+外快"，避免还本抽干现金导致利息滚入本金的死亡螺旋）
-  payDebtDirect(amount) {
-    const f = this.state.player.finance;
-    let rem = Math.max(0, Math.floor(amount)); let paid = 0;
-    const sorted = f.debts.slice().sort((a, b) => b.rate - a.rate);
-    for (const d of sorted) {
-      if (rem <= 0) break;
-      const pay = Math.min(d.principal, rem);
-      d.principal -= pay; rem -= pay; paid += pay;
-    }
-    f.debts = f.debts.filter(d => d.principal > 0.5);
-    this.syncWealth();
-    this.syncDebtFlags();
-    return paid;
-  }
+  // 旧接口保留，真实还款必须扣现金。
+  payDebtDirect(amount) { return this.payDebt(amount); }
   cashIn(amount) { if (!this.state.player.finance) this.initFinance(); const f = this.state.player.finance; f.cash += Math.max(0, Math.floor(amount)); this.syncWealth(); }
   // 现金支出：现金不足差额自动转高利贷负债（该负债多少就负债多少）
   cashOut(amount) { if (!this.state.player.finance) this.initFinance();
@@ -385,17 +378,9 @@ class GameEngine {
   }
   // v2.15.1：债务豁免（家人/组织帮还，不扣现金，从利率最高的债务开始抵扣）
   payDebtByForgive(amount) {
-    const f = this.state.player.finance;
-    let rem = Math.max(0, Math.floor(amount));
-    const sorted = f.debts.slice().sort((a, b) => b.rate - a.rate);
-    for (const d of sorted) {
-      if (rem <= 0) break;
-      const pay = Math.min(d.principal, rem);
-      d.principal -= pay; rem -= pay;
-    }
-    f.debts = f.debts.filter(d => d.principal > 0.5);
-    this.syncWealth();
-    this.syncDebtFlags();
+    const paid = this.reduceDebt(amount);
+    this.syncWealth(); this.syncDebtFlags();
+    return paid;
   }
   addAttr(attr) { if (this.state.attrPoints <= 0) return false; if (!(attr in this.state.attrs)) return false; this.state.attrs[attr]++; this.state.attrPoints--; return true; }
   removeAttr(attr) { if (this.state.attrs[attr] <= -5) return false; this.state.attrs[attr]--; this.state.attrPoints++; return true; }

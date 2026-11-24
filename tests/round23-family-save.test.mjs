@@ -135,9 +135,9 @@ test('newest family chapter counts as the actual ending in the life map, with of
   assert.match(ui,/finished:seen\.includes\('arc_family_clinic_3'\)/);
   assert.match(ui,/familyClinicResolved_since/);
   const sw=readFileSync(resolve(root,'sw.js'),'utf8');
-  assert.match(sw,/shangan-pages-20/);
+  assert.match(sw,/shangan-pages-21/);
   assert.match(sw,/data-events-arc-revision\.js/);
-  assert.match(html,/上岸模拟器 2\.1\.98/);
+  assert.match(html,/上岸模拟器 2\.1\.99/);
 });
 
 test('real loadState and importSave paths resume old flags rather than silently losing their callbacks',()=>{

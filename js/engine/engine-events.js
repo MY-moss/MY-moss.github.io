@@ -241,7 +241,7 @@ GameEngine.prototype.handleEventChoice = function(ci) {
       });
     }
     this.clampAttrs();
-    this.state.currentEvent = null; this.checkEndings();
+    this.state.currentEvent = null; if (e.id !== 'e110') this.checkEndings();
     // 赌博戒断（e747）：选择"戒赌"选项后彻底清除赌瘾状态（streak/连续未赌计数）
     if (e.id === 'e747' && c.effects && c.effects.deleteFlag === 'gamblingAddict') {
       this.state.player.flags.gambleStreak = 0;
@@ -253,22 +253,18 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     // v2.49：选项4「推荐年轻同事接替自己」（ci===3）此前被误判为接受返聘——改为与婉拒一样按退休结算，保留 mentorLegacy 传承标记
     if (e.id === 'e110' && this.state.player.isEmployed) {
       const p3 = this.state.player;
+      p3.flags.retireAsked = true;
       if (ci === 1 || ci === 3) { // 婉拒返聘 / 推荐年轻同事接替自己 → v2.59：已达法定退休年龄才结算退休；未到年龄则放弃本次机会继续工作（原正常池 53/58 岁触发即提前退休）
         if (ci === 3) p3.flags.mentorLegacy = true;      // 推荐接班人：急流勇退但留下传承
         p3.careerLog.push({ year: p3.age, event: ci === 1 ? '婉拒返聘，开始享受退休生活' : '推荐年轻同事接替自己，急流勇退留下传承' });
-        if (p3.age >= (p3.retireAgeExt || (p3.gender === '女' ? 55 : 60))) {
-          p3.ending = this.determineEnding();
-          p3.deathReason = 'retired';
-        } else {
-          p3.flags.retireAsked = true; // 放弃返聘机会：退休窗口不再重掷，到龄正常结算
-        }
       } else {
-        p3.retireAgeExt = Math.min(65, (p3.retireAgeExt || (p3.gender === '女' ? 55 : 60)) + 3);
+        p3.retireAgeExt = Math.min(65, Math.max(p3.age,p3.retireAgeExt || (p3.gender === '女' ? 55 : 60)) + 3);
         p3.flags.rehired = true;
         if (ci === 4) p3.flags.mentorMode = true;       // 培养接班人模式
         p3.careerLog.push({ year: p3.age, event: '接受返聘，继续在岗位上发光发热' });
         this.state.hidden.mentalPressure += 3;
       }
+      this.checkEndings();
     }
     // 辞职离岗：进入下海人生结局（运气+工作能力共同决定下海成败，运气不足则平凡收场）
     if (this.state.player.flags.resigned && this.state.player.isEmployed === false && !this.state.player.ending) {
@@ -308,7 +304,7 @@ GameEngine.prototype.applyEventEffects = function(event) {
     this.clampAttrs();
   }
 // v2.66 刚性链 next 事件白名单：只由 RIGID_CHAINS 注入触发（从随机池排除，防 delay 被绕过/死链）
-const RIGID_NEXT_SET = new Set(['ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
+const RIGID_NEXT_SET = new Set(['e110','ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
   // P3 剧本专属事件链：002/003 只由链注入触发，防随机池提前抽取破坏阶段节奏
   'scn_grassroots_002', 'scn_grassroots_003', 'scn_midcareer_002', 'scn_midcareer_003', 'scn_clean_002', 'scn_clean_003', 'scn_network_002', 'scn_network_003', 'scn_reform_002', 'scn_reform_003', 'scn_retired_002', 'scn_retired_003', 'scn_family_002', 'scn_family_003',
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入
@@ -1035,6 +1031,8 @@ GameEngine.prototype.checkEndings = function() {
     if (p.age >= baseRetireAge && p.age <= baseRetireAge + 2 && !p.flags.retireAsked
         && (this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer)) return;
     if (p.age >= baseRetireAge && p.age <= baseRetireAge + 2 && !p.flags.retireAsked && !this.state.currentEvent && !this.state.pendingPromotion && !this.state.pendingTransfer) {
+      if (p.flags.retireOfferCheckedAge === p.age) return;
+      p.flags.retireOfferCheckedAge = p.age;
       const ret = GameData.events.find(x => x.id === 'e110');
       if (ret && !p.seenEvents.includes('e110') && this.randf() < 0.45) {
         p.flags.retireAsked = true;
@@ -1045,7 +1043,10 @@ GameEngine.prototype.checkEndings = function() {
       if (p.age === baseRetireAge + 2) p.flags.retireAsked = true;
       else return;
     }
-    if (p.age >= (p.retireAgeExt || (p.gender === '女' ? 55 : 60))) { p.ending = this.determineEnding(); return; }
+    if (p.age >= (p.retireAgeExt || (p.gender === '女' ? 55 : 60))) {
+      if (this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return;
+      p.ending = this.determineEnding(); p.deathReason = 'retired'; return;
+    }
   }
 GameEngine.prototype.determineEnding = function() {
     const h = this.state.hidden; const p = this.state.player;

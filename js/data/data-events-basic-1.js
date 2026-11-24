@@ -136,11 +136,11 @@ const gd_events_basic_1 = [
     ]},
     // 入党申请
     { id: 'e042', stage: 'work', eventType: 'choice', title: '入党申请', weight: 6, text: '单位党组织开始新一轮党员发展工作。你虽然不是党员，但领导和同事都劝你写入党申请书。', choices: [
-      { text: '积极递交入党申请书', effects: {flag: 'appliedParty', positionWeight: 3, desire: 3, mentalPressure: 2, background: 2} },
-      { text: '先了解入党流程再决定', effects: {iq: 1, workAbility: 1, mentalPressure: 1, eq: 1} },
-      { text: '以工作太忙为由暂缓', effects: {desire: -1, mentalPressure: -1, positionWeight: -1, reputation: 1} },
-      { text: '明确表示暂不考虑入党', effects: {integrity: 2, positionWeight: -2, risk: 1, mentalPressure: -1} },
-      { text: '找支部书记谈心表达意愿', effects: {flag: 'appliedParty', background: 3, eq: 1, positionWeight: 2, mentalPressure: 2} },
+      { text: '积极递交入党申请书', effects: {flag: 'appliedParty', positionWeight: 3, desire: 3, mentalPressure: 2, background: 2}, result: "你把申请书交到支部，接下来还需履行培养、考察等程序。" },
+      { text: '先了解入党流程再决定', effects: {iq: 1, workAbility: 1, mentalPressure: 1, eq: 1}, result: "你先弄清申请、培养与考察的流程，没有当场作出承诺。" },
+      { text: '以工作太忙为由暂缓', effects: {desire: -1, mentalPressure: -1, positionWeight: -1, reputation: 1}, result: "你把眼下的工作安排说清楚，决定等自己准备好再谈。" },
+      { text: '明确表示暂不考虑入党', effects: {integrity: 2, positionWeight: -2, risk: 1, mentalPressure: -1}, result: "你表达了当前的真实想法，谈话结束后仍回到日常岗位。" },
+      { text: '找支部书记谈心表达意愿', effects: {flag: 'appliedParty', background: 3, eq: 1, positionWeight: 2, mentalPressure: 2}, result: "支部书记听完你的想法，提醒你把申请意愿落实到书面材料与日常表现中。" },
     ]},
     // 预备党员转正
     { id: 'e043', stage: 'work', eventType: 'choice', title: '预备党员转正', weight: 7, text: '你作为预备党员即将转正，但有人匿名反映你"工作态度不够积极"，党支部需要讨论你的转正问题。', requireFlag: 'appliedParty', choices: [

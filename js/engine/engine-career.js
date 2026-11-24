@@ -427,7 +427,7 @@ GameEngine.prototype._rcy_financeSettlement = function() {
         p.careerLog.push({ year: p.age, event: '💸 债主上门，你东拼西凑才应付过去' });
       }
       // v2.59 负财富惩罚：入不敷出有现实代价（债主上门——声誉/风险/家压逐年恶化，逼玩家出坑而非无感锁死）
-      if ((fin.cash || 0) < 0) {
+      if (p.wealth < 0 && fin.cash < 6) {
         p.reputation = Math.max(0, (p.reputation || 50) - 2);
         s.hidden.risk = Math.min(100, (s.hidden.risk || 0) + 2);
         s.hidden.familyPressure = Math.min(100, (s.hidden.familyPressure || 0) + 2);
@@ -449,9 +449,8 @@ GameEngine.prototype._rcy_financeSettlement = function() {
     }
   }
 // 子方法 7：年度次数重置 / 定期与黄金到期 / 理财天赋 / 财富动态
-GameEngine.prototype._rcy_annualResetAndAssets = function() {
-    const s = this.state; const p = s.player;
-    const fin = p.finance;
+GameEngine.prototype._resetAnnualActionsAndMatureAssets = function() {
+    const p = this.state.player;
     // 年度重置：财务规划/人情往来次数归零（每回合限次防膨胀），并清理年度选项缓存（面板选项每年首次打开时重新抽取）
     p.flags.financeUsed = 0;
     if (this.resetNetworkActions) this.resetNetworkActions();
@@ -478,6 +477,10 @@ GameEngine.prototype._rcy_annualResetAndAssets = function() {
       delete p.flags.goldHeld;
       p.careerLog.push({ year: p.age, event: `📿 去年购金70，今年售出到账${payout}，净盈亏${payout-70 >= 0 ? '+' : ''}${payout-70}` });
     }
+  };
+GameEngine.prototype._rcy_annualResetAndAssets = function() {
+    const s=this.state, p=s.player, fin=p.finance;
+    this._resetAnnualActionsAndMatureAssets();
     // 天赋：财商觉醒（money_sense）——财富按天赋定义固定增长/年（字段驱动，防指数膨胀）
     const moneyTalent = GameData.talents.find(t => t.id === 'money_sense');
     if ((p.talents || []).includes('money_sense')) {
@@ -1240,13 +1243,13 @@ GameEngine.prototype.autoSettleGamble = function() {
   }
 GameEngine.prototype.restYear = function() {
     const s = this.state; const p = s.player;
-    if (!p.isEmployed) return false;
+    if (!p.isEmployed || p.ending || s.currentEvent || s.pendingPromotion || s.pendingTransfer) return false;
     // v2.49：休整限 3 次/局——此前无次数限制且不扣支出不付息，负债玩家可连续休整至退休规避全部债务惩罚（白嫖漏洞）
     if ((p.flags.restCount || 0) >= 3) { p.careerLog.push({ year: p.age, event: '你申请休整，但组织认为长期离岗不妥，没有批准' }); return false; }
     p.flags.everRested = true;
     p.flags.restCount = (p.flags.restCount || 0) + 1;
     s.year++; p.age++; p.yearsWorked++;
-    if (this.resetActionPoints) this.resetActionPoints(); // 年度筹划回合：休整年同样进入新一年，精力补满
+    this._resetAnnualActionsAndMatureAssets();
     s.pendingMicro = null; // P2：休整年同样让上一年未回应的使绊窗口过期
     s.hidden.mentalPressure = Math.max(5, s.hidden.mentalPressure - 20 - this.rand(0, 15));
     s.hidden.familyPressure = Math.max(0, s.hidden.familyPressure - 8 - this.rand(0, 7));
@@ -1263,6 +1266,10 @@ GameEngine.prototype.restYear = function() {
     if (this.debtTotal() > 0) {
       this.settleDebtInterest(fin, { forcedRepay: false });
       p.careerLog.push({ year: p.age, event: `💸 休整期间仍要还息，负债 ${this.debtTotal().toFixed(0)} 缠身难以安心` });
+    }
+    if (this.debtTotal() > 300) {
+      const relief=this.payDebtByForgive(this.debtTotal()-300);
+      p.careerLog.push({year:p.age,event:'休整期间债务重组，明确减免 '+relief+' 单位债务'});
     }
     p.careerLog.push({ year: p.age, event: '休整一年，状态大幅恢复', mentalPressure: Math.round(s.hidden.mentalPressure), risk: Math.round(s.hidden.risk), integrity: Math.round(s.hidden.integrity), positionWeight: Math.round(s.hidden.positionWeight), leadershipRank: p.leadershipRank, unitLevel: p.unitLevel });
     // 休整年同样检查退休/结局，防止无限休整越过退休年龄不结算
@@ -1288,3 +1295,28 @@ GameEngine.prototype.restYear = function() {
     this.state.pendingTransfer = null;
     this.state.currentEvent = null;
   }
+
+// 六维画像与真实经历只读汇总，不参与主结局评分。
+GameEngine.prototype.getLifeEvaluation = function() {
+  const p=this.state.player,h=this.state.hidden,a=this.state.attrs,f=p.flags||{};
+  const bounded=x=>Math.max(0,Math.min(100,Math.round(x)));
+  const n=x=>Number(x)||0;
+  const dimensions=[
+    ['事业成就',n(h.workAbility)*0.45+n(p.leadershipRank)*3.5+n(p.promotions)*2,'能力、职级和晋升经历'],
+    ['家庭关系',this.getLifePathProfile().routes.find(r=>r.id==='family')?.score||0,'家庭压力、陪伴与共同生活'],
+    ['社会贡献',n(p.peopleReputation)*0.75+Math.min(25,n(f.peopleEventCount)*2.5),'民间口碑与群众工作记录'],
+    ['身心健康',n(a.body)*5+(100-n(h.mentalPressure))*0.5,'体质与当前精神压力'],
+    ['经济状况',50+n(p.wealth)*0.15-(f.mortgage?8:0),'净财富与未结清住房贷款'],
+    ['个人原则',n(h.integrity)*0.8+(100-n(h.risk))*0.2-(this.hasCorruptFlag(f)?20:0),'廉洁、风险及腐败记录']
+  ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
+  const seen=new Set(p.seenEvents||[]),memories=[];
+  if(seen.has('arc_family_clinic_3'))memories.push('蓝色便签的五年回访已经完成。');
+  if(seen.has('enl216'))memories.push('父母照护经历已完成多年后的家庭复盘。');
+  if(f.mortgageCleared)memories.push('住房贷款已经结清。');
+  if(f.mortgageRestructured)memories.push('住房贷款曾重组为普通债务。');
+  if(seen.has('arc_crossroads_echo'))memories.push('旧城联合会商的经验已经交给后来者。');
+  if(seen.has('ent306'))memories.push('你完成了与郑教授有关的多年回访。');
+  if(seen.has('arc_life_confluence_2'))memories.push('多条人生路线的共同责任已经复盘。');
+  const sorted=dimensions.slice().sort((a,b)=>b.score-a.score);
+  return {dimensions,memories,summary:'本局记录中，'+sorted[0].name+'是相对突出的一面，'+sorted.at(-1).name+'则仍有改善空间。各项评价不代表人生价值的高低。',unfinished:this.getPendingCausalConsequences()};
+};
