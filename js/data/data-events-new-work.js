@@ -9,11 +9,7 @@ const gd_events_new_work = [
       { text: '大胆融入新提法，做出辨识度', effects: {iq: 2, positionWeight: 2, risk: 3, mentalPressure: 3} },
       { text: '请老笔杆子帮忙把把关', effects: {eq: 1, workAbility: 2, mentalPressure: -1} },
     ]},
-    { id: 'enw002', stage: 'work', eventType: 'choice', weight: 6, title: '汇报材料', text: '一份汇报材料改到第七稿，领导说"方向不对"。你忽然意识到，前六稿改的都是文字，第七稿要改的是方向。', choices: [
-      { text: '当面请领导讲清思路再动笔', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
-      { text: '按自己理解重写一版框架', effects: {workAbility: 3, iq: 1, risk: 2, mentalPressure: 3} },
-      { text: '找分管副职先对一下思路', effects: {background: 2, eq: 1, mentalPressure: -1} },
-    ]},
+
     { id: 'enw003', stage: 'work', eventType: 'choice', weight: 5, title: '调研报告', text: '一份调研报告要交了，可你只去调研了一天，其中半天在车上。报告得写出"问题导向"和"基层声音"。', choices: [
       { text: '补打电话核实数据，把样本说细一点', effects: {workAbility: 3, integrity: 2, mentalPressure: 3} },
       { text: '把已有素材重新组合，措辞讲究些', effects: {workAbility: 2, iq: 1, risk: 2} },
@@ -343,11 +339,7 @@ const gd_events_new_work = [
       { text: '请保密委定性后再处理', effects: {workAbility: 2, background: 1, mentalPressure: 1} },
       { text: '按起草人意见公开', effects: {risk: 4, mentalPressure: 2, integrity: -2} },
     ]},
-    { id: 'enw067', stage: 'work', eventType: 'choice', weight: 6, title: '政务值班', text: '轮到你政务值班，偏偏赶上暴雨预警。值班电话像被施了咒，每隔十分钟响一次。', choices: [
-      { text: '坚守岗位，及时上报险情', effects: {workAbility: 3, body: -2, mentalPressure: 4, integrity: 1} },
-      { text: '联系代班，调整安排', effects: {eq: 1, mentalPressure: 1, positionWeight: -1} },
-      { text: '做好记录，等天亮再处置', effects: {workAbility: 1, risk: 3, mentalPressure: 2} },
-    ]},
+
     { id: 'enw068', stage: 'work', eventType: 'choice', weight: 4, title: '应急值守', text: '节假日应急值守，你在空荡荡的办公室听了一晚上的空调声。凌晨三点，一个电话让你彻底清醒。', choices: [
       { text: '立即赶赴现场处置', effects: {workAbility: 4, body: -2, mentalPressure: 5, positionWeight: 2} },
       { text: '电话指挥，派人前往', effects: {workAbility: 2, mentalPressure: 3, eq: 1} },
@@ -425,11 +417,7 @@ const gd_events_new_work = [
       { text: '告知稍后处理，先陪家人', effects: {familyPressure: -2, mentalPressure: 2, positionWeight: -1} },
       { text: '简单事项手机处理，复杂的延后', effects: {workAbility: 2, mentalPressure: 2, familyPressure: 1} },
     ]},
-    { id: 'enw083', stage: 'work', eventType: 'choice', weight: 6, title: '视频会议', text: '一场视频会议，你的画面卡在"正在连接"。领导的脸已经出现在大屏上，你还没来得及整理头发。', choices: [
-      { text: '冷静接入，先听后说', effects: {eq: 1, mentalPressure: 2, workAbility: 1} },
-      { text: '申请电话接入，规避画面', effects: {mentalPressure: 1, workAbility: 1, risk: 1} },
-      { text: '重启设备再接入', effects: {workAbility: 1, mentalPressure: 2, risk: 1} },
-    ]},
+
     { id: 'enw084', stage: 'work', eventType: 'choice', weight: 5, title: '培训学习', text: '一次脱产培训机会，去的话手头工作堆积，不去的话能力原地踏步。你盯着报名表犹豫。', choices: [
       { text: '报名参加，提前安排交接', effects: {iq: 3, workAbility: 2, mentalPressure: 3} },
       { text: '放弃名额，安心工作', effects: {workAbility: 2, mentalPressure: -1, positionWeight: 1} },
@@ -475,11 +463,7 @@ const gd_events_new_work = [
       { text: '参加冷门项目，补缺', effects: {eq: 1, workAbility: 1, mentalPressure: -1} },
       { text: '当啦啦队，不参赛', effects: {mentalPressure: -2, eq: 1, positionWeight: -1} },
     ]},
-    { id: 'enw093', stage: 'work', eventType: 'choice', weight: 4, title: '团建活动（路线之争）', text: '部门团建去爬山。爬到一半，两位同事为走哪条路争执起来，团建眼看要变成"团战"。', choices: [
-      { text: '居中调解，提议折中路线', effects: {eq: 2, workAbility: 1, mentalPressure: 2} },
-      { text: '支持多数人意见', effects: {eq: 1, mentalPressure: 1} },
-      { text: '分开行动，各走各的', effects: {mentalPressure: -1, eq: -1, workAbility: 1} },
-    ]},
+
     { id: 'enw094', stage: 'work', eventType: 'choice', weight: 4, title: '文体活动', text: '单位文艺汇演，你被推选参演一个节目。排练占用午休，演出占用周末，你在"集体荣誉"和"个人休息"间徘徊。', choices: [
       { text: '认真排练，争取出彩', effects: {eq: 1, positionWeight: 2, mentalPressure: 3, body: -1} },
       { text: '混个群演，不丢面子就行', effects: {mentalPressure: 1, eq: 1, workAbility: 1} },
@@ -746,7 +730,7 @@ const gd_events_new_work = [
       { text: '标注存疑数据提请确认', effects: {workAbility: 2, integrity: 2, mentalPressure: 1} },
       { text: '用模糊表述避免争议', effects: {workAbility: 1, risk: 1, integrity: -1} },
     ]},
-    { id: 'enw146', stage: 'work', eventType: 'auto', weight: 4, title: '值班室的一夜', pools: ['政府系统'], text: '市政府总值班室的一夜：凌晨两点接报一起高速事故，三点协调医疗救援，五点汇总信息上报。天亮时你把值班记录合上，窗外已是车水马龙。', effects: {workAbility: 2, mentalPressure: 3, body: -1, reputation: 1} },
+
     { id: 'enw147', stage: 'work', eventType: 'choice', weight: 4, title: '文件会签', pools: ['政府系统'], text: '一份跨部门文件送到你手上会签，涉及财政、住建、发改三个部门。财政说"没钱"，住建说"没地"，发改说"没依据"。文件在三个部门间旅行了两周。', choices: [
       { text: '牵头召开协调会', effects: {workAbility: 3, eq: 1, mentalPressure: 2} },
       { text: '逐部门上门沟通', effects: {eq: 2, workAbility: 2, background: 1} },
@@ -862,11 +846,6 @@ const gd_events_new_work = [
       { text: '客气几句，各自安好', effects: {eq: -1, mentalPressure: -1} },
     ]},
     { id: 'enw170', stage: 'work', eventType: 'auto', weight: 3, title: '办公室的喜糖', text: '同事结婚发喜糖，递到你面前时特意说"这盒给你，双喜的"。你剥开一颗，甜得有点意外。办公室的空气里飘着喜气，你忽然觉得，日复一日的工作也没那么单调。', effects: {eq: 2, mentalPressure: -2, familyPressure: -1} },
-    { id: 'enw171', stage: 'work', eventType: 'choice', weight: 4, title: '材料被退', text: '你精心打磨的汇报材料被领导打回来，批注只有两个字："重写"。你盯着那两个字看了很久，不知道是方向错了还是深度不够。', choices: [
-      { text: '请领导指点方向再写', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
-      { text: '对照优秀材料找差距', effects: {workAbility: 2, iq: 1} },
-      { text: '按自己的理解重写', effects: {workAbility: 2, risk: 1} },
-      { text: '找同事帮忙看问题', effects: {eq: 1, workAbility: 1} },
-    ]},
+
     { id: 'enw172', stage: 'work', eventType: 'auto', weight: 3, title: '会前十分钟', text: '会议开始前十分钟，你发现投影仪不亮了。你一边联系后勤，一边把关键数据用白板笔抄在黑板上。会议正常开始，你坐在角落，出了一身汗，却觉得挺有成就感。', effects: {workAbility: 2, eq: 1, mentalPressure: -1} },
 ];

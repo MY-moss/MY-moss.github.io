@@ -61,12 +61,7 @@ const gd_events_new_daily = [
     { text: '找借口婉拒不参加', effects: {wealth: 0, eq: -1, mentalPressure: 1} },
     { text: '借机约老同学叙旧', effects: {eq: 3, mentalPressure: -2, background: 1} }
   ]},
-  { id: 'edl010', stage: 'life', eventType: 'choice', weight: 6, contentTier: 'everyday', year: [5, 40], title: '体检报告上的箭头', text: '单位组织年度体检，报告发下来，几项指标后面跟着向上的小箭头。医生在总结栏写道：轻度脂肪肝，建议规律作息、控制饮食、加强锻炼。', choices: [
-    { text: '办健身卡每周去三次', effects: {wealth: -40, body: 3, mentalPressure: -2} },
-    { text: '戒掉宵夜每天走一万步', effects: {body: 2, mentalPressure: -1, workAbility: 1} },
-    { text: '报告塞抽屉该干嘛干嘛', effects: {body: -2, mentalPressure: -1} },
-    { text: '买一堆保健品图心安', effects: {wealth: -60, body: 1, eq: -1} }
-  ]},
+
   { id: 'edl011', stage: 'life', eventType: 'choice', weight: 5, contentTier: 'everyday', requireMarried: true, year: [2, 40], title: '账单日', text: '月底对账，房贷、水电、物业、孩子的补习费摊了一桌子。爱人按着计算器算了三遍，抬头问：“这个月怎么又超了？”', choices: [
     { text: '一起重新做预算表', effects: {iq: 2, familyPressure: -2, wealth: 10} },
     { text: '主动削减自己的开销', effects: {familyPressure: -3, mentalPressure: 2, integrity: 1} },

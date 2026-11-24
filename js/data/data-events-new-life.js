@@ -135,12 +135,7 @@ const gd_events_new_life = [
     { text: '买个小礼物表达心意', effects: {wealth: -15, eq: 1, familyPressure: -1, mentalPressure: -1} },
     { text: '忙忘了赶紧补个红包', effects: {wealth: -20, eq: 1, mentalPressure: 2, familyPressure: 1} }
   ]},
-  { id: 'enl023', stage: 'life', eventType: 'choice', weight: 4, title: '体检警报', text: '单位体检报告出来了，几项指标飘红：脂肪肝、血脂偏高、颈椎曲度变直。医生建议"管住嘴迈开腿，否则要吃药了"。', choices: [
-    { text: '立即办健身卡开始锻炼', effects: {wealth: -30, body: 2, mentalPressure: -1, desire: 1, familyPressure: -1} },
-    { text: '调整饮食戒酒戒夜宵', effects: {body: 2, mentalPressure: 2, integrity: 2, eq: 1} },
-    { text: '买保健品调理身体', effects: {wealth: -20, body: 1, mentalPressure: 1, iq: -1} },
-    { text: '看完报告继续该吃吃该喝喝', effects: {body: -2, mentalPressure: 1, integrity: -1, risk: 2} }
-  ]},
+
   { id: 'enl024', stage: 'life', eventType: 'choice', weight: 4, title: '父亲手术', text: '老妈打电话说老爸住院了，需要做心脏支架手术。医生说国产支架便宜但进口更稳定，让你尽快决定。', choices: [
     { text: '选进口支架花钱买安心', effects: {wealth: -80, familyPressure: -1, mentalPressure: 3, eq: 1, integrity: 1} },
     { text: '选国产支架性价比高', effects: {wealth: -30, mentalPressure: 2, familyPressure: 1, iq: 1} },
@@ -439,12 +434,7 @@ const gd_events_new_life = [
     { text: '理性消费减少不必要开支', effects: {wealth: 15, mentalPressure: 1, desire: -1, integrity: 1} },
     { text: '投资理财让钱生钱', effects: {iq: 1, wealth: -10, mentalPressure: 2, risk: 3, desire: 1} }
   ]},
-  { id: 'enl073', stage: 'life', eventType: 'choice', weight: 3, title: '健康担忧', text: '同事体检查出甲状腺结节，朋友父亲确诊肺癌。你最近总觉得疲惫，开始担心自己是不是也有什么问题。', choices: [
-    { text: '立即预约全面体检', effects: {wealth: -15, body: 1, mentalPressure: 2, integrity: 1, iq: 1} },
-    { text: '调整作息注意养生', effects: {body: 2, mentalPressure: -1, integrity: 1, desire: -1} },
-    { text: '买份重疾险以防万一', effects: {wealth: -30, mentalPressure: -1, risk: -2, iq: 1} },
-    { text: '担心也没用顺其自然', effects: {mentalPressure: -2, body: -1, risk: 2, integrity: -1} }
-  ]},
+
   { id: 'enl074', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '失眠困扰', text: '连续两周失眠，凌晨三四点还睁着眼。白天昏昏沉沉，工作效率直线下降，伴侣说你"再这样要累垮了"。', choices: [
     { text: '去医院开助眠药物', effects: {wealth: -10, body: 1, mentalPressure: 1, risk: 1} },
     { text: '调整作息戒掉熬夜习惯', effects: {body: 2, mentalPressure: -1, integrity: 2, desire: -1} },
@@ -623,12 +613,7 @@ const gd_events_new_life = [
     { text: '请老家亲戚帮忙照看', effects: {wealth: -10, familyPressure: -1, mentalPressure: 1} },
     { text: '给父母请个居家护工', effects: {wealth: -20, familyPressure: -2, mentalPressure: -1} },
   ]},
-  { id: 'enl103', stage: 'life', eventType: 'choice', weight: 3, title: '体检报告（指标飘红）', text: '单位年度体检报告出来，几项指标飘红：血脂、尿酸、脂肪肝。体检医生看了你一眼："工作再忙，身体是自己的。"', choices: [
-    { text: '开始健身，控制饮食', effects: {body: 3, mentalPressure: -2, wealth: -5} },
-    { text: '调整作息，减少熬夜', effects: {body: 2, workAbility: -1, mentalPressure: -1} },
-    { text: '预约复查，认真对待', effects: {body: 1, mentalPressure: 1, wealth: -10} },
-    { text: '不当回事，继续拼命', effects: {body: -1, workAbility: 1, risk: 1} },
-  ]},
+
   { id: 'enl104', stage: 'life', eventType: 'choice', weight: 3, requireSingle: true, year: [26, 45], title: '相亲市场的行情', text: '朋友把一份"相亲简历"发给你看，说帮你挂在了本地相亲平台。简历上你的条件写得不错，但对方特别标注："体制内优先，最好有车有房。"', choices: [
     { text: '认真查看，准备见面', effects: {eq: 1, mentalPressure: 1, desire: 1, flag: 'dating'} },
     { text: '觉得条件交换太直白，反感', effects: {eq: -1, mentalPressure: 1} },

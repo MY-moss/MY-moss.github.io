@@ -997,7 +997,7 @@ GameEngine.prototype.generateEvent = function(force) {
       if (e.id === 'ent236' && !p.contacts.some(c => c.id === 'cousin')) w *= 12;
       // 趣味/低权重事件可见性：weight 3-4、public 池、无门槛的事件不能长期埋在 1500+ 事件池里。
       // 历史名单保留 ×3 兼容补偿；新增日常内容统一使用 contentTier，避免继续堆叠事件 ID 特判。
-      if (e.id && ['e161','e168','e169','e170','e174','e175','e101','e130','e131','e132','e135','e138','e141','e164','e166','e364','enl044','enl083','enl089','enl097'].includes(e.id)) w *= 3;
+      if (e.id && ['e161','e168','e169','e170','e174','e101','e130','e131','e132','e135','e138','e141','e164','e166','e364','enl044','enl083','enl089','enl097'].includes(e.id)) w *= 3;
       // 结构化内容层级：日常生活片段需要稳定露出，但不应为某三个事件继续堆叠 ID 特判。
       // 只对已满足资格、且明确标记为 everyday 的事件加权，不绕过年龄、单位或前置条件。
       if (e.contentTier === 'everyday') w *= 6;

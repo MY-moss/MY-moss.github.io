@@ -80,13 +80,7 @@ const gd_events_basic_3 = [
       { text: '以事业为重搪塞过去', effects: {workAbility: 2, desire: 2, familyPressure: 2, mentalPressure: 1, positionWeight: 1} },
       { text: '答应父母会认真考虑', effects: {eq: 1, familyPressure: -2, mentalPressure: 1, reputation: 1} },
     ]},
-    { pools: ['public'], id: 'e172', stage: 'life', eventType: 'choice', title: '体检报告', weight: 4, text: '年度体检报告出来了，好几个指标标了红色箭头。医生建议你调整生活方式，注意饮食和运动。', choices: [
-      { text: '认真对待开始健康生活', effects: {body: 3, mentalPressure: -1, workAbility: 1, desire: 1, reputation: 1} },
-      { text: '减少应酬规律作息', effects: {body: 2, mentalPressure: -2, risk: -1, workAbility: 1, eq: 1} },
-      { text: '买保健品安慰自己', effects: {familyPressure: 1, mentalPressure: 1, body: 1, iq: -1} },
-      { text: '不以为然继续原样', effects: {desire: 1, body: -1, mentalPressure: 1, risk: 1} },
-      { text: '找中医调理身体', effects: {body: 2, mentalPressure: -1, familyPressure: 1, iq: 1} },
-    ]},
+
     { pools: ['public'], id: 'e173', stage: 'life', eventType: 'choice', title: '电影观后感', weight: 3, text: '你去看了一部很有深度的电影，被深深触动了。电影讲的是一个普通人在大时代背景下的命运起伏，让你想到了自己的工作。', choices: [
       { text: '写一篇影评发到朋友圈', effects: {iq: 2, eq: 1, reputation: 1, mentalPressure: -1, background: 1} },
       { text: '和同事讨论电影内容', effects: {eq: 1, background: 1, mentalPressure: -1, reputation: 1, workAbility: 1} },
@@ -101,13 +95,7 @@ const gd_events_basic_3 = [
       { text: '把衣服改一改凑合穿', effects: {iq: 1, mentalPressure: 1, familyPressure: -1, workAbility: 1} },
       { text: '挂二手平台卖掉', effects: {iq: 2, mentalPressure: 1, familyPressure: -1, reputation: 1} },
     ]},
-    { pools: ['public'], id: 'e175', stage: 'life', eventType: 'choice', title: '堵车迟到', weight: 3, text: '早高峰遇到严重堵车，你在路上堵了一个小时。到单位时已经迟到了半小时，正好被领导撞见。', choices: [
-      { text: '诚实说明堵车原因并道歉', effects: {integrity: 3, eq: 1, reputation: 1, mentalPressure: 2, positionWeight: -1} },
-      { text: '以后提前半小时出门', effects: {workAbility: 2, body: -1, mentalPressure: 1, reputation: 1, positionWeight: 1} },
-      { text: '申请错峰上下班', effects: {eq: 1, workAbility: 1, mentalPressure: -1, positionWeight: 1, background: 1} },
-      { text: '换乘地铁避免堵车', effects: {iq: 2, body: 1, mentalPressure: -1, familyPressure: 1} },
-      { text: '住得离单位近一点', effects: {familyPressure: 2, mentalPressure: -1, body: 1, workAbility: 1} },
-    ]},
+
     { pools: ['public'], id: 'e177', stage: 'life', eventType: 'choice', title: '手机升级', weight: 3, text: '你的手机用了三年了，越来越卡。新手机出了，你很想买，但价格不便宜。现在的手机还能用，就是体验不太好。', choices: [
       { text: '咬咬牙买新手机', effects: {mentalPressure: -2, familyPressure: 2, desire: 1, reputation: 1, iq: 1} },
       { text: '再等一年等降价', effects: {iq: 2, familyPressure: -1, mentalPressure: 1, desire: -1} },
@@ -115,13 +103,7 @@ const gd_events_basic_3 = [
       { text: '买去年的旧款便宜', effects: {iq: 1, familyPressure: -1, mentalPressure: -1, desire: -1} },
       { text: '分期付款减轻压力', effects: {familyPressure: 1, mentalPressure: 1, desire: 1, iq: 1} },
     ]},
-    { pools: ['public'], id: 'e178', stage: 'life', eventType: 'choice', title: '失眠夜', weight: 3, text: '凌晨两点，你还在床上翻来覆去睡不着。脑子里全是工作的事、家里的事、未来的事。你发现最近失眠越来越频繁了。', choices: [
-      { text: '起来喝杯温牛奶放松', effects: {body: 1, mentalPressure: -1, iq: 1, workAbility: 1} },
-      { text: '听冥想音乐帮助入睡', effects: {mentalPressure: -2, body: 1, iq: 1} },
-      { text: '起来写工作清单减轻焦虑', effects: {workAbility: 2, mentalPressure: -1, iq: 1, body: -1} },
-      { text: '关掉手机，躺着调整呼吸等待睡意', effects: {risk: -2, mentalPressure: -1, body: -1, workAbility: -1, reputation: 1} },
-      { text: '吃助眠药保证休息', effects: {body: 1, mentalPressure: -1, risk: 1, familyPressure: 1} },
-    ]},
+
     { pools: ['public'], id: 'e179', stage: 'life', eventType: 'choice', title: '理发店办卡', weight: 3, text: '理发店的Tony老师热情推荐你办一张会员卡，充2000送500，看起来挺划算的。但你上次办的健身卡还没用完。', choices: [
       { text: '婉拒说考虑一下', effects: {eq: 1, familyPressure: -1, mentalPressure: -1, iq: 1} },
       { text: '办卡反正也要剪头发', effects: {familyPressure: 2, mentalPressure: 1, desire: 1, reputation: 1} },

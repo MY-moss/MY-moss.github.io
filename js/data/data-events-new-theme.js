@@ -469,7 +469,7 @@ const gd_events_new_theme = [
     { id: 'ent118', stage: 'life', eventType: 'auto', weight: 8, requireFlag: 'childCareerFree', requireChildAgeMin: 20, title: '孩子找到了自己的路', text: '孩子没有考编也没经商，去了一座南方城市做自己热爱的事。视频电话里他/她眼睛亮亮的，给你看出租屋窗台上养的花。你忽然明白：他/她过得开心，就是最好的路。', effects: {familyPressure: -5, mentalPressure: -3, eq: 1} },
     // ---------- v2.35 内容填充：办公室日常微叙事（纯内容，无新 flag） ----------
     { id: 'ent119', stage: 'work', eventType: 'auto', weight: 3, title: '办公室绿植', text: '科室新来的年轻人买了盆绿萝放在窗台，说要给老气横秋的办公室添点生气。一个月后，绿萝长得很好，大家路过都会顺手浇浇水——包括平时最严肃的科长。', effects: {mentalPressure: -2, workAbility: 1, eq: 1} },
-    { id: 'ent120', stage: 'life', eventType: 'auto', weight: 3, title: '食堂涨价', text: '食堂窗口贴出涨价通知：荤菜涨一块，素菜涨五毛。中午排队的人骂骂咧咧，但打饭的手没停。你端着餐盘找了半天位置，忽然觉得日子就是这样，骂归骂，饭还是要吃。', effects: {wealth: -2, desire: 1, mentalPressure: -1} },
+
     { id: 'ent121', year: [40, 65], stage: 'work', eventType: 'auto', weight: 3, title: '退休欢送会', text: '隔壁科室的老王退休了，欢送会上他举着茶杯说了四十分钟，从参加工作讲到孙子满月。散场时他把养了十年的钢笔送给刚来的小李："笔杆子要传下去。"你忽然想，自己退休那天会说些什么。', effects: {reputation: 2, eq: 1, mentalPressure: -1} },
     { id: 'ent122', stage: 'life', eventType: 'choice', weight: 3, title: '同学借钱', text: '毕业后再没联系过的大学同学突然加你微信，寒暄几句后开口借三万，说生意周转，下个月就还。你想起上学时他借过你饭卡，一直没还。', choices: [
       { text: '爽快转账，同学情分在', effects: {wealth: -30, eq: 1, background: 2, familyPressure: 1} },
@@ -484,7 +484,7 @@ const gd_events_new_theme = [
       { text: '忍两年噪音，留在核心圈', effects: {mentalPressure: 2, positionWeight: 1, reputation: 1} },
       { text: '提议给全楼装隔音窗', effects: {workAbility: 1, reputation: 2, positionWeight: -1, risk: 1} },
     ]},
-    { id: 'ent127', stage: 'work', eventType: 'auto', weight: 2, title: '防汛值班夜', text: '台风天，你连夜在单位值班盯汛情。凌晨三点，乡里报来一处堤坝渗水，你在电话里一条条确认转移名单。天亮时雨停了，手机里全是未读消息：老婆问"回来吃早饭吗"，同事说"辛苦了"。', effects: {workAbility: 2, reputation: 2, mentalPressure: 2, body: -1} },
+
     // ---------- v2.22 晋升答辩（promotionCandidate 触发，策略影响下次晋升） ----------
     { id: 'ent113', stage: 'work', eventType: 'choice', weight: 6, requireFlag: 'promotionCandidate', title: '晋升答辩', text: '组织考察通过，进入任职前谈话环节。会议室里坐着三位领导，桌上一杯茶，一支笔，还有你的述职材料——临门一脚，就看这一场。', choices: [
       { text: '精心准备，用数据和实绩说话', effects: {workAbility: 1, mentalPressure: 2, flag: 'promotionPrepared', deleteFlag: 'promotionCandidate', careerLogNote: '晋升答辩：准备充分'} },
@@ -918,13 +918,7 @@ const gd_events_new_theme = [
       { text: '多随一点，显得大方', effects: { wealth: -15, reputation: 2, familyPressure: 1 } },
       { text: '人不到，礼金照随', effects: { wealth: -5, reputation: -1 } }
     ] },
-  { id: 'ent229', eventType: 'choice', weight: 3, year: [2, 55], stage: 'life', title: '🩻 父母体检',
-    text: '父母年纪大了，体检报告上多了几项箭头。医生说问题不大但要复查。你忽然意识到，自己陪他们的时间太少了。',
-    choices: [
-      { text: '请假陪父母做全面复查', effects: { familyPressure: -8, mentalPressure: -3, reputation: -1, wealth: -10 } },
-      { text: '安排他们自己去，多打电话', effects: { familyPressure: -3, mentalPressure: 1 } },
-      { text: '工作太忙，让亲戚帮忙照看', effects: { familyPressure: 3, mentalPressure: 2, reputation: -1 } }
-    ] },
+
   { id: 'ent230', eventType: 'choice', weight: 3, year: [2, 50], stage: 'life', title: '🏠 单位分房',
     text: '单位分房的消息终于下来了。按工龄排，你刚好卡在线上——前面的人退了，后面的人盯着。房子就在眼前，规矩也在眼前。',
     choices: [

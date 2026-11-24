@@ -242,6 +242,9 @@ renderCareer() {
       {name:'岗位发展',tag:f.lifeCareerHandoff?'专班 · 已交接':f.lifeCareerContinued?'专班 · 继续负责':f.lifeCareerLead?'重点专班':f.lifeCareerExpert?'专业深耕':'未经历',active:!!(f.lifeCareerLead||f.lifeCareerExpert),finished:seen.includes('arc_life_career_3')},
       {name:'原则与担当',tag:f.lifeIntegrityFullDisclosure?'完整披露':f.lifeIntegrityPending?'保留待核':f.lifeIntegrityOpen?'公开复核':f.lifeIntegrityQuiet?'程序补正':'未经历',active:!!(f.lifeIntegrityOpen||f.lifeIntegrityQuiet),finished:seen.includes('arc_life_integrity_3')},
       {name:'家庭的约定',tag:f.lifeFamilySchedule?'固定陪伴':f.lifeFamilyShared?'共同分工':f.lifeFamilyPresent?'守住约定':f.lifeFamilyCareer?'承担任务':'未经历',active:!!(f.lifeFamilyPresent||f.lifeFamilyCareer),finished:seen.includes('arc_life_family_3')},
+      {name:'人工服务入口',tag:f.renewWindowInclusive?'保留人工':f.renewWindowPilot?'试行辅导':f.renewWindowExcluded?'仅线上':'未经历',active:!!(f.renewWindowInclusive||f.renewWindowPilot||f.renewWindowExcluded),finished:seen.includes('renew_window_3')},
+      {name:'设施维护责任',tag:f.renewRepairMaintain?'维护优先':f.renewRepairPhased?'分批验收':f.renewRepairFast?'进度优先':'未经历',active:!!(f.renewRepairMaintain||f.renewRepairPhased||f.renewRepairFast),finished:seen.includes('renew_repair_3')},
+      {name:'家庭时间约定',tag:f.renewHomeShared?'共同分工':f.renewHomeSupport?'外部协助':f.renewHomeDeferred?'暂缓协调':'未经历',active:!!(f.renewHomeShared||f.renewHomeSupport||f.renewHomeDeferred),finished:seen.includes('renew_home_3')},
       {name:'社会连接',tag:f.lifeNetworkPublished?'公开台账':f.lifeNetworkTransferred?'正式移交':f.lifeNetworkPublic?'公开答疑':f.lifeNetworkSelective?'联络机制':'未经历',active:!!(f.lifeNetworkPublic||f.lifeNetworkSelective),finished:seen.includes('arc_life_network_3')}
     ];
     const lifeCross=!!(f.lifeConfluenceOpen||f.lifeConfluenceFamily||f.lifeConfluenceDeferred);

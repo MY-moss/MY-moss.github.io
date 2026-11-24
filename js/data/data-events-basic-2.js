@@ -273,13 +273,7 @@ const gd_events_basic_2 = [
       { text: '申请在家办公一段时间', effects: {workAbility: 1, mentalPressure: -1, positionWeight: -1, reputation: -1} },
       { text: '组织大家轮流去有空调的会议室办公', effects: {eq: 2, workAbility: 1, mentalPressure: -1, reputation: 1, background: 1} },
     ]},
-    { id: 'e137', stage: 'work', eventType: 'choice', title: '团建活动', weight: 3, text: '单位组织团建活动——去郊外爬山。你本来想借故不去，但领导说"全员参加，不准请假"。', choices: [
-      { text: '积极参与在活动中展现领导力', effects: {eq: 2, reputation: 2, positionWeight: 2, body: 2, mentalPressure: -1, background: 1} },
-      { text: '默默跟着队伍走完成任务', effects: {body: 1, mentalPressure: -2, eq: 1, reputation: 1} },
-      { text: '借机和其他科室同事交流', effects: {background: 3, eq: 1, reputation: 1, mentalPressure: 1} },
-      { text: '帮大家拍照搞好后勤服务', effects: {eq: 1, reputation: 2, background: 1, mentalPressure: -1} },
-      { text: '一个人走在最前面不想被打扰', effects: {body: 1, mentalPressure: 1, eq: -1, reputation: -1} },
-    ]},
+
     { pools: ['public'], id: 'e138', stage: 'life', eventType: 'choice', title: '装修烦恼', weight: 3, text: '你家的房子要装修，装修公司报价一个比一个高。你自己又不懂装修，怕被坑又怕装出来不满意。', choices: [
       { text: '找熟人介绍靠谱的装修队', effects: {background: 2, familyPressure: -1, mentalPressure: 1, reputation: 1} },
       { text: '多对比几家装修公司', effects: {iq: 2, workAbility: 1, mentalPressure: 2, familyPressure: 1} },

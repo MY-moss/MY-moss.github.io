@@ -725,6 +725,18 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'lifeConfluenceOpen', next: 'arc_life_confluence_2', delay: 3 },
         { flag: 'lifeConfluenceFamily', next: 'arc_life_confluence_2', delay: 3 },
         { flag: 'lifeConfluenceDeferred', next: 'arc_life_confluence_2', delay: 3 },
+        { flag: 'renewWindowInclusive', next: 'renew_window_2', delay: 2 },
+        { flag: 'renewWindowPilot', next: 'renew_window_2', delay: 2 },
+        { flag: 'renewWindowExcluded', next: 'renew_window_2', delay: 2 },
+        { flag: 'renewWindowReviewed', next: 'renew_window_3', delay: 3 },
+        { flag: 'renewRepairMaintain', next: 'renew_repair_2', delay: 2 },
+        { flag: 'renewRepairPhased', next: 'renew_repair_2', delay: 2 },
+        { flag: 'renewRepairFast', next: 'renew_repair_2', delay: 2 },
+        { flag: 'renewRepairReviewed', next: 'renew_repair_3', delay: 3 },
+        { flag: 'renewHomeShared', next: 'renew_home_2', delay: 2 },
+        { flag: 'renewHomeSupport', next: 'renew_home_2', delay: 2 },
+        { flag: 'renewHomeDeferred', next: 'renew_home_2', delay: 2 },
+        { flag: 'renewHomeReviewed', next: 'renew_home_3', delay: 3 },
     ];
 };
 // 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
@@ -733,7 +745,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
     const known=new Set((GameData.events||[]).map(e=>e.id));
     const unique=new Map();
     const labels=[
-      [/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
+      [/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
@@ -778,13 +790,46 @@ GameEngine.prototype.getVentureReviewEvent = function() {
 };
 // 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
 GameEngine.prototype.getLifePathEvent = function(event) {
-  if (!event || !/^(arc_life_|arc_team_|arc_receipt_|arc_classmate_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
+  if (!event || !/^(renew_|arc_life_|arc_team_|arc_receipt_|arc_classmate_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
   const f=this.state.player.flags||{};
   const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
   const add=(text)=>{out.text=(out.text||'')+' '+text;};
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'renew_window_2':
+      if(f.renewWindowInclusive){add('当年保留的纸表使一部分缺失申请有据可查，重复录入的工时也有记录。');bump(0,{mentalPressure:-1});}
+      else if(f.renewWindowPilot){add('短期辅导台结束后，部分居民仍然需要线下协助。');bump(1,{peopleReputation:1});}
+      else if(f.renewWindowExcluded){add('那年取消人工入口后，连纸质申请的原始记录也不完整。');bump(0,{reputation:-1});bump(2,{risk:2});}
+      break;
+    case 'renew_window_3':
+      if(f.renewWindowTruth){add('两年前修订过的覆盖率口径仍留在档案里。');bump(0,{mentalPressure:-1});}
+      else if(f.renewWindowPhased){add('分批修复清单里仍有几项超期未结。');bump(0,{mentalPressure:1});}
+      else if(f.renewWindowPaperOnly){add('旧报表没有记录的居民仍需补充核查，不能因为大厅换了布置就视作已经解决。');bump(0,{mentalPressure:2});}
+      if(f.receiptLegacyVerified||f.crossResolved){add('你记得旧档案复核时使用的证据目录，可以用同样的方法区分已结与未结事项。');bump(0,{workAbility:1});}
+      break;
+    case 'renew_repair_2':
+      if(f.renewRepairMaintain){add('当初的维修责任表仍在，只是有几处配件供应需要更新。');bump(0,{mentalPressure:-1});}
+      else if(f.renewRepairPhased){add('分批验收时标出的缺项已经成为复核起点。');bump(1,{workAbility:1});}
+      else if(f.renewRepairFast){add('当年未移交的配件清单成了这次追查的难点。');bump(0,{mentalPressure:2});bump(2,{risk:2});}
+      break;
+    case 'renew_repair_3':
+      if(f.renewRepairAccountable){add('两年前梳理出的维修记录能支持本次分类。');bump(0,{mentalPressure:-1});}
+      else if(f.renewRepairService){add('先恢复服务的做法解决了部分急需，却没有覆盖所有旧设备。');bump(0,{mentalPressure:1});}
+      else if(f.renewRepairOmitted){add('报表上被省略的故障记录现在还没有补齐。');bump(2,{mentalPressure:2});}
+      if(f.teamLegacyDocumented){add('许砚曾经整理的交接方法也适用于这批设备的维护记录。');bump(1,{workAbility:1});}
+      break;
+    case 'renew_home_2':
+      if(f.renewHomeShared){add('过去的分工让一部分约定真正落实，但新的日程仍需要协商。');bump(0,{mentalPressure:-1});}
+      else if(f.renewHomeSupport){add('外部协助解决了部分事务，却没有代替彼此沟通。');bump(1,{familyPressure:-1});}
+      else if(f.renewHomeDeferred){add('家人记得那段独自安排事务的时间，暂时不愿再把计划寄托在一句“忙完再说”上。');bump(2,{mentalPressure:2});}
+      break;
+    case 'renew_home_3':
+      if(f.renewHomePromise)add('旧日历上还有你们写下的明确约定。');
+      else if(f.renewHomeSpace)add('各自安排的习惯已经成为日常，这次邀请不是必须参加的任务。');
+      else if(f.renewHomeRepair){add('补救承诺并没有抹去所有失约，不过你们终于能够谈论那些事。');bump(2,{eq:1});}
+      if(f.familyClinicRepair||f.familyClinicRoutine){add('以前商量过的陪诊安排，也让今天的生活边界更加清楚。');bump(0,{familyPressure:-1});}
+      break;
     case 'arc_receipt_open_3':
       if(f.receiptPremature){out.text='老赵寄来一张新住址的明信片。你知道他终于搬进了新房，却不能因此证明其他住户的材料都已齐全。周岚打来电话，提醒你不要把那次先行结项当成完整的验收案例。';bump(0,{integrity:1,mentalPressure:2});}
       else if(f.receiptProof)add('那次延期留下的补证清单，后来成为同事们核查缺页的依据。');
@@ -1148,6 +1193,11 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
         if (evS) { p.seenEvents = p.seenEvents || []; if (evS.eventType === 'auto' || evS.eventType === 'sudden') p.seenEvents.push('ent299'); event = evS; }
       }
 
+      // 内容换血后给精修事件有限的展示机会。仅空闲槽，仍复用真实候选池；不绕过门槛或抢占旧事。
+      if(!event && !s.currentEvent && this.randf()<0.12){
+        const curated=this.getEventPoolSnapshot().filter(x=>x.id.startsWith('renew_'));
+        if(curated.length)event=this.weightedPick(curated);
+      }
     }
     if (this.state.currentEvent) {
       // 赌博年：choice 槽已被赌博事件占用——普通 auto/sudden 事件照常抽取并立即结算（影响照常发生，不弹窗），
@@ -1381,6 +1431,9 @@ GameEngine.prototype.getLifeEvaluation = function() {
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
+  if(f.renewWindowLegacy)memories.push('人工服务入口的复核记录随岗位完成移交。');
+  if(f.renewRepairLegacy)memories.push('旧设备维护记录进入下一轮预算评审。');
+  if(f.renewHomeLegacy)memories.push('你兑现了家庭日历上的长期约定。');
   if(seen.has('arc_receipt_legacy_4'))memories.push('旧城回执的历史材料已交由新窗口核查，未决事项没有被视为自动办结。');
   if(seen.has('arc_classmate_legacy_4'))memories.push('多年后与林默重谈旧事，留下了新的关系边界。');
   if(seen.has('arc_team_legacy_4'))memories.push('许砚的交接本进入新团队，你完成了多年后的经验移交。');

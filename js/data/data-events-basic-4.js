@@ -176,13 +176,7 @@ const gd_events_basic_4 = [
       { text: '以最近手头紧为由不请', effects: {eq: -1, reputation: -1, background: -1, mentalPressure: 1} },
       { text: '请大家去家里做饭', effects: {eq: 2, reputation: 2, familyPressure: 1, mentalPressure: -1, background: 2} },
     ]},
-    { id: 'e281', stage: 'life', eventType: 'choice', title: '体检', weight: 3, text: '单位组织体检，你躺在检查床上，等着做胃镜。你后悔平时没有好好吃饭。', pools: ['public'], choices: [
-      { text: '认真对待所有检查项目', effects: {body: 2, mentalPressure: 1, workAbility: 1, integrity: 1, reputation: 1} },
-      { text: '做完常规项目就走', effects: {mentalPressure: 1, body: 1, workAbility: 1} },
-      { text: '增加几个自费项目', effects: {familyPressure: 1, body: 2, mentalPressure: 1, iq: 1} },
-      { text: '找熟人医生仔细看看', effects: {background: 1, body: 2, mentalPressure: -1, familyPressure: 1} },
-      { text: '拿到报告后认真解读', effects: {iq: 2, body: 1, mentalPressure: 1, workAbility: 1} },
-    ]},
+
     // ====== 补全缺失事件 ======
     { id: 'e284', stage: 'life', eventType: 'choice', title: '相亲风云', weight: 6, requireSingle: true, year: [22, 45], text: '家里给你安排了一次相亲，对方听说你是体制内的，表现得很热情。但你目前全身心扑在工作上。', pools: ['public'], choices: [
       { text: '认真见面了解，工作和生活都要兼顾', effects: {eq: 1, familyPressure: -3, mentalPressure: -1, desire: -1, flag: 'dating'} },
