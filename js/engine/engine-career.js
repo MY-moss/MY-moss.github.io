@@ -745,6 +745,16 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'renewShopRefer', next: 'renew_shop_2', delay: 2 },
         { flag: 'renewShopPromise', next: 'renew_shop_2', delay: 2 },
         { flag: 'renewShopReviewed', next: 'renew_shop_3', delay: 3 },
+        { flag: 'renewStageRegular', next: 'renew_stage_2', delay: 1 },
+        { flag: 'renewStageGuest', next: 'renew_stage_2', delay: 1 },
+        { flag: 'renewStageDeclined', next: 'renew_stage_2', delay: 1 },
+        { flag: 'renewStageReviewed', next: 'renew_stage_3', delay: 2 },
+        { flag: 'renewStageThird', next: 'renew_stage_4', delay: 3 },
+        { flag: 'renewRouteDirect', next: 'renew_route_2', delay: 2 },
+        { flag: 'renewRouteKeep', next: 'renew_route_2', delay: 2 },
+        { flag: 'renewRoutePilot', next: 'renew_route_2', delay: 2 },
+        { flag: 'renewRouteReviewed', next: 'renew_route_3', delay: 2 },
+        { flag: 'renewRouteThird', next: 'renew_route_4', delay: 3 },
     ];
 };
 // 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
@@ -753,7 +763,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
     const known=new Set((GameData.events||[]).map(e=>e.id));
     const unique=new Map();
     const labels=[
-      [/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
+      [/^renew_stage_/,'小剧场 · 罗青'],[/^renew_route_/,'公交变迁 · 顾芸'],[/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
@@ -805,6 +815,40 @@ GameEngine.prototype.getLifePathEvent = function(event) {
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'renew_stage_2':
+      if(f.renewStageRegular){add('一年来你已经熟悉自己的角色，节目单上原本印着你的名字。');bump(0,{mentalPressure:-1});}
+      else if(f.renewStageGuest){add('你仍只是临时帮忙的人。罗青这次问你能不能替缺席的演员补一场。');out.choices[0].text='接受临时邀请，提前完成工作交接';result(0,'你带着重新熟悉的台词上了台，最后一场终于没有缺人。');}
+      else if(f.renewStageDeclined){add('罗青想请你最后读一次那段当年没有接下的台词，你可以拒绝，也可以去补这一场。');out.choices[0].text='接受这次邀请，提前安排次日工作';result(0,'你临时补上了那个角色，这是你在旧剧场唯一的一次演出。');out.choices[1].text='谢绝邀请，让剧团另作安排';result(1,'剧团找到了替补，你留在单位，没有出现在节目单上。');}
+      break;
+    case 'renew_stage_3':
+      if(f.renewStagePlayed)add('书中夹着一张旧节目单，罗青把当晚的角色名字用铅笔圈了起来。');
+      else if(f.renewStageMissed){add('书中夹着一张你从未登台的演出照片。那一晚已经结束，不会再原样重演。');bump(0,{mentalPressure:1});}
+      else if(f.renewStageAudience)add('照片里的道具你认得，其中一箱是你亲手搬走的。');
+      break;
+    case 'renew_stage_4':
+      if(f.renewStageLetter)add('罗青后来寄来过几次学生演出的照片，彼此的生活已经不再围着同一个剧场转。');
+      else if(f.renewStageCreate)add('你后来写过一段自己的小故事，和当年的剧本并不是同一个题材。');
+      else if(f.renewStageQuiet)add('旧信仍留在家里，你没有重新建立往来。');
+      if(f.renewStageMissed){add('展柜上的名单里没有你的名字，你只能讲演出之前真正经历过的那一部分。');result(0,'你讲了早年的相识和演出前的事，也坦然说出自己并没有参加那场演出。');}
+      else if(f.renewStageAudience){result(0,'你讲起搬道具的那天和从观众席看到的演出。');}
+      else if(f.renewStagePlayed){result(0,'你记得那句临时改过的台词，也记得谢幕时罗青站在什么地方。');}
+      break;
+    case 'renew_route_2':
+      if(f.renewRouteDirect){add('后来增加的直达班次缩短了许多人的通勤，但旧站点的服务空档也出现了新的投诉。');bump(1,{peopleReputation:1});bump(2,{peopleReputation:-1});}
+      else if(f.renewRouteKeep){add('原有线路得以保留，顾芸当年期待的直达便利却始终没有完全实现。');bump(0,{mentalPressure:1});}
+      else if(f.renewRoutePilot){add('试运行记录显示不同时段的乘客需求确实不同，但频繁换表也给乘客带来困扰。');bump(0,{workAbility:1});}
+      break;
+    case 'renew_route_3':
+      if(f.renewRouteReopen){add('补充调查保存了调整前后的两套数据，你们不必只用最初的调查解释变化。');bump(0,{mentalPressure:-1});}
+      else if(f.renewRouteSupplement){add('补充服务解决了一些具体困难，但后续资源变化让原有安排难以全部维持。');bump(1,{mentalPressure:1});}
+      else if(f.renewRouteWait){add('那份保留的意见终于被重新调阅。你知道它在旧评估里一直只是未解决事项。');bump(0,{reputation:-1});}
+      break;
+    case 'renew_route_4':
+      if(f.renewRouteHonest)add('你曾经参与的分阶段评价仍能解释那些年的变化，但不能替今天的乘客发言。');
+      else if(f.renewRouteForward)add('现在的班次表已由新团队调整过，你认不全其中的新站名。');
+      else if(f.renewRouteHandoff)add('后来几次线路变动你都没有参与，这一次只是普通乘客。');
+      if(f.renewRouteWait)add('顾芸仍记得那次等待，不过她现在关注的是下一站的换乘。');
+      break;
     case 'renew_credit_2':
       if(f.renewCreditShared){add('两年前署名更正的记录仍在，沈宁愿意讨论新的合作，但更希望工作条件由团队共同确认。');bump(1,{mentalPressure:-1});}
       else if(f.renewCreditInternal){add('那份内部贡献记录后来没有出现在公开交流材料中，沈宁带来了自己保存的原稿。');bump(1,{mentalPressure:1});}
@@ -1463,6 +1507,8 @@ GameEngine.prototype.getLifeEvaluation = function() {
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
+  if(f.renewStageLegacy)memories.push('小剧场重新开放后，你留下了真正属于自己的那部分回忆。');
+  if(f.renewRouteLegacy)memories.push('你和顾芸多年后以普通乘客的身份再次相遇。');
   if(f.renewCreditLegacy)memories.push('你和沈宁在多年后核对了共同工作的真实贡献。');
   if(f.renewShopLegacy)memories.push('许姨在新店里讲完自己的搬迁经历，你们没有再把它变成人情账。');
   if(f.renewWindowLegacy)memories.push('人工服务入口的复核记录随岗位完成移交。');

@@ -281,13 +281,6 @@ const gd_events_basic_2 = [
       { text: '找大品牌装修公司省心', effects: {familyPressure: 2, mentalPressure: 1, workAbility: 1} },
       { text: '先不装修了攒够钱再说', effects: {familyPressure: 1, mentalPressure: -1, desire: -1} },
     ]},
-    { pools: ['public'], id: 'e139', stage: 'life', eventType: 'choice', title: '同学会AA', weight: 3, text: '同学会组织者订了一个很贵的餐厅，人均消费500元。你觉得太贵了，但不好意思说出口。', choices: [
-      { text: '委婉建议换一个平价餐厅', effects: {eq: 1, reputation: 1, mentalPressure: 1, integrity: 1} },
-      { text: '硬着头皮去参加', effects: {familyPressure: 2, mentalPressure: 2, eq: 1, reputation: 1} },
-      { text: '以有事为由不去参加', effects: {mentalPressure: -1, reputation: -1, eq: -1} },
-      { text: '提前和组织者沟通预算', effects: {eq: 1, integrity: 2, mentalPressure: 1, reputation: 1, background: 1} },
-      { text: '去了但只点便宜的菜', effects: {eq: 1, mentalPressure: 1, familyPressure: -1, reputation: -1} },
-    ]},
     { id: 'e140', stage: 'work', eventType: 'choice', title: '技能竞赛（市赛）', weight: 3, text: '市里举办公务员技能大赛，包括公文写作、政策解读、应急处置等项目。你们单位需要派人参加，领导点名让你去。', choices: [
       { text: '全力以赴争取拿名次', effects: {workAbility: 4, reputation: 3, positionWeight: 3, mentalPressure: 4, iq: 2, desire: 2} },
       { text: '认真准备但心态放平', effects: {workAbility: 2, reputation: 2, mentalPressure: 2, positionWeight: 1, iq: 1} },

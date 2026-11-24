@@ -81,13 +81,6 @@ const gd_events_basic_3 = [
       { text: '答应父母会认真考虑', effects: {eq: 1, familyPressure: -2, mentalPressure: 1, reputation: 1} },
     ]},
 
-    { pools: ['public'], id: 'e173', stage: 'life', eventType: 'choice', title: '电影观后感', weight: 3, text: '你去看了一部很有深度的电影，被深深触动了。电影讲的是一个普通人在大时代背景下的命运起伏，让你想到了自己的工作。', choices: [
-      { text: '写一篇影评发到朋友圈', effects: {iq: 2, eq: 1, reputation: 1, mentalPressure: -1, background: 1} },
-      { text: '和同事讨论电影内容', effects: {eq: 1, background: 1, mentalPressure: -1, reputation: 1, workAbility: 1} },
-      { text: '推荐给朋友一起看', effects: {eq: 1, background: 1, mentalPressure: -1, reputation: 1} },
-      { text: '思考电影对自己工作的启发', effects: {iq: 2, workAbility: 2, mentalPressure: 1, desire: 1} },
-      { text: '看完就忘了没什么感觉', effects: {mentalPressure: 1, iq: -1, eq: -1} },
-    ]},
     { pools: ['public'], id: 'e174', stage: 'life', eventType: 'choice', title: '网购退货', weight: 4, text: '你在网上买了一件衣服，尺码不合适想退货。但商家说"特价商品不支持退货"，你记得买的时候没看到这个提示。', choices: [
       { text: '和商家据理力争要求退货', effects: {eq: 1, mentalPressure: 3, integrity: 2, workAbility: 1} },
       { text: '向平台投诉商家违规', effects: {iq: 2, mentalPressure: 2, integrity: 2, reputation: 1} },
@@ -110,13 +103,6 @@ const gd_events_basic_3 = [
       { text: '问他有没有更便宜的套餐', effects: {iq: 2, eq: 1, familyPressure: -1, mentalPressure: 1} },
       { text: '以没带钱为由推脱', effects: {eq: 1, mentalPressure: -1, reputation: -1, integrity: -1} },
       { text: '办卡但要求写进合同', effects: {iq: 2, integrity: 1, familyPressure: 1, mentalPressure: 1} },
-    ]},
-    { pools: ['public'], id: 'e180', stage: 'life', eventType: 'choice', title: '周末计划', weight: 3, text: '周五下班了，你计划好周末要好好休息、看书、做饭。但同事突然约你周六去郊游，你不想去又不好意思拒绝。', choices: [
-      { text: '婉拒说已经有安排了', effects: {eq: 1, mentalPressure: -1, reputation: 1, integrity: 1} },
-      { text: '答应去郊游放松一下', effects: {eq: 1, background: 1, mentalPressure: -2, body: 1, reputation: 1} },
-      { text: '建议改期再约', effects: {eq: 1, mentalPressure: 1, background: 1, reputation: 1} },
-      { text: '去了但提前回来', effects: {eq: 1, mentalPressure: 1, body: 1, reputation: 1} },
-      { text: '直接说想一个人待着', effects: {integrity: 2, eq: -1, mentalPressure: -1, reputation: -1} },
     ]},
     // ====== 基层历练事件链 ======
     { id: 'e181', stage: 'work', eventType: 'choice', title: '基层第一天', weight: 4, text: '你来到了基层乡镇，条件比想象中更艰苦。办公室没有空调，食堂的饭菜简单，但同事们都很热情。你意识到接下来两年要在这里度过。', requireFlag: 'grassrootsActive', requireUnitLevelMax: 0, choices: [

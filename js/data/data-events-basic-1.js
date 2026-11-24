@@ -202,7 +202,6 @@ const gd_events_basic_1 = [
       { text: '介绍给其他同事处理', effects: {risk: 3, integrity: -2, mentalPressure: 1, reputation: -2, background: 1} },
     ]},
     // 老友聚会
-    { pools: ['public'], id: 'e052', stage: 'life', eventType: 'auto', title: '老友聚会', weight: 5, text: '大学同学聚会，有人创业成功有人大厂年薪百万，你在体制内拿着死工资。你开始怀疑自己的选择。', effects: {desire: 5, mentalPressure: 4, integrity: -1} },
     // 改革阵痛
     { id: 'e053', stage: 'work', eventType: 'choice', title: '改革阵痛', weight: 3, text: '单位推行改革要打破原有利益格局。老同事们怨声载道，你是改革执行者之一。', choices: [
       { text: '坚决执行改革不怕得罪人', effects: {workAbility: 3, positionWeight: 3, risk: 4, mentalPressure: 5, integrity: 2} },

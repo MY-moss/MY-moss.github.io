@@ -155,20 +155,6 @@ const gd_events_basic_4 = [
       { text: '帮他介绍贷款渠道', effects: {iq: 2, eq: 1, reputation: 1, background: 1, workAbility: 1} },
     ]},
     // ====== 新增生活事件 ======
-    { id: 'e274', stage: 'life', eventType: 'choice', title: '周末休闲', weight: 3, text: '难得周末不用加班，你计划好好休息一下。是宅在家里看书，还是出去走走？', pools: ['public'], choices: [
-      { text: '去公园散步呼吸新鲜空气', effects: {mentalPressure: -3, body: 1, eq: 1, reputation: 1} },
-      { text: '在家看书学习', effects: {iq: 2, workAbility: 1, mentalPressure: -1, desire: 1} },
-      { text: '约朋友一起吃饭', effects: {eq: 1, background: 1, mentalPressure: -2, reputation: 1, familyPressure: -1} },
-      { text: '在家做一顿大餐', effects: {eq: 1, mentalPressure: -2, familyPressure: -1, body: 1} },
-      { text: '去健身房锻炼', effects: {body: 2, mentalPressure: -2, desire: 1, eq: 1} },
-    ]},
-    { id: 'e277', stage: 'life', eventType: 'choice', title: '看电影', weight: 3, text: '一部你期待已久的电影上映了。你买了票准备去看，但单位突然通知要加班。', pools: ['public'], choices: [
-      { text: '去加班改天再看', effects: {positionWeight: 1, reputation: 1, workAbility: 1, mentalPressure: 2, desire: -1} },
-      { text: '请个假去看电影', effects: {mentalPressure: -2, desire: 1, eq: 1, reputation: -1, positionWeight: -1} },
-      { text: '加班后去看夜场', effects: {body: -1, mentalPressure: 2, workAbility: 1, desire: 1, positionWeight: 1} },
-      { text: '把电影票送给同事', effects: {eq: 1, reputation: 1, background: 1, mentalPressure: 1} },
-      { text: '和领导说明情况', effects: {eq: 1, integrity: 1, mentalPressure: 1, workAbility: 1, positionWeight: 1} },
-    ]},
     { id: 'e280', stage: 'life', eventType: 'choice', title: '请客吃饭', weight: 3, text: '干部调整名单公布后，办公室同事围着你说要庆祝。老同事提议去饭店包一桌，许砚笑着问“算谁的账”。家里刚交过一笔房贷，你知道今晚的热闹也会变成下月预算的一部分。', pools: ['public'], choices: [
       { text: '大方请客感谢大家', effects: {eq: 2, background: 2, reputation: 2, mentalPressure: 1, familyPressure: 2, luck: -1} },
       { text: '请简单的工作餐', effects: {eq: 1, reputation: 1, familyPressure: -1, mentalPressure: -1, background: 1, integrity: 1} },

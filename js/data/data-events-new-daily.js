@@ -55,12 +55,6 @@ const gd_events_new_daily = [
     { text: '给家里带一份热食', effects: {wealth: -12, familyPressure: -2, eq: 1} },
     { text: '站在门口抽支烟再上楼', effects: {mentalPressure: -2, body: -1} }
   ]},
-  { id: 'edl009', stage: 'life', eventType: 'choice', weight: 5, contentTier: 'everyday', year: [3, 35], title: '老同学的红色炸弹', text: '十年没联系的老同学突然发来婚礼请帖，地点在五星级酒店。你俩当年关系一般，毕业后连面都没见过，但请帖末尾写着“一定要来啊”。', choices: [
-    { text: '包个厚红包准时赴宴', effects: {wealth: -60, eq: 2, background: 2} },
-    { text: '随大众份子人不到场', effects: {wealth: -30, mentalPressure: -1} },
-    { text: '找借口婉拒不参加', effects: {wealth: 0, eq: -1, mentalPressure: 1} },
-    { text: '借机约老同学叙旧', effects: {eq: 3, mentalPressure: -2, background: 1} }
-  ]},
 
   { id: 'edl011', stage: 'life', eventType: 'choice', weight: 5, contentTier: 'everyday', requireMarried: true, year: [2, 40], title: '账单日', text: '月底对账，房贷、水电、物业、孩子的补习费摊了一桌子。爱人按着计算器算了三遍，抬头问：“这个月怎么又超了？”', choices: [
     { text: '一起重新做预算表', effects: {iq: 2, familyPressure: -2, wealth: 10} },

@@ -31,7 +31,7 @@ const assert=require('node:assert/strict');
   const restored=await page.evaluate(()=>eval('engine').getPlayer().flags.classmateOpen);
   assert.equal(restored,true);
   const worker=await page.evaluate(async()=>({controller:!!navigator.serviceWorker.controller,keys:await caches.keys()}));
-  assert.ok(worker.controller&&worker.keys.includes('shangan-pages-29'));
+  assert.ok(worker.controller&&worker.keys.includes('shangan-pages-30'));
   let offline='not checked';
   if(viewport.width===390){await cx.setOffline(true);await page.reload();await page.locator('.game-container').waitFor();offline='page loaded';}
   assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);

@@ -1178,5 +1178,421 @@ const gd_events_renewal = [
       26,
       58
     ]
+  },
+  {
+    "id": "renew_stage_1",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "星期三，七点半",
+    "text": "下班路过文化馆，你听见一群人在排练旧戏。负责排练的罗青递给你一份剧本：“还差一个人，台词不多。每周三晚上。”你已经很久没有为了自己喜欢的事固定留出一段时间。下一周恰好还有一项非紧急的加班安排。",
+    "choices": [
+      {
+        "text": "调整非紧急工作安排，参加固定排练",
+        "result": "你把周三晚上的时间留了出来。第一次排练时，罗青替你纠正了好几处台词。",
+        "effects": {
+          "flag": "renewStageRegular",
+          "mentalPressure": -3,
+          "positionWeight": -1,
+          "eq": 1
+        }
+      },
+      {
+        "text": "只帮忙完成这次排练，不承诺长期参加",
+        "result": "你读完临时缺席者的台词，把剧本还给罗青。你们约好需要人时再联系。",
+        "effects": {
+          "flag": "renewStageGuest",
+          "mentalPressure": -1,
+          "eq": 1
+        }
+      },
+      {
+        "text": "婉拒演出，把手头的工作先完成",
+        "result": "你留下文化馆的活动表，回到办公室。周三仍旧是原来的安排。",
+        "effects": {
+          "flag": "renewStageDeclined",
+          "workAbility": 1,
+          "mentalPressure": 1,
+          "positionWeight": 1
+        }
+      }
+    ],
+    "weight": 5,
+    "year": [
+      25,
+      46
+    ]
+  },
+  {
+    "id": "renew_stage_2",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "缺席名单",
+    "text": "一年后，文化馆的小剧场即将维修，剧团临时借到一处场地，只够举行最后一次原班人马的演出。罗青收到外地工作邀请，也在考虑离开。演出前一晚，你的单位安排了次日清晨的业务协调。",
+    "choices": [
+      {
+        "text": "按已承诺的时间参加演出，提前完成工作交接",
+        "result": "你到场完成了这一晚的演出，也为次日的协调多做了一份准备。",
+        "effects": {
+          "setFlags": [
+            "renewStageReviewed",
+            "renewStagePlayed"
+          ],
+          "mentalPressure": 2,
+          "positionWeight": -1,
+          "eq": 1
+        }
+      },
+      {
+        "text": "留在单位处理协调准备，提前请剧团另找替补",
+        "result": "替补顺利完成排练，你没有出现在最后一场的名单上。工作没有被拖延。",
+        "effects": {
+          "setFlags": [
+            "renewStageReviewed",
+            "renewStageMissed"
+          ],
+          "workAbility": 2,
+          "positionWeight": 1,
+          "mentalPressure": 2
+        }
+      },
+      {
+        "text": "不参加演出，只在空闲时间去帮忙收拾道具",
+        "result": "你搬完最后一箱道具，罗青把一张演出单留给你。那一晚你坐在台下。",
+        "effects": {
+          "setFlags": [
+            "renewStageReviewed",
+            "renewStageAudience"
+          ],
+          "mentalPressure": -2,
+          "eq": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "renew_stage_3",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "寄往外地的剧本",
+    "text": "旧剧场关闭后的一段日子里，你收到了罗青寄来的新剧本。随信附上的不是演出邀请，而是一张当地学校的活动照片。罗青已经离开原来的工作，开始教孩子排戏。信末写着：“有些人想回来，不一定是想回到原来的生活。”",
+    "choices": [
+      {
+        "text": "回信，提出有空时互相看看现在的作品",
+        "result": "你写了自己这些年的生活，也没有要求罗青回乡重组剧团。",
+        "effects": {
+          "setFlags": [
+            "renewStageThird",
+            "renewStageLetter"
+          ],
+          "eq": 2,
+          "mentalPressure": -2
+        }
+      },
+      {
+        "text": "把旧剧本重新读完，为自己开始一个小创作",
+        "result": "你不再等别人把原来的剧团找回来，开始写一段属于自己的故事。",
+        "effects": {
+          "setFlags": [
+            "renewStageThird",
+            "renewStageCreate"
+          ],
+          "mentalPressure": -3,
+          "iq": 1
+        }
+      },
+      {
+        "text": "保留来信，暂时不恢复联系",
+        "result": "你把照片夹在剧本里。此刻不需要为了证明旧友谊而重新开始往来。",
+        "effects": {
+          "setFlags": [
+            "renewStageThird",
+            "renewStageQuiet"
+          ],
+          "mentalPressure": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "renew_stage_4",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "不是原来的那场戏",
+    "text": "几年后，文化馆重新开放了小剧场，展柜里陈列着当年演出的一张节目单。台上的演员几乎都是新人。工作人员问你是否愿意留下几句回忆，台下有个孩子正在背自己人生的第一段台词。",
+    "choices": [
+      {
+        "text": "给新演员讲一段真实的幕后经历",
+        "result": "你讲的是自己真正经历过的那一部分，没有把缺席的夜晚讲成亲历。",
+        "effects": {
+          "flag": "renewStageLegacy",
+          "eq": 2,
+          "mentalPressure": -2
+        }
+      },
+      {
+        "text": "买一张票，做一个普通观众",
+        "result": "灯光暗下来。你不必成为台上的人，也能认真喜欢这一晚。",
+        "effects": {
+          "wealth": -1,
+          "mentalPressure": -4
+        }
+      },
+      {
+        "text": "离开剧场，回到自己现在的生活",
+        "result": "你看了一眼展柜，记住那张节目单，把余下的时间留给眼前的人。",
+        "effects": {
+          "mentalPressure": -2,
+          "familyPressure": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "renew_route_1",
+    "stage": "work",
+    "eventType": "choice",
+    "title": "多出来的三站路",
+    "text": "一条公交线路准备调整。调查显示新居民区的通勤需求明显上升，而旧街区的几处站点客流持续下降。社区代表顾芸支持调整：她每天要换乘两次才能去上班。另一批居民却担心改线后就医不便。你负责整理方案，不能同时满足两边的时间要求。",
+    "choices": [
+      {
+        "text": "建议优先增加新居民区直达班次",
+        "result": "通勤方案获得支持；旧街区原来的班次需求需要另外安排。",
+        "effects": {
+          "flag": "renewRouteDirect",
+          "peopleReputation": 2,
+          "workAbility": 1,
+          "mentalPressure": 2
+        }
+      },
+      {
+        "text": "建议保留原线路，先试行有限的接驳班次",
+        "result": "旧街区原有服务暂时保留，新居民区仍需换乘。协调时间随之增加。",
+        "effects": {
+          "flag": "renewRouteKeep",
+          "workAbility": 2,
+          "mentalPressure": 3,
+          "positionWeight": -1
+        }
+      },
+      {
+        "text": "建议按时段分配班次，先开展有限试运行",
+        "result": "方案保留调整空间，但乘客需要适应新的班次表。",
+        "effects": {
+          "flag": "renewRoutePilot",
+          "workAbility": 1,
+          "eq": 1,
+          "mentalPressure": 3
+        }
+      }
+    ],
+    "weight": 5,
+    "year": [
+      27,
+      48
+    ],
+    "requireRankMin": 2
+  },
+  {
+    "id": "renew_route_2",
+    "stage": "work",
+    "eventType": "choice",
+    "title": "支持者的反对信",
+    "text": "两年后，顾芸的名字出现在一份联名意见上。她换了工作，家中也开始需要陪诊，对线路的要求与两年前完全不同。她说：“我知道以前那封支持信是我签的。我不能因为签过它，就假装现在没有困难。”",
+    "choices": [
+      {
+        "text": "组织补充调查，重新提出调整建议",
+        "result": "部分需求得到重新核对，代价是已经稳定的安排可能再次变动。",
+        "effects": {
+          "setFlags": [
+            "renewRouteReviewed",
+            "renewRouteReopen"
+          ],
+          "workAbility": 2,
+          "peopleReputation": 1,
+          "mentalPressure": 3
+        }
+      },
+      {
+        "text": "保留当前方案，提出针对具体困难的补充服务",
+        "result": "当前班次保持稳定，补充方案需要额外协调资源。",
+        "effects": {
+          "setFlags": [
+            "renewRouteReviewed",
+            "renewRouteSupplement"
+          ],
+          "workAbility": 1,
+          "mentalPressure": 2,
+          "positionWeight": -1
+        }
+      },
+      {
+        "text": "说明现有资源限制，保留意见供下一轮评估",
+        "result": "现有安排没有立即改变。顾芸的意见留下了可核对的记录，也留下尚未解决的困难。",
+        "effects": {
+          "setFlags": [
+            "renewRouteReviewed",
+            "renewRouteWait"
+          ],
+          "integrity": 1,
+          "mentalPressure": -1,
+          "peopleReputation": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "renew_route_3",
+    "stage": "work",
+    "eventType": "choice",
+    "title": "一张失效的月票",
+    "text": "后来，附近医院调整了门诊布局，新居民区的一处工作园区也搬迁了。此前讨论的客流方向又变了。评估人员拿着旧调查表，问这几年的安排究竟算成功还是失败。顾芸已经不再是社区代表，仍保留着那张用过很久的月票。",
+    "choices": [
+      {
+        "text": "按各阶段实际情况分别评价，不追求一个总成绩",
+        "result": "你们区分了原方案的收益、后续变化和仍未解决的需求。",
+        "effects": {
+          "setFlags": [
+            "renewRouteThird",
+            "renewRouteHonest"
+          ],
+          "integrity": 2,
+          "workAbility": 1,
+          "mentalPressure": 3
+        }
+      },
+      {
+        "text": "重点评估今后的交通需求，把旧经验交给现任团队",
+        "result": "新方案开始重新收集数据，历史评价没有因此自动改写。",
+        "effects": {
+          "setFlags": [
+            "renewRouteThird",
+            "renewRouteForward"
+          ],
+          "workAbility": 2,
+          "mentalPressure": 1
+        }
+      },
+      {
+        "text": "提供当年材料，不再参与具体方案决定",
+        "result": "现任人员接过档案，你的责任停留在可确认的历史记录。",
+        "effects": {
+          "setFlags": [
+            "renewRouteThird",
+            "renewRouteHandoff"
+          ],
+          "mentalPressure": -2,
+          "positionWeight": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "renew_route_4",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "车窗外的旧站牌",
+    "text": "又过了几年，你偶然坐上当年讨论过的公交线路。车窗外那块旧站牌还在，新站点也早已融入居民的日常。顾芸在另一站上车，认出了你，却没有谈当年的争论，只说现在常坐这班车。你们还有几站路可以聊。",
+    "choices": [
+      {
+        "text": "聊聊各自这几年的变化，不替过去下结论",
+        "result": "顾芸讲起自己的新生活。你意识到一条线路的意义也会随人的生活改变。",
+        "effects": {
+          "flag": "renewRouteLegacy",
+          "eq": 2,
+          "mentalPressure": -2
+        }
+      },
+      {
+        "text": "问她如今使用线路的真实感受",
+        "result": "你记住她提到的便利与不足，但没有将一次闲谈当成完整评估。",
+        "effects": {
+          "peopleReputation": 1,
+          "workAbility": 1,
+          "mentalPressure": 1
+        }
+      },
+      {
+        "text": "只是打个招呼，在自己的站点下车",
+        "result": "你们互道再见。那段共同参与的历史没有被否认，也不必重新争论。",
+        "effects": {
+          "mentalPressure": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "renew_box",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "搬家时的纸箱",
+    "text": "搬家时，你发现一个从备考时期保存到现在的纸箱。里面有几封旧信、一本没用完的笔记，以及当年计划学习的一项兴趣。搬运师傅在楼下等你，新的住处也没有那么多储物空间。",
+    "choices": [
+      {
+        "text": "留下一小部分，给旧物拍照后整理其余物品",
+        "result": "旧生活留下了几个真实的物件，新的住处也腾出了空间。",
+        "effects": {
+          "mentalPressure": -2,
+          "eq": 1
+        }
+      },
+      {
+        "text": "整箱带走，给自己另留一天慢慢整理",
+        "result": "搬家多花了一点时间，你暂时不必匆忙决定。",
+        "effects": {
+          "mentalPressure": 1,
+          "familyPressure": 1
+        }
+      },
+      {
+        "text": "选一本笔记留下，试着重新开始当年的兴趣",
+        "result": "你把还空着的页面留给今后的生活，不再只记录过去。",
+        "effects": {
+          "mentalPressure": -3,
+          "iq": 1
+        }
+      }
+    ],
+    "weight": 3,
+    "year": [
+      28,
+      57
+    ]
+  },
+  {
+    "id": "renew_wrong_number",
+    "stage": "life",
+    "eventType": "choice",
+    "title": "打错的电话",
+    "text": "一个陌生人连续两次打电话找一位早已换号码的旧友。第三次，对方发现打错了，尴尬地道歉，说这些年一直没能联系上那个人。你不知道他们的故事，也不认识他要找的人。",
+    "choices": [
+      {
+        "text": "耐心说明号码已更换，祝对方找到正确联系渠道",
+        "result": "你没有接下不属于自己的寻找任务，却让这段通话有了平静的结束。",
+        "effects": {
+          "eq": 1,
+          "mentalPressure": -1
+        }
+      },
+      {
+        "text": "简短说明情况，结束通话",
+        "result": "你回到自己的事情上。陌生人的旧事仍属于他自己。",
+        "effects": {
+          "mentalPressure": -2
+        }
+      },
+      {
+        "text": "通话结束后，联系一个自己很久没问候的人",
+        "result": "你发出一条不带请求的消息。至于对方是否回复，留给对方决定。",
+        "effects": {
+          "eq": 2,
+          "mentalPressure": 1
+        }
+      }
+    ],
+    "weight": 3,
+    "year": [
+      25,
+      59
+    ]
   }
 ];

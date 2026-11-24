@@ -162,12 +162,6 @@ const gd_events_new_life = [
     { text: '买份婴儿用品相送', effects: {wealth: -10, eq: 1, integrity: 1, mentalPressure: -1} },
     { text: '只口头祝贺不发红包', effects: {eq: -2, mentalPressure: 1, reputation: -1} }
   ]},
-  { id: 'enl028', stage: 'life', eventType: 'choice', weight: 3, title: '同事乔迁', text: '老王乔迁新居，邀请几个同事去暖房。你纠结要不要去，去了要送礼，不去又怕老王记仇。', choices: [
-    { text: '带份礼物去捧场', effects: {wealth: -15, eq: 1, background: 1, mentalPressure: 1} },
-    { text: '发个红包人不到心意到', effects: {wealth: -5, eq: 1, mentalPressure: -1} },
-    { text: '借口有事婉拒', effects: {mentalPressure: 1, eq: -1, wealth: 0} },
-    { text: '带瓶好酒和老王喝两杯', effects: {wealth: -20, eq: 2, background: 1, mentalPressure: -1, body: -1} }
-  ]},
   { id: 'enl029', stage: 'life', eventType: 'choice', weight: 4, title: '老领导调走', text: '老领导要调走了，办公室商量着凑钱送份礼物。有人说送购物卡实在，有人说送字画有品位，有人提议集体请吃饭。', choices: [
     { text: '提议集体送购物卡', effects: {eq: 1, wealth: -5, background: 1, mentalPressure: 1} },
     { text: '单独送份有品位的礼物', effects: {wealth: -20, background: 2, eq: 1, desire: 1} },
@@ -185,12 +179,6 @@ const gd_events_new_life = [
     { text: '以茶代酒真诚解释', effects: {integrity: 2, eq: 1, mentalPressure: 2, background: -1} },
     { text: '小口抿一下意思意思', effects: {eq: 1, mentalPressure: 1, body: -1} },
     { text: '假装接电话暂时离开', effects: {mentalPressure: 2, eq: -1, integrity: -1, risk: 1} }
-  ]},
-  { id: 'enl032', stage: 'life', eventType: 'choice', weight: 4, title: '同事聚餐', text: '同事提议周末聚餐AA制，人均200。你觉得有点贵，但大家都同意了，你不想做那个"扫兴"的人。', choices: [
-    { text: '参加并爽快AA', effects: {wealth: -20, eq: 1, mentalPressure: -1, background: 1} },
-    { text: '提议换个便宜点的地方', effects: {eq: 1, wealth: -10, mentalPressure: 1, integrity: 1} },
-    { text: '借口有事不去', effects: {wealth: 0, eq: -1, mentalPressure: 1, background: -1} },
-    { text: '去但只点便宜的菜', effects: {wealth: -10, eq: 1, mentalPressure: 2, integrity: -1} }
   ]},
   { id: 'enl034', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '人情往来（随礼）', text: '翻开人情往来本，发现今年光随礼就花了小一万。中秋国庆还有三场婚礼，伴侣看完直摇头。', choices: [
     { text: '该随的还得随保住人情', effects: {wealth: -30, eq: 1, mentalPressure: 2, familyPressure: 2} },
@@ -233,12 +221,6 @@ const gd_events_new_life = [
     { text: '婉拒但请他吃顿饭', effects: {eq: 1, mentalPressure: 1, integrity: 1, risk: -2} },
     { text: '借钱不入股避免纠纷', effects: {wealth: -10, eq: 1, risk: 2, mentalPressure: 1} },
     { text: '仔细研究项目再决定', effects: {iq: 2, mentalPressure: 2, integrity: 1} }
-  ]},
-  { id: 'enl041', stage: 'life', eventType: 'choice', weight: 4, title: '同学聚会（高中）', text: '高中同学组织毕业20年聚会，每人预交500。你想去见见老同学，又怕被人攀比"现在混得怎么样"。', choices: [
-    { text: '报名参加大大方方赴约', effects: {wealth: -5, eq: 2, mentalPressure: 1, background: 1} },
-    { text: '参加但低调不攀比', effects: {wealth: -5, eq: 1, integrity: 1, mentalPressure: 1} },
-    { text: '借口工作忙不参加', effects: {mentalPressure: -1, eq: -1, wealth: 0} },
-    { text: '参加并主动张罗组织', effects: {wealth: -5, eq: 2, background: 2, mentalPressure: 2, reputation: 1} }
   ]},
   { id: 'enl042', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '老乡聚会', text: '老乡群组织年度聚会，群主说"咱们老乡要常走动"。你跟这些老乡其实不太熟，但伴侣说"多认识人有好处"。', choices: [
     { text: '参加聚会被动社交', effects: {wealth: -3, eq: 1, background: 1, mentalPressure: 2} },
