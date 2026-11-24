@@ -89,13 +89,6 @@ const gd_events_basic_3 = [
       { text: '挂二手平台卖掉', effects: {iq: 2, mentalPressure: 1, familyPressure: -1, reputation: 1} },
     ]},
 
-    { pools: ['public'], id: 'e177', stage: 'life', eventType: 'choice', title: '手机升级', weight: 3, text: '你的手机用了三年了，越来越卡。新手机出了，你很想买，但价格不便宜。现在的手机还能用，就是体验不太好。', choices: [
-      { text: '咬咬牙买新手机', effects: {mentalPressure: -2, familyPressure: 2, desire: 1, reputation: 1, iq: 1} },
-      { text: '再等一年等降价', effects: {iq: 2, familyPressure: -1, mentalPressure: 1, desire: -1} },
-      { text: '换块电池继续用', effects: {iq: 2, familyPressure: -1, mentalPressure: -1, workAbility: 1} },
-      { text: '买去年的旧款便宜', effects: {iq: 1, familyPressure: -1, mentalPressure: -1, desire: -1} },
-      { text: '分期付款减轻压力', effects: {familyPressure: 1, mentalPressure: 1, desire: 1, iq: 1} },
-    ]},
 
     { pools: ['public'], id: 'e179', stage: 'life', eventType: 'choice', title: '理发店办卡', weight: 3, text: '理发店的Tony老师热情推荐你办一张会员卡，充2000送500，看起来挺划算的。但你上次办的健身卡还没用完。', choices: [
       { text: '婉拒说考虑一下', effects: {eq: 1, familyPressure: -1, mentalPressure: -1, iq: 1} },

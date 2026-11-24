@@ -57,12 +57,6 @@ const gd_events_new_theme = [
       { text: '通报了事，不深究', effects: {mentalPressure: -2, risk: 4, integrity: -3} },
       { text: '移交纪检部门处理', effects: {background: 1, integrity: 2, mentalPressure: 1} },
     ]},
-    { id: 'ent011', stage: 'work', eventType: 'choice', weight: 6, title: '中秋礼品', text: '中秋节，一个业务往来单位送来一盒"月饼"，掂量着分量不对。打开一看，月饼下面压着一个厚信封。', choices: [
-      { text: '当场退回，并做好记录', effects: {integrity: 3, risk: -1, mentalPressure: 1} },
-      { text: '上交廉政账户', effects: {integrity: 3, workAbility: 1, mentalPressure: 1} },
-      { text: '暂时收下，"以后再说"', effects: {wealth: 50, risk: 6, integrity: -5, desire: 2} },
-      { text: '退回月饼，留下信封"处理业务用"', effects: {risk: 5, integrity: -4, desire: 2} },
-    ]},
     { id: 'ent012', stage: 'work', eventType: 'choice', weight: 5, title: '超标接待', text: '上级来调研，接待标准卡在"四菜一汤"。可对方带队的是老熟人，处里有人嘀咕"加两个菜不碍事"。', choices: [
       { text: '严格执行接待标准，不超标', effects: {integrity: 3, workAbility: 1, mentalPressure: 2} },
       { text: '加菜但自掏腰包补差价', effects: {integrity: 2, wealth: -30, eq: 1} },
@@ -1222,9 +1216,7 @@ const gd_events_new_theme = [
   // ---- 突发荣誉线（sudden 纯效果）----
   { id: 'ent271', stage: 'work', eventType: 'sudden', weight: 6, year: [22, 55], title: '🎖️ 三等功嘉奖', text: '一起跨部门协作的专项任务圆满完成，你在其中的关键贡献被上级点名。表彰大会上，三等功的奖章戴在你胸前——档案里从此多了浓墨重彩的一笔。', effects: { positionWeight: 2, reputation: 2, mentalPressure: -2 } },
   { id: 'ent272', stage: 'work', eventType: 'sudden', weight: 4, year: [30, 58], title: '🏅 劳动模范表彰', text: '市里评选劳动模范，你在单位推荐中高票当选。颁奖典礼上鲜花与掌声簇拥，你的事迹被写进了系统内的宣传简报。', effects: { reputation: 3, background: 1 } },
-  { id: 'ent273', stage: 'work', eventType: 'sudden', weight: 6, year: [22, 52], title: '📣 通报表扬', text: '上级对你近期的工作成绩发了通报表扬——红头文件，抄送全市。同事看你的眼神都不一样了。', effects: { integrity: 2, reputation: 1, mentalPressure: -1 } },
   // ---- 时代线（sudden 纯效果）----
-  { id: 'ent280', stage: 'work', eventType: 'sudden', weight: 6, year: [22, 60], title: '💰 工资普调', text: '机关事业单位工资普调文件下来了，涨薪部分随当月工资一次性补发到位。大家议论纷纷，说这次涨幅是近十年最大的一次。', effects: { wealth: 15 } },
   { id: 'ent281', stage: 'work', eventType: 'sudden', weight: 6, year: [22, 55], title: '🔒 编制冻结', text: '机构编制委员会发文：即日起冻结全系统新增编制，调动、晋升、遴选全部暂停。想挪窝的同事唉声叹气，你也被困在了原地。', effects: { positionWeight: -1, mentalPressure: 2 } },
   { id: 'ent282', stage: 'work', eventType: 'sudden', weight: 4, year: [22, 58], title: '🏢 单位合并', text: '机构改革方案落地：你所在的单位与另一个部门合并。新单位盘子更大、岗位更多，但也意味着原有格局全部打乱重排。', effects: { positionWeight: 2, mentalPressure: 3, risk: 1 } },
   // ---- 责任处置线（choice 三难抉择）----

@@ -81,12 +81,6 @@ const gd_events_new_life = [
     { text: '在业主群里理性表达诉求', effects: {iq: 2, eq: 1, mentalPressure: 1, reputation: 1} },
     { text: '拒绝交费直至服务改善', effects: {risk: 2, mentalPressure: 2, integrity: 1, wealth: 5} }
   ]},
-  { id: 'enl014', stage: 'life', eventType: 'choice', weight: 6, contentTier: 'everyday', title: '车位之争', text: '小区车位紧张，你每天下班都要绕几圈才能找到位置。今天发现有人长期占着访客车位不挪走。', choices: [
-    { text: '找物业协调处理', effects: {mentalPressure: 1, eq: 1, integrity: 1} },
-    { text: '留张纸条提醒对方', effects: {eq: 1, mentalPressure: 1, risk: 1} },
-    { text: '租个固定车位一劳永逸', effects: {wealth: -30, mentalPressure: -2, familyPressure: -1, eq: 1} },
-    { text: '换新能源车有专属车位', effects: {wealth: -100, desire: 1, mentalPressure: -1, reputation: 1} }
-  ]},
   { id: 'enl015', stage: 'life', eventType: 'choice', weight: 3, title: '水管爆裂', text: '半夜被"哗哗"的水声吵醒，发现卫生间管道爆裂，水已经漫到客厅。楼下邻居敲门说他们家天花板在滴水。', choices: [
     { text: '立即联系物业紧急维修', effects: {mentalPressure: 3, wealth: -20, eq: 1, integrity: 1} },
     { text: '先自己关阀门处理再找工人', effects: {iq: 2, workAbility: 1, mentalPressure: 3, body: -1} },
@@ -150,18 +144,6 @@ const gd_events_new_life = [
   ]},
 
   // ====== 社交人情类（25个） ======
-  { id: 'enl026', stage: 'life', eventType: 'choice', weight: 5, title: '同事请柬', text: '办公室小张发了请柬，下月结婚。你们关系一般，平时只是点头之交，但同部门的人都收到了请柬。', choices: [
-    { text: '随大流包500元红包', effects: {wealth: -5, eq: 1, mentalPressure: 1, reputation: 1} },
-    { text: '包200元意思一下', effects: {wealth: -2, eq: 1, mentalPressure: 1} },
-    { text: '借口有事不参加', effects: {eq: -1, mentalPressure: 1, reputation: -1, wealth: 0} },
-    { text: '包800元搏个好关系', effects: {wealth: -8, eq: 2, background: 1, mentalPressure: 1} }
-  ]},
-  { id: 'enl027', stage: 'life', eventType: 'choice', weight: 4, title: '同事生二胎', text: '同事小李生二胎了，群里都在发红包祝贺。你刚因为一个项目和小李有过争执，关系有点僵。', choices: [
-    { text: '发个大红包修复关系', effects: {wealth: -5, eq: 2, mentalPressure: -1, background: 1} },
-    { text: '随群发标准红包', effects: {wealth: -2, eq: 1, mentalPressure: 1} },
-    { text: '买份婴儿用品相送', effects: {wealth: -10, eq: 1, integrity: 1, mentalPressure: -1} },
-    { text: '只口头祝贺不发红包', effects: {eq: -2, mentalPressure: 1, reputation: -1} }
-  ]},
   { id: 'enl029', stage: 'life', eventType: 'choice', weight: 4, title: '老领导调走', text: '老领导要调走了，办公室商量着凑钱送份礼物。有人说送购物卡实在，有人说送字画有品位，有人提议集体请吃饭。', choices: [
     { text: '提议集体送购物卡', effects: {eq: 1, wealth: -5, background: 1, mentalPressure: 1} },
     { text: '单独送份有品位的礼物', effects: {wealth: -20, background: 2, eq: 1, desire: 1} },
@@ -186,12 +168,6 @@ const gd_events_new_life = [
     { text: '只随近亲好友的礼', effects: {wealth: -10, eq: -1, mentalPressure: 2, reputation: -1} },
     { text: '记账等以后收回来', effects: {iq: 1, mentalPressure: 1, wealth: -20, integrity: -1} }
   ]},
-  { id: 'enl035', stage: 'life', eventType: 'choice', weight: 3, title: '补随礼', text: '多年前帮过你的一位老领导孩子结婚，你没随礼。最近听说老领导到处说你"白眼狼"，心里有点慌。', choices: [
-    { text: '登门拜访补上礼金', effects: {wealth: -20, eq: 2, reputation: 2, mentalPressure: -2, background: 1} },
-    { text: '托人带话解释当年情况', effects: {eq: 1, mentalPressure: 2, background: 1} },
-    { text: '打电话亲自道歉', effects: {eq: 1, integrity: 2, mentalPressure: 1, reputation: 1} },
-    { text: '装作不知道避开此事', effects: {reputation: -2, mentalPressure: -1, eq: -2} }
-  ]},
   { id: 'enl036', stage: 'life', eventType: 'choice', weight: 3, title: '收礼难题', text: '合作方送来一盒高档茶叶，价值不菲。你想拒绝又怕伤了和气，收下又觉得有违纪之嫌。', choices: [
     { text: '当面婉拒说明纪律', effects: {integrity: 3, mentalPressure: 2, risk: -2, reputation: 1} },
     { text: '暂时代为保管并登记，按程序移交', effects: {eq: 1, integrity: 3, mentalPressure: 3, risk: -2} },
@@ -203,12 +179,6 @@ const gd_events_new_life = [
     { text: '收下后找机会回礼', effects: {wealth: -15, eq: 1, mentalPressure: 1, risk: 3, integrity: -3} },
     { text: '收下后分给办公室同事', effects: {eq: 1, integrity: -3, mentalPressure: 1, risk: 2} },
     { text: '退回并严肃谈话', effects: {integrity: 3, mentalPressure: 3, reputation: 1, eq: -1} }
-  ]},
-  { id: 'enl038', stage: 'life', eventType: 'choice', weight: 2, title: '退礼技巧', text: '收到一份贵重礼物想退回去，但直接退又显得生分。你搜了一下"退礼技巧"，发现这是一门学问。', choices: [
-    { text: '以家人不同意为由退回', effects: {eq: 1, integrity: 2, mentalPressure: 1, risk: -1} },
-    { text: '找合适时机原样退回并说明原则', effects: {eq: 2, mentalPressure: 1, integrity: 3, risk: -2} },
-    { text: '用工作理由婉拒', effects: {integrity: 2, mentalPressure: 2, eq: 1} },
-    { text: '按规定登记后交组织统一处置', effects: {integrity: 3, reputation: 1, mentalPressure: 1, eq: 1, risk: -1} }
   ]},
   { id: 'enl039', stage: 'life', eventType: 'choice', weight: 4, title: '同事借钱', text: '同事小赵红着脸找你借三千块应急，说发工资就还。你知道他最近刚被催债，心里有点打鼓。', choices: [
     { text: '借给他不收利息', effects: {wealth: -30, eq: 1, mentalPressure: 2, risk: 2} },
@@ -449,12 +419,6 @@ const gd_events_new_life = [
     { text: '保持原合同不变', effects: {mentalPressure: -1, integrity: 1, wealth: 0} },
     { text: '提前还部分本金减负', effects: {wealth: -50, mentalPressure: -2, familyPressure: -1, iq: 1} }
   ]},
-  { id: 'enl080', stage: 'life', eventType: 'choice', weight: 3, title: '车贷换新', text: '车贷还剩一年，4S店打电话说有"以旧换新"活动，可以提前还清旧贷款换新车。月供只多300。', choices: [
-    { text: '换新车享受新科技', effects: {wealth: -50, desire: 2, mentalPressure: 1, familyPressure: 1} },
-    { text: '把旧车贷还完再说', effects: {mentalPressure: -1, integrity: 1, wealth: -5, desire: -1} },
-    { text: '提前还款减轻利息', effects: {wealth: -30, mentalPressure: -2, familyPressure: -1, iq: 1} },
-    { text: '卖旧车全款买二手车', effects: {wealth: -10, mentalPressure: 2, iq: 1, risk: 2} }
-  ]},
   { id: 'enl081', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '老车维修', text: '开了八年的车开始频繁出问题，维修费都快赶上月供了。伴侣说"换辆新的吧"，你看着存款余额心疼。', choices: [
     { text: '贷款换辆新车省心', effects: {wealth: -80, mentalPressure: 2, desire: 2, familyPressure: 1} },
     { text: '买辆可靠的中古车', effects: {wealth: -40, mentalPressure: 1, iq: 1, risk: 1} },
@@ -485,23 +449,11 @@ const gd_events_new_life = [
     { text: '买个大容量冰柜补充', effects: {wealth: -10, mentalPressure: 1, desire: 1} },
     { text: '等搬家时再一起换', effects: {mentalPressure: -1, wealth: 0, iq: 1, integrity: 1} }
   ]},
-  { id: 'enl086', stage: 'life', eventType: 'choice', weight: 4, title: '购物车后悔', text: '双十一购物车塞了五千多的东西，付款时手有点抖。买完后又开始后悔——好像很多东西其实不需要。', choices: [
-    { text: '该买的买冲动消费退掉', effects: {integrity: 2, wealth: -20, mentalPressure: 1, iq: 1} },
-    { text: '全部留下反正便宜', effects: {wealth: -50, mentalPressure: 2, desire: 2, familyPressure: 1} },
-    { text: '认真比价保留必需品', effects: {iq: 2, wealth: -15, mentalPressure: 2, integrity: 1} },
-    { text: '明年再说清空购物车', effects: {wealth: 0, mentalPressure: 1, desire: -2, integrity: 1} }
-  ]},
   { id: 'enl087', stage: 'life', eventType: 'choice', weight: 3, title: '直播间冲动', text: '直播间主播声嘶力竭地喊"最后30秒！"你被氛围感染，差点下单一个"限定款"手表。理智和冲动在打架。', choices: [
     { text: '冲动下单抢限定款', effects: {wealth: -30, desire: 2, mentalPressure: 2, risk: 1} },
     { text: '冷静三思后放弃', effects: {integrity: 2, mentalPressure: -1, wealth: 0, desire: -1} },
     { text: '截图去其他平台比价', effects: {iq: 2, wealth: -20, mentalPressure: 1} },
     { text: '加购物车等第二天再决定', effects: {mentalPressure: -1, integrity: 1, wealth: 0, iq: 1} }
-  ]},
-  { id: 'enl088', stage: 'life', eventType: 'choice', weight: 3, title: '理财暴雷', text: '朋友介绍的"高收益理财"暴雷了，平台跑路，你投的五万块打了水漂。朋友也在哭，说"自己也被骗了"。', choices: [
-    { text: '立即报警追讨损失', effects: {integrity: 2, mentalPressure: 3, risk: 1, wealth: -50} },
-    { text: '联合受害者集体维权', effects: {eq: 1, mentalPressure: 3, background: 1, wealth: -50} },
-    { text: '自认倒霉吸取教训', effects: {mentalPressure: 3, iq: 2, wealth: -50, integrity: 1} },
-    { text: '找朋友理论要赔偿', effects: {eq: -2, mentalPressure: 3, familyPressure: 1, wealth: -50} }
   ]},
   { id: 'enl089', stage: 'life', eventType: 'choice', weight: 3, title: '基金亏损', text: '买的基金最近一个月亏了20%，账户一片绿。理财群有人说"加仓摊薄成本"，有人说"割肉止损"。', choices: [
     { text: '逆势加仓等待反弹', effects: {wealth: -20, risk: 3, mentalPressure: 3, desire: 1, iq: -1} },
@@ -526,18 +478,6 @@ const gd_events_new_life = [
     { text: '继续分期缓解压力', effects: {wealth: -42, mentalPressure: 1, risk: 1, desire: 1} },
     { text: '关闭花呗避免透支', effects: {integrity: 2, mentalPressure: 1, desire: -2, wealth: -40} },
     { text: '调整额度控制消费', effects: {integrity: 1, mentalPressure: 1, wealth: -41, iq: 1} }
-  ]},
-  { id: 'enl094', stage: 'life', eventType: 'choice', weight: 3, title: '分期买手机', text: '商场导购热情推荐"零利息分期"购买新款手机，只要付一点手续费。你心动了，旧手机确实该换了。', choices: [
-    { text: '分期购买新款手机', effects: {wealth: -30, desire: 2, mentalPressure: 1, risk: 1} },
-    { text: '全款购买享受折扣', effects: {wealth: -28, mentalPressure: 1, integrity: 1, desire: 1} },
-    { text: '买上一代旗舰更划算', effects: {wealth: -15, iq: 1, mentalPressure: -1, desire: 1} },
-    { text: '旧手机再用一年再说', effects: {integrity: 2, wealth: 0, mentalPressure: 1, desire: -1} }
-  ]},
-  { id: 'enl095', stage: 'life', eventType: 'choice', weight: 3, title: '换手机攀比', text: '同事新换了iPhone，朋友圈晒得风生水起。你看了看自己用了两年的手机，突然觉得"该换了"。', choices: [
-    { text: '跟风换最新款', effects: {wealth: -50, desire: 2, mentalPressure: 2, eq: 1} },
-    { text: '按需换性价比机型', effects: {wealth: -20, mentalPressure: -1, integrity: 1, iq: 1} },
-    { text: '不换手机壳换新颜', effects: {wealth: -2, mentalPressure: -1, integrity: 2, desire: 1} },
-    { text: '等促销活动再出手', effects: {mentalPressure: 1, integrity: 1, wealth: 0, iq: 1} }
   ]},
   { id: 'enl096', stage: 'life', eventType: 'choice', weight: 3, title: '极简生活', text: '看完一篇"极简生活"的文章，你被深深触动。看着满屋子的东西，突然想全部清理掉，过简单生活。', choices: [
     { text: '断舍离扔掉多余物品', effects: {mentalPressure: -2, integrity: 2, eq: 1, desire: -2} },
@@ -608,12 +548,6 @@ const gd_events_new_life = [
     { text: '感叹人生无常，更抓紧工作', effects: {workAbility: 2, desire: 1, mentalPressure: 2, body: -1} },
     { text: '沉默不语，心里堵得慌', effects: {mentalPressure: 3, body: -1} },
     { text: '给老同学家人搭把手', effects: {eq: 2, reputation: 1, mentalPressure: 2} },
-  ]},
-  { id: 'enl109', stage: 'life', eventType: 'choice', weight: 3, title: '装修那些事', text: '新房装修进入尾声，包工头又打电话来："老板，防水材料得加钱换，不然以后楼下找您麻烦。"你分不清这是真问题还是加价话术。', choices: [
-    { text: '亲自去工地核实材料', effects: {iq: 1, wealth: -5, mentalPressure: 1} },
-    { text: '同意加钱换好材料', effects: {wealth: -15, mentalPressure: -2, familyPressure: -1} },
-    { text: '坚持按合同执行', effects: {eq: -1, mentalPressure: 2, wealth: -5} },
-    { text: '请懂行的朋友把关', effects: {eq: 1, iq: 1, wealth: -5} },
   ]},
   { id: 'enl110', stage: 'life', eventType: 'auto', weight: 3, title: '小区里的温暖', text: '楼下的快递驿站老板认出了你，每次取件都多聊两句。有天他塞给你一把自家种的青菜："看你总加班，年轻人要按时吃饭。"你愣在原地，点了点头。', effects: {mentalPressure: -2, eq: 1, peopleReputation: 1} },
   { id: 'enl111', stage: 'life', eventType: 'choice', weight: 4, requireMarried: true, title: '纪念日计划', text: '结婚纪念日快到了，伴侣嘴上说"都老夫老妻了"，可你翻到伴侣的收藏夹里那条项链的链接——在购物车里躺了半年。', choices: [

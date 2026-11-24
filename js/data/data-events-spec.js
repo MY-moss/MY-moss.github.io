@@ -719,8 +719,6 @@ const gd_events_spec = [
     // ---- 资金紧张与意外之财 ----
     { id: 'e750', stage: 'life', eventType: 'auto', title: '手头吃紧', weight: 4, maxWealth: 25, text: '月底还没到，钱包已经空了。同事约饭你找借口推掉，孩子想要个玩具你犹豫半天。穷，有时候不是一种状态，是一种难堪。', pools: ['public'], effects: {mentalPressure: 4, desire: 3, familyPressure: 2} },
     { id: 'e753', stage: 'life', eventType: 'auto', title: '物价上涨', weight: 4, maxWealth: 35, text: '菜价涨了，油价涨了，连楼下的包子都涨了五毛。工资没涨，日子却肉眼可见地变紧巴了。', pools: ['public'], effects: {wealth: -8, mentalPressure: 3, familyPressure: 2} },
-    { id: 'e754', stage: 'work', eventType: 'auto', title: '年终奖', weight: 3, minYear: 3, text: '年底考核优秀，年终奖比去年厚了一截。你看着银行卡余额，忽然觉得这一年没白干。', pools: ['public'], effects: {wealth: 12, mentalPressure: -3} },
-    { id: 'e752', stage: 'work', eventType: 'auto', title: '工资改革', weight: 3, minYear: 10, text: '工资改革落地，工龄工资上调。你算了算，一年能多出一笔不小的数目——老同志开玩笑说"熬年头还是有用的"。', pools: ['public'], effects: {wealth: 15, mentalPressure: -2, desire: 1} },
     // ---- 大额资产与灰色理财 ----
     { id: 'e751', stage: 'life', eventType: 'choice', title: '理财顾问', weight: 4, requireWealth: 100, text: '你手里有了些积蓄，银行理财顾问热情地约你喝茶。他口中的收益率让你心动，但你总觉得，天下没有白捡的利息。', pools: ['public'], choices: [
       { text: '听顾问的，分散配置', effects: {wealth: 8, iq: 1, mentalPressure: -1} },

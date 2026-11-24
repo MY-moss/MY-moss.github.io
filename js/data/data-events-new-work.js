@@ -15,12 +15,6 @@ const gd_events_new_work = [
       { text: '把已有素材重新组合，措辞讲究些', effects: {workAbility: 2, iq: 1, risk: 2} },
       { text: '如实说明调研时间有限，建议后续跟进', effects: {integrity: 3, workAbility: 1, risk: -1, positionWeight: -1} },
     ]},
-    { id: 'enw004', stage: 'work', eventType: 'choice', weight: 7, title: '年终总结（亮点难寻）', text: '年终总结要写出亮点，可这一年亮点都藏在加班里。你盯着"主要工作"四个字，像盯着一面需要擦亮的镜子。', choices: [
-      { text: '把零散成绩梳理成三条主线', effects: {workAbility: 3, iq: 2, mentalPressure: 2} },
-      { text: '用数据说话，列一串数字撑场面', effects: {workAbility: 2, positionWeight: 1, risk: 1} },
-      { text: '突出个人贡献，让领导记住你', effects: {desire: 3, positionWeight: 2, eq: -1, mentalPressure: 2} },
-      { text: '谦虚写法，功劳归集体', effects: {eq: 2, background: 1, mentalPressure: -1} },
-    ]},
     { id: 'enw005', stage: 'work', eventType: 'choice', weight: 6, title: '述职报告', text: '述职报告要求"见人见事见思想"。你写了三版，"事"有了，"思想"还在路上堵着。', choices: [
       { text: '挑一件最棘手的事，深挖体会', effects: {workAbility: 3, iq: 1, mentalPressure: 2} },
       { text: '套用模板，四平八稳交差', effects: {mentalPressure: -2, workAbility: 1, risk: 1} },
@@ -41,11 +35,6 @@ const gd_events_new_work = [
       { text: '问题轻描淡写，措施浓墨重彩', effects: {risk: 3, mentalPressure: 1, positionWeight: 1} },
       { text: '请领导先定整改基调再写', effects: {eq: 1, background: 1, mentalPressure: -1, risk: -1} },
     ]},
-    { id: 'enw009', stage: 'work', eventType: 'choice', weight: 4, title: '对照检查材料', text: '对照检查材料要"画准像"。你写了三遍"理论学习不够深入"，第四次开始怀疑自己是不是真的不够深入。', choices: [
-      { text: '挑一个真问题深挖，不怕露短', effects: {integrity: 3, workAbility: 2, mentalPressure: 3, positionWeight: -1} },
-      { text: '用通用表述，稳妥过关', effects: {mentalPressure: -2, risk: 1, eq: 1} },
-      { text: '找同事互相提提意见', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
-    ]},
     { id: 'enw010', stage: 'work', eventType: 'choice', weight: 6, title: '主持词', text: '一场会议的主持词交给你写。领导说"别太长，别太短，别太正式，别太随意"。你点头如捣蒜，心里一团乱麻。', choices: [
       { text: '按往届模板微调，求稳', effects: {workAbility: 2, mentalPressure: -1, risk: 1} },
       { text: '加入几句应景的鲜活话', effects: {eq: 1, workAbility: 2, risk: 2, mentalPressure: 2} },
@@ -55,11 +44,6 @@ const gd_events_new_work = [
       { text: '先求稳妥，出彩留给配图', effects: {risk: -2, mentalPressure: 1, workAbility: 1} },
       { text: '两头平衡，措辞精雕细琢', effects: {workAbility: 3, eq: 1, mentalPressure: 3} },
       { text: '出彩为主，宣传科那边自己沟通', effects: {positionWeight: 2, risk: 2, eq: -1, mentalPressure: 2} },
-    ]},
-    { id: 'enw012', stage: 'work', eventType: 'choice', weight: 5, title: '经验交流材料', text: '单位要推荐你写一份经验交流材料。你想想自己这一年，经验不多，教训不少。', choices: [
-      { text: '把教训包装成"探索"', effects: {workAbility: 2, iq: 2, risk: 2, mentalPressure: 2} },
-      { text: '聚焦一件成功案例深挖', effects: {workAbility: 3, positionWeight: 2, mentalPressure: 2} },
-      { text: '谦虚风格，多归功团队', effects: {eq: 2, background: 1, mentalPressure: -1} },
     ]},
     { id: 'enw013', stage: 'work', eventType: 'choice', weight: 4, title: '典型案例剖析', text: '一个典型案例要剖析，可这个案例就发生在你隔壁科室。笔尖往下压，人情往上顶。', choices: [
       { text: '就事论事，不点名不影射', effects: {workAbility: 2, eq: 1, risk: 1, mentalPressure: 2} },
@@ -112,11 +96,6 @@ const gd_events_new_work = [
       { text: '讲一个身边案例调动情绪', effects: {eq: 1, workAbility: 2, mentalPressure: 2} },
       { text: '按稿子念，稳妥交差', effects: {mentalPressure: -1, workAbility: 1, positionWeight: -1} },
       { text: '现场互动，提问几个关键人', effects: {workAbility: 2, positionWeight: 2, risk: 2, mentalPressure: 3} },
-    ]},
-    { id: 'enw023', stage: 'work', eventType: 'choice', weight: 6, title: '总结会', text: '总结会上人人要讲"不足"。你准备了三条不足，第一条就是"对不足认识不够深入"——一条递归的不足。', choices: [
-      { text: '讲真问题，附整改思路', effects: {integrity: 3, workAbility: 2, mentalPressure: 3} },
-      { text: '讲通用不足，不痛不痒', effects: {mentalPressure: -2, eq: 1, risk: 1} },
-      { text: '把不足讲成"提升空间"', effects: {eq: 1, workAbility: 1, mentalPressure: 1} },
     ]},
     { id: 'enw025', stage: 'work', eventType: 'choice', weight: 4, title: '民主生活会', text: '民主生活会上要相互批评。前面的同事给你提了一条"工作太拼要注意身体"，你分不清这是批评还是表扬。', choices: [
       { text: '回提一条真问题，敢于动真碰硬', effects: {integrity: 3, workAbility: 2, risk: 1, mentalPressure: 3} },
@@ -180,11 +159,6 @@ const gd_events_new_work = [
       { text: '提前沟通口径，互相体谅', effects: {eq: 2, background: 2, risk: 2, integrity: -2, mentalPressure: 1} },
       { text: '抓大放小，重点提醒', effects: {workAbility: 2, eq: 1, mentalPressure: 1} },
     ]},
-    { id: 'enw038', stage: 'work', eventType: 'choice', weight: 6, title: '年终考核', text: '年终考核指标下来，你分管的那一项权重不高，却是领导最关心的一项。你在"权重"和"关心"之间掂量。', choices: [
-      { text: '集中精力抓领导关心项', effects: {positionWeight: 2, workAbility: 2, mentalPressure: 3} },
-      { text: '各项均衡推进，不偏科', effects: {workAbility: 3, mentalPressure: 2, risk: -1} },
-      { text: '争取调整指标权重', effects: {background: 2, risk: 2, mentalPressure: 2} },
-    ]},
     { id: 'enw039', stage: 'work', eventType: 'choice', weight: 5, title: '党建考核（三会一课）', text: '党建考核要看"三会一课"记录。你翻出记录本，发现某次会议的签名栏像一片稀疏的草坪。', choices: [
       { text: '如实说明缺席原因', effects: {integrity: 3, workAbility: 1, risk: -1, mentalPressure: 2} },
       { text: '找当事人补签', effects: {risk: 3, integrity: -3, mentalPressure: 2, eq: -1} },
@@ -199,11 +173,6 @@ const gd_events_new_work = [
       { text: '认真整理，顺便检查台账', effects: {workAbility: 3, mentalPressure: 2, body: -1} },
       { text: '应付了事，做表面功夫', effects: {mentalPressure: -1, risk: 2, integrity: -1, workAbility: 1} },
       { text: '借机建立长效机制', effects: {workAbility: 3, iq: 2, mentalPressure: 3} },
-    ]},
-    { id: 'enw042', stage: 'work', eventType: 'choice', weight: 6, title: '绩效考核', text: '绩效考核结果关系到年底奖金。你的评分卡在"良好"和"优秀"之间，像一个停在半空的电梯。', choices: [
-      { text: '整理一年成绩，主动争取', effects: {desire: 2, positionWeight: 2, workAbility: 2, mentalPressure: 3} },
-      { text: '顺其自然，等结果', effects: {mentalPressure: -2, positionWeight: -1, desire: -1} },
-      { text: '请同事帮忙评价佐证', effects: {eq: 1, workAbility: 1, mentalPressure: 1} },
     ]},
     { id: 'enw043', stage: 'work', eventType: 'choice', weight: 6, title: '督查督办', text: '督查督办件下来了，限期三天反馈。你打开附件，发现要核实的事项横跨两个科室、三年时间。', choices: [
       { text: '立军令状，三天内交账', effects: {workAbility: 3, positionWeight: 2, mentalPressure: 5, body: -1} },
@@ -765,12 +734,6 @@ const gd_events_new_work = [
       { text: '提醒他注意回避制度', effects: {integrity: 2, eq: 1, contactRelation: { id: 'exBoss', delta: 0 } } },
     ]},
     // ---- 通用工作 ----
-    { id: 'enw157', stage: 'work', eventType: 'choice', weight: 4, title: '年度考核谈话', text: '年度考核结果出来，你得了"称职"。隔壁科室和你同期入职的小李得了"优秀"。领导找你谈话："你工作扎实，但亮点不足。"你低头，明白这话的潜台词。', choices: [
-      { text: '虚心接受，明年争取亮点', effects: {eq: 1, workAbility: 2, mentalPressure: 1} },
-      { text: '请领导指出改进方向', effects: {eq: 2, workAbility: 1} },
-      { text: '心里不服，但表面平静', effects: {mentalPressure: 2, desire: 1} },
-      { text: '找小李复盘实绩，主动补上自己薄弱的项目环节', effects: {eq: 1, workAbility: 2, desire: -1, mentalPressure: 1} },
-    ]},
     { id: 'enw158', stage: 'work', eventType: 'choice', weight: 4, title: '借阅档案', text: '你申请借阅一份三年前的档案，档案员犹豫了一下："按规定要领导签字。"你想起那份档案里有你当年的签字，忽然有点明白她为什么犹豫。', choices: [
       { text: '按流程找领导签字', effects: {workAbility: 1, integrity: 1, mentalPressure: 1} },
       { text: '说明用途，请档案员通融', effects: {eq: 1, risk: 1, integrity: -1} },
@@ -806,7 +769,6 @@ const gd_events_new_work = [
       { text: '考后找老科长解释', effects: {eq: 1, integrity: 1} },
       { text: '请老科长从轻处理同事的违规行为', effects: {eq: 1, risk: 2, integrity: -1} },
     ]},
-    { id: 'enw167', stage: 'work', eventType: 'auto', weight: 3, title: '督查通报', text: '你牵头的一项工作被省督查组通报表扬。办公室的同事们说"都是你的功劳"，你笑着摆手。晚上你翻了翻督查报告，发现被表扬的那几页，确实是加班熬出来的。', effects: {reputation: 3, positionWeight: 2, mentalPressure: -1} },
     { id: 'enw168', stage: 'work', eventType: 'choice', weight: 4, title: '值班电话', text: '周末值班，一通电话打进来："我孩子发烧，社区医院不开门，你们管不管？"你一边安抚对方，一边快速翻找应急预案——社区卫生服务中心的值班电话就在第一页。', choices: [
       { text: '立即协调社区卫生中心', effects: {workAbility: 3, peopleReputation: 2, eq: 1} },
       { text: '记录诉求，周一转办', effects: {workAbility: 1, peopleReputation: -1, risk: 1} },

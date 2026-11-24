@@ -41,6 +41,6 @@ test('offline precache lists existing game files',()=>{
 });
 test('new service worker only clears old game caches',()=>{
  const sw=read('sw.js');
- assert.match(sw,/shangan-pages-30/);
+ assert.match(sw,/shangan-pages-31/);
  assert.match(sw,/k\.startsWith\('shangan-pages-'\)/);
 });

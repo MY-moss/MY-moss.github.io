@@ -137,11 +137,6 @@ const gd_events_new_career = [
     { text: '用闲钱小仓位买蓝筹股', effects: {wealth: 2, risk: 2, iq: 1, mentalPressure: 2} },
     { text: '听消息重仓买入内幕股', effects: {wealth: 4, risk: 6, integrity: -3, mentalPressure: 4, desire: 3} },
   ]},
-  { id: 'enc028', stage: 'career', eventType: 'choice', weight: 5, title: '保险购买', text: '一位做保险的老同学极力推荐你买一份"全能保障"产品，年缴保费两万，缴十年。你不确定是否划算。', choices: [
-    { text: '仔细研究条款后决定', effects: {iq: 2, wealth: -1, mentalPressure: 1, integrity: 1} },
-    { text: '看在同学情面买一份', effects: {wealth: -2, eq: 1, mentalPressure: 1, risk: -1} },
-    { text: '婉拒只买基本社保', effects: {wealth: 0, mentalPressure: -1, eq: -1} },
-  ]},
   { id: 'enc029', stage: 'career', eventType: 'choice', weight: 4, title: '养老金并轨', text: '机关事业单位养老保险制度改革，养老金并轨政策正式实施。你要选择缴费档次，影响退休后的待遇。', choices: [
     { text: '按较高档次缴费保障退休', effects: {wealth: -2, mentalPressure: -2, iq: 1, political: 1} },
     { text: '按最低档次缴费保现钱', effects: {wealth: 1, mentalPressure: 1, desire: 1} },
@@ -214,30 +209,15 @@ const gd_events_new_career = [
   ]},
 
   // ========== 腐败风险类（enc046 ~ enc065） ==========
-  { id: 'enc046', stage: 'career', eventType: 'choice', weight: 5, title: '购物卡', text: '一个服务对象过节来拜访，硬塞给你一张面值2000元的购物卡，说"一点心意，过节了给家人买点东西"。', choices: [
-    { text: '坚决拒收讲明纪律', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -1} },
-    { text: '收下事后上交廉政账户', effects: {integrity: 2, risk: -1, mentalPressure: 2, background: 1} },
-    { text: '收下用于家庭消费', effects: {wealth: 2, risk: 5, integrity: -4, mentalPressure: 3, desire: 2} },
-  ]},
   { id: 'enc047', stage: 'career', eventType: 'choice', weight: 6, title: '土特产', text: '下乡调研结束，乡镇同志塞给你一后备箱土特产，有土鸡、腊肉、山货，价值不菲。', choices: [
     { text: '婉拒不拿群众一针一线', effects: {integrity: 3, risk: -2, mentalPressure: 1, eq: 1} },
     { text: '象征性拿一点其余退回', effects: {integrity: -1, risk: 2, mentalPressure: 1, eq: 1} },
     { text: '全部带回分给同事', effects: {wealth: 1, risk: 3, integrity: -2, eq: 1, mentalPressure: 1} },
   ]},
-  { id: 'enc048', stage: 'career', eventType: 'choice', weight: 5, title: '礼品卡', text: '年底了，一个长期合作供应商送来一张面值5000元的礼品卡，说是"感谢一年来的支持"。', choices: [
-    { text: '当面退回表明立场', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -1} },
-    { text: '收下但退还等值现金', effects: {integrity: -2, risk: 3, mentalPressure: 2, eq: 1} },
-    { text: '收下心安理得', effects: {wealth: 2, risk: 6, integrity: -5, mentalPressure: 3, desire: 2} },
-  ]},
   { id: 'enc049', stage: 'career', eventType: 'choice', weight: 5, title: '购物券', text: '单位发福利，有人提议用公款购买购物券发放给职工，每人500元。"反正是大家的福利，不会有人查。"', choices: [
     { text: '坚决反对公款发券违规', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -2} },
     { text: '不反对也不参与', effects: {integrity: 1, mentalPressure: 1, risk: 0, eq: -1} },
     { text: '支持发福利大家高兴', effects: {wealth: 1, risk: 5, integrity: -4, mentalPressure: 2, eq: 1} },
-  ]},
-  { id: 'enc050', stage: 'career', eventType: 'choice', weight: 5, title: '节礼', text: '中秋节，一位企业老板登门拜访，带来一盒高档月饼和两条中华烟，价值数千元。', choices: [
-    { text: '拒收节礼守住底线', effects: {integrity: 4, risk: -3, mentalPressure: 2, eq: -1} },
-    { text: '收下月饼退回烟', effects: {integrity: -2, risk: 3, mentalPressure: 1, eq: 1} },
-    { text: '热情收下留老板吃饭', effects: {wealth: 1, risk: 6, integrity: -5, mentalPressure: 3, eq: 1} },
   ]},
   { id: 'enc051', stage: 'career', eventType: 'choice', weight: 4, requireChild: true, requireChildAgeMin: 16, requireChildAgeMax: 19, title: '谢师宴', text: '孩子高考考上重点大学，亲戚朋友张罗着要办谢师宴，还要请孩子的老师们。现在明令禁止办谢师宴。', choices: [
     { text: '不办谢师宴遵守规定', effects: {integrity: 3, risk: -2, mentalPressure: 1, political: 1} },

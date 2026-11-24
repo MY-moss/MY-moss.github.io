@@ -51,13 +51,6 @@ const gd_events_basic_2 = [
       { text: '和其他继承人协商解决', effects: {eq: 2, familyPressure: -1, mentalPressure: 1, reputation: 1} },
       { text: '将遗产捐给慈善机构', effects: {integrity: 5, reputation: 3, mentalPressure: 1, familyPressure: -1, desire: -2} },
     ]},
-    { id: 'e100', stage: 'work', eventType: 'choice', title: '年终评优', weight: 3, text: '年底评优开始了，你被提名为"优秀工作者"候选人。但听说有人背后说你"只会做表面功夫"。', choices: [
-      { text: '用年度业绩数据说话', effects: {workAbility: 3, reputation: 2, positionWeight: 2, mentalPressure: 2, integrity: 1} },
-      { text: '让同事帮忙拉票支持', effects: {background: 2, eq: 1, mentalPressure: 1, reputation: 1, risk: 1} },
-      { text: '不在意评价做好自己', effects: {integrity: 3, mentalPressure: -1, reputation: 1, desire: -1} },
-      { text: '找领导沟通争取认可', effects: {positionWeight: 2, background: 2, desire: 2, mentalPressure: 2, reputation: 1} },
-      { text: '主动帮助同事提升团队业绩', effects: {eq: 2, workAbility: 2, reputation: 2, mentalPressure: 2, background: 1} },
-    ]},
     // ====== 更多生活与声誉事件 ======
     { pools: ['public'], id: 'e101', stage: 'life', eventType: 'choice', title: '楼上噪音纠纷', weight: 3, text: '楼上的邻居经常半夜发出噪音，你多次沟通无果。最近一次甚至吵了起来，对方扬言要去你单位投诉。', choices: [
       { text: '通过物业正规渠道调解', effects: {eq: 1, mentalPressure: 2, risk: -1, reputation: 1, integrity: 1} },

@@ -211,7 +211,6 @@ const gd_events_basic_1 = [
       { text: '联合支持改革者形成合力', effects: {background: 2, positionWeight: 2, desire: 2, risk: 2} },
     ]},
     // 年度考核优秀
-    { id: 'e054', stage: 'work', eventType: 'auto', title: '年度考核优秀', weight: 5, text: '今年的年度考核你被评为优秀等次。虽然只是一纸证书，但领导看你的眼神不太一样了。', effects: {positionWeight: 3, desire: 2, workAbility: 1, mentalPressure: -2} },
     // 舆情危机
     { id: 'e055', stage: 'work', eventType: 'choice', title: '舆情危机', weight: 3, text: '一篇关于你单位"办事难"的报道在网上热传，评论区一边倒。领导让你尽快拿出应对方案。', choices: [
       { text: '立即核实事实发布官方说明', effects: {workAbility: 3, positionWeight: 2, risk: -2, mentalPressure: 4} },
@@ -309,13 +308,6 @@ const gd_events_basic_1 = [
       { text: '把精力投入到培养新人上', effects: {eq: 2, workAbility: 2, mentalPressure: -1, background: 2} },
     ]},
     // 年终考核
-    { id: 'e067', stage: 'work', eventType: 'choice', title: '年终考核谈话', weight: 3, text: '年终考核结果出来了，你的评分在单位排名中等。领导找你谈话，暗示你"工作不够主动"，需要多表现。', choices: [
-      { text: '虚心接受意见制定改进计划', effects: {eq: 1, workAbility: 3, mentalPressure: 2, positionWeight: 1, integrity: 1} },
-      { text: '争取更多表现机会主动揽活', effects: {desire: 3, workAbility: 2, mentalPressure: 3, positionWeight: 2, risk: 1} },
-      { text: '反思自己调整工作方式', effects: {workAbility: 2, iq: 1, mentalPressure: 2, integrity: 2} },
-      { text: '认为考核不公找领导理论', effects: {integrity: 2, risk: 2, mentalPressure: 4, positionWeight: -2, eq: -1} },
-      { text: '向优秀同事请教经验', effects: {eq: 1, workAbility: 2, background: 1, mentalPressure: 1} },
-    ]},
     // 疫情防控
     { id: 'e068', stage: 'work', eventType: 'choice', title: '应急处置', weight: 3, text: '突发公共卫生事件，你被派往一线参与应急处置工作。连续奋战十几个小时，身心俱疲。', choices: [
       { text: '坚守岗位疫情不退我不退', effects: {integrity: 5, positionWeight: 3, body: -3, mentalPressure: 6, background: 3} },

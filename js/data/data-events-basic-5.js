@@ -158,13 +158,6 @@ const gd_events_basic_5 = [
 
     // ====== 自然触发事件（基于玩家状态，无flag要求）=====
     { id: 'e366', stage: 'work', eventType: 'auto', title: '入职周年', weight: 4, text: '今天是你入职三周年。三年前的今天你满怀憧憬走进这个院子，现在你已经熟悉了这里的每一间办公室、每一台打印机、每一张报销单。', effects: {mentalPressure: -1, workAbility: 1, desire: 1, positionWeight: 1} },
-    { id: 'e367', stage: 'work', eventType: 'choice', title: '年度考核', weight: 3, text: '一年一度的考核开始了。你要写个人述职报告，同事要给你打分，领导要给你写评语。你觉得自己这一年表现如何？', choices: [
-      { text: '认真总结成绩和不足', effects: {workAbility: 2, integrity: 2, mentalPressure: 1, reputation: 1, positionWeight: 1} },
-      { text: '把小事写成亮点', effects: {desire: 2, risk: 1, mentalPressure: 1, positionWeight: 1} },
-      { text: '主动找领导沟通争取好评', effects: {eq: 1, background: 1, mentalPressure: 2, positionWeight: 1} },
-      { text: '如实评价自己，不夸大', effects: {integrity: 3, mentalPressure: -1, reputation: 1} },
-      { text: '请同事帮忙美言几句', effects: {eq: 1, background: 1, risk: 1, mentalPressure: 1} },
-    ]},
     { id: 'e368', stage: 'work', eventType: 'auto', title: '年度优秀', weight: 3, text: '年度考核结果出来了！你被评为"优秀"等次。这是对你一年工作的最好肯定，也是来年晋升的重要加分项。', effects: {reputation: 3, positionWeight: 2, desire: 2, mentalPressure: -2, workAbility: 1} },
     { id: 'e369', stage: 'work', eventType: 'choice', title: '年终总结', weight: 3, text: '年底了，各个科室都在写年终总结。你发现有些科室的数据水分很大，把自己的工作成绩放大了好几倍。', choices: [
       { text: '实事求是写自己的总结', effects: {integrity: 3, workAbility: 1, reputation: 2, mentalPressure: 1} },

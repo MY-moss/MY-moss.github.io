@@ -215,7 +215,6 @@ const gd_events_basic_4 = [
 
     // ====== 负面/惩罚事件 ======
     { id: 'e195', stage: 'work', eventType: 'auto', title: '通报批评（全市）', weight: 4, text: '你负责的工作出现了严重失误，被上级在全市通报批评。你的脸面丢尽了，同事们看你的眼神都变了。', pools: ['public'], effects: {reputation: -5, positionWeight: -3, mentalPressure: 6, desire: -2} },
-    { id: 'e196', stage: 'work', eventType: 'auto', title: '考核垫底', weight: 4, text: '年度考核结果出来了，你的排名在单位垫底。按照末位淘汰制，你可能会被调离现岗位。', pools: ['public'], effects: {reputation: -4, positionWeight: -3, mentalPressure: 5, desire: -3, appearance: -1} },
     { id: 'e197', stage: 'work', eventType: 'auto', title: '群众举报', weight: 3, text: '有群众向纪委举报你"不作为、慢作为"。虽然你觉得自己很冤枉，但调查组已经进驻了。', pools: ['public'], requirePeopleReputationMax: 69, effects: {risk: 5, mentalPressure: 6, reputation: -2, positionWeight: -1, peopleReputation: -3} },
     { id: 'e198', stage: 'life', eventType: 'auto', title: '亲属出事', weight: 3, text: '你的一个远房亲属因为违法被公安机关抓了。虽然和你没有直接关系，但在单位里影响很不好。', pools: ['public'], effects: {reputation: -2, familyPressure: 5, mentalPressure: 4, risk: 2} },
     { id: 'e199', stage: 'work', eventType: 'auto', title: '问责处理', weight: 4, text: '因为你分管领域出现的问题，你被问责处理了。虽然只是诫勉谈话，但你的晋升前景受到了严重影响。', pools: ['public'], effects: {positionWeight: -4, reputation: -3, mentalPressure: 6, desire: -3, risk: 2} },
@@ -290,7 +289,6 @@ const gd_events_basic_4 = [
       { text: '找领导说情大事化小', effects: {background: 2, reputation: -2, mentalPressure: 1, risk: 3, integrity: -2} },
       { text: '连夜补救争取挽回损失', effects: {workAbility: 3, body: -2, mentalPressure: 6, positionWeight: 2, reputation: 1} },
     ]},
-    { id: 'e313', stage: 'work', eventType: 'auto', title: '通报批评（大会）', weight: 4, text: '你在大会上被通报批评了。虽然不是处分，但面子上过不去。你暗下决心，绝不能再有下次。', effects: {reputation: -3, positionWeight: -2, desire: 2, mentalPressure: 4, workAbility: 2} },
     { id: 'e314', stage: 'work', eventType: 'auto', title: '警告处分', weight: 3, text: '经组织研究决定，给予你警告处分。这份处分将记入档案，影响你未来两年的晋升。你深刻体会到了"纪律"二字的重量。', effects: {reputation: -5, positionWeight: -5, desire: -3, mentalPressure: 8, risk: -3, integrity: 2} },
     { id: 'e315', stage: 'work', eventType: 'auto', title: '记过处分', weight: 3, text: '你的违规行为被查实，组织决定给予记过处分。这意味着你的晋升将暂停至少一年，年度考核也被评为不合格。', effects: {reputation: -4, positionWeight: -4, mentalPressure: 6, desire: -3, risk: -3, integrity: 3}, requireRisk: 20 },
     { id: 'e316', stage: 'work', eventType: 'auto', title: '处分期满', weight: 4, text: '处分期终于结束了！你长长地舒了一口气。这段经历让你更加谨慎，也更加珍惜现在的工作。', requireFlag: 'writtenSelfCriticism', effects: {reputation: 3, positionWeight: 3, mentalPressure: -5, integrity: 3, workAbility: 2} },

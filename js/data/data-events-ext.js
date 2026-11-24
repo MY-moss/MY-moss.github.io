@@ -582,13 +582,6 @@ const gd_events_ext = [
       { text: '用打车软件加钱叫车', effects: {familyPressure: 1, mentalPressure: -1, iq: 1} },
       { text: '看到同事也在躲雨一起等', effects: {eq: 1, background: 1, mentalPressure: -1} },
     ]},
-    { id: 'e548', stage: 'work', eventType: 'choice', title: '停车纠纷', weight: 5, text: '单位停车位紧张，你来得早占了个车位。下班时发现你的车被另一辆车堵住了，车上没有留电话。等了二十分钟车主没来，你急着去接孩子。', pools: ['public'], choices: [
-      { text: '在单位群里问问是谁的车', effects: {eq: 1, mentalPressure: 1, background: 1, luck: -1} },
-      { text: '打122叫交警拖车', effects: {integrity: 2, risk: 1, mentalPressure: 2} },
-      { text: '打车先走回头再来开', effects: {familyPressure: 1, mentalPressure: -1, workAbility: 1} },
-      { text: '在对方车上留个纸条提醒', effects: {eq: 1, mentalPressure: -1, integrity: 1} },
-      { text: '找单位保安帮忙解决', effects: {eq: 1, workAbility: 1, mentalPressure: 1} },
-    ]},
     { id: 'e549', stage: 'work', eventType: 'choice', title: '食堂改革', weight: 5, text: '单位食堂承包合同到期了，要重新招标。同事们私下的意见很大——有人说菜太难吃，有人说份量太少，有人嫌太贵。领导让你负责收集意见并拿出方案。', pools: ['public'], choices: [
       { text: '发问卷收集全单位意见', effects: {workAbility: 3, eq: 1, mentalPressure: 3, reputation: 2, flag: 'canteenReform'} },
       { text: '对比其他单位食堂方案', effects: {iq: 2, workAbility: 2, mentalPressure: 2, reputation: 1} },

@@ -755,6 +755,22 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'renewRoutePilot', next: 'renew_route_2', delay: 2 },
         { flag: 'renewRouteReviewed', next: 'renew_route_3', delay: 2 },
         { flag: 'renewRouteThird', next: 'renew_route_4', delay: 3 },
+        { flag: 'renewLessonChoice', next: 'renew_lesson_2', delay: 2 },
+        { flag: 'renewLessonCareer', next: 'renew_lesson_2', delay: 2 },
+        { flag: 'renewLessonCraft', next: 'renew_lesson_2', delay: 2 },
+        { flag: 'renewLessonReviewed', next: 'renew_lesson_3', delay: 3 },
+        { flag: 'renewRoomRead', next: 'renew_room_2', delay: 2 },
+        { flag: 'renewRoomRotate', next: 'renew_room_2', delay: 2 },
+        { flag: 'renewRoomPause', next: 'renew_room_2', delay: 2 },
+        { flag: 'renewRoomReviewed', next: 'renew_room_3', delay: 3 },
+        { flag: 'renewKeepsakeRecord', next: 'renew_keepsake_2', delay: 2 },
+        { flag: 'renewKeepsakeGive', next: 'renew_keepsake_2', delay: 2 },
+        { flag: 'renewKeepsakeStepBack', next: 'renew_keepsake_2', delay: 2 },
+        { flag: 'renewKeepsakeReviewed', next: 'renew_keepsake_3', delay: 3 },
+        { flag: 'renewBookEdit', next: 'renew_book_2', delay: 2 },
+        { flag: 'renewBookLink', next: 'renew_book_2', delay: 2 },
+        { flag: 'renewBookReader', next: 'renew_book_2', delay: 2 },
+        { flag: 'renewBookReviewed', next: 'renew_book_3', delay: 3 },
     ];
 };
 // 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
@@ -763,7 +779,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
     const known=new Set((GameData.events||[]).map(e=>e.id));
     const unique=new Map();
     const labels=[
-      [/^renew_stage_/,'小剧场 · 罗青'],[/^renew_route_/,'公交变迁 · 顾芸'],[/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
+      [/^renew_lesson_/,'第二志愿 · 小梁'],[/^renew_room_/,'借来的教室 · 唐老师'],[/^renew_keepsake_/,'家庭旧物 · 不同记忆'],[/^renew_book_/,'样书 · 阿岑'],[/^renew_stage_/,'小剧场 · 罗青'],[/^renew_route_/,'公交变迁 · 顾芸'],[/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
@@ -815,6 +831,53 @@ GameEngine.prototype.getLifePathEvent = function(event) {
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'renew_lesson_2':
+      if(f.renewLessonChoice)add('小梁还留着当年你给他的两份说明，这次他已经自己问过新岗位的人。');
+      else if(f.renewLessonCareer){add('当年你推荐的发展方向与这次选择不同，他有些担心你会认为自己走了弯路。');bump(0,{mentalPressure:1});}
+      else if(f.renewLessonCraft){add('那段技术工作给了他继续学习的机会，但留下并不是他唯一能作的选择。');bump(1,{workAbility:1});}
+      if(f.renewCreditRelease){add('你曾经支持沈宁独立发展，知道不能用交接作为挽留的条件。');bump(0,{mentalPressure:-1});}
+      break;
+    case 'renew_lesson_3':
+      if(f.renewLessonRelease)add('那份按事实整理的履历是小梁后来准备申请时参考过的材料之一。');
+      else if(f.renewLessonTerms)add('你们当年谈过的发展条件与小梁今天的经历并不完全相同。');
+      else if(f.renewLessonDistance){add('完成那次交接后，你们一直很少谈个人发展。今天的相遇并非你安排的。');bump(0,{mentalPressure:1});}
+      if(f.renewCreditLegacy)add('你想起与沈宁核对旧试点署名的那次交流，没有把小梁的成果写进自己的功劳簿。');
+      break;
+    case 'renew_room_2':
+      if(f.renewRoomRead){add('阅读组在临时教室里维持了活动，其他使用者也带来了那段时间未能满足的需求。');bump(0,{mentalPressure:1});}
+      else if(f.renewRoomRotate){add('旧轮换表保留着三类活动的时段，唐老师据此能够回顾真实使用情况。');bump(0,{workAbility:1});}
+      else if(f.renewRoomPause){add('部分活动在维修期间中断，有几位参与者此后不再回到原来的小组。');bump(1,{peopleReputation:-1});}
+      if(f.renewRepairLegacy)add('你记得设施移交时维护责任的事，这次把两处场地的维护问题一起列出来。');
+      break;
+    case 'renew_room_3':
+      if(f.renewRoomDual)add('后来两处场地的活动各有变化，学校那一组也保留了自己的组织方式。');
+      else if(f.renewRoomReturn)add('原活动室重新成为社区活动的主要场地，学校的活动则由自己安排。');
+      else if(f.renewRoomDiscuss){add('那次讨论记录中仍有没能满足的场地需求，新团队准备重新了解参与者的意见。');bump(2,{mentalPressure:1});}
+      if(f.renewWindowLegacy){add('人工服务入口的旧经验提醒你，缺席的人同样可能有需求。');bump(0,{workAbility:1});}
+      break;
+    case 'renew_keepsake_2':
+      if(f.renewKeepsakeRecord)add('当年整理的几段口述并不一致，这张照片又提供了另一条线索。');
+      else if(f.renewKeepsakeGive)add('收音机仍由另一位亲属保存，你拿出自己留存的那张照片。');
+      else if(f.renewKeepsakeStepBack){add('上次你没有参与物品归属的讨论，这次也可以只说自己知道的部分。');bump(1,{mentalPressure:-1});}
+      break;
+    case 'renew_keepsake_3':
+      if(f.renewKeepsakeVoices)add('照片旁还留着几段并列的口述，年轻人不必选择哪一个版本才算唯一真相。');
+      else if(f.renewKeepsakePrivacy)add('当年有人不愿意讲述的部分仍被留空，年轻人也没有要求你补上。');
+      else if(f.renewKeepsakeWait){add('旧照片说明没有被改动过，其中几处空白直到今天仍不能确认。');bump(0,{mentalPressure:1});}
+      if(f.renewBookReviewed)add('你想起阿岑那册样书的撤稿问题，提醒自己家人的故事也需要尊重本人意愿。');
+      break;
+    case 'renew_book_2':
+      if(f.renewBookEdit){add('你还留着自己校对过的那几页，但原作者的选择不能由校对者代替。');bump(0,{mentalPressure:1});}
+      else if(f.renewBookLink)add('你曾提供公开展示渠道，这次需要提醒阿岑核对后续展示使用的版本。');
+      else if(f.renewBookReader){add('你自己只是试印本的读者，没有编辑权限，也不需要接手阿岑的决定。');bump(2,{mentalPressure:-1});}
+      break;
+    case 'renew_book_3':
+      if(f.renewBookWithdraw)add('撤回的文字没有出现在后来出版的内容里，过去已经流通的版本仍属于当时的历史。');
+      else if(f.renewBookReplace)add('后来补入的文字有自己的作者和经历，并不是对被撤回故事的复刻。');
+      else if(f.renewBookLimit)add('你没有继续参与编辑工作，新书也不是你当年那次参与的成果。');
+      if(f.renewStageCreate){add('你想起离开旧剧场后开始的创作，理解新作者不必重复前人的故事。');bump(0,{mentalPressure:-1});}
+      if(f.renewKeepsakeVoices)add('家庭照片里的不同记忆也让你愿意听见作者自己的表达。');
+      break;
     case 'renew_stage_2':
       if(f.renewStageRegular){add('一年来你已经熟悉自己的角色，节目单上原本印着你的名字。');bump(0,{mentalPressure:-1});}
       else if(f.renewStageGuest){add('你仍只是临时帮忙的人。罗青这次问你能不能替缺席的演员补一场。');out.choices[0].text='接受临时邀请，提前完成工作交接';result(0,'你带着重新熟悉的台词上了台，最后一场终于没有缺人。');}
@@ -1507,6 +1570,10 @@ GameEngine.prototype.getLifeEvaluation = function() {
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
+  if(f.renewLessonLegacy)memories.push('你与小梁多年后以独立同行的身份交谈。');
+  if(f.renewRoomLegacy)memories.push('唐老师离开岗位后，社区活动空间的记录交给了新一代组织者。');
+  if(f.renewKeepsakeLegacy)memories.push('家里的旧照片与不同记忆得到了有边界的保存。');
+  if(f.renewBookLegacy)memories.push('阿岑带来的新书属于新的作者，你留下了自己实际参与的记忆。');
   if(f.renewStageLegacy)memories.push('小剧场重新开放后，你留下了真正属于自己的那部分回忆。');
   if(f.renewRouteLegacy)memories.push('你和顾芸多年后以普通乘客的身份再次相遇。');
   if(f.renewCreditLegacy)memories.push('你和沈宁在多年后核对了共同工作的真实贡献。');
