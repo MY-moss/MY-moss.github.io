@@ -1,6 +1,15 @@
 // 事件生成热路径会对每个候选事件检查这些 ID；用共享 Set 避免每年/每事件重复创建数组。
 const EVENT_TEMPTATION_IDS = new Set(['e051','e071','e185','e187','e188','e191','e194','e375','e439','e749','e755','e681','e682','e683','e686']);
 
+// A persistent commitment keeps the date of its first activation. Explicit deletion followed by activation starts a new cycle.
+GameEngine.prototype.markEventFlag = function(flag) {
+    const p=this.state.player,f=p.flags;
+    if(flag==='gamblingAddict'&&!f[flag]){
+      p.seenEvents=(p.seenEvents||[]).filter(id=>!['e747','e765'].includes(id));
+    }
+    if(!f[flag] || !Number.isFinite(Number(f[flag+'_since'])) || Number(f[flag+'_since'])<=0)f[flag+'_since']=p.age;
+    f[flag]=true;
+};
 GameEngine.prototype.applyEffects = function(eff) {
 for (const [k, v] of Object.entries(eff)) {
       if (k === 'wealth') {
@@ -26,10 +35,10 @@ for (const [k, v] of Object.entries(eff)) {
       if (k === 'childCompany') { this.state.player.childCompany = (this.state.player.childCompany || 0) + v; continue; } // v2.48 子女陪伴计数
       if (k === 'reputation') { this.state.player.reputation = this.clampStat('reputation', this.state.player.reputation + v); continue; }
       if (k === 'peopleReputation') { this.state.player.peopleReputation = this.clampStat('peopleReputation', (this.state.player.peopleReputation ?? 50) + v); continue; } // v2.21 民间口碑
-      if (k === 'flag') { if (typeof v === 'string') { this.state.player.flags[v] = true; this.state.player.flags[v + '_since'] = this.state.player.age; // v2.64 记录 flag 设置年份，供延迟刚性链（delay）判定
+      if (k === 'flag') { if (typeof v === 'string') { this.markEventFlag(v); // v2.64 记录 flag 设置年份，供延迟刚性链（delay）判定
         if (v === 'resigned') this.state.player.isEmployed = false; if (v === 'reformProposal' || v === 'reformDraft') this.state.player.flags.reformCount = (this.state.player.flags.reformCount || 0) + 1; if (v === 'helpedCitizen' || v === 'petitionWork') this.state.player.flags.peopleEventCount = (this.state.player.flags.peopleEventCount || 0) + 1; } continue; }
       // P3 剧本链：一次选择同时落下多个 flag（链推进 flag + 剧情风味 flag），各自记录 _since 供延迟链判定
-      if (k === 'setFlags' && Array.isArray(v)) { v.forEach(f => { if (typeof f === 'string' && f) { this.state.player.flags[f] = true; this.state.player.flags[f + '_since'] = this.state.player.age; } }); continue; }
+      if (k === 'setFlags' && Array.isArray(v)) { v.forEach(f => { if (typeof f === 'string' && f) { this.markEventFlag(f); } }); continue; }
       if (k === 'deleteFlag') { if (typeof v === 'string') { delete this.state.player.flags[v]; delete this.state.player.flags[v + '_since']; if (v === 'borrowed') this.settleBorrowDebt('personal'); else if (v === 'loanOnline') this.settleBorrowDebt('online'); } continue; }
       if (k === 'deleteFlags' && Array.isArray(v)) { const debtTypes=[]; v.forEach(flag => { if (typeof flag === 'string' && flag) { delete this.state.player.flags[flag]; delete this.state.player.flags[flag + '_since']; if (flag === 'borrowed') debtTypes.push('personal'); else if (flag === 'loanOnline') debtTypes.push('online'); } }); if (debtTypes.length) this.settleBorrowDebt(debtTypes); continue; }
       if (k === 'marry') { this.state.player.isMarried = true; delete this.state.player.flags.dating; delete this.state.player.flags.dating_since; continue; } // v2.66 结婚即恋爱终结（原 dating 残留导致婚后仍触发恋爱三年决断）
@@ -209,7 +218,7 @@ GameEngine.prototype.handleEventChoice = function(ci) {
         gp.flags.gambleStreak = gs + 1;
         gp.flags.gambleMiss = 0;
         gp.flags.gambleLastYear = gp.yearsWorked;
-        gp.flags.gamblingAddict = true;
+        this.markEventFlag('gamblingAddict');
       } else {
         gp.flags.gambleMiss = (gp.flags.gambleMiss || 0) + 1;
         gp.flags.gambleLastYear = gp.yearsWorked;
@@ -220,7 +229,7 @@ GameEngine.prototype.handleEventChoice = function(ci) {
         gp.flags.gambleStreak = Math.max(0, (gp.flags.gambleStreak || 1) - 1);
         gp.flags.gambleMiss = 0;
         if (gp.flags.gambleStreak === 0) {
-          delete gp.flags.gamblingAddict;
+          delete gp.flags.gamblingAddict; delete gp.flags.gamblingAddict_since;
           gp.careerLog.push({ year: gp.age, event: '🎲 你终于戒掉了赌瘾，心里那块石头落了地' });
         } else {
           gp.careerLog.push({ year: gp.age, event: `🎲 赌瘾有所消退（赌欲等级 ${gp.flags.gambleStreak}）` });
@@ -232,6 +241,10 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     }
     // 选项条件门槛：不满足条件的选项（背景/财富/flag）直接拦截，防止绕过UI触发
     this.applyEffects(c.effects);
+    if(e.id==='ent235'){
+      const p=this.state.player;if(p.education!=='doctor')p.education='master';
+      delete p.flags.mbaApply;delete p.flags.mbaApply_since;delete p.flags.mbaActive;delete p.flags.mbaActive_since;
+    }
     // 已有大量事件写有 c.result，但此前游戏完全不消费这个字段；
     // 将明确的近期结果写进履历，供下一屏和存档回顾。剧情延迟结果仍由独立事件负责。
     if (typeof c.result === 'string' && c.result.trim()) {
@@ -263,7 +276,9 @@ GameEngine.prototype.handleEventChoice = function(ci) {
     this.clampAttrs();
     this.state.currentEvent = null; if (e.id !== 'e110') this.checkEndings();
     // 赌博戒断（e747）：选择"戒赌"选项后彻底清除赌瘾状态（streak/连续未赌计数）
-    if (e.id === 'e747' && c.effects && c.effects.deleteFlag === 'gamblingAddict') {
+    if (['e747','e765'].includes(e.id) && c.effects && (c.effects.deleteFlag === 'gamblingAddict' || c.effects.deleteFlags?.includes('gamblingAddict'))) {
+      delete this.state.player.flags.gamblingRelapse;
+      delete this.state.player.flags.gamblingRelapse_since;
       this.state.player.flags.gambleStreak = 0;
       this.state.player.flags.gambleMiss = 0;
       this.state.player.flags.gambleLastYear = 0;
@@ -312,8 +327,7 @@ GameEngine.prototype.applyEventEffects = function(event) {
     }
     // 派系清算：曾站队的领导调走/倒台 → 风险
     if (event && (event.id === 'e022' || event.id === 'e028') && this.state.player.flags.faction_lean) {
-      this.state.player.flags.faction_leaned_out = true;
-      this.state.player.flags.faction_leaned_out_since = this.state.player.age; // v2.66 补 _since（原直写导致 RIGID_CHAINS delay=1 退化为 0）
+      this.markEventFlag('faction_leaned_out'); // v2.66 补 _since（原直写导致 RIGID_CHAINS delay=1 退化为 0）
       this.state.hidden.positionWeight = Math.max(0, this.state.hidden.positionWeight - 5);
       this.state.hidden.mentalPressure += 6;
       this.state.player.reputation = Math.max(0, this.state.player.reputation - 3);

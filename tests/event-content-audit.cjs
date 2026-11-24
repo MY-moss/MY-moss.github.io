@@ -25,6 +25,7 @@ const runtimeFlags=new Set();
 for(const path of scriptFiles.filter(path=>path.startsWith('js/engine/')||path.startsWith('js/app/'))){
  const text=readFileSync(resolve(root,path),'utf8');
  for(const match of text.matchAll(/\.flags\.([A-Za-z_$][\w$]*)\s*=\s*true\b/g))runtimeFlags.add(match[1]);
+ for(const match of text.matchAll(/\.markEventFlag\(['"]([A-Za-z_$][\w$]*)['"]\)/g))runtimeFlags.add(match[1]);
 }
 for(const f of runtimeFlags)flags.add(f);
 const permitted=new Set(['wealth','addDebt','political','education','childEducation','childCompany','reputation','peopleReputation','flag','setFlags','deleteFlag','deleteFlags','marry','child','contact','addEnemy','contactRelation','contactRelation2','contactDelta','contactEvolution','grassrootsDispatch','debtForgive','debtRateMul','heat','leadershipRank','central','grassrootsReturn','grassrootsStay','grassrootsLower','iq','eq','luck','family','appearance','body','desire','familyPressure','integrity','risk','background','workAbility','positionWeight','mentalPressure','careerLogNote','reformCount']);

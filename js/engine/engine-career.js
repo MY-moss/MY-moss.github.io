@@ -29,6 +29,9 @@ GameEngine.prototype._rcy_snapshotAndAdvance = function(eraEff) {
     p.lastYearHidden = Object.assign({}, s.hidden);
     p.lastYearAttrs = Object.assign({}, this.state.attrs);
     p.lastYearWealth = p.wealth || 0;
+    for(const {flag} of this.getCausalChainSteps()){
+      if(p.flags[flag] && !(Number(p.flags[flag+'_since'])>0))p.flags[flag+'_since']=p.age;
+    }
     s.year++; p.age++; p.yearsWorked++;
     s.pendingMicro = null; // P2：上一年未回应的使绊窗口过期（不回应=维持原状，模拟行为不变）
 if (p.unit) { s.hidden.mentalPressure += Math.round(p.unit.stress * 0.05); s.hidden.risk += Math.round(p.unit.riskDensity * 0.03); }
@@ -551,7 +554,7 @@ GameEngine.prototype._rcy_deadFlagConsumption = function() {
           p.flags.gambleMiss = 0;
           p.flags.gambleLastYear = p.yearsWorked;
           if (p.flags.gambleStreak === 0) {
-            delete p.flags.gamblingAddict;
+            delete p.flags.gamblingAddict; delete p.flags.gamblingAddict_since;
             p.careerLog.push({ year: p.age, event: '🎲 你终于戒掉了赌瘾，心里那块石头落了地' });
           } else {
             p.careerLog.push({ year: p.age, event: `🎲 赌瘾有所消退（赌欲等级 ${p.flags.gambleStreak}）` });
@@ -572,7 +575,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
     return [
         { flag: 'mbaApply', next: 'ent233', delay: 1 },
         { flag: 'mbaActive', next: 'ent234', delay: 1 },
-        { flag: 'mbaDegree', next: 'ent235', delay: 1 },
+        { flag: 'mbaDegree', next: 'ent235', delay: 3 },
         { flag: 'healthRisk', next: 'ent245', delay: 1, unless: ['healthCare','healthTreated','healthStable'] },
         { flag: 'healthHardhead', next: 'arc_health_retry', delay: 2, unless: ['healthCare','healthTreated','healthStable','healthRisk'], allowSeenRisk: true },
         { flag: 'healthCare', next: 'ent246', delay: 1 },
@@ -591,7 +594,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'mortgage', next: 'ent258', delay: 1 }, // 贷款买房后必然月供压力
         { flag: 'faction_lean', next: 'ent260', delay: 2 }, // 站队后 2 年派系风云（得势/失势/转向抉择）
         { flag: 'faction_leaned_out', next: 'ent262', delay: 1 }, // 靠山倒台后必然面对清算/转向
-        { flag: 'dating', next: 'ent263', delay: 3 }, // 恋爱满 3 年必然决断（结婚/继续/分手）
+        { flag: 'dating', next: 'ent263', delay: 3, singleOnly:true }, // 恋爱满 3 年必然决断（结婚/继续/分手）
         { flag: 'faction_steadfast', next: 'ent261', delay: 2 }, // v2.66 坚定站队 → 2 年后必然得势
         { flag: 'mortgage', next: 'ent259', delay: 4 },
         { flag: 'mortgage', next: 'arc_mortgage_3', delay: 8 }, // v2.66 房贷 4 年后必然可提前还贷（出口保障，原 ent259 池子概率极低）
@@ -742,6 +745,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
     this.getCausalChainSteps().forEach((step,index)=>{
       if(!flags[step.flag]||seen.has(step.next)||!known.has(step.next))return;
       if(step.nonMember && p.political==='cpc')return;
+      if(step.singleOnly && p.isMarried)return;
       if(step.unless?.some(k=>flags[k] && !(step.allowSeenRisk && k==='healthRisk' && seen.has('ent245'))))return;
       const since=Number(flags[step.flag+'_since']);
       const dueAge=Number.isFinite(since)&&since>0 ? since+(step.delay||1) : p.age+(step.delay||1);
@@ -1290,7 +1294,7 @@ GameEngine.prototype.autoSettleGamble = function() {
       }
       p.flags.gambleStreak = gs + 1;
       p.flags.gambleMiss = 0;
-      p.flags.gamblingAddict = true;
+      this.markEventFlag('gamblingAddict');
     } else {
       // 忍住了：连续 4 次不赌 → 赌瘾消退（streak 递减，归零戒除）
       p.flags.gambleMiss = (p.flags.gambleMiss || 0) + 1;
@@ -1299,7 +1303,7 @@ GameEngine.prototype.autoSettleGamble = function() {
         p.flags.gambleStreak = Math.max(0, gs - 1);
         p.flags.gambleMiss = 0;
         if (p.flags.gambleStreak === 0) {
-          delete p.flags.gamblingAddict;
+          delete p.flags.gamblingAddict; delete p.flags.gamblingAddict_since;
           p.careerLog.push({ year: p.age, event: '🎲 你终于戒掉了赌瘾，心里那块石头落了地' });
         } else {
           p.careerLog.push({ year: p.age, event: `🎲 赌瘾有所消退（赌欲等级 ${p.flags.gambleStreak}）` });

@@ -13,7 +13,7 @@ for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:360
  await page.evaluate(()=>{const e=eval('engine'),p=e.getPlayer();p.finance.cash=200;e.syncWealth();p.flags.ventureStake=false;delete p.flags.ventureStake_since;p.flags.financeUsed=0;p.actionPoints=3;window.App.doFinance('venture');});
  const financialFollowup=await page.evaluate(()=>{const e=eval('engine'),p=e.getPlayer();return{started:p.flags.ventureStake,year:p.flags.ventureStake_since,cash:p.finance.cash,queue:e.getPendingCausalConsequences().map(x=>x.id)}});assert.equal(financialFollowup.started,true);assert.ok(financialFollowup.queue.includes('arc_venture_disclosure_1'));
  await page.reload();await page.getByRole('button',{name:/读取第2个存档/}).click();assert.ok(await page.evaluate(()=>eval('engine').getPlayer().flags.receiptOpen));
- const worker=await page.evaluate(async()=>({controller:!!navigator.serviceWorker.controller,keys:await caches.keys()}));assert.ok(worker.controller&&worker.keys.includes('shangan-pages-26'));
+ const worker=await page.evaluate(async()=>({controller:!!navigator.serviceWorker.controller,keys:await caches.keys()}));assert.ok(worker.controller&&worker.keys.includes('shangan-pages-27'));
  let offline='not checked';if(viewport.width===390){await c.setOffline(true);await page.reload();await page.locator('.game-container').waitFor();offline='loaded';}
  assert.deepEqual(errors,[]);assert.deepEqual(resources,[]);out.push({viewport,context,lines,inbox,financialFollowup,offline,errors,resources});await c.close();
 }await browser.close();console.log(JSON.stringify(out,null,2))})().catch(e=>{console.error(e);process.exit(1)});

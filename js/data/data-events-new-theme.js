@@ -943,30 +943,30 @@ const gd_events_new_theme = [
   { id: 'ent232', eventType: 'choice', weight: 5, year: [2, 48], stage: 'work', title: '🎓 在职研究生的念头',
     text: '同办公室的小王考上了 MPA，请客那天桌上的人都恭喜他。晚上你躺在床上翻来覆去：文凭这东西，平时没用，用到的时候真能卡死人。',
     choices: [
-      { text: '下定决心报考，周末就去报名', effects: { flag: 'mbaApply', mentalPressure: 4, familyPressure: 2, desire: 1 } },
-      { text: '先打听打听学费和政策', effects: { flag: 'mbaApply', mentalPressure: 2, iq: 1 } },
-      { text: '算了，一把年纪了折腾不起', effects: { mentalPressure: -2, desire: -1 } }
+      { text: '下定决心报考，周末就去报名', effects: { flag: 'mbaApply', mentalPressure: 4, familyPressure: 2, desire: 1 }, result:'周末不再全是休息日，你把报名和复习列入日程。' },
+      { text: '核对学费和报考条件，再决定报名', effects: { flag: 'mbaApply', mentalPressure: 2, iq: 1 }, result:'你查清招生条件与预算，开始安排备考时间。' },
+      { text: '暂不报考，先把精力留给现有工作和生活', effects: { mentalPressure: -2, desire: -1 }, result:'你收起招生简章，暂时保留原来的安排。' }
     ] },
   { id: 'ent233', eventType: 'choice', weight: 4, year: [24, 48], stage: 'work', requireFlag: 'mbaApply', title: '📚 备考的代价', // v2.67 文本一致性：'中年人'写照 24 岁起
-    text: '备考的日子比想象中难熬。白天在单位写材料，晚上回家啃书，周末的补习班坐满了和你一样的中年人。妻儿的抱怨声越来越响。',
+    text: '备考的日子比想象中难熬。白天在单位写材料，晚上回家啃书，周末的补习班坐满了和你一样的中年人。原本留给休息和亲友的时间越来越少。',
     choices: [
-      { text: '咬牙坚持，考上是硬道理', effects: { flag: 'mbaActive', body: -2, mentalPressure: 8, familyPressure: 4, iq: 2 } },
-      { text: '放慢节奏，工作家庭两头顾', effects: { flag: 'mbaActive', body: -1, mentalPressure: 4, workAbility: -1 } },
-      { text: '实在撑不住，放弃考试', effects: { deleteFlag: 'mbaApply', mentalPressure: -4, body: 1, desire: -2 } }
+      { text: '集中时间复习，争取通过考试', effects: { flag: 'mbaActive', body: -2, mentalPressure: 8, familyPressure: 4, iq: 2 }, result:'你完成了复习计划，但连续熬夜让身体明显吃不消。' },
+      { text: '放慢节奏，给工作和生活留出时间', effects: { flag: 'mbaActive', body: -1, mentalPressure: 4, workAbility: -1 }, result:'你减少额外任务，按较慢的节奏完成复习。' },
+      { text: '实在撑不住，放弃考试', effects: { deleteFlag: 'mbaApply', mentalPressure: -4, body: 1, desire: -2 }, result:'你停止备考，重新分配原本留给学习的时间。' }
     ] },
   { id: 'ent234', eventType: 'choice', weight: 4, year: [2, 48], stage: 'work', requireFlag: 'mbaActive', title: '📝 研究生考试',
     text: '考试那天大雪纷飞。考场里坐满了人，前排的年轻人奋笔疾书，你捏着笔，手心全是汗。这一场考完，人生可能就不一样了。',
     choices: [
-      { text: '全力以赴，发挥出自己的水平', effects: { flag: 'mbaDegree', iq: 2, mentalPressure: -6, reputation: 1 } },
-      { text: '心态平稳，能考上最好', effects: { flag: 'mbaDegree', mentalPressure: -4 } },
-      { text: '发挥失常，辜负了这段时间的苦熬', effects: { deleteFlag: 'mbaActive', mentalPressure: 6, familyPressure: 2, desire: -2 } }
+      { text: '全力以赴，发挥出自己的水平', effects: { flag: 'mbaDegree', iq: 2, mentalPressure: -6, reputation: 1 }, result:'录取通知到了。接下来还有课程、实践和论文，学位尚未取得。' },
+      { text: '稳住心态，按计划完成考试', effects: { flag: 'mbaDegree', mentalPressure: -4 }, result:'你通过了考试，开始安排在职学习。' },
+      { text: '考试不理想，暂时结束备考', effects: { deleteFlags: ['mbaApply','mbaActive'], mentalPressure: 6, familyPressure: 2, desire: -2 }, result:'录取名单上没有你的名字。你决定先休整，不再立即重考。' }
     ] },
   { id: 'ent235', eventType: 'choice', weight: 4, year: [2, 48], stage: 'work', requireFlag: 'mbaDegree', title: '🎓 硕士毕业',
     text: '三年苦读，终于拿到硕士学位。毕业典礼上，校长念到你的名字，台下坐着特意赶来的家人。同事们的眼神里，多了几分敬意。',
     choices: [
-      { text: '把文凭转化为职场资本', effects: { education: 'master', positionWeight: 5, reputation: 3, mentalPressure: -3, background: 1 } }, // v2.66 毕业即学历落档（原 education 不更新——结算页学历展示停留在本科）
-      { text: '低调回归，学以致用', effects: { positionWeight: 3, workAbility: 2, reputation: 1 } },
-      { text: '趁热打铁，准备读博', effects: { flag: 'mbaDegree', positionWeight: 2, mentalPressure: 5, desire: 2 } }
+      { text: '将取得的学位补入履历，争取专业岗位', effects: { positionWeight: 5, reputation: 3, mentalPressure: -3, background: 1 }, result:'学位材料正式进入履历，新的岗位机会仍需通过正常考察。' }, // 学历由毕业事件统一落档
+      { text: '低调回归，学以致用', effects: { positionWeight: 3, workAbility: 2, reputation: 1 }, result:'你取得学位后回到岗位，尝试把研究方法用在日常工作中。' },
+      { text: '了解博士招生条件，暂不承诺继续升学', effects: { positionWeight: 2, mentalPressure: 5, desire: 2 }, result:'你已取得硕士学位，博士阶段是否可行还需要另外评估。' }
     ] },
   // ========== v2.62 新人物：表姐（亲戚线，固定市级） ==========
   { id: 'ent236', eventType: 'choice', weight: 4, year: [1, 40], stage: 'life', title: '👩 表姐的关心',
@@ -1177,9 +1177,9 @@ const gd_events_new_theme = [
   { id: 'ent263', eventType: 'choice', weight: 4, year: [1, 45], stage: 'life', requireFlag: 'dating', title: '💍 恋爱三年',
     text: '你们在一起三年了。从热恋到平淡，从无话不谈到相视无言。朋友的婚礼上，新娘抛出的捧花恰好落在你怀里——全场起哄，你看向ta，心里却有个声音在问：三年了，是继续，还是就此打住？',
     choices: [
-      { text: '顺势求婚，给这段感情一个交代', effects: { marry: true, deleteFlag: 'dating', familyPressure: -4, mentalPressure: -3, reputation: 2, eq: 2 } },
-      { text: '认真谈一次，决定是否继续', effects: { deleteFlag: 'dating', flag: 'dating', mentalPressure: -2, eq: 1 } },
-      { text: '发现彼此并不合适，和平分手', effects: { deleteFlag: 'dating', mentalPressure: 4, familyPressure: 3, eq: -2 } }
+      { text: '商量登记结婚，安排共同生活', effects: { marry: true, deleteFlag: 'dating', familyPressure: -4, mentalPressure: -3, reputation: 2, eq: 2 }, result:'你们把婚姻登记和今后的生活安排商量清楚，完成了登记手续。' },
+      { text: '认真谈一次，再给彼此三年时间', effects: { deleteFlag: 'dating', flag: 'dating', mentalPressure: -2, eq: 1 }, result:'你们决定继续交往，并约定重新讨论共同生活的计划。' },
+      { text: '发现彼此并不合适，和平分手', effects: { deleteFlag: 'dating', mentalPressure: 4, familyPressure: 3, eq: -2 }, result:'你们谈清分歧，结束了这段关系，各自重新安排生活。' }
     ] },
   // ========== v2.68 联系人互动补全（新人物深度线） ==========
   { id: 'ent264', eventType: 'choice', weight: 4, year: [2, 50], stage: 'work', requireContact: 'sizhang', title: '📨 司长的调令',
