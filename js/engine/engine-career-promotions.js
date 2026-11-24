@@ -368,12 +368,14 @@ GameEngine.prototype.acceptPromotion = function() {
     const maxRankNew = this.getMaxRankForLevel(p.unit ? p.unit.level : '乡镇');
     if (p.leadershipRank > maxRankNew) p.leadershipRank = maxRankNew;
     if (p.leadershipRank > previousRank) p.rankSinceAge = p.age;
+    this.checkEndings();
   }
 GameEngine.prototype.declinePromotion = function() {
     const pp = this.state.pendingPromotion; if (!pp) return;
     this.state.player.missedPromotions++;
     this.state.pendingPromotion = null;
     this.state.player.careerLog.push({ year: this.state.player.age, event: `放弃${pp.source}机会` });
+    this.checkEndings();
   }
 GameEngine.prototype.checkDemotion = function() {
     const p = this.state.player; const h = this.state.hidden;
@@ -613,6 +615,7 @@ GameEngine.prototype.acceptTransfer = function() {
       p.careerLog.push({ year: p.age, event: `从${oldUnit}被排挤至${pt.targetUnit.name}，降级使用`, special: 'demotion' });
     }
     this.state.pendingTransfer = null;
+    this.checkEndings();
   }
 GameEngine.prototype.declineTransfer = function() {
     const pt = this.state.pendingTransfer; if (!pt) return;
@@ -637,6 +640,7 @@ GameEngine.prototype.declineTransfer = function() {
           p.reputation = Math.max(0, p.reputation - 2);
           p.careerLog.push({ year: p.age, event: `拒绝基层期满后的留任/下调安排，返回${returnUnit.name}接受后续考核`, special: 'transfer' });
           this.state.pendingTransfer = null;
+          this.checkEndings();
           return;
         }
       }
@@ -651,4 +655,5 @@ GameEngine.prototype.declineTransfer = function() {
       p.careerLog.push({ year: p.age, event: '拒绝平调/下派机会' });
     }
     this.state.pendingTransfer = null;
+    this.checkEndings();
   }

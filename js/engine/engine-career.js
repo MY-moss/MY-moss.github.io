@@ -4,7 +4,7 @@
 //           _rcy_specialEventInjection 返回 true = 已注入等待 UI 的 choice 事件。
 GameEngine.prototype.runCareerYear = function() {
     const p = this.state.player;
-    if (!p.isEmployed) return false;
+    if (!p.isEmployed || p.ending || this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return false;
     // v2.19 时代剧本：全局机制基调（改革=高压快节奏 / 平稳=岁月静好 / 整顿=廉洁优先）
     const eraEff = this.getEra() ? this.getEra().effects : null;
     const eraId = this.state.era;
@@ -1014,6 +1014,7 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
     // 平静年限流控制：最多连续两年"平静的一年"，第三年强制触发事件
     const quietStreak = (p.flags.quietStreak || 0);
     let event = null;
+    if(p.passed && p.yearsWorked===1 && !s.currentEvent && !p.seenEvents.includes('e253'))event=GameData.events.find(x=>x.id==='e253')||null;
     // v2.59 里程碑强制触发：工作满 5/10/15/20/25/30 年必达（原靠事件池 1-2% 概率抽奖，多数玩家错过成长节点）
     const MILESTONE_IDS = { 5: 'e087', 10: 'e088', 15: 'e089', 20: 'e090', 25: 'e091', 30: 'e092' };
     const mid = MILESTONE_IDS[p.yearsWorked];
@@ -1024,12 +1025,6 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
     // v2.63 刚性因果链：flag 存在 → 次年必然触发 next（非概率——触发即因果，玩家选择推进/终止）
     // 覆盖：学历链（mbaApply→ent233→mbaActive→ent234→mbaDegree→ent235）、健康链（healthRisk→ent245→healthCare→ent246→healthTreated→ent247）、调查链（underInvestigation→e646→defied→e648 / selfSurrender→e647）
     // v2.66 修复：赌博年（currentEvent 被赌博事件占用）跳过全部链注入——原实现注入即 push seenEvents 但不展示，链被永久卡死
-    if (!event && !this.state.currentEvent) {
-      // 主动承接的政策项目优先占用年度决策槽；项目中的高热度舆情危机优先级更高。
-      const policyEvent = (typeof this.preparePolicyOpinionCrisisEvent === 'function' ? this.preparePolicyOpinionCrisisEvent() : null)
-        || (typeof this.getPolicyProjectDecisionEvent === 'function' ? this.getPolicyProjectDecisionEvent() : null);
-      if (policyEvent) event = policyEvent;
-    }
     if (!event && !this.state.currentEvent) {
       // 刚性推进：flag 在且延迟到期 → 必然触发下一步（seenEvents 去重保证每步只触发一次）
       // v2.64 延迟机制：delay=N 表示 flag 设置后第 N 年才必然触发（事件更合理：预备期 1 年转正、专案每年推进、调查需要时间）
@@ -1047,6 +1042,11 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
             event=ev;
           }
         }
+      }
+      // 项目仍占用一个年度槽，但不能无限挤压已到期的历史责任。
+      if(!event){
+        const policyEvent=(this.preparePolicyOpinionCrisisEvent?this.preparePolicyOpinionCrisisEvent():null)||(this.getPolicyProjectDecisionEvent?this.getPolicyProjectDecisionEvent():null);
+        if(policyEvent)event=policyEvent;
       }
       // 仅在历史后果兑现后抽取新健康/学历故事，避免覆盖已到期剧情。
       // 健康链入口注入：38 岁后每年 4% 查出体检异常（'遇到'是概率，查出后后续必然）
@@ -1169,8 +1169,8 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
       s.currentEvent = event;
       if (event && (event.eventType === 'auto' || event.eventType === 'sudden')) {
         if (this.settleEventOrEscape(event)) return { event: null, aborted: true }; // e761 交给 UI/模拟器处理
-        this.applyEventEffects(event); this.checkEndings();
-        s.currentEvent = null; // v2.16 修复：auto/sudden 结算完立即释放 choice 槽，防止后续年份 choice 事件链被永久锁死
+        this.applyEventEffects(event);
+        s.currentEvent = null; this.checkEndings(); // v2.16 修复：auto/sudden 结算完立即释放 choice 槽，防止后续年份 choice 事件链被永久锁死
       }
     }
     return { event, aborted: false };

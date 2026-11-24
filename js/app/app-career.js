@@ -882,15 +882,8 @@ renderCareer() {
         this.showToast(selectedChoice.result, 'info', 4200);
       }
       if (typeof this.saveCheckpoint === 'function') this.saveCheckpoint('event-choice'); else engine.saveState();
-      const p = engine.getPlayer();
-      if (p.ending) {
-        this.renderContent(this.renderEnding());
-        this.updateStatus();
-      } else {
-        engine.setPhase('career');
-        this.renderContent(this.renderCareer());
-        this.updateStatus();
-      }
+      if(resolved!==false)engine.setPhase('career');
+      this.afterCareerStep();
     });
   },
 });

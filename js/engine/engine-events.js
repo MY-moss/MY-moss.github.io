@@ -324,7 +324,7 @@ GameEngine.prototype.applyEventEffects = function(event) {
     this.clampAttrs();
   }
 // v2.66 刚性链 next 事件白名单：只由 RIGID_CHAINS 注入触发（从随机池排除，防 delay 被绕过/死链）
-const RIGID_NEXT_SET = new Set(['e110','arc_health_retry','ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
+const RIGID_NEXT_SET = new Set(['e253','e110','arc_health_retry','ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
   // P3 剧本专属事件链：002/003 只由链注入触发，防随机池提前抽取破坏阶段节奏
   'scn_grassroots_002', 'scn_grassroots_003', 'scn_midcareer_002', 'scn_midcareer_003', 'scn_clean_002', 'scn_clean_003', 'scn_network_002', 'scn_network_003', 'scn_reform_002', 'scn_reform_003', 'scn_retired_002', 'scn_retired_003', 'scn_family_002', 'scn_family_003',
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入
@@ -352,7 +352,7 @@ GameEngine.prototype.getLegacyEventBlockReason = function(event, player) {
     if ((title === '相亲风云' || title === '相亲初印象' || title === '相亲') && (p.isMarried || age > 45)) return '已婚或超过相亲年龄窗口';
     if (['恋爱初遇', '感情升温', '见家长', '求婚', '求婚（钻戒预算）', '上门见家长', '被求婚', '结婚'].includes(title) && p.isMarried) return '当前已婚，不符合感情事件条件';
     if (title === '恋爱初遇' && age > 45) return '已超过恋爱初遇年龄窗口';
-    if (title === '考编上岸' && p.isEmployed) return '已经参加工作，不能重复触发上岸事件';
+    if (title === '考编上岸' && (!p.isEmployed || !p.passed || p.yearsWorked > 1)) return '仅限成功上岸后的首次入职';
     if (['二胎抉择', '子女择校', '孩子升学', '孩子升学（小升初）', '孩子叛逆'].includes(title) && !p.hasChildren) return '需要已有子女';
     if (['婚姻危机', '婚姻危机（修复契机）'].includes(title) && !p.isMarried) return '需要已婚状态';
     if (title === '退休返聘' && age < (p.gender === '女' ? 55 : 60)) return '尚未达到退休返聘年龄';

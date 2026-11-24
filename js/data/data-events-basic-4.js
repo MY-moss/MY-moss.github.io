@@ -46,11 +46,11 @@ const gd_events_basic_4 = [
       { text: '走马观花应付了事', effects: {risk: -2, workAbility: -1, reputation: -1, mentalPressure: -1, background: -1} },
     ]},
     { id: 'e253', stage: 'life', eventType: 'choice', title: '考编上岸', weight: 3, text: '你终于考上了公务员！从备考到入职，一路走来不容易。你看着录取通知书，感慨万千。', pools: ['public'], choices: [
-      { text: '发朋友圈感谢大家的支持', effects: {eq: 1, reputation: 2, background: 1, mentalPressure: -2, familyPressure: -1} },
-      { text: '默默入职低调做人', effects: {integrity: 2, mentalPressure: -1, reputation: 1, eq: 1} },
-      { text: '请家人吃饭庆祝', effects: {familyPressure: -2, eq: 1, mentalPressure: -2, reputation: 1} },
-      { text: '开始规划职业生涯', effects: {desire: 3, workAbility: 2, iq: 1, mentalPressure: 1, positionWeight: 1} },
-      { text: '给导师和帮助过的人写信感谢', effects: {eq: 2, reputation: 2, background: 2, mentalPressure: -1, integrity: 2} },
+      { text: '发朋友圈感谢大家的支持', effects: {eq: 1, reputation: 2, background: 1, mentalPressure: -2, familyPressure: -1}, result: "你发出一条简短的入职消息，感谢备考期间的支持。" },
+      { text: '默默入职低调做人', effects: {integrity: 2, mentalPressure: -1, reputation: 1, eq: 1}, result: "你将录取材料收好，准备认真学习新岗位的业务。" },
+      { text: '请家人吃饭庆祝', effects: {familyPressure: -2, eq: 1, mentalPressure: -2, reputation: 1}, result: "饭桌上大家聊起过去的备考日子，你也开始考虑新的生活安排。" },
+      { text: '开始规划职业生涯', effects: {desire: 3, workAbility: 2, iq: 1, mentalPressure: 1, positionWeight: 1}, result: "你写下第一年的学习目标，并留出调整计划的空间。" },
+      { text: '给导师和帮助过的人写信感谢', effects: {eq: 2, reputation: 2, background: 2, mentalPressure: -1, integrity: 2}, result: "几封感谢信陆续寄出，曾经帮助过你的人知道了近况。" },
     ]},
     // ====== 婚姻/家庭增强事件 ======
     { id: 'e254', stage: 'life', eventType: 'choice', title: '相亲', weight: 8, requireSingle: true, year: [22, 45], text: '朋友给你介绍了一个对象，对方条件不错，也在体制内工作。你去看了一眼，感觉还不错。', pools: ['public'], choices: [
