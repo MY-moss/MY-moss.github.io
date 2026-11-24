@@ -81,3 +81,7 @@
 ## v2.1.99 · 财务结算与人生评价
 
 修复债务账本与退休流程，增加六维人生评价，详见[第25轮维护报告](docs/ROUND25_FINANCE_RETIREMENT_EVALUATION_2026-11-24.md)。
+
+## v2.1.100 · 健康因果与可达性
+
+完善健康复查与身份门槛、调整专属结局优先级，详见[第26轮维护报告](docs/ROUND26_HEALTH_REACHABILITY_ENDINGS_2026-11-24.md)。

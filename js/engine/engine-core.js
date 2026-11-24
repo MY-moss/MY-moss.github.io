@@ -486,7 +486,7 @@ class GameEngine {
     if (typeof p.rankTrack !== 'number') p.rankTrack = 0; // v2.1.2 职级并行字段兜底
     // v2.1.2 修复：v2.64 前旧档 flag 无 _since → 延迟链 `p.age < since + delay` 中 since=undefined → NaN 比较 → 链永不触发
     // 对既有链 flag 补 _since = 当前年龄，解锁延迟链（如 faction_lean/mortgage/whistleblower/healthRisk 等）
-    const _chainFlags = ['mbaApply', 'mbaActive', 'mbaDegree', 'healthRisk', 'healthCare', 'healthTreated', 'underInvestigation', 'appliedParty', 'proj_step1', 'proj_step2', 'proj_step3', 'proj_done', 'whistleblower', 'defied', 'selfSurrender', 'faction_lean', 'faction_steadfast', 'mortgage', 'drinkDrive', 'dating',
+    const _chainFlags = ['mbaApply', 'mbaActive', 'mbaDegree', 'healthRisk', 'healthCare', 'healthTreated', 'healthHardhead', 'underInvestigation', 'appliedParty', 'proj_step1', 'proj_step2', 'proj_step3', 'proj_done', 'whistleblower', 'defied', 'selfSurrender', 'faction_lean', 'faction_steadfast', 'mortgage', 'drinkDrive', 'dating',
       // P3 剧本专属事件链根/中间 flag
       'grassrootsBreakthrough', 'grassrootsCautious', 'grassrootsStep2', 'midcareerRebuild', 'midcareerHold', 'midcareerStep2', 'cleanRecord', 'cleanCompromise', 'cleanStep2', 'networkBoundary', 'networkFavor', 'networkStep2', 'reformPilot', 'reformCautious', 'reformStep2', 'retiredMentor', 'retiredLegacy', 'retiredStep2', 'familyBalance', 'familyCareer', 'familyStep2',
       // v2.1.66 赡养链 / 理财暴雷链 / 借调链中间 flag

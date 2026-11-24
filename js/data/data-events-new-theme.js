@@ -1027,7 +1027,7 @@ const gd_events_new_theme = [
       { text: '委婉拒绝，避嫌', effects: { contactRelation: { id: 'business', delta: -6 }, integrity: 1 } }
     ] },
   // ========== v2.63 健康管理链（刚性链：触发后必然推进） ==========
-  { id: 'ent244', eventType: 'choice', weight: 5, year: [38, 58], stage: 'life', title: '🩺 体检报告的箭头',
+  { id: 'ent244', eventType: 'choice', weight: 5, year: [38, 58], stage: 'life', excludeFlags:['healthHardhead','healthRisk','healthCare','healthTreated','healthStable'], title: '🩺 体检报告的箭头',
     text: '体检报告出来了。血脂、血压、血糖，三个向上的箭头整整齐齐。医生推了推眼镜："你这个年纪，指标该注意了。再这么应酬下去，身体要找你算账。"',
     choices: [
       { text: '认真对待，戒烟限酒开始调理', effects: { flag: 'healthRisk', body: -2, mentalPressure: 2 }, result: "你把体检单收进随身的本子，开始按医生建议调整生活。" },
@@ -1041,6 +1041,13 @@ const gd_events_new_theme = [
       { text: '吃药控制，工作照旧', effects: { flag: 'healthCare', body: 1, mentalPressure: 2, risk: 2 }, result: "你按医嘱处理异常指标，却暂时没有减少工作负荷。" },
       { text: '硬扛着，等忙完这阵再说', effects: { deleteFlag: 'healthRisk', flag: 'healthHardhead', body: -6, mentalPressure: 3 }, result: "你把复查往后挪，下一次身体发出的警告可能更难忽视。" }
     ] },
+  { id: 'arc_health_retry', stage:'life', eventType:'choice', requireFlag:'healthHardhead', title:'抽屉里第二张体检单',
+    text:'上次的异常报告还在抽屉里。这一次，复查医生把两份结果并排放在桌上，问你最近有没有按时休息。电话又响了，是单位问你能否赶回去处理材料。你知道，再拖下去并不能让问题消失。',
+    choices:[
+      {text:'请假完成检查，接受后续治疗安排',effects:{deleteFlags:['healthRisk','healthHardhead'],flag:'healthCare',mentalPressure:2,positionWeight:-1},result:'你把未完成的工作交给同事，终于把复查排进了日程。'},
+      {text:'与家人商量，把治疗和工作重新排期',effects:{deleteFlags:['healthRisk','healthHardhead'],flag:'healthCare',familyPressure:-2,eq:1,mentalPressure:1},result:'你们商量出陪诊与交接的安排，不再等到身体撑不住才处理。'},
+      {text:'仍不安排后续治疗，继续原来的工作节奏',effects:{deleteFlags:['healthRisk','healthHardhead'],flag:'chronicIllness',body:-3,mentalPressure:3,familyPressure:2},result:'问题没有被解决，长期健康负担进入了今后的生活支出。'}
+    ] },
   { id: 'ent246', eventType: 'choice', weight: 5, year: [38, 62], stage: 'life', requireFlag: 'healthCare', title: '🏥 住院治疗',
     text: '某个加班的深夜，你眼前一黑，再醒来已经躺在医院的病床上。心电图上的曲线和病房里的消毒水味，让你第一次认真思考"身体是革命的本钱"这句话。',
     choices: [
@@ -1050,8 +1057,8 @@ const gd_events_new_theme = [
   { id: 'ent247', eventType: 'choice', weight: 5, year: [38, 64], stage: 'life', requireFlag: 'healthTreated', title: '🌅 康复归来',
     text: '出院那天阳光很好。你站在医院门口，看着来来往往的人群，忽然觉得以前争的那些东西，也没那么要紧。身体好了，路还长。',
     choices: [
-      { text: '把健康放在第一位，重新出发', effects: { flag: 'healthStable', body: 6, mentalPressure: -8, familyPressure: -4, positionWeight: 1 } },
-      { text: '开始养生，也劝同事注意身体', effects: { flag: 'healthStable', body: 4, mentalPressure: -4, reputation: 2 } }
+      { text: '把健康放在第一位，重新出发', effects: { deleteFlags:['healthRisk','healthCare','healthTreated','healthHardhead'], flag: 'healthStable', body: 6, mentalPressure: -8, familyPressure: -4, positionWeight: 1 }, result:'出院后你与同事明确交接时间，也给自己留下复查的余地。' },
+      { text: '开始养生，也劝同事注意身体', effects: { deleteFlags:['healthRisk','healthCare','healthTreated','healthHardhead'], flag: 'healthStable', body: 4, mentalPressure: -4, reputation: 2 }, result:'你在午休时和同事一起散步，逐渐建立了更可持续的日常。' }
     ] },
   // ========== v2.63 家庭补全 ==========
   { id: 'ent248', eventType: 'choice', weight: 3, year: [2, 50], stage: 'life', requireMarried: true, title: '🧹 家务分工',

@@ -571,14 +571,15 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'mbaApply', next: 'ent233', delay: 1 },
         { flag: 'mbaActive', next: 'ent234', delay: 1 },
         { flag: 'mbaDegree', next: 'ent235', delay: 1 },
-        { flag: 'healthRisk', next: 'ent245', delay: 1 },
+        { flag: 'healthRisk', next: 'ent245', delay: 1, unless: ['healthCare','healthTreated','healthStable'] },
+        { flag: 'healthHardhead', next: 'arc_health_retry', delay: 2, unless: ['healthCare','healthTreated','healthStable','healthRisk'], allowSeenRisk: true },
         { flag: 'healthCare', next: 'ent246', delay: 1 },
         { flag: 'healthTreated', next: 'ent247', delay: 1 },
         { flag: 'underInvestigation', next: 'e646', delay: 1 },
         { flag: 'fled', next: 'e649', delay: 1 }, // 逃离调查后，追逃与身份核查在下一年兑现
         { flag: 'defied', next: 'e648', delay: 2 }, // 死扛后组织核实、移送司法需时 2 年
         { flag: 'selfSurrender', next: 'e647', delay: 1 }, // 自首后纪律处分流程 1 年
-        { flag: 'appliedParty', next: 'e043', delay: 1 }, // 预备党员 1 年预备期后必然转正讨论
+        { flag: 'appliedParty', next: 'e043', delay: 1, unless:['expelledFromParty'], nonMember:true }, // 预备党员 1 年预备期后必然转正讨论
         { flag: 'proj_step1', next: 'e654', delay: 1 }, // 招商专案每年推进一步
         { flag: 'proj_step2', next: 'e655', delay: 1 },
         { flag: 'proj_step3', next: 'e656', delay: 1 },
@@ -728,13 +729,15 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
-      [/^ent2(44|45|46|47)$/,'健康与康复'],[/^ent2(93|94|95)$|^enl21[56]$/,'父母照护'],
+      [/^ent2(44|45|46|47)$|^arc_health_retry$/,'健康与康复'],[/^ent2(93|94|95)$|^enl21[56]$/,'父母照护'],
       [/^ent2(96|97|98)$|^ent302$/,'资产与风险'],[/^ent(299|300|301)$|^enw249$/,'借调与考察'],[/^ent(169|17[0-4]|28[56]|30[3-5])$/,'职场分歧 · 当年旧账'],[/^ent(17[5-7]|18[23]|30[6-8])$/,'郑教授 · 多年往来'],[/^enc(125|126|127|128|140)$/,'干部考察 · 异议与复核'],[/^enw246$/,'岗位业务评审'],
       [/^ent23[2345]$/,'学业进修'],[/^scn_/,'人生剧本'],[/^e(646|647|648|649)$/,'调查与责任'],[/^e(805|806|807|808)$/,'基层挂职'],[/^enw126$/,'借调与考察'],[/^e(728|729|730|731)$/,'人脉枢纽'],[/^e(616|617|618|743|744|747|748|756|758|765)$/,'财务与廉政后果'],
       [/^e(654|655|656|657)$/,'招商项目'],[/^ent2(58|59)$|^arc_mortgage_3$/,'房贷与家庭财务']
     ];
     this.getCausalChainSteps().forEach((step,index)=>{
       if(!flags[step.flag]||seen.has(step.next)||!known.has(step.next)||unique.has(step.next))return;
+      if(step.nonMember && p.political==='cpc')return;
+      if(step.unless?.some(k=>flags[k] && !(step.allowSeenRisk && k==='healthRisk' && seen.has('ent245'))))return;
       unique.add(step.next);
       const since=Number(flags[step.flag+'_since']);
       const dueAge=Number.isFinite(since)&&since>0 ? since+(step.delay||1) : p.age+(step.delay||1);
@@ -984,8 +987,7 @@ GameEngine.prototype._rcy_annualEventSelection = function() {
       // 仅在历史后果兑现后抽取新健康/学历故事，避免覆盖已到期剧情。
       // 健康链入口注入：38 岁后每年 4% 查出体检异常（'遇到'是概率，查出后后续必然）
       // 不当回事/硬扛（healthHardhead）玩家：42 岁后 8%/年身体再次报警（身体会找你算账）
-      const hardhead = !!p.flags.healthHardhead;
-      if (!event && !p.flags.healthRisk && !p.flags.healthCare && !p.flags.healthTreated && !p.flags.healthStable && p.age >= (hardhead ? 42 : 38) && this.randf() < (hardhead ? 0.08 : 0.04) && (hardhead || !(p.seenEvents || []).includes('ent244'))) {
+      if (!event && !p.flags.healthHardhead && !p.flags.healthRisk && !p.flags.healthCare && !p.flags.healthTreated && !p.flags.healthStable && p.age >= 38 && p.age <= 58 && !(p.seenEvents || []).includes('ent244') && this.randf() < 0.04) {
         const evH = (GameData.events || []).find(x => x && x.id === 'ent244');
         if (evH) { p.seenEvents = p.seenEvents || []; if (evH.eventType === 'auto' || evH.eventType === 'sudden') p.seenEvents.push('ent244'); event = evH; } // v2.67 choice 不预 push（由 handleEventChoice 完成时 push）——刷新后入口可重新注入
       }
@@ -1142,9 +1144,9 @@ GameEngine.prototype._rcy_specialEventInjection = function() {
     // ====== 年度结算完成后再处理特殊事件（避免跳过晋升/里程碑/日志/存档） ======
     // 入党保底：工作满 8 年仍非党员，必定获得一次入党机会（组织主动谈话——防止生涯错过入党导致晋升/结局卡死）
     // 防重复：已触发过的入党事件不再重复出现（e042 已 seen 则改用 e260，都 seen 则放弃保底）
-    if (!p.ending && p.yearsWorked >= 8 && p.political !== 'cpc' && !p.flags.partyAsked && !this.state.currentEvent && !this.state.pendingTransfer && !this.state.pendingPromotion) {
+    if (!p.ending && p.yearsWorked >= 8 && p.political !== 'cpc' && !p.flags.appliedParty && !p.flags.expelledFromParty && !p.flags.partyAsked && !this.state.currentEvent && !this.state.pendingTransfer && !this.state.pendingPromotion) {
       p.flags.partyAsked = true;
-      const partyEv = [GameData.events.find(x => x.id === 'e042'), GameData.events.find(x => x.id === 'e260')].filter(Boolean).find(x => !p.seenEvents.includes(x.id));
+      const partyEv = [GameData.events.find(x => x.id === 'e042'), GameData.events.find(x => x.id === 'e260')].filter(Boolean).find(x => !p.seenEvents.includes(x.id) && !this.getLegacyEventBlockReason(x,p));
       if (partyEv) {
         s.currentEvent = { ...partyEv };
         return true; // 入党机会事件交给 UI 处理

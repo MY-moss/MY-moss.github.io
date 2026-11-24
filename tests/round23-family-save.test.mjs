@@ -61,7 +61,7 @@ test('legacy migration backfills the actual complete causal chain, including rec
   const due=e.getPendingCausalConsequences().find(x=>x.id==='ent285');
   assert.equal(due.dueAge,28);
   assert.equal(due.overdue,true);
-  assert.equal(d.events.length,1836);
+  assert.equal(d.events.length,1837);
 });
 
 test('new family chapter uses the same rigid scheduling and never leaks into the random event pool',()=>{
@@ -135,9 +135,9 @@ test('newest family chapter counts as the actual ending in the life map, with of
   assert.match(ui,/finished:seen\.includes\('arc_family_clinic_3'\)/);
   assert.match(ui,/familyClinicResolved_since/);
   const sw=readFileSync(resolve(root,'sw.js'),'utf8');
-  assert.match(sw,/shangan-pages-21/);
+  assert.match(sw,/shangan-pages-22/);
   assert.match(sw,/data-events-arc-revision\.js/);
-  assert.match(html,/上岸模拟器 2\.1\.99/);
+  assert.match(html,/上岸模拟器 2\.1\.100/);
 });
 
 test('real loadState and importSave paths resume old flags rather than silently losing their callbacks',()=>{

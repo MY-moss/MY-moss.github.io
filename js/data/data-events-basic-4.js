@@ -97,11 +97,11 @@ const gd_events_basic_4 = [
     ]},
     // ====== 党员机会增加 ======
     { id: 'e260', stage: 'work', eventType: 'choice', title: '推荐入党', weight: 5, text: '你的工作表现引起了一位老党员注意。他主动找你谈话，问你想不想入党，愿意做你的入党介绍人。', pools: ['public'], excludeFlag: 'appliedParty', choices: [
-      { text: '欣然接受积极准备入党', effects: {positionWeight: 2, reputation: 2, mentalPressure: 2, background: 2, desire: 2, flag: 'appliedParty'} },
-      { text: '表示感谢但想再考虑', effects: {eq: 1, mentalPressure: 1, reputation: 1, integrity: 1} },
-      { text: '接受但希望了解党员义务', effects: {iq: 2, workAbility: 1, mentalPressure: 2, reputation: 1, flag: 'appliedParty'} },
-      { text: '婉拒说自己还不够格', effects: {integrity: 2, mentalPressure: 1, eq: 1, positionWeight: -1} },
-      { text: '接受并请介绍人指导', effects: {political: 'cpc', background: 2, eq: 1, mentalPressure: 2, reputation: 2, workAbility: 1, flag: 'appliedParty'} },
+      { text: '欣然接受积极准备入党', effects: {positionWeight: 2, reputation: 2, mentalPressure: 2, background: 2, desire: 2, flag: 'appliedParty'}, result:'你接过流程说明，开始准备申请材料，而不是立即取得党员身份。' },
+      { text: '表示感谢但想再考虑', effects: {eq: 1, mentalPressure: 1, reputation: 1, integrity: 1}, result:'你说明自己需要时间考虑，对方没有要求你当场答复。' },
+      { text: '接受但希望了解党员义务', effects: {iq: 2, workAbility: 1, mentalPressure: 2, reputation: 1, flag: 'appliedParty'}, result:'你先了解需要承担的义务，再把申请提交给支部。' },
+      { text: '婉拒说自己还不够格', effects: {integrity: 2, mentalPressure: 1, eq: 1, positionWeight: -1}, result:'你婉拒这次推荐，仍按原有安排完成手头工作。' },
+      { text: '接受并请介绍人指导', effects: {background: 2, eq: 1, mentalPressure: 2, reputation: 2, workAbility: 1, flag: 'appliedParty'}, result:'介绍人帮助你准备材料，后续仍需经过培养与考察。' },
     ]},
     { id: 'e261', stage: 'work', eventType: 'choice', title: '党员活动', weight: 3, text: '党支部组织了一次志愿服务活动，去社区帮助困难群众。你作为党员参加了这次活动。', pools: ['public'], requirePolitical: 'cpc', choices: [
       { text: '积极参与用心服务', effects: {reputation: 3, integrity: 3, eq: 1, mentalPressure: -1, background: 2, positionWeight: 1, peopleReputation: 4} },

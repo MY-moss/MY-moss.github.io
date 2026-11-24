@@ -304,7 +304,7 @@ GameEngine.prototype.applyEventEffects = function(event) {
     this.clampAttrs();
   }
 // v2.66 刚性链 next 事件白名单：只由 RIGID_CHAINS 注入触发（从随机池排除，防 delay 被绕过/死链）
-const RIGID_NEXT_SET = new Set(['e110','ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
+const RIGID_NEXT_SET = new Set(['e110','arc_health_retry','ent233', 'ent234', 'ent235', 'ent245', 'ent246', 'ent247', 'e646', 'e648', 'e647', 'e649', 'e043', 'e654', 'e655', 'e656', 'e657', 'ent066', 'ent254', 'ent258', 'ent259', 'arc_mortgage_3', 'ent260', 'ent261', 'ent262', 'ent263',
   // P3 剧本专属事件链：002/003 只由链注入触发，防随机池提前抽取破坏阶段节奏
   'scn_grassroots_002', 'scn_grassroots_003', 'scn_midcareer_002', 'scn_midcareer_003', 'scn_clean_002', 'scn_clean_003', 'scn_network_002', 'scn_network_003', 'scn_reform_002', 'scn_reform_003', 'scn_retired_002', 'scn_retired_003', 'scn_family_002', 'scn_family_003',
   // v2.1.43 事件链系统：反腐链与基层链 next 事件只由 RIGID_CHAINS 注入
@@ -335,7 +335,7 @@ GameEngine.prototype.getLegacyEventBlockReason = function(event, player) {
     if (title === '考编上岸' && p.isEmployed) return '已经参加工作，不能重复触发上岸事件';
     if (['二胎抉择', '子女择校', '孩子升学', '孩子升学（小升初）', '孩子叛逆'].includes(title) && !p.hasChildren) return '需要已有子女';
     if (['婚姻危机', '婚姻危机（修复契机）'].includes(title) && !p.isMarried) return '需要已婚状态';
-    if (title === '退休返聘' && age < (p.gender === '女' ? 53 : 58)) return '尚未达到退休返聘年龄';
+    if (title === '退休返聘' && age < (p.gender === '女' ? 55 : 60)) return '尚未达到退休返聘年龄';
     if (title === '退休规划' && age < (p.gender === '女' ? 42 : 47)) return '尚未达到退休规划年龄';
     const birthTitles = ['生子', '喜得贵子', '喜得麟儿', '有孕在身'];
     if (birthTitles.includes(title) && (!p.isMarried || p.hasChildren)) return '婚姻、子女或生育条件不满足';
@@ -1079,13 +1079,7 @@ GameEngine.prototype.determineEnding = function() {
     // v2.49：乡镇/街道职级上限 3，原条件 rank>=4 使乡镇留任者不可达——放宽为 rank>=3（正科级主政一方即符合叙事）
     if (p.flags.grassrootsStay && unitLevel <= 1 && p.yearsWorked >= 20 && p.reputation > 80 && p.leadershipRank >= 3 && h.risk < 40) return 'grassroots';
     // 清廉丰碑：清廉路线极致（拒绝贿赂链 e051→e075排挤→e076贵人→e077正名），两袖清风（v2.49：逃脱过调查者不得判定）
-    if (p.flags.refusedBribe && h.integrity >= 80 && h.risk < 35 && p.reputation > 65 && p.leadershipRank >= 4 && !p.flags.escapedOnce) return 'clean';
-    // 巅峰：正厅级以上 + 地市级以上 + 高声誉低风险 + 长期深耕 + 晋升节奏快（中央单位走 central 线，不再判巅峰）
-    // v2.7.1 收紧：正常玩家随机玩 45% 达巅峰过于泛滥；加晋升节奏（≥7次）+声誉/能力门槛提升。
-    // 放宽至 0.75 后仍在固定种子 500 局中达到 23%，与稀有顶级结局定位不符；本轮收敛为 0.55，目标约 15-20%。
-    if (unitLevel !== 4 && p.leadershipRank >= 8 && h.risk < 40 && unitLevel >= 2 && p.reputation > 70 && h.workAbility > 65 && p.yearsWorked > 20 && p.promotions >= 6 && this.randf() < 0.55) return 'skyline';
-    // 快速：晋升快+职级高+欲望强（v2.27 平衡迭代：第一轮 4次/欲望8 → 45% 泛滥；收敛为 5次/欲望12，目标 ~15%）
-    if (p.leadershipRank >= 5 && p.promotions >= 5 && h.risk < 50 && h.desire > 12 && unitLevel >= 1) return 'fast';
+    if (p.flags.refusedBribe && h.integrity >= 80 && h.risk < 35 && p.reputation > 65 && p.leadershipRank >= 4 && !p.flags.escapedOnce && !this.hasCorruptFlag(p.flags)) return 'clean';
     // ===== v2.1.16 M1.7 新增结局（举报英雄 / 著书立说 / 乡村振兴之星） =====
     // 举报英雄：吹哨人链完整（匿名举报→配合调查→专案外围→举报人保护→风清月明），一身正气+被组织认可
     // 走完 whistleblower→witnessStrong→cleanHero 链的玩家，是反腐战场上的无名功臣
@@ -1115,6 +1109,12 @@ GameEngine.prototype.determineEnding = function() {
     // 改革先锋（新）：参与2次以上改革事件（reformCount 由 reformProposal/reformDraft 各 +1，单局上限 2），职级权重高，成为推动改革的中坚力量
     // v2.49：原条件 >=3 永不可达（单局上限 2），修正为 >=2
     if ((p.flags.reformCount || 0) >= 2 && h.positionWeight > 15) return 'reform_pioneer';
+    // 巅峰：正厅级以上 + 地市级以上 + 高声誉低风险 + 长期深耕 + 晋升节奏快（中央单位走 central 线，不再判巅峰）
+    // v2.7.1 收紧：正常玩家随机玩 45% 达巅峰过于泛滥；加晋升节奏（≥7次）+声誉/能力门槛提升。
+    // 放宽至 0.75 后仍在固定种子 500 局中达到 23%，与稀有顶级结局定位不符；本轮收敛为 0.55，目标约 15-20%。
+    if (unitLevel !== 4 && p.leadershipRank >= 8 && h.risk < 40 && unitLevel >= 2 && p.reputation > 70 && h.workAbility > 65 && p.yearsWorked > 20 && p.promotions >= 6 && this.randf() < 0.40) return 'skyline';
+    // 快速：晋升快+职级高+欲望强（v2.27 平衡迭代：第一轮 4次/欲望8 → 45% 泛滥；收敛为 5次/欲望12，目标 ~15%）
+    if (p.leadershipRank >= 5 && p.promotions >= 5 && h.risk < 50 && h.desire > 12 && unitLevel >= 1) return 'fast';
     // 清官：一生清廉，integrity>80、risk<10、工作20年以上、无任何腐败flag，名垂青史（v2.49：逃脱过调查者不得判定）
     if (h.integrity > 80 && h.risk < 10 && p.yearsWorked >= 20 && !this.hasCorruptFlag(p.flags) && !p.flags.escapedOnce) return 'honest_official';
     // v2.48 双轨悲情结局：群众爱戴但组织不待见（口碑高 + 组织印象低 + 基层）——须在 edge 之前判定
