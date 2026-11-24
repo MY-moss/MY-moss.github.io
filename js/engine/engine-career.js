@@ -737,6 +737,14 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'renewHomeSupport', next: 'renew_home_2', delay: 2 },
         { flag: 'renewHomeDeferred', next: 'renew_home_2', delay: 2 },
         { flag: 'renewHomeReviewed', next: 'renew_home_3', delay: 3 },
+        { flag: 'renewCreditShared', next: 'renew_credit_2', delay: 2 },
+        { flag: 'renewCreditInternal', next: 'renew_credit_2', delay: 2 },
+        { flag: 'renewCreditTaken', next: 'renew_credit_2', delay: 2 },
+        { flag: 'renewCreditReviewed', next: 'renew_credit_3', delay: 3 },
+        { flag: 'renewShopGuide', next: 'renew_shop_2', delay: 2 },
+        { flag: 'renewShopRefer', next: 'renew_shop_2', delay: 2 },
+        { flag: 'renewShopPromise', next: 'renew_shop_2', delay: 2 },
+        { flag: 'renewShopReviewed', next: 'renew_shop_3', delay: 3 },
     ];
 };
 // 只读当前存档：列出真实已解锁、尚未兑现的因果，按应兑现年龄排序。
@@ -745,7 +753,7 @@ GameEngine.prototype.getPendingCausalConsequences = function() {
     const known=new Set((GameData.events||[]).map(e=>e.id));
     const unique=new Map();
     const labels=[
-      [/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
+      [/^renew_credit_/,'成果归属 · 沈宁'],[/^renew_shop_/,'街坊旧事 · 许姨'],[/^renew_window_/,'服务可及性 · 人工入口'],[/^renew_repair_/,'设施维护 · 长期责任'],[/^renew_home_/,'家庭生活 · 时间约定'],[/^arc_receipt_/,'旧城回执 · 周岚'],[/^arc_team_/,'交接本 · 许砚'],
       [/^arc_family_/,'蓝色便签 · 家人'],[/^arc_classmate_/,'老同学的申请书 · 林默'],
       [/^arc_crossroads_/,'三份名单 · 联合会商'],[/^arc_venture_/,'私人投资 · 申报与边界'],
       [/^arc_life_career_/,'仕途发展 · 岗位传承'],[/^arc_life_integrity_/,'原则担当 · 原始记录'],[/^arc_life_family_/,'家庭约定 · 长期陪伴'],[/^arc_life_network_/,'社会连接 · 基层反馈'],[/^arc_life_confluence_/,'人生交汇 · 共同责任'],
@@ -797,6 +805,30 @@ GameEngine.prototype.getLifePathEvent = function(event) {
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'renew_credit_2':
+      if(f.renewCreditShared){add('两年前署名更正的记录仍在，沈宁愿意讨论新的合作，但更希望工作条件由团队共同确认。');bump(1,{mentalPressure:-1});}
+      else if(f.renewCreditInternal){add('那份内部贡献记录后来没有出现在公开交流材料中，沈宁带来了自己保存的原稿。');bump(1,{mentalPressure:1});}
+      else if(f.renewCreditTaken){add('你曾经答应的推荐至今没有落实。沈宁把岗位邀请放在桌上：“这次我想自己决定。”');bump(0,{positionWeight:-1});bump(2,{mentalPressure:2});}
+      break;
+    case 'renew_credit_3':
+      if(f.renewCreditRelease)add('沈宁后来在新的岗位承担了独立工作，今天的邀请来自主办方，而非你。');
+      else if(f.renewCreditTerms)add('那次公开讨论留下的分工记录，也成为这次交流的材料之一。');
+      else if(f.renewCreditDistance){add('你们上次见面停留在交付安排，此后很少有机会谈论个人发展。');bump(0,{mentalPressure:1});}
+      if(f.renewCreditTaken){add('原稿与公开署名不一致的问题仍需说明。');bump(0,{reputation:-1});}
+      if(f.teamLegacyDocumented){add('许砚的交接记录也提醒你：贡献不能只记在一个人的履历里。');bump(0,{workAbility:1});}
+      break;
+    case 'renew_shop_2':
+      if(f.renewShopGuide){add('许姨保留了你当年写下的咨询渠道，异议材料也是通过那个渠道提交的。');bump(0,{mentalPressure:-1});}
+      else if(f.renewShopRefer)add('她知道你没有参与原案审核，这次只是想弄清可以查到什么。');
+      else if(f.renewShopPromise){add('她把当时的话理解为办理承诺，而你那时并没有查明主管部门的结论。');bump(2,{mentalPressure:1});bump(0,{reputation:-1});}
+      break;
+    case 'renew_shop_3':
+      if(f.renewShopRecord)add('她把当年取得的办理记录和老店照片放在同一个文件袋里。');
+      else if(f.renewShopBoundary)add('后来是否提交异议由她自行决定，你们没有再把私人往来变成公务。');
+      else if(f.renewShopApology)add('那次谈话之后，她不再把没有得到的解释算成你一定能兑现的承诺。');
+      if(f.renewShopPromise)add('她仍记得你当初那句含糊的答复。');
+      if(f.receiptLegacyVerified||f.crossResolved){add('你想起旧城档案复核时留下的待查记录，知道个人经历不能替代正式事实。');bump(1,{workAbility:1});}
+      break;
     case 'renew_window_2':
       if(f.renewWindowInclusive){add('当年保留的纸表使一部分缺失申请有据可查，重复录入的工时也有记录。');bump(0,{mentalPressure:-1});}
       else if(f.renewWindowPilot){add('短期辅导台结束后，部分居民仍然需要线下协助。');bump(1,{peopleReputation:1});}
@@ -1431,6 +1463,8 @@ GameEngine.prototype.getLifeEvaluation = function() {
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
   for(const r of this.getPolicyFollowups())memories.push(r.name+'：'+r.label);
+  if(f.renewCreditLegacy)memories.push('你和沈宁在多年后核对了共同工作的真实贡献。');
+  if(f.renewShopLegacy)memories.push('许姨在新店里讲完自己的搬迁经历，你们没有再把它变成人情账。');
   if(f.renewWindowLegacy)memories.push('人工服务入口的复核记录随岗位完成移交。');
   if(f.renewRepairLegacy)memories.push('旧设备维护记录进入下一轮预算评审。');
   if(f.renewHomeLegacy)memories.push('你兑现了家庭日历上的长期约定。');

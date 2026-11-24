@@ -35,7 +35,7 @@ const assert=require('node:assert/strict');
   const restored=await page.evaluate(()=>eval('engine').getPlayer().flags.teamShared);
   assert.equal(restored,true);
   const cache=await page.evaluate(async()=>({keys:await caches.keys(),controller:!!navigator.serviceWorker.controller}));
-  assert.ok(cache.keys.includes('shangan-pages-28'));assert.ok(cache.controller);
+  assert.ok(cache.keys.includes('shangan-pages-29'));assert.ok(cache.controller);
   let offline='not tried';
   if(size.width===390){await context.setOffline(true);await page.reload();await page.locator('.game-container').waitFor();offline='loaded';}
   assert.deepEqual(errors,[]);assert.deepEqual(assets,[]);

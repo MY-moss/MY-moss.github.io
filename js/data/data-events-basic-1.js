@@ -81,13 +81,6 @@ const gd_events_basic_1 = [
       { text: '在原有基础上小步快跑', effects: {workAbility: 2, risk: 1, mentalPressure: 1}, result: "你先选择一个可修改的环节，记录变化后的反馈。" },
       { text: '先做试点，验证效果再推广', effects: {workAbility: 2, iq: 1, risk: -1, positionWeight: 1}, result: "试点范围被限定在可核查的业务，推广取决于结果。" },
     ]},
-    { id: 'e020', stage: 'work', eventType: 'choice', title: '酒局话里有话', weight: 4, text: '饭局上有人把一句普通话说出了三层意思。你听懂了两层，第三层假装没听见。', choices: [
-      { text: '只喝汤，少接话，保持清醒', effects: {risk: -2, mentalPressure: 1, positionWeight: -1} },
-      { text: '顺着话头接半句，不得罪人', effects: {positionWeight: 2, eq: 1, risk: 2, mentalPressure: 2} },
-      { text: '当场表态很坚决，表明立场', effects: {integrity: 3, positionWeight: -2, risk: -1, mentalPressure: 1} },
-      { text: '借口上洗手间避开话题', effects: {mentalPressure: -1, risk: -1, eq: -1, reputation: 1} },
-      { text: '巧妙转移话题到工作上去', effects: {eq: 1, workAbility: 1, risk: 1} },
-    ]},
     { id: 'e021', stage: 'work', eventType: 'sudden', title: '突发调查', weight: 5, text: '审计人员调取了你两年前签字的项目档案。那时你刚接手，很多细节依赖前任的交接说明；如今原始附件缺了一页，调查函要求你三天内逐项作出解释。', effects: {risk: 10, mentalPressure: 10} },
     { id: 'e022', stage: 'work', eventType: 'sudden', title: '主要领导调走', weight: 3, text: '你熟悉的分管领导今天正式调离。告别会上大家说着祝福的话，散场后人事科送来新分工表，你负责的两个项目被划给了别的科室，明早就要交接。', effects: {background: -5, positionWeight: -3, mentalPressure: 5} },
     { id: 'e023', stage: 'work', eventType: 'sudden', title: '机构改革', weight: 5, text: '机构改革方案贴出来后，单位牌子和部门名称要换，几项业务却没有明确归口。两拨同事都认为不该由自己接手，直到一份临近期限的群众申请被送到你的桌上。', effects: {positionWeight: 3, mentalPressure: 5} },

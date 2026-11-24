@@ -11,6 +11,7 @@ const N=300;let crossing={start:0,review:0,final:0,echo:0,endedBeforeEcho:0,inte
 const stages={},outcomes={},routes={open:0,quiet:0};
 for(let seed=1;seed<=N;seed++){let pcStart=0,pcEcho=0;
  e.reset();
+ if(process.env.MIXED_ERAS==='1')e.state.era=['reform','stable','rectify'][(seed-1)%3];
  let x=(seed*2654435761)>>>0;
  const random=()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296};
  e.randf=random;e.rand=(a,b)=>a+Math.floor(random()*(b-a+1));
@@ -81,5 +82,5 @@ for(let seed=1;seed<=N;seed++){let pcStart=0,pcEcho=0;
  }
  earned+=p.promotions;net+=p.wealth;pressure+=h.mentalPressure;
 }
-const summary={seeds:N,years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,second:familySecond,finale:familyLast,branches:familyRoute},classmate,crossing,mentorMemory,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&(id.startsWith('arc_')||id.startsWith('renew_'))))};
+const summary={seeds:N,eraMode:process.env.MIXED_ERAS==='1'?'mixed':'default',years,marriedStartingSamples:N/2,highBackgroundStartingSamples:N/5,receipt:{opened:entered,second,third,branches:routes},team:{opened:team,finale:teamLast,branches:teamRoute},family:{opened:family,second:familySecond,finale:familyLast,branches:familyRoute},classmate,crossing,mentorMemory,ended,endingCounts:outcomes,avgPromotions:Number((earned/N).toFixed(2)),avgWealth:Number((net/N).toFixed(2)),avgMentalPressure:Number((pressure/N).toFixed(2)),unresolvedBlockedEvents:invalid,arcStageCounts:Object.fromEntries(Object.entries(stages).filter(([id])=>id&&(id.startsWith('arc_')||id.startsWith('renew_'))))};
 console.log(JSON.stringify(summary,null,2));assert.equal(mentorMemory.illnessStarted,mentorMemory.legacyReached+mentorMemory.interruptedByEnding,'mentor story must resolve or be visibly scheduled at the terminal ending');assert.equal(invalid,0,'unexpected unresolvable choice');assert.equal(ended,N,'all long games should reach a terminal outcome');assert.equal(crossing.start,crossing.echo+crossing.endedBeforeEcho+crossing.interruptedAtEnding,'crossroads must finish, await future due age, or be interrupted by its own visible pending choice at terminal ending');

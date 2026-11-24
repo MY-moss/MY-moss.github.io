@@ -118,11 +118,6 @@ const gd_events_new_work = [
       { text: '讲通用不足，不痛不痒', effects: {mentalPressure: -2, eq: 1, risk: 1} },
       { text: '把不足讲成"提升空间"', effects: {eq: 1, workAbility: 1, mentalPressure: 1} },
     ]},
-    { id: 'enw024', stage: 'work', eventType: 'choice', weight: 4, title: '表彰会', text: '表彰会名单有你。你上台前照了照镜子，把笑容调整到"既荣幸又谦虚"的刻度。', choices: [
-      { text: '发言时多感谢团队', effects: {eq: 2, background: 2, mentalPressure: -1} },
-      { text: '简短发言，把舞台让给别人', effects: {eq: 1, positionWeight: 1, mentalPressure: -2} },
-      { text: '讲讲背后的艰辛，真情流露', effects: {workAbility: 2, positionWeight: 2, eq: 1, mentalPressure: 2} },
-    ]},
     { id: 'enw025', stage: 'work', eventType: 'choice', weight: 4, title: '民主生活会', text: '民主生活会上要相互批评。前面的同事给你提了一条"工作太拼要注意身体"，你分不清这是批评还是表扬。', choices: [
       { text: '回提一条真问题，敢于动真碰硬', effects: {integrity: 3, workAbility: 2, risk: 1, mentalPressure: 3} },
       { text: '也提一条温和的"建议"', effects: {eq: 1, mentalPressure: -1, risk: -1} },
@@ -137,11 +132,6 @@ const gd_events_new_work = [
       { text: '谈工作为主，适度表露想法', effects: {eq: 1, positionWeight: 1, mentalPressure: 1} },
       { text: '借机汇报一个真实困难', effects: {eq: 1, background: 1, mentalPressure: -2} },
       { text: '只讲好的，不添麻烦', effects: {mentalPressure: 2, risk: -1, eq: 1} },
-    ]},
-    { id: 'enw028', stage: 'work', eventType: 'choice', weight: 5, title: '中心组学习', text: '中心组学习要发言，主题是"新发展理念"。你翻了一晚上资料，发言稿像一篇还没磨利的刀。', choices: [
-      { text: '结合本职工作谈体会', effects: {workAbility: 3, eq: 1, mentalPressure: 2} },
-      { text: '引经据典，体现理论功底', effects: {iq: 2, workAbility: 1, mentalPressure: 2} },
-      { text: '提一个工作中的困惑，求指点', effects: {eq: 1, background: 1, mentalPressure: -1} },
     ]},
     { id: 'enw029', stage: 'work', eventType: 'choice', weight: 6, title: '三会一课', text: '"三会一课"记录本要补齐。你对着空白页，像对着一片需要播种却忘了季节的地。', choices: [
       { text: '如实补记，附上原始材料', effects: {workAbility: 2, integrity: 2, risk: -1, mentalPressure: 3} },
@@ -418,20 +408,10 @@ const gd_events_new_work = [
       { text: '简单事项手机处理，复杂的延后', effects: {workAbility: 2, mentalPressure: 2, familyPressure: 1} },
     ]},
 
-    { id: 'enw084', stage: 'work', eventType: 'choice', weight: 5, title: '培训学习', text: '一次脱产培训机会，去的话手头工作堆积，不去的话能力原地踏步。你盯着报名表犹豫。', choices: [
-      { text: '报名参加，提前安排交接', effects: {iq: 3, workAbility: 2, mentalPressure: 3} },
-      { text: '放弃名额，安心工作', effects: {workAbility: 2, mentalPressure: -1, positionWeight: 1} },
-      { text: '申请改为线上学习', effects: {iq: 2, workAbility: 1, mentalPressure: 1} },
-    ]},
     { id: 'enw085', stage: 'work', eventType: 'choice', weight: 3, year: [26, 45], excludeFlags: ['seconded', 'secondReview', 'secondDone'], title: '挂职锻炼', text: '组织安排你到上级单位挂职一年。新环境新人脉，可原单位的活还得惦记着，像一只脚踩两条船。', choices: [
       { text: '全身心投入挂职，多学多看', effects: {background: 3, workAbility: 3, mentalPressure: 4, positionWeight: 2, flag: 'seconded'}, result: '你在上级单位报到，开始承担具体任务；一年后的考核将决定去留。' },
       { text: '两头兼顾，保持联系', effects: {workAbility: 2, mentalPressure: 5, body: -2, flag: 'seconded'}, result: '你在两边保持沟通，工作压力更大，但也为后续考核留住了余地。' },
       { text: '婉拒，留在原岗位', effects: {mentalPressure: -2, positionWeight: -1, workAbility: 1}, result: '你选择留在原岗位，暂时守住了手头的工作。' },
-    ]},
-    { id: 'enw086', stage: 'work', eventType: 'choice', weight: 4, title: '跟班学习', text: '到先进地区跟班学习一个月。别人的做法很"先进"，可回来能不能落地，你心里打着鼓。', choices: [
-      { text: '边学边记，整理可移植经验', effects: {iq: 3, workAbility: 3, mentalPressure: 2} },
-      { text: '重点学思路，不照搬做法', effects: {iq: 2, workAbility: 2, mentalPressure: 1} },
-      { text: '多交朋友，建立联系', effects: {background: 3, eq: 1, mentalPressure: 1} },
     ]},
     { id: 'enw087', stage: 'work', eventType: 'choice', weight: 4, title: '轮岗交流', text: '单位内部轮岗，你被调到一个陌生的科室。新科长比你还年轻，你调整心态的速度赶不上调整岗位的速度。', choices: [
       { text: '虚心学习，从头做起', effects: {workAbility: 3, eq: 1, mentalPressure: 3} },
@@ -810,12 +790,6 @@ const gd_events_new_work = [
       { text: '照领导口径写', effects: {positionWeight: 1, integrity: -1, risk: 1} },
       { text: '用模糊表述带过', effects: {workAbility: 1, integrity: -1} },
       { text: '当面和领导核实', effects: {eq: 1, integrity: 2, mentalPressure: 1} },
-    ]},
-    { id: 'enw163', stage: 'work', eventType: 'choice', weight: 3, title: '新同事的礼物', text: '新来的同事给你带了一盒家乡特产，说是"感谢照顾"。你收也不是，不收也不是——按纪律，这算不算违规？你想起纪检提醒过"小事不小"。', choices: [
-      { text: '婉拒，说明纪律要求', effects: {integrity: 3, eq: -1, risk: -1} },
-      { text: '收下，回赠等值礼物', effects: {eq: 2, wealth: -5, risk: 1} },
-      { text: '收下，表示下不为例', effects: {risk: 1, integrity: -1} },
-      { text: '转交办公室公用', effects: {eq: 1, integrity: 2} },
     ]},
     { id: 'enw164', stage: 'work', eventType: 'auto', weight: 3, title: '办公室的绿萝', text: '办公室那盆绿萝快死了，你顺手浇了水、换了土。三个月后它爬满了文件柜。同事说"你救活了一盆绿萝"，你说"它救活了办公室的生气"。', effects: {mentalPressure: -2, eq: 1, workAbility: 1} },
 

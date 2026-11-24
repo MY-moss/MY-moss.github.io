@@ -431,13 +431,6 @@ const gd_events_basic_2 = [
       { text: '值完班再回家吃剩饭', effects: {familyPressure: 1, mentalPressure: 2, integrity: 2, body: -1} },
       { text: '组织值班同事一起过年', effects: {eq: 2, background: 2, mentalPressure: -1, reputation: 2, positionWeight: 1} },
     ]},
-    { pools: ['public'], id: 'e157', stage: 'life', eventType: 'choice', title: '中秋送礼', weight: 4, text: '中秋节快到了，有人往你办公室放了一盒高档月饼和一张购物卡。你打开一看，卡里金额不小，送礼的人没有留名字。', choices: [
-      { text: '上交纪委登记处理', effects: {integrity: 5, risk: -4, mentalPressure: 2, reputation: 3, positionWeight: 1} },
-      { text: '退回原处等对方来取', effects: {integrity: 3, risk: -2, mentalPressure: 1, eq: 1, reputation: 1} },
-      { text: '收下月饼退回购物卡', effects: {eq: 1, integrity: 2, risk: -1, mentalPressure: 1, reputation: 1} },
-      { text: '当作不知道收下了', effects: {risk: 4, integrity: -3, mentalPressure: 3, desire: 1, reputation: -1} },
-      { text: '捐给慈善机构', effects: {integrity: 4, reputation: 3, mentalPressure: -1, risk: -2, desire: -1} },
-    ]},
     { id: 'e158', stage: 'work', eventType: 'choice', title: '防汛应急', weight: 3, text: '百年一遇的暴雨来袭，你负责的辖区出现严重内涝。群众被困、道路中断，情况十分危急。', choices: [
       { text: '第一时间赶赴现场指挥', effects: {integrity: 4, positionWeight: 3, body: -2, mentalPressure: 5, background: 2, reputation: 3} },
       { text: '协调各方力量组织救援', effects: {workAbility: 3, eq: 1, mentalPressure: 3, background: 2, positionWeight: 2} },

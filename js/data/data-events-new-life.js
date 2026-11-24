@@ -192,12 +192,6 @@ const gd_events_new_life = [
     { text: '借口有事不去', effects: {wealth: 0, eq: -1, mentalPressure: 1, background: -1} },
     { text: '去但只点便宜的菜', effects: {wealth: -10, eq: 1, mentalPressure: 2, integrity: -1} }
   ]},
-  { id: 'enl033', stage: 'life', eventType: 'choice', weight: 3, title: '抢红包起哄', text: '同事群里有人发红包，你抢了一个大的。紧接着就有人起哄"大的请客"，气氛突然热烈起来。', choices: [
-    { text: '爽快发个红包回请大家', effects: {wealth: -5, eq: 2, mentalPressure: -1, background: 1} },
-    { text: '发个等额红包意思一下', effects: {wealth: -2, eq: 1, mentalPressure: 1} },
-    { text: '发个表情包糊弄过去', effects: {eq: 1, mentalPressure: 1, reputation: -1} },
-    { text: '潜水装作没看见', effects: {eq: -1, mentalPressure: -2, reputation: -1} }
-  ]},
   { id: 'enl034', stage: 'life', eventType: 'choice', weight: 3, requireMarried: true, title: '人情往来（随礼）', text: '翻开人情往来本，发现今年光随礼就花了小一万。中秋国庆还有三场婚礼，伴侣看完直摇头。', choices: [
     { text: '该随的还得随保住人情', effects: {wealth: -30, eq: 1, mentalPressure: 2, familyPressure: 2} },
     { text: '远的关系适当降低标准', effects: {wealth: -15, eq: 1, mentalPressure: 1, integrity: 1} },
@@ -538,12 +532,6 @@ const gd_events_new_life = [
     { text: '继续持有等解套', effects: {mentalPressure: 2, wealth: -20, risk: 2, desire: 1} },
     { text: '全部清仓认赔离场', effects: {wealth: -20, mentalPressure: -2, integrity: 1, iq: 1} },
     { text: '调仓换股搏一把', effects: {wealth: -20, risk: 3, mentalPressure: 3, desire: 2} }
-  ]},
-  { id: 'enl091', stage: 'life', eventType: 'choice', weight: 3, title: '保险人情单', text: '老同学做保险了，拉着你说"这款重疾险非常适合你"。产品看起来不错，但保费不便宜，又是人情单。', choices: [
-    { text: '碍于情面买一份', effects: {wealth: -40, eq: 1, mentalPressure: 1, risk: -2, integrity: 1} },
-    { text: '理性分析后果断拒绝', effects: {integrity: 2, mentalPressure: 2, eq: -1, wealth: 0} },
-    { text: '比较其他公司产品再决定', effects: {iq: 2, mentalPressure: 1, wealth: -30, risk: -2} },
-    { text: '买便宜点的意外险代替', effects: {wealth: -5, eq: 1, mentalPressure: 1, risk: -1} }
   ]},
   { id: 'enl092', stage: 'life', eventType: 'choice', weight: 3, title: '信用卡账单', text: '信用卡账单出来了，本期应还两万多。最低还款只要两千多，但利息高得吓人。', choices: [
     { text: '全额还款避免利息', effects: {wealth: -20, mentalPressure: 1, integrity: 2, iq: 1} },

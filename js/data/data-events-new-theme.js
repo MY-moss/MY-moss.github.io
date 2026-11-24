@@ -27,12 +27,6 @@ const gd_events_new_theme = [
       { text: '走过场念个提醒函了事', effects: {mentalPressure: -2, risk: 3, integrity: -2} },
       { text: '做好谈话记录并签字确认', effects: {workAbility: 2, integrity: 2, mentalPressure: 1} },
     ]},
-    { id: 'ent005', stage: 'work', eventType: 'choice', weight: 6, title: '警示教育大会', text: '单位召开警示教育大会，要剖析"身边人身边事"。台上一念通报，台下有人坐立不安，你负责起草剖析材料。', choices: [
-      { text: '深挖思想根源，对照岗位职责反思', effects: {integrity: 3, iq: 2, mentalPressure: 2} },
-      { text: '用典型案例串联，增强代入感', effects: {workAbility: 2, eq: 1, mentalPressure: 1} },
-      { text: '泛泛而谈，避免对号入座', effects: {mentalPressure: -2, risk: 2, integrity: -2} },
-      { text: '邀请案中人现身说法', effects: {background: 1, integrity: 2, risk: 1} },
-    ]},
     { id: 'ent006', stage: 'work', eventType: 'choice', weight: 6, title: '以案促改方案', text: '上级通报了一起典型案例，要求开展以案促改。你拿着通报反复读，发现案中人和你部门业务流程惊人相似。', choices: [
       { text: '对照案例排查本部门廉政风险点', effects: {workAbility: 3, integrity: 3, mentalPressure: 3} },
       { text: '完善制度漏洞，建立长效机制', effects: {workAbility: 2, iq: 2, integrity: 2} },
@@ -554,7 +548,6 @@ const gd_events_new_theme = [
       { text: '按规定补办手续', effects: {workAbility: 1, risk: -1, integrity: 1} },
       { text: '睁一只眼闭一只眼', effects: {risk: 3, integrity: -2, mentalPressure: 2} },
     ]},
-    { id: 'ent147', era: ['rectify'], stage: 'work', eventType: 'auto', weight: 5, title: '廉政档案', text: '单位建立廉政档案，个人事项报告要如实填写：房产、投资、配偶从业……你填到"家庭成员"那栏，笔停了停。填完交上去，纪委的小王说："越如实，越踏实。"', effects: {risk: -2, integrity: 1, mentalPressure: 1} },
     { id: 'ent148', era: ['rectify'], stage: 'work', eventType: 'auto', weight: 5, title: '身边案例警示', text: '警示教育大会，通报的案例里有你认识的人——当年一起培训的老赵，因为收了几次"辛苦费"，如今站在台上作检讨。散场时没人说话，气氛沉得像压了块石头。', effects: {risk: -3, integrity: 2, mentalPressure: 3, desire: -2} },
     { id: 'ent149', era: ['rectify'], stage: 'work', eventType: 'choice', weight: 5, title: '线索移交', text: '巡察组移交的线索里，有一份涉及你带过的老部下。按规定应该原样移交纪检监察部门，可老部下刚找你喝过酒，说"姐夫，多关照"。', choices: [
       { text: '如实移交，不掺杂个人感情', effects: {integrity: 3, reputation: 2, risk: -1, mentalPressure: 3, background: -1} },
@@ -1420,5 +1413,4 @@ const gd_events_new_theme = [
       { text: '紧张辩解，反复表忠心', effects: {risk: 2, mentalPressure: 4, integrity: -1} },
       { text: '连夜回忆并处置遗留问题', effects: {risk: -5, heat: -3, mentalPressure: 4, integrity: 1} },
     ]},
-    { id: 'ent292', era: ['rectify'], stage: 'life', eventType: 'auto', weight: 4, title: '警示教育片', text: '单位组织观看警示教育片。屏幕上的人你认识——上个月还在一起开过会。片子里他的忏悔清晰又陌生。散场时没人说话，你在门口停了一下，深吸了一口气。', effects: {heat: -3, integrity: 1, mentalPressure: 3, desire: -2} },
 ];

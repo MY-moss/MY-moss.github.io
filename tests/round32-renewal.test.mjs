@@ -51,7 +51,7 @@ test('retired events leave active pool and new scenes use distinct IDs and meani
  const {e,p,d}=setup();const retired=JSON.parse(readFileSync(resolve(root,'docs/ROUND32_RETIRED_EVENTS.json'),'utf8'));
  assert.equal(retired.length,18);const ids=new Set(d.events.map(x=>x.id));
  for(const old of retired)assert.ok(!ids.has(old.id),old.id);
- const newEvents=d.events.filter(x=>x.id.startsWith('renew_'));assert.equal(newEvents.length,16);
+ const newEvents=d.events.filter(x=>/^renew_(window_|repair_|home_|plain$|translation$|anonymous$|disability$|vacancy$|letter$|budget$)/.test(x.id));assert.equal(newEvents.length,16);
  assert.equal(newEvents.flatMap(x=>x.choices).length,48);
  assert.ok(newEvents.every(ev=>ev.choices.every(c=>c.result&&c.result.length>12)));
  // Existing save has a fully serialized historical decision. It remains playable, without restoring the retired event to the pool.
