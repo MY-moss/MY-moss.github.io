@@ -506,6 +506,15 @@ class GameEngine {
       p.flags.teamThirdResolved=true;
       p.flags.teamThirdResolved_since=Number(record?.year)||p.age||22;
     }
+    for(const [flag,ids,titles] of [
+      ['receiptThirdResolved',['arc_receipt_open_3','arc_receipt_quiet_3'],/五年后的一张明信片|五年后的楼道/],
+      ['classmateThirdResolved',['arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3'],/五年后的车间|五年后的联系人|五年后的同学会/]
+    ]){
+      if(!p.flags[flag] && ids.some(id=>p.seenEvents.includes(id))){
+        const record=p.careerLog.slice().reverse().find(l=>typeof l.event==='string' && titles.test(l.event));
+        p.flags[flag]=true;p.flags[flag+'_since']=Number(record?.year)||p.age||22;
+      }
+    }
     p.eventCounts = (p.eventCounts && typeof p.eventCounts === 'object' && !Array.isArray(p.eventCounts)) ? p.eventCounts : {};
     p.talents = p.talents || [];
     p.promotions = p.promotions || 0;

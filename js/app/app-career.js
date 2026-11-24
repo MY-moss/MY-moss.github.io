@@ -147,10 +147,11 @@ renderCareer() {
     const secondSeen = !!(f.receiptOpenReviewed || f.receiptQuietReviewed);
     const secondFlag = f.receiptOpen ? 'receiptOpen' : 'receiptQuiet';
     const finalId = f.receiptOpen ? 'arc_receipt_open_3' : 'arc_receipt_quiet_3';
-    const completed = (p.seenEvents || []).includes(finalId);
+    const third = (p.seenEvents || []).includes(finalId);
+    const completed = (p.seenEvents || []).includes('arc_receipt_legacy_4');
     const since = secondSeen ? f[(f.receiptOpen ? 'receiptOpenReviewed' : 'receiptQuietReviewed') + '_since'] : f[secondFlag + '_since'];
-    const years = secondSeen ? 3 : 2;
-    const remaining = Math.max(0, (since || p.age) + years - p.age);
+    const years = third ? 6 : secondSeen ? 3 : 2;
+    const remaining = Math.max(0, (third ? (f.receiptThirdResolved_since || p.age) : (since || p.age)) + years - p.age);
     const detail = completed ? '故事已收束 · 可在生涯年鉴回顾' : (remaining > 0 ? `还有约 ${remaining} 年，旧案可能出现新变化` : '旧案仍有后续，留意接下来的年度事件');
     return `<section class="thread-card" aria-label="持续故事进度">
       <div class="thread-kicker">人物纪事 · 持续中${completed ? ' · 已完结' : ''}</div>
@@ -192,10 +193,11 @@ renderCareer() {
       const intro = f.classmateOpen ? '公开协助' : f.classmateFavor ? '私下请托' : '守住边界';
       const reviewedFlag = route === 'boundary' ? 'classmateBoundaryReviewed' : `classmate${route[0].toUpperCase() + route.slice(1)}Reviewed`;
       const initialFlag = route === 'boundary' ? 'classmateBoundaries' : `classmate${route[0].toUpperCase() + route.slice(1)}`;
-      const completed = seen.includes(`arc_classmate_${route}_3`);
+      const third = seen.includes(`arc_classmate_${route}_3`);
+      const completed = seen.includes('arc_classmate_legacy_4');
       const reviewed = !!f[reviewedFlag];
       const since = reviewed ? f[reviewedFlag + '_since'] : f[initialFlag + '_since'];
-      const remaining = Math.max(0, (since || p.age) + (reviewed ? 3 : 2) - p.age);
+      const remaining = Math.max(0, (third ? (f.classmateThirdResolved_since || p.age) : (since || p.age)) + (third ? 6 : reviewed ? 3 : 2) - p.age);
       arcs.push({ title: '老同学的申请书', detail: `${intro} · ${completed ? '故事已完结' : remaining ? '约 ' + remaining + ' 年后还有回响' : '等待后续机会'}`, person: '林默' });
     }
     return arcs.map(arc => `<section class="thread-card" aria-label="持续故事进度">
@@ -231,9 +233,9 @@ renderCareer() {
   showLifeMap() {
     const p=engine.getPlayer(), f=p.flags||{}, seen=p.seenEvents||[];
     const source=[
-      {name:'档案柜里的回执',tag:f.receiptOpen?'公开复核':f.receiptQuiet?'内部协调':'未经历',active:!!(f.receiptOpen||f.receiptQuiet),finished:seen.includes(f.receiptOpen?'arc_receipt_open_3':'arc_receipt_quiet_3')},
+      {name:'档案柜里的回执',tag:f.receiptOpen?'公开复核':f.receiptQuiet?'内部协调':'未经历',active:!!(f.receiptOpen||f.receiptQuiet),finished:seen.includes('arc_receipt_legacy_4')},
       {name:'交接本上的空格',tag:f.teamShared?'共同承担':f.teamDeferred?'暂缓调休':'未经历',active:!!(f.teamShared||f.teamDeferred),finished:seen.includes('arc_team_legacy_4')},
-      {name:'老同学的申请书',tag:f.classmateOpen?'公开协助':f.classmateFavor?'私下请托':f.classmateBoundaries?'守住边界':'未经历',active:!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries),finished:seen.some(id=>id.startsWith('arc_classmate_')&&id.endsWith('_3'))},
+      {name:'老同学的申请书',tag:f.classmateOpen?'公开协助':f.classmateFavor?'私下请托':f.classmateBoundaries?'守住边界':'未经历',active:!!(f.classmateOpen||f.classmateFavor||f.classmateBoundaries),finished:seen.includes('arc_classmate_legacy_4')},
       {name:'冰箱上的蓝色便签',tag:f.familyClinicPresent?'陪伴家人':f.familyClinicAbsent?'投入事业':'未经历',active:!!(f.familyClinicPresent||f.familyClinicAbsent),finished:seen.includes('arc_family_clinic_3')},
       {name:'父母照护',tag:f.parentCareSelf?'亲自照护':f.parentCareProfessional?'专业照护':f.parentShared?'亲属轮班':f.parentIllness?'开始照护':'未经历',active:!!(f.parentIllness||f.parentCaring||f.parentShared),finished:seen.includes('enl216')},
       {name:'住房账本',tag:f.mortgage?'持续还款':f.mortgageSold?'出售结清':f.mortgageRestructured?'债务重组':f.mortgageCleared?'还款结清':f.homeOwned?'全款购房':'未经历',active:!!(f.mortgage||f.mortgageSold||f.mortgageCleared||f.mortgageRestructured||f.homeOwned),finished:!!(f.mortgageSold||f.mortgageCleared||f.mortgageRestructured||f.homeOwned)},

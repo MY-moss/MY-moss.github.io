@@ -677,6 +677,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'receiptQuiet', next: 'arc_receipt_quiet_2', delay: 2 },
         { flag: 'receiptOpenReviewed', next: 'arc_receipt_open_3', delay: 3 },
         { flag: 'receiptQuietReviewed', next: 'arc_receipt_quiet_3', delay: 3 },
+        { flag: 'receiptThirdResolved', next: 'arc_receipt_legacy_4', delay: 6 },
         { flag: 'teamShared', next: 'arc_team_shared_2', delay: 2 },
         { flag: 'teamDeferred', next: 'arc_team_deferred_2', delay: 2 },
         { flag: 'teamSharedFollowed', next: 'arc_team_shared_3', delay: 3 },
@@ -691,6 +692,7 @@ GameEngine.prototype.getCausalChainSteps = function() {
         { flag: 'classmateOpenReviewed', next: 'arc_classmate_open_3', delay: 3 },
         { flag: 'classmateFavorReviewed', next: 'arc_classmate_favor_3', delay: 3 },
         { flag: 'classmateBoundaryReviewed', next: 'arc_classmate_boundary_3', delay: 3 },
+        { flag: 'classmateThirdResolved', next: 'arc_classmate_legacy_4', delay: 6 },
         { flag: 'crossOpen', next: 'arc_crossroads_open_2', delay: 2 },
         { flag: 'crossPhase', next: 'arc_crossroads_phase_2', delay: 2 },
         { flag: 'crossSeal', next: 'arc_crossroads_seal_2', delay: 2 },
@@ -770,13 +772,51 @@ GameEngine.prototype.getVentureReviewEvent = function() {
 };
 // 四条人生线的后续事件按玩家已走过的分支改写；只复制当前事件，不修改全局事件模板。
 GameEngine.prototype.getLifePathEvent = function(event) {
-  if (!event || !/^(arc_life_|arc_team_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
+  if (!event || !/^(arc_life_|arc_team_|arc_receipt_|arc_classmate_|arc_family_clinic_3|arc_mortgage_3|enl216|ent259|ent295|ent30[67])/.test(event.id || '')) return event;
   const f=this.state.player.flags||{};
   const out={...event,choices:(event.choices||[]).map(c=>({...c,effects:{...(c.effects||{})}}))};
   const add=(text)=>{out.text=(out.text||'')+' '+text;};
   const bump=(index,changes)=>{const effects=out.choices[index]&&out.choices[index].effects;if(!effects)return;for(const [key,value] of Object.entries(changes))effects[key]=(Number(effects[key])||0)+value;};
   const result=(index,text)=>{if(out.choices[index])out.choices[index].result=text;};
   switch(out.id){
+    case 'arc_receipt_open_3':
+      if(f.receiptPremature){out.text='老赵寄来一张新住址的明信片。你知道他终于搬进了新房，却不能因此证明其他住户的材料都已齐全。周岚打来电话，提醒你不要把那次先行结项当成完整的验收案例。';bump(0,{integrity:1,mentalPressure:2});}
+      else if(f.receiptProof)add('那次延期留下的补证清单，后来成为同事们核查缺页的依据。');
+      break;
+    case 'arc_receipt_quiet_3':
+      if(f.receiptRepair){out.text='五年后，你在旧小区楼梯口遇见老赵。他记得后来逐户核查的工作人员，但新一轮安置还有几户未核清。周岚调往别处后，旧名单仍需有人接手。';bump(0,{mentalPressure:-1});}
+      else if(f.receiptContinued){add('周岚当年调离窗口时保留了原名单；那份内部说明并不能替代逐户确认。');bump(0,{mentalPressure:2});}
+      break;
+    case 'arc_receipt_legacy_4':
+      if(f.receiptTeaching)add('当年的培训案例也在档案里，如今需要核对它与实际执行有没有出入。');
+      else if(f.receiptHome)add('当年你把周末留给家人，此次也只准备承担可以明确交接的部分。');
+      else if(f.receiptReopened)add('你们上次重访后留下的待查名单仍有几项没有反馈。');
+      else if(f.receiptFutureRule)add('新项目的逐户登记办法已经写进流程，但旧案仍不能据此视为办结。');
+      if(f.receiptPremature||f.receiptContinued){add('过去未完整披露的材料必须单独说明，不能用今天的好评价替代历史证据。');bump(0,{mentalPressure:2});}
+      if(f.crossResolved){add('联合会商的责任清单可以作为移交模板。');bump(1,{workAbility:1});}
+      if(f.teamLegacyDocumented){add('许砚交接本里的复核方法也派上了用场。');bump(0,{workAbility:1});}
+      break;
+    case 'arc_classmate_open_3':
+      if(f.classmateReportHelp)add('那份经独立审核的报表，至今还保存在企业的公开记录里。');
+      else if(f.classmateAccountant)add('他请来的会计建立了新的账务流程，不再事事询问你。');
+      break;
+    case 'arc_classmate_favor_3':
+      if(f.classmateDisclosed){add('你当年已经说明请托并申请回避，此次询问应以那份记录为准。');bump(0,{mentalPressure:-2});}
+      else if(f.classmateConcealed){add('前次复核中没有披露的往来仍是问题，新的询问并不意味着旧事已经过去。');bump(1,{risk:3,heat:2});}
+      break;
+    case 'arc_classmate_boundary_3':
+      if(f.classmateMarketInfo)add('他把当年自己比较的服务报价留了下来，后来习惯了独立作决定。');
+      else if(f.classmatePrivateOnly)add('那次你没有替他经营企业，他也渐渐习惯把工作和友情分开。');
+      break;
+    case 'arc_classmate_legacy_4':
+      if(f.classmateCaseShared)add('你曾将企业经历写成公开案例，他希望这次不要把私人谈话也变成工作材料。');
+      else if(f.classmateFriendship||f.classmateRenewed)add('你们后来把往来留在了生活里，今天也没有新的业务请求。');
+      else if(f.classmateLaterDisclosure)add('你曾主动交代旧日请托，相关处理仍应以正式记录为准。');
+      else if(f.classmateStillConcealed){add('你们仍有没有说清的往来，这顿饭无法替代正式说明。');bump(0,{mentalPressure:2});bump(1,{risk:2});}
+      else if(f.classmateFarewell)add('多年没有联系后，这次见面也不意味着必须恢复过去的亲密关系。');
+      if(f.ventureDeclared||f.ventureHidden){add('过去私人投资的申报问题也提醒你，关系与工作必须有可核查的边界。');bump(2,{integrity:1});}
+      if(f.crossResolved)add('你记得联合会商时建立的回避和证据规则。');
+      break;
     case 'arc_team_shared_3':
       if(f.teamRotationSupported){add('当年外出锻炼留下的工作记录，这次也一并送来了。');bump(0,{workAbility:1});}
       else if(f.teamRotationDeferred){add('那次错过的专项工作没有补回来。许砚后来自己找到了新的学习机会。');bump(0,{mentalPressure:1});}
@@ -1334,6 +1374,8 @@ GameEngine.prototype.getLifeEvaluation = function() {
     ['个人原则',n(h.integrity)*0.8+(100-n(h.risk))*0.2-(this.hasCorruptFlag(f)?20:0),'廉洁、风险及腐败记录']
   ].map(([name,score,detail])=>({name,score:bounded(score),detail}));
   const seen=new Set(p.seenEvents||[]),memories=[];
+  if(seen.has('arc_receipt_legacy_4'))memories.push('旧城回执的历史材料已交由新窗口核查，未决事项没有被视为自动办结。');
+  if(seen.has('arc_classmate_legacy_4'))memories.push('多年后与林默重谈旧事，留下了新的关系边界。');
   if(seen.has('arc_team_legacy_4'))memories.push('许砚的交接本进入新团队，你完成了多年后的经验移交。');
   if(seen.has('arc_family_clinic_3'))memories.push('蓝色便签的五年回访已经完成。');
   if(seen.has('enl216'))memories.push('父母照护经历已完成多年后的家庭复盘。');

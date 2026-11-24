@@ -240,6 +240,17 @@ GameEngine.prototype.handleEventChoice = function(ci) {
         event: `${String(e.title || '事件').slice(0, 45)}：${c.result.trim().slice(0, 155)}`
       });
     }
+    const legacyPlayer=this.state.player;
+    if(['arc_receipt_open_3','arc_receipt_quiet_3'].includes(e.id)){
+      if(!legacyPlayer.flags.receiptThirdResolved){legacyPlayer.flags.receiptThirdResolved=true;legacyPlayer.flags.receiptThirdResolved_since=legacyPlayer.age;}
+      this.evolveContact('receipt_zhoulan',{position:'群众事务业务骨干',evolutionStage:1,message:'已在新岗位继续负责群众事务'});
+    }
+    if(['arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3'].includes(e.id)){
+      if(!legacyPlayer.flags.classmateThirdResolved){legacyPlayer.flags.classmateThirdResolved=true;legacyPlayer.flags.classmateThirdResolved_since=legacyPlayer.age;}
+      this.evolveContact('oldClassmate',{position:e.id==='arc_classmate_favor_3'?'企业经营联系人':'企业经营者',evolutionStage:1,message:'逐步形成独立经营经历'});
+    }
+    if(e.id==='arc_receipt_legacy_4')this.evolveContact('receipt_zhoulan',{position:'档案交接协调人',evolutionStage:2,message:'参与新旧服务窗口档案交接'});
+    if(e.id==='arc_classmate_legacy_4')this.evolveContact('oldClassmate',{position:'企业交接筹备者',evolutionStage:2,message:'开始安排企业日常经营交接'});
     if(['arc_team_shared_3','arc_team_deferred_3'].includes(e.id)){
       const p=this.state.player;
       if(!p.flags.teamThirdResolved){p.flags.teamThirdResolved=true;p.flags.teamThirdResolved_since=p.age;}
@@ -320,11 +331,11 @@ const RIGID_NEXT_SET = new Set(['e110','arc_health_retry','ent233', 'ent234', 'e
   'e802', 'e803', 'e804', 'e806', 'e807', 'e808',
   // v2.1.68 缺口补充：赡养链 / 理财暴雷链 / 借调链 next 节点只由 RIGID_CHAINS 注入
   'ent294', 'ent295', 'ent297', 'ent298', 'ent299', 'ent300', 'ent301', 'enw126', 'e616', 'e617', 'e618', 'e728', 'e729', 'e730', 'e731', 'e743', 'e744', 'e747', 'e748', 'e756', 'e758', 'e765',
-  'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3',
+  'arc_receipt_open_2','arc_receipt_quiet_2','arc_receipt_open_3','arc_receipt_quiet_3','arc_receipt_legacy_4',
   'arc_team_shared_2','arc_team_deferred_2','arc_team_shared_3','arc_team_deferred_3','arc_team_legacy_4',
   'arc_family_present_2','arc_family_absent_2','arc_family_clinic_3',
   'arc_classmate_open_2','arc_classmate_favor_2','arc_classmate_boundary_2',
-  'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3',
+  'arc_classmate_open_3','arc_classmate_favor_3','arc_classmate_boundary_3','arc_classmate_legacy_4',
   'arc_crossroads_1','arc_crossroads_open_2','arc_crossroads_phase_2','arc_crossroads_seal_2',
   'arc_crossroads_open_3','arc_crossroads_phase_3','arc_crossroads_seal_3','arc_crossroads_echo',
   'arc_venture_disclosure_1','arc_venture_declared_2','arc_venture_exited_2','arc_venture_hidden_2','arc_life_career_2','arc_life_career_3','arc_life_integrity_2','arc_life_integrity_3','arc_life_family_2','arc_life_family_3','arc_life_network_2','arc_life_network_3','arc_life_confluence_1','arc_life_confluence_2']);
@@ -1054,7 +1065,7 @@ GameEngine.prototype.checkEndings = function() {
     }
     if (p.age >= (p.retireAgeExt || (p.gender === '女' ? 55 : 60))) {
       if (this.state.currentEvent || this.state.pendingPromotion || this.state.pendingTransfer) return;
-      const handoff=this.getPendingCausalConsequences().find(x=>x.id==='arc_team_legacy_4'&&x.overdue);
+      const handoff=this.getPendingCausalConsequences().find(x=>['arc_team_legacy_4','arc_receipt_legacy_4','arc_classmate_legacy_4'].includes(x.id)&&x.overdue);
       if(handoff){
         const event=GameData.events.find(x=>x.id===handoff.id);
         if(event){this.state.currentEvent=this.getLifePathEvent(event);return;}
